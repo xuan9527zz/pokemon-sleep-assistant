@@ -19,7 +19,7 @@
 .ingredient-recommendation{margin:13px 0 4px;border:1px solid #d8cff5;border-radius:14px;background:linear-gradient(135deg,#fbf9ff,#f5f1ff);padding:14px}.ingredient-recommendation[hidden]{display:none}.ingredient-rec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.ingredient-rec-kicker{color:#6045ad;font-size:11px;font-weight:900;letter-spacing:.08em}.ingredient-rec-head h3{margin:2px 0 3px;font-size:19px}.ingredient-rec-head p{margin:0;color:var(--muted);font-size:12px}.ingredient-rec-clear{flex:0 0 auto;border:1px solid #cfc2f2;border-radius:9px;background:#fff;color:#6045ad;padding:7px 10px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.ingredient-rec-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.ingredient-rec-mon{position:relative;min-height:132px;border:1px solid #ded7f2;border-radius:12px;background:#fff;padding:11px;text-align:left;color:var(--ink);font:inherit;cursor:pointer}.ingredient-rec-mon:hover{border-color:#8068cb;box-shadow:0 4px 12px #5f44aa18}.ingredient-rec-rank{position:absolute;top:9px;right:9px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#eee9fb;color:#6045ad;font-weight:900}.ingredient-rec-mon b{display:block;padding-right:27px;color:#4f3795;font-size:14px}.ingredient-rec-mon small{display:block;margin-top:3px;color:var(--muted)}.ingredient-rec-slots{display:block;margin-top:9px;font-size:12px;line-height:1.4}.ingredient-rec-traits{display:block;margin-top:5px;color:#18734a;font-size:11px}.ingredient-rec-none{grid-column:1/-1;padding:15px;border:1px dashed #cabeea;border-radius:10px;background:#fff;color:var(--muted)}@media(max-width:900px){.ingredient-rec-grid{grid-template-columns:repeat(5,minmax(175px,1fr));overflow-x:auto;padding-bottom:4px}}@media(max-width:520px){.ingredient-rec-head{flex-direction:column}.ingredient-rec-clear{width:100%}}
 </style>
 <style>
-.species-tier{display:inline-flex;align-items:center;justify-content:center;min-width:34px;border-radius:999px;padding:2px 8px;font-weight:900}.species-tier.s{background:#fee4e2;color:#b42318}.species-tier.a{background:#fff1cc;color:#8a5b00}.species-tier.b{background:#dcfce7;color:#08743d}.species-tier.c{background:#e7efff;color:#245da8}.species-tier.d{background:#eef1f5;color:#596579}.species-tier-note{display:block;margin-top:3px;color:var(--muted);font-size:11px;white-space:nowrap}.tag.backup{background:#e9edf2;color:#4b5565}.advice-sources{margin:10px 2px 0;color:var(--muted);font-size:12px}.advice-sources a{color:#276aa6}
+.species-tier{display:inline-flex;align-items:center;justify-content:center;min-width:34px;border-radius:999px;padding:2px 8px;font-weight:900}.species-tier.ss{background:#fdd8f0;color:#9d1768}.species-tier.s{background:#fee4e2;color:#b42318}.species-tier.a{background:#fff1cc;color:#8a5b00}.species-tier.b{background:#dcfce7;color:#08743d}.species-tier.c{background:#e7efff;color:#245da8}.species-tier-note{display:block;margin-top:3px;color:var(--muted);font-size:11px;white-space:nowrap}.tag.future{background:#ede9fe;color:#6941c6}.tag.immediate{background:#fff0dd;color:#a45108}.tag.backup{background:#e9edf2;color:#4b5565}.advice-sources{margin:10px 2px 0;color:var(--muted);font-size:12px}.advice-sources a{color:#276aa6}.potential-curve{display:grid;gap:4px;min-width:178px}.potential-step{display:grid;grid-template-columns:42px 48px 1fr;gap:5px;align-items:center;font-size:11px}.potential-level{color:var(--muted);font-weight:800}.potential-score{font-variant-numeric:tabular-nums;color:#586476}.potential-state{display:inline-flex;width:max-content;border-radius:999px;padding:1px 6px;font-weight:850}.potential-top{background:#fdd8f0;color:#9d1768}.potential-good{background:#fee4e2;color:#b42318}.potential-usable{background:#fff1cc;color:#8a5b00}.potential-normal{background:#e7efff;color:#245da8}.potential-low{background:#eef1f5;color:#596579}
 .role-tag{display:inline-flex;flex-direction:column;align-items:flex-start;gap:1px;border:1px solid transparent;border-radius:9px;padding:4px 7px;line-height:1.2;white-space:nowrap}.role-tag strong{font-size:12px}.role-tag small{font-size:10px;opacity:.82}.role-berry{background:#fff1e5;border-color:#f4cda9;color:#9a4b08}.role-ingredient{background:#e8f8ef;border-color:#b8e4ca;color:#117044}.role-skill{background:#eaf2ff;border-color:#bfd4f2;color:#225fa5}.role-all{background:#f3ecff;border-color:#d6c4f4;color:#6940a9}.role-tag.compact{display:flex;margin-top:6px;width:max-content;max-width:100%;padding:3px 7px}.role-tag.compact strong,.role-tag.compact small{display:inline}.team-slot .role-tag,.event-team-mon .role-tag{margin-top:7px}.ingredient-rec-mon .role-tag{margin-top:7px}
 </style>
 <style>
@@ -99,7 +99,7 @@
       </ol>
     </article>
   </div>
-  <div class="event-sources">官方资料：<a href="https://www.pokemonsleep.net/en/news/343239373432303835363735393431383930/" target="_blank" rel="noreferrer">梦幻迷你拍照惊喜任务</a>、<a href="https://www.pokemonsleep.net/en/news/343239373432303836333638303032303631/" target="_blank" rel="noreferrer">9 月超梦活动预告</a>、<a href="https://www.pokemonsleep.net/en/news/333832393735353631373931373030393934/" target="_blank" rel="noreferrer">特殊宝可梦编队规则</a>；捕捉路线参考 <a href="https://game8.co/games/Pokemon-Sleep/archives/438911" target="_blank" rel="noreferrer">Game8 拉鲁拉丝资料</a> 与 <a href="https://pks.raenonx.cc/zh/event/list" target="_blank" rel="noreferrer">RaenonX 活动列表</a>。</div>
+  <div class="event-sources">官方资料：<a href="https://www.pokemonsleep.net/en/news/343239373432303835363735393431383930/" target="_blank" rel="noreferrer">梦幻迷你拍照惊喜任务</a>、<a href="https://www.pokemonsleep.net/en/news/343239373432303836333638303032303631/" target="_blank" rel="noreferrer">9 月超梦活动预告</a>、<a href="https://www.pokemonsleep.net/en/news/333832393735353631373931373030393934/" target="_blank" rel="noreferrer">特殊宝可梦编队规则</a>；捕捉路线参考 <a href="https://game8.jp/pokemonsleep/612965" target="_blank" rel="noreferrer">新版 Game8 拉鲁拉丝厳选资料</a> 与 <a href="https://pks.raenonx.cc/zh/event/list" target="_blank" rel="noreferrer">RaenonX 活动列表</a>。</div>
 </section>
 <section class="panel island-guide" aria-labelledby="islandGuideTitle" data-page="islands" hidden>
   <div class="guide-head"><div><h2 id="islandGuideTitle">岛屿攻略｜当前盒子推荐</h2><p>按现有 97 只个体动态生成：默认 1 个全体回复位＋4 个产能位；非回复技能手与特殊宝可梦必须通过预计产能比较才能进入主队。</p></div><span class="guide-stamp">9 个岛屿 · 数据快照 2026-08-23</span></div>
@@ -108,7 +108,7 @@
     <article class="island-card" aria-live="polite"><h3 id="islandName"></h3><div class="island-badges" id="islandBadges"></div><p class="focus-line" id="islandFocus"></p><section class="berry-picker" id="islandBerryPicker" hidden><div class="berry-picker-head"><div><strong id="islandBerryPickerTitle"></strong><span>选择本周游戏内显示的三种树果</span></div></div><div class="berry-controls" id="islandBerryControls"></div><p class="berry-picker-note" id="islandBerryPickerNote"></p></section><div class="rank-list" id="islandRanking"></div></article>
     <article class="island-card" aria-live="polite"><div class="team-result-head"><h3 id="islandTeamTitle">主推荐队伍</h3><span class="team-score" id="islandTeamScore"></span></div><p class="focus-line">点击宝可梦名称可在盒子中定位。产能指数用于比较当前盒子方案，不等同于游戏内精确周能量。</p><div class="team-grid" id="islandTeam"></div><p class="team-comparison" id="islandTeamComparison"></p><details class="team-alternate" id="islandAlternate"><summary id="islandAlternateTitle"></summary><div class="team-grid" id="islandAlternateTeam"></div><p class="team-alternate-note" id="islandAlternateNote"></p></details><p class="team-note" id="islandNote"></p><p class="team-method">计算口径：当前 SP 为基础，叠加喜爱树果、树果专长、EX 主／副树果及非喜爱树果惩罚，并计入已解锁“帮手奖励”；料理、技能触发随机性和每周 EX 追加效果未作精确模拟。</p></article>
   </div>
-  <div class="guide-sources">参考：<a href="https://hackmd.io/@raenonx-pokemon-sleep/BksDK5NeZe" target="_blank" rel="noreferrer">RaenonX 队伍构成说明</a>、<a href="https://pks.raenonx.cc/zh/team/analysis" target="_blank" rel="noreferrer">RaenonX 队伍分析</a>、<a href="https://game8.co/games/Pokemon-Sleep/archives/419789" target="_blank" rel="noreferrer">Game8 队伍构成原则</a>、<a href="https://www.pokemonsleep.net/en/news/323932383138363132393037393333363937/" target="_blank" rel="noreferrer">官方 EX 主／副树果规则</a>及<a href="https://www.pokemonsleep.net/en/news/343031343531353932353834323635373331/" target="_blank" rel="noreferrer">拉帝双子编队例外</a>。网页指数只用于本盒子内方案排序；精确料理与技能期望请再用 RaenonX 队伍分析复核。</div>
+  <div class="guide-sources">参考：<a href="https://hackmd.io/@raenonx-pokemon-sleep/BksDK5NeZe" target="_blank" rel="noreferrer">RaenonX 队伍构成说明</a>、<a href="https://pks.raenonx.cc/zh/team/analysis" target="_blank" rel="noreferrer">RaenonX 队伍分析</a>、<a href="https://game8.jp/pokemonsleep/546887" target="_blank" rel="noreferrer">新版 Game8 岛屿最强编成</a>、<a href="https://www.pokemonsleep.net/en/news/323932383138363132393037393333363937/" target="_blank" rel="noreferrer">官方 EX 主／副树果规则</a>及<a href="https://www.pokemonsleep.net/en/news/343031343531353932353834323635373331/" target="_blank" rel="noreferrer">拉帝双子编队例外</a>。网页指数只用于本盒子内方案排序；精确料理与技能期望请再用 RaenonX 队伍分析复核。</div>
 </section>
 <section class="panel recipe-guide" aria-labelledby="recipeGuideTitle" data-page="recipes" hidden>
   <div class="guide-head"><div><h2 id="recipeGuideTitle">食谱查询｜基础能量、系数与食材</h2><p>原始食材能量 × 能量系数 = Lv.1 基础能量；不含食谱等级加成、额外填锅与大成功倍率。</p></div><span class="guide-stamp">81 项 · 数据快照 2026-08-23</span></div>
@@ -128,15 +128,15 @@
   </section>
   <div class="recipe-meta"><span>找到 <b id="recipeShown">0</b> 项食谱</span><span id="recipeTopEnergy"></span></div>
   <div class="recipe-grid" id="recipeGrid" aria-live="polite"></div>
-  <div class="guide-sources">食谱数据参考：<a href="https://pks.raenonx.cc/zh/meal" target="_blank" rel="noreferrer">RaenonX 食谱一览</a>，并参考 <a href="https://game8.co/games/Pokemon-Sleep/archives/419049" target="_blank" rel="noreferrer">Game8 食谱列表</a>交叉核对。网页使用本地数据文件，离线打开也能查询。</div>
+  <div class="guide-sources">食谱数据参考：<a href="https://pks.raenonx.cc/zh/meal" target="_blank" rel="noreferrer">RaenonX 食谱一览</a>，并参考 <a href="https://game8.jp/pokemonsleep/542649" target="_blank" rel="noreferrer">新版 Game8 食谱列表</a>交叉核对。网页使用本地数据文件，离线打开也能查询。</div>
 </section>
 <section class="panel box-page-head" data-page="box" aria-labelledby="boxPageTitle"><h2 id="boxPageTitle">宝可梦盒子</h2><p>搜索、筛选并比较当前 97 只个体；点击表头可切换排序。</p></section>
 <section class="stats" data-page="box"><div class="stat"><b id="total">97</b><span>总个体</span></div><div class="stat"><b id="shinyCount">44</b><span>闪光收藏</span></div><div class="stat"><b id="normalCount">53</b><span>非闪光</span></div><div class="stat"><b id="shown">97</b><span>当前显示</span></div></section>
-<section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、定位、SP、食材、技能、性格、备注或输入 #编号"><select id="sf"><option value="">全部闪光状态</option><option value="是">仅闪光</option><option value="否">仅非闪光</option></select><select id="rf"><option value="">全部定位</option><option value="berry">树果手</option><option value="ingredient">食材手</option><option value="skill">技能手</option><option value="all">全能手</option></select><select id="pf"><option value="">全部建议</option><option>重点培养</option><option>继续使用</option><option>按需求保留</option><option>备用</option><option>闪光收藏</option></select><button id="reset">重置筛选</button></section>
-<div class="meta" data-page="box">建议先受“种族基准”限制，再结合当前个体、等级与投入判断；C／D 基准即使词条优秀也只作备用。食材依次为 Lv.1 / Lv.30 / Lv.60，副技能依次为 Lv.10 / 25 / 50 / 70 / 80。</div>
-<div class="tablebox" data-page="box"><table id="tbl"><thead><tr><th data-k="id">#</th><th data-k="name">宝可梦</th><th data-k="specialty">定位</th><th data-k="speciesGrade">种族基准</th><th data-k="sp">SP</th><th data-k="lv">等级</th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>间隔</th><th data-k="inv">持有</th><th>主技能</th><th>副技能（Lv.10/25/50/70/80）</th><th>性格</th><th data-k="priority">建议</th><th>备注</th></tr></thead><tbody></tbody></table></div>
-<div class="advice-sources" data-page="box">定位参考 <a href="https://game8.co/games/Pokemon-Sleep/archives/418685" target="_blank" rel="noreferrer">Game8 全宝可梦专长分类</a>；种族基准综合参考 <a href="https://game8.co/games/Pokemon-Sleep/archives/418269" target="_blank" rel="noreferrer">Game8 Helper Tier List</a> 的实战定位，以及 <a href="https://pks.raenonx.cc/zh/pokedex/tier" target="_blank" rel="noreferrer">RaenonX 宝可梦强度排行</a> 的产能比较。进化前宝可梦显示的是最终形态潜力。</div>
-<footer data-page="box">说明：这是离线文件，可直接双击打开。数据来自截图人工整理；版本更新导致的基础数值变化不在本表中自动同步。</footer>
+<section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、定位、SP、食材、技能、性格、备注或输入 #编号"><select id="sf"><option value="">全部闪光状态</option><option value="是">仅闪光</option><option value="否">仅非闪光</option></select><select id="rf"><option value="">全部定位</option><option value="berry">树果手</option><option value="ingredient">食材手</option><option value="skill">技能手</option><option value="all">全能手</option></select><select id="pf"><option value="">全部建议</option><option>重点培养</option><option>未来可期</option><option>即时战力</option><option>继续使用</option><option>按需求保留</option><option>备用</option><option>闪光收藏</option></select><button id="reset">重置筛选</button></section>
+<div class="meta" data-page="box">以当前等级、Lv.50阶段与当前上限Lv.70分别评价；最终建议优先看70级潜力，同时保留50级成型但终局成长有限的“即时战力”。食材依次为 Lv.1 / Lv.30 / Lv.60，副技能依次为 Lv.10 / 25 / 50 / 70 / 80；Lv.80目前不计入培养结论。</div>
+<div class="tablebox" data-page="box"><table id="tbl"><thead><tr><th data-k="id">#</th><th data-k="name">宝可梦</th><th data-k="specialty">定位</th><th data-k="speciesGrade">最终形态评级</th><th data-k="score70">培养曲线</th><th data-k="sp">SP</th><th data-k="lv">等级</th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>间隔</th><th data-k="inv">持有</th><th>主技能</th><th>副技能（Lv.10/25/50/70/80）</th><th>性格</th><th data-k="priority">建议</th><th>备注</th></tr></thead><tbody></tbody></table></div>
+<div class="advice-sources" data-page="box">定位与最终形态评级使用 <a href="https://game8.jp/pokemonsleep/545203" target="_blank" rel="noreferrer">新版 Game8 专长资料</a>和<a href="https://game8.jp/pokemonsleep/542600" target="_blank" rel="noreferrer">2026-08-20 最强评级</a>；分阶段判断参考 <a href="https://game8.jp/pokemonsleep/793935" target="_blank" rel="noreferrer">Game8 Lv.70培养规则</a>，并以 <a href="https://pks.raenonx.cc/zh/pokedex/tier" target="_blank" rel="noreferrer">RaenonX 强度排行</a>交叉校准。进化前宝可梦按最终形态评级，但“当前”一栏会扣除尚未进化及低等级的未成型成本。</div>
+<footer data-page="box">说明：这是离线文件，可直接双击打开。盒子个体来自截图人工整理；评级与培养模型更新于 2026-08-23，当前等级上限按 Lv.70 计算。</footer>
 </main>
 <script src="recipes.js"></script>
 <script>
@@ -201,7 +201,7 @@ const raw=`
 58|摔角鹰人|953|24|是|火辣香草×1／火辣香草×2／火辣香草×4|38:09|21|食材精选S Lv.1|技能概率S；技能概率M；食材概率S；帮忙速度S；帮忙速度M|勤奋|闪光且可用|
 59|咚咚鼠|1124|25|是|苹果×1／番茄×2／可可×2|35:42|19|料理成功S Lv.2|技能等级S；技能概率M；食材概率S；帮忙速度S；睡眠EXP奖励|固执：速度↑ 食材↓|闪光且可用|
 60|童偶熊|527|14|是|玉米×2／豆制肉×6／玉米×7|1:11:32|13|能量填充S Lv.1|研究EXP奖励；持有上限S；技能等级S；帮手奖励；帮忙速度S|温和：技能↑ 速度↓|闪光收藏|
-61|铁哑铃|439|15|是|马铃薯×2／豆制肉×5／马铃薯×7|1:16:49|12|活力填充S Lv.1|帮忙速度S；帮忙速度M；食材概率S；持有上限M；技能等级S|勤奋|闪光收藏|
+61|可可多拉|439|15|是|豆制肉×2／豆制肉×5／豆制肉×7|1:16:49|12|活力填充S Lv.1|帮忙速度S；帮忙速度M；食材概率S；持有上限M；技能等级S|勤奋|闪光收藏|依当前资料校正名称与纯豆制肉食材表
 62|梦幻|1560|27|否|蛋×2／火辣香草×4／—|45:49|32|十项全能（挥指）Lv.3|技能等级M；持有上限S；—；—；—|浮躁|继续使用|
 63|火爆兽|5111|63|否|暖暖姜×1／火辣香草×2／储存油×3|27:07|41|能量填充S Lv.3|帮手奖励；研究EXP奖励；帮忙速度M；技能概率S；帮忙速度S|固执：速度↑ 食材↓|重点培养|高等级高速个体
 64|乌波（城都）|437|11|否|蘑菇×2／马铃薯×6／蘑菇×7|1:36:22|10|活力填充S Lv.1|食材概率M；技能等级S；帮手奖励；持有上限S；帮忙速度M|浮躁|按需求保留|进化为沼王
@@ -258,19 +258,19 @@ function updateEventCountdown(){
 }
 updateEventCountdown();setInterval(updateEventCountdown,1000);
 const speciesTierGroups={
-  S:['水箭龟','大食花','雷丘','火爆兽','帝牙海狮','沙奈朵','达克莱伊','杰尼龟','鬼斯','蓝鳄','海豹球','奇鲁莉安'],
-  A:['妙蛙花','胖丁','胖可丁','隆隆岩','小磁怪','三合一磁怪','大葱鸭','伊布','快龙','电龙','太阳伊布','炎帝','幼基拉斯','沙基拉斯','森林蜥蜴','沼跃鱼','雷公','水君','蜥蜴王','火稚鸡','沙漠蜻蜓','玛狃拉','自爆磁怪','冰伊布','克雷色利亚','仙子伊布','古月鸟','拉帝欧斯','铁哑铃','梦幻','乌波（帕底亚）'],
-  B:['巴大蝶','猴怪','风速狗','呆呆王','戴鲁比','魔墙人偶','凯罗斯','伊布（万圣节）','七夕青鸟','拉帝亚斯','草苗龟','飘飘球','雪笠怪','毛头小鹰','勇士雄鹰','摔角鹰人','童偶熊','乌波（城都）','花疗环环','骨纹巨声鳄'],
-  C:['拉达','皮卡丘（巫师帽）','可达鸭','卡拉卡拉','水伊布','皮宝宝','果然翁','咚咚鼠','伊布（圣诞）','海豹球（节日）'],
-  D:['皮卡丘（圣诞）','树才怪','吞食兽','波克基斯']
+  SS:['妙蛙花','杰尼龟','水箭龟','雷丘','快龙','蓝鳄','幼基拉斯','沙基拉斯','森林蜥蜴','蜥蜴王','沼跃鱼','奇鲁莉安','沙奈朵','海豹球','火爆兽','帝牙海狮','可可多拉','沙漠蜻蜓','克雷色利亚','拉帝欧斯','草苗龟','玛狃拉','咚咚鼠'],
+  S:['可达鸭','大食花','大葱鸭','鬼斯','电龙','炎帝','雷公','水君','火稚鸡','乌波（帕底亚）','童偶熊','古月鸟','梦幻','海豹球（节日）'],
+  A:['巴大蝶','猴怪','胖丁','胖可丁','隆隆岩','魔墙人偶','伊布','太阳伊布','戴鲁比','吞食兽','七夕青鸟','乌波（城都）','雪笠怪','拉帝亚斯','勇士雄鹰','自爆磁怪','冰伊布','仙子伊布','骨纹巨声鳄','达克莱伊'],
+  B:['拉达','皮卡丘（巫师帽）','卡拉卡拉','凯罗斯','皮宝宝','伊布（万圣节）','伊布（圣诞）','飘飘球','摔角鹰人','花疗环环'],
+  C:['皮卡丘（圣诞）','风速狗','水伊布','呆呆王','果然翁','树才怪','波克基斯']
 };
 const speciesTierMap={};Object.entries(speciesTierGroups).forEach(([grade,names])=>names.forEach(name=>{speciesTierMap[name]=grade}));
-const evolutionPotential=new Set(['杰尼龟','鬼斯','蓝鳄','海豹球','奇鲁莉安','胖丁','小磁怪','伊布','幼基拉斯','沙基拉斯','森林蜥蜴','沼跃鱼','火稚鸡','铁哑铃','猴怪','戴鲁比','草苗龟','飘飘球','雪笠怪','毛头小鹰','童偶熊','乌波（城都）','乌波（帕底亚）','可达鸭','卡拉卡拉','皮宝宝']);
-const speciesTierLabels={S:'核心强势',A:'优秀泛用',B:'条件可用',C:'针对备用',D:'低优先级'};
+const evolutionPotential=new Set(['杰尼龟','鬼斯','蓝鳄','海豹球','奇鲁莉安','胖丁','小磁怪','伊布','幼基拉斯','沙基拉斯','森林蜥蜴','沼跃鱼','火稚鸡','可可多拉','猴怪','戴鲁比','草苗龟','飘飘球','雪笠怪','毛头小鹰','童偶熊','乌波（城都）','乌波（帕底亚）','可达鸭','卡拉卡拉','皮宝宝']);
+const speciesTierLabels={SS:'当前顶级',S:'强势推荐',A:'优秀可用',B:'条件可用',C:'低优先级'};
 const specialtyGroups={
-  berry:['巴大蝶','拉达','皮卡丘（巫师帽）','雷丘','猴怪','卡拉卡拉','蓝鳄','戴鲁比','七夕青鸟','海豹球','帝牙海狮','森林蜥蜴','蜥蜴王','火爆兽','火稚鸡','沼跃鱼','玛狃拉','毛头小鹰','勇士雄鹰','伊布（圣诞）'],
-  ingredient:['妙蛙花','杰尼龟','水箭龟','大食花','隆隆岩','大葱鸭','鬼斯','魔墙人偶','凯罗斯','快龙','幼基拉斯','沙基拉斯','乌波（城都）','乌波（帕底亚）','雪笠怪','童偶熊','铁哑铃','花疗环环','古月鸟','骨纹巨声鳄','沙漠蜻蜓'],
-  skill:['皮卡丘（圣诞）','胖丁','胖可丁','可达鸭','风速狗','小磁怪','三合一磁怪','伊布','伊布（万圣节）','水伊布','冰伊布','太阳伊布','仙子伊布','皮宝宝','电龙','树才怪','呆呆王','果然翁','炎帝','雷公','水君','奇鲁莉安','沙奈朵','吞食兽','拉帝亚斯','拉帝欧斯','草苗龟','飘飘球','摔角鹰人','咚咚鼠','海豹球（节日）','波克基斯','克雷色利亚','自爆磁怪'],
+  berry:['巴大蝶','拉达','皮卡丘（巫师帽）','雷丘','猴怪','卡拉卡拉','蓝鳄','戴鲁比','七夕青鸟','海豹球','帝牙海狮','火爆兽','火稚鸡','沼跃鱼','玛狃拉','皮宝宝','伊布（圣诞）'],
+  ingredient:['妙蛙花','杰尼龟','水箭龟','大食花','隆隆岩','大葱鸭','鬼斯','魔墙人偶','凯罗斯','快龙','幼基拉斯','沙基拉斯','乌波（城都）','乌波（帕底亚）','雪笠怪','童偶熊','可可多拉','花疗环环','古月鸟','骨纹巨声鳄','沙漠蜻蜓'],
+  skill:['皮卡丘（圣诞）','胖丁','胖可丁','可达鸭','风速狗','小磁怪','三合一磁怪','伊布','伊布（万圣节）','水伊布','冰伊布','太阳伊布','仙子伊布','电龙','树才怪','呆呆王','果然翁','炎帝','雷公','水君','奇鲁莉安','沙奈朵','吞食兽','拉帝亚斯','拉帝欧斯','草苗龟','飘飘球','摔角鹰人','咚咚鼠','海豹球（节日）','波克基斯','克雷色利亚','自爆磁怪','森林蜥蜴','蜥蜴王','毛头小鹰','勇士雄鹰'],
   all:['梦幻','达克莱伊']
 };
 const specialtyMap={};Object.entries(specialtyGroups).forEach(([specialty,names])=>names.forEach(name=>{specialtyMap[name]=specialty}));
@@ -305,17 +305,77 @@ function specialtyBadge(mon,compact=false){
   if(mon.specialtyDetail){const detail=document.createElement('small');detail.textContent=`${compact?'｜':' '}${mon.specialtyDetail}`;badge.append(detail)}
   return badge;
 }
-function reassessPriority(mon){
-  const grade=mon.speciesGrade,original=mon.originalPriority;
-  if(grade==='C'||grade==='D')return mon.shiny==='是'?'闪光收藏':'备用';
-  if(grade==='B'){
-    if(original==='重点培养'||original==='继续使用')return '继续使用';
-    if(original==='闪光收藏')return '闪光收藏';
-    return original==='闪光且可用'?'按需求保留':'备用';
-  }
-  return original==='闪光且可用'?'继续使用':original;
+const subskillUnlockLevels=[10,25,50,70,80],speciesTierPoints={SS:7.8,S:6.4,A:4.8,B:3.2,C:1.5};
+const stageSubskills=(mon,cap)=>mon.subs.split('；').filter((skill,index)=>skill!=='—'&&(subskillUnlockLevels[index]||80)<=cap);
+function subskillPotential(mon,skill){
+  if(skill==='帮手奖励')return 2.4;
+  if(skill==='帮忙速度M')return 1.8;if(skill==='帮忙速度S')return .9;
+  if(skill==='树果数量S')return mon.specialty==='berry'?3.8:mon.specialty==='all'?2:mon.specialty==='ingredient'?.4:.5;
+  if(skill==='食材概率M')return mon.specialty==='ingredient'?2.8:mon.specialty==='all'?1.6:mon.specialty==='berry'?-.6:0;
+  if(skill==='食材概率S')return mon.specialty==='ingredient'?1.4:mon.specialty==='all'?.8:mon.specialty==='berry'?-.3:0;
+  if(skill==='技能概率M')return mon.specialty==='skill'?3:mon.specialty==='all'?2:.3;
+  if(skill==='技能概率S')return mon.specialty==='skill'?1.4:mon.specialty==='all'?1:.2;
+  if(skill==='技能等级M')return mon.specialty==='skill'?2.2:mon.specialty==='all'?1.4:.2;
+  if(skill==='技能等级S')return mon.specialty==='skill'?1.1:mon.specialty==='all'?.7:.1;
+  if(skill==='持有上限L')return mon.specialty==='ingredient'?1.1:mon.specialty==='skill'?.9:.3;
+  if(skill==='持有上限M')return mon.specialty==='ingredient'?.7:mon.specialty==='skill'?.5:.2;
+  if(skill==='持有上限S')return mon.specialty==='ingredient'?.4:mon.specialty==='skill'?.3:.1;
+  if(skill==='活力恢复奖励')return .8;if(skill==='睡眠EXP奖励')return .5;
+  if(skill==='研究EXP奖励'||skill==='梦之碎片奖励')return .1;
+  return 0;
 }
-data.forEach(mon=>{addSpecialty(mon);mon.originalPriority=mon.priority;mon.speciesGrade=speciesTierMap[mon.name]||'B';mon.speciesPotential=evolutionPotential.has(mon.name);mon.priority=reassessPriority(mon);mon.adviceAdjusted=mon.priority!==mon.originalPriority});
+function naturePotential(mon){
+  let score=0,nature=mon.nature;
+  if(nature.includes('速度↑'))score+=1.6;if(nature.includes('速度↓'))score-=2;
+  if(nature.includes('技能↑'))score+=mon.specialty==='skill'?2.4:mon.specialty==='all'?1.4:.2;
+  if(nature.includes('技能↓'))score-=mon.specialty==='skill'?2.6:mon.specialty==='all'?1.4:0;
+  if(nature.includes('食材↑'))score+=mon.specialty==='ingredient'?2.2:mon.specialty==='all'?1.2:mon.specialty==='berry'?-.8:-.2;
+  if(nature.includes('食材↓'))score+=mon.specialty==='ingredient'?-2.5:mon.specialty==='all'?-1:mon.specialty==='berry'?.8:.2;
+  if(nature.includes('活力恢复↓'))score-=.2;if(nature.includes('活力恢复↑'))score+=.2;
+  return score;
+}
+function stagePotentialScore(mon,cap,current=false){
+  let score=(speciesTierPoints[mon.speciesGrade]||3.2)+naturePotential(mon)+stageSubskills(mon,cap).reduce((sum,skill)=>sum+subskillPotential(mon,skill),0);
+  if(current){score-=Math.max(0,30-Number(mon.lv))*.1;if(mon.speciesPotential)score-=1.2}
+  return Math.round(score*10)/10;
+}
+function potentialState(score){
+  if(score>=11)return {label:'顶级',className:'potential-top'};
+  if(score>=8.5)return {label:'优秀',className:'potential-good'};
+  if(score>=6)return {label:'可用',className:'potential-usable'};
+  if(score>=3.5)return {label:'普通',className:'potential-normal'};
+  return {label:'偏低',className:'potential-low'};
+}
+function stagedPriority(mon){
+  const readyNow=!mon.speciesPotential||Number(mon.lv)>=30,currentStrong=mon.scoreNow>=8.5&&readyNow,stage50Strong=mon.score50>=8.5,futureStrong=mon.score70>=8.5,futureTop=mon.score70>=11,futureGain=mon.score70-mon.scoreNow,invested=Number(mon.lv)>=45||Number(mon.sp)>=2600;
+  if(currentStrong&&futureStrong){
+    if((mon.speciesGrade==='SS'||mon.speciesGrade==='S')&&mon.score70>=10.5)return '重点培养';
+    if(invested&&mon.score70-mon.score50<1.1)return '即时战力';
+    return '继续使用';
+  }
+  if(futureTop&&futureGain>=1.4&&Number(mon.lv)<45)return '未来可期';
+  if(stage50Strong&&futureStrong&&Number(mon.lv)<45)return '未来可期';
+  if(invested&&mon.scoreNow>=6)return '即时战力';
+  if(futureStrong)return '未来可期';
+  if(mon.score70>=6)return '按需求保留';
+  return mon.shiny==='是'?'闪光收藏':'备用';
+}
+function stagedAdvice(mon){
+  const future=mon.subs.split('；').map((skill,index)=>({skill,level:subskillUnlockLevels[index]||80,value:subskillPotential(mon,skill)})).filter(item=>item.skill!=='—'&&item.level>Number(mon.lv)&&item.level<=70&&item.value>=.8).sort((a,b)=>b.value-a.value)[0],plateau=mon.score70<=mon.score50+.4;
+  if(mon.priority==='未来可期'){
+    if(mon.score50>=8.5&&plateau)return `Lv.50阶段已经成型，但到Lv.70的相对成长有限；保留培养，同时继续筛选更强个体。`;
+    if(mon.score70<11)return `${future?`Lv.${future.level}解锁“${future.skill}”后进入可用区间；`:''}最终形态值得培养，但个体尚非顶级，建议边养边筛。`;
+    return `${future?`Lv.${future.level}解锁“${future.skill}”后明显成型；`:''}按Lv.70潜力保留培养，不作普通备用。`;
+  }
+  if(mon.priority==='即时战力')return '当前等级／SP已经能够上场，但高等级相对增幅有限；可以继续使用，同时筛选更强个体。';
+  if(mon.priority==='重点培养')return '当前强度与Lv.70上限都高，资源投入能够长期兑现。';
+  if(mon.priority==='继续使用')return '当前已经可用，Lv.70仍保持良好成长。';
+  if(mon.priority==='按需求保留')return '有特定岛屿、料理或技能用途，建议保留但暂不优先投入。';
+  if(mon.priority==='备用')return '当前与Lv.70评价都偏低，缺少同定位成员时再上场。';
+  return '闪光收藏优先；若后续调整性格或开放更高等级可再复评。';
+}
+const boxPriorityOverrides={2:'继续使用',88:'继续使用',90:'继续使用'};
+data.forEach(mon=>{addSpecialty(mon);mon.originalPriority=mon.priority;mon.speciesGrade=speciesTierMap[mon.name]||'B';mon.speciesPotential=evolutionPotential.has(mon.name);mon.scoreNow=stagePotentialScore(mon,Math.min(70,Number(mon.lv)),true);mon.score50=stagePotentialScore(mon,50);mon.score70=stagePotentialScore(mon,70);mon.priority=boxPriorityOverrides[mon.id]||stagedPriority(mon);mon.stageAdvice=stagedAdvice(mon);mon.adviceAdjusted=mon.priority!==mon.originalPriority});
 const unclassifiedSpecies=[...new Set(data.filter(mon=>mon.specialty==='unknown').map(mon=>mon.name))];if(unclassifiedSpecies.length)console.warn('尚未分类的宝可梦定位：',unclassifiedSpecies);
 let sortKey='id',dir=1;
 const tbody=document.querySelector('tbody'),q=document.querySelector('#q'),sf=document.querySelector('#sf'),rf=document.querySelector('#rf'),pf=document.querySelector('#pf');
@@ -418,7 +478,7 @@ document.querySelector('#recipeReset').addEventListener('click',()=>{activeRecip
 document.querySelector('#ingredientRecommendationClear').addEventListener('click',()=>{recipeIngredient.value='';renderRecipes()});
 const islandData=[
   {name:'萌绿之岛',kind:'普通岛',berryMode:'normal-random',defaultBerries:['金枕果','苹野果','莓莓果'],types:'每周随机 3 种',berries:'随机树果',focus:'选择本周三种喜爱树果后，排序和队伍会按当前盒子自动重算；三种树果在普通岛上地位相同。',rank:[[71,'高等级高速，树果迸增与树果数量S兼顾'],[63,'高等级高速树果手，帮手奖励覆盖全队'],[4,'最高练度食材手，牛奶产量稳定'],[92,'Lv.6 全体治疗，全天队伍核心'],[78,'高等级树果数量S，泛用产能强'],[73,'第二套 Lv.6 全体治疗选择'],[1,'蜂蜜与番茄食材位，带帮手奖励'],[79,'树果数量S＋帮手奖励，夜间产能稳']],team:[[71,'主输出／树果迸增'],[63,'树果输出／全队加速'],[4,'牛奶食材核心'],[1,'蜂蜜与番茄食材'],[92,'全体活力治疗']],note:'三种喜爱树果会使对应树果能量翻倍；选择器用于比较你当前 97 只在本周组合下的主队。'},
-  {name:'天青沙滩',kind:'普通岛',types:'水／飞行／妖精',berries:'橙橙果／椰木果／桃桃果',focus:'水箭龟承担主食材，仙子伊布保活；水君联动水系，蓝鳄负责对应树果，沼跃鱼提供料理成功率。',rank:[[4,'高等级水系食材核心，牛奶产量优秀'],[92,'妖精系治疗核心，帮手奖励＋速度M'],[68,'水系帮手加速，当前主技能等级更高'],[95,'妖精系玉米食材，当前等级较完整'],[47,'水系料理成功S，速度M＋帮手奖励'],[57,'飞行系树果迸增，种族基准优于波克基斯'],[32,'水系食材获取，补牛奶和可可'],[34,'水系树果手，建议优先进化大力鳄']],team:[[4,'牛奶食材核心'],[92,'全体活力治疗'],[68,'水系帮手加速'],[47,'料理成功率／帮手奖励'],[34,'对应树果输出']],note:'#34 蓝鳄目前等级偏低，但它是盒内天青最明确的树果位；未进化或产能不足时，先换成 #95 花疗环环或 #57 勇士雄鹰。#86 波克基斯仅作为需要挥指娱乐性时的备用。'},
+  {name:'天青沙滩',kind:'普通岛',types:'水／飞行／妖精',berries:'橙橙果／椰木果／桃桃果',focus:'水箭龟承担主食材，仙子伊布保活；水君联动水系，蓝鳄负责对应树果，沼跃鱼提供料理成功率。',rank:[[4,'高等级水系食材核心，牛奶产量优秀'],[92,'妖精系治疗核心，帮手奖励＋速度M'],[68,'水系帮手加速，当前主技能等级更高'],[95,'妖精系玉米食材，当前等级较完整'],[47,'水系料理成功S，速度M＋帮手奖励'],[57,'飞行系技能手／树果迸增，新版评级优于波克基斯'],[32,'水系食材获取，补牛奶和可可'],[34,'水系树果手，建议优先进化大力鳄']],team:[[4,'牛奶食材核心'],[92,'全体活力治疗'],[68,'水系帮手加速'],[47,'料理成功率／帮手奖励'],[34,'对应树果输出']],note:'#34 蓝鳄目前等级偏低，但它是盒内天青最明确的树果位；未进化或产能不足时，先换成 #95 花疗环环或 #57 勇士雄鹰。#86 波克基斯仅作为需要挥指娱乐性时的备用。'},
   {name:'灰褐洞窟',kind:'普通岛',types:'火／地面／岩石',berries:'苹野果／勿花果／文柚果',focus:'火爆兽作为主树果手，隆隆岩和沙漠蜻蜓覆盖大豆、马铃薯及牛油果，炎帝提供火系联动。',rank:[[63,'本盒最成熟的对应树果输出'],[17,'岩石系食材手，帮手奖励＋双食材概率'],[74,'地面系食材手，速度双加成'],[43,'火系帮手加速，适合围绕火爆兽建队'],[37,'岩石系技能输出，可作临时替补'],[15,'火系帮手支援，练度提高后可强化炎帝联动'],[72,'火系树果数量S，长期培养价值高'],[22,'地面系速度M，低成本过渡']],team:[[63,'火系树果主输出'],[17,'大豆／马铃薯食材'],[74,'地面系食材／速度位'],[43,'火系帮手加速'],[92,'全体活力治疗']],note:'炎帝的收益随火系成员增加而提高。#15 风速狗或 #72 火稚鸡练成后，可按料理库存替换沙漠蜻蜓，组成更偏火系的队伍。'},
   {name:'白花雪原',kind:'普通岛',types:'冰／一般／恶',berries:'柿仔果／莓莓果／异奇果',focus:'以卡比兽能量为目标时，四只成熟帝牙海狮全部命中莓莓果且都是树果手，应与一个全体回复手组成主队。',rank:[[78,'Lv.56 树果数量S，当前雪原第一输出'],[79,'树果数量S＋帮手奖励，团队价值最高'],[77,'Lv.52 树果数量S＋速度M'],[76,'Lv.43 对应树果手，明显高于非产能锅位'],[84,'恶系树果手兼料理成功S'],[87,'冰系料理强化，甜品周按锅需求换入'],[7,'一般系树果手，低等级过渡'],[42,'恶系帮手奖励潜力，需继续培养']],team:[[78,'冰系树果主输出'],[79,'冰系树果／帮手奖励'],[77,'冰系树果／速度位'],[76,'第四树果输出'],[92,'全体活力治疗']],note:'已改为 #76／#77／#78／#79 四只帝牙海狮＋#92 回复手。只有料理缺锅容量时，才临时用 #87 冰伊布替换第四只帝牙海狮；那是料理功能队，不是最高树果能量队。'},
   {name:'宝蓝湖畔',kind:'普通岛',types:'草／超能力／格斗',berries:'金枕果／芒芒果／樱子果',focus:'蜥蜴王负责主输出，沙奈朵治疗，妙蛙花补蜂蜜与番茄；太阳伊布和克雷色利亚组成技能产能。',rank:[[71,'高等级草系核心，树果数量S＋双速度'],[73,'超能力系 Lv.6 全体治疗'],[1,'草系食材手，蜂蜜／番茄覆盖面好'],[39,'超能力系能量填充M，帮手奖励＋技能概率M'],[90,'超能力系新月祈祷Lv.2，当前练度最佳'],[89,'技能性格＋速度S，可作为第二克雷色利亚'],[23,'超能力系食材与技能复制'],[94,'格斗系玉米食材，值得为湖畔培养']],team:[[71,'草系主输出'],[73,'全体活力治疗'],[1,'蜂蜜／番茄食材'],[39,'能量填充M输出'],[90,'新月祈祷支援']],note:'需要大量玉米时，用 #94 或 #60 童偶熊替换太阳伊布；两只童偶熊目前等级偏低，先把其中一只集中培养即可。'},
@@ -456,13 +516,13 @@ const pokemonBerryGroups={
   '墨莓果':['鬼斯','飘飘球','骨纹巨声鳄'],
   '番荔果':['快龙','七夕青鸟','拉帝亚斯','拉帝欧斯'],
   '异奇果':['戴鲁比','玛狃拉','达克莱伊'],
-  '靛莓果':['小磁怪','三合一磁怪','自爆磁怪','铁哑铃'],
+  '靛莓果':['小磁怪','三合一磁怪','自爆磁怪','可可多拉'],
   '桃桃果':['胖丁','胖可丁','皮宝宝','波克基斯','仙子伊布','花疗环环']
 };
 const pokemonBerryMap={};Object.entries(pokemonBerryGroups).forEach(([berry,names])=>names.forEach(name=>{pokemonBerryMap[name]=berry}));
 data.forEach(mon=>{mon.berry=pokemonBerryMap[mon.name]||'待核对'});
 const unclassifiedBerries=[...new Set(data.filter(mon=>mon.berry==='待核对').map(mon=>mon.name))];if(unclassifiedBerries.length)console.warn('尚未分类的宝可梦树果：',unclassifiedBerries);
-const berrySelections=islandData.map(island=>island.defaultBerries?[...island.defaultBerries]:null),subskillUnlockLevels=[10,25,50,70,80];
+const berrySelections=islandData.map(island=>island.defaultBerries?[...island.defaultBerries]:null);
 const unlockedSubskills=mon=>mon.subs.split('；').filter((_,index)=>Number(mon.lv)>=(subskillUnlockLevels[index]||80));
 const hasUnlockedSubskill=(mon,name)=>unlockedSubskills(mon).includes(name);
 const mainSkillLevel=mon=>Number(mon.main.match(/Lv\.(\d+)/)?.[1]||1);
@@ -539,10 +599,11 @@ function renderIsland(i){
 }
 document.querySelector('.island-guide').addEventListener('click',e=>{const b=e.target.closest('[data-mon]');if(b)focusMon(b.dataset.mon)});
 document.querySelector('.event-guide').addEventListener('click',e=>{const b=e.target.closest('[data-mon]');if(b)focusMon(b.dataset.mon)});
-const tagClass=p=>p==='重点培养'?'high':p==='继续使用'?'use':p==='闪光收藏'?'collect':p==='备用'?'backup':'keep';
-function filtered(){const s=q.value.trim().toLowerCase(),exact=s.match(/^#(\d+)$/);return data.filter(r=>(exact?r.id===exact[1]:!s||Object.values(r).join(' ').toLowerCase().includes(s))&&(!sf.value||r.shiny===sf.value)&&(!rf.value||r.specialty===rf.value)&&(!pf.value||r.priority===pf.value)).sort((a,b)=>{let x=a[sortKey],y=b[sortKey];if(['id','sp','lv','inv'].includes(sortKey)){x=+x;y=+y}else if(sortKey==='speciesGrade'){const order={S:0,A:1,B:2,C:3,D:4};x=order[x];y=order[y]}else if(sortKey==='specialty'){const order={berry:0,ingredient:1,skill:2,all:3,unknown:4};x=order[x];y=order[y]}return(x>y?1:x<y?-1:0)*dir})}
+const tagClass=p=>p==='重点培养'?'high':p==='未来可期'?'future':p==='即时战力'?'immediate':p==='继续使用'?'use':p==='闪光收藏'?'collect':p==='备用'?'backup':'keep';
+function filtered(){const s=q.value.trim().toLowerCase(),exact=s.match(/^#(\d+)$/);return data.filter(r=>(exact?r.id===exact[1]:!s||Object.values(r).join(' ').toLowerCase().includes(s))&&(!sf.value||r.shiny===sf.value)&&(!rf.value||r.specialty===rf.value)&&(!pf.value||r.priority===pf.value)).sort((a,b)=>{let x=a[sortKey],y=b[sortKey];if(['id','sp','lv','inv','score70'].includes(sortKey)){x=+x;y=+y}else if(sortKey==='speciesGrade'){const order={SS:0,S:1,A:2,B:3,C:4};x=order[x];y=order[y]}else if(sortKey==='specialty'){const order={berry:0,ingredient:1,skill:2,all:3,unknown:4};x=order[x];y=order[y]}return(x>y?1:x<y?-1:0)*dir})}
 function cell(v,cls=''){const td=document.createElement('td');td.textContent=v;td.className=cls;return td}
-function render(){const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.append(cell(r.id,'nowrap'),cell(r.name,'nowrap'));const role=cell('','nowrap');role.append(specialtyBadge(r));tr.append(role);const tier=cell('','nowrap'),badge=document.createElement('span');badge.className=`species-tier ${r.speciesGrade.toLowerCase()}`;badge.textContent=`${r.speciesGrade}${r.speciesPotential?'潜力':''}`;const tierNote=document.createElement('span');tierNote.className='species-tier-note';tierNote.textContent=speciesTierLabels[r.speciesGrade];tier.title=r.speciesGrade==='C'||r.speciesGrade==='D'?'种族上限偏低：好个体也只建议备用':r.speciesPotential?'按最终进化形态评估潜力':'综合 Game8 定位与 RaenonX 产能';tier.append(badge,tierNote);tr.append(tier,cell(r.sp,'nowrap'),cell(r.lv,'nowrap'));const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';tr.append(sh,cell(r.ingredients),cell(r.interval,'nowrap'),cell(r.inv,'nowrap'),cell(r.main),cell(r.subs),cell(r.nature),cell(''));const p=document.createElement('span');p.className='tag '+tagClass(r.priority);p.textContent=r.priority;tr.lastChild.append(p);const adjusted=r.adviceAdjusted?(r.speciesGrade==='C'||r.speciesGrade==='D'?`种族基准${r.speciesGrade}，优秀个体也仅作备用。`:`已按种族基准从“${r.originalPriority}”调整。`):'';tr.append(cell([r.note,adjusted].filter(Boolean).join(' '),'muted'));return tr}));document.querySelector('#shown').textContent=rows.length}
+function potentialCurve(mon){const root=document.createElement('div');root.className='potential-curve';[['当前',mon.scoreNow],['Lv.50',mon.score50],['Lv.70',mon.score70]].forEach(([level,score])=>{const state=potentialState(score),row=document.createElement('div');row.className='potential-step';const levelEl=document.createElement('span');levelEl.className='potential-level';levelEl.textContent=level;const scoreEl=document.createElement('span');scoreEl.className='potential-score';scoreEl.textContent=score.toFixed(1);const stateEl=document.createElement('span');stateEl.className=`potential-state ${state.className}`;stateEl.textContent=state.label;row.append(levelEl,scoreEl,stateEl);root.append(row)});root.title='指数用于同一套分阶段规则下的相对比较，不等同于游戏内SP。';return root}
+function render(){const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.append(cell(r.id,'nowrap'),cell(r.name,'nowrap'));const role=cell('','nowrap');role.append(specialtyBadge(r));tr.append(role);const tier=cell('','nowrap'),badge=document.createElement('span');badge.className=`species-tier ${r.speciesGrade.toLowerCase()}`;badge.textContent=`${r.speciesGrade}${r.speciesPotential?'潜力':''}`;const tierNote=document.createElement('span');tierNote.className='species-tier-note';tierNote.textContent=speciesTierLabels[r.speciesGrade];tier.title=r.speciesPotential?'按最终进化形态采用新版 Game8 评级':'采用新版 Game8 评级并经 RaenonX 交叉校准';tier.append(badge,tierNote);const curve=cell('','nowrap');curve.append(potentialCurve(r));tr.append(tier,curve,cell(r.sp,'nowrap'),cell(r.lv,'nowrap'));const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';tr.append(sh,cell(r.ingredients),cell(r.interval,'nowrap'),cell(r.inv,'nowrap'),cell(r.main),cell(r.subs),cell(r.nature),cell(''));const p=document.createElement('span');p.className='tag '+tagClass(r.priority);p.textContent=r.priority;tr.lastChild.append(p);tr.append(cell([r.note,r.stageAdvice].filter(Boolean).join(' '),'muted'));return tr}));document.querySelector('#shown').textContent=rows.length}
 q.addEventListener('input',render);sf.addEventListener('change',render);rf.addEventListener('change',render);pf.addEventListener('change',render);document.querySelector('#reset').addEventListener('click',()=>{q.value='';sf.value='';rf.value='';pf.value='';render()});document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k)dir*=-1;else{sortKey=k;dir=1}render()}));
 const shiny=data.filter(r=>r.shiny==='是').length;document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;renderEventTeam();renderIsland(0);renderRecipes();render();showPage(pageFromHash(),{replace:true,scroll:false});
 </script></body></html>
