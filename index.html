@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<title>Pokemon Sleep 助手</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#18212f;--muted:#667085;--line:#dfe5ee;--green:#19b96b;--gold:#f3ad24;--blue:#2386e8;--red:#e85151}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}.wrap{max-width:1500px;margin:auto;padding:24px}.hero{background:linear-gradient(135deg,#116b42,#24c778);color:#fff;padding:26px;border-radius:18px;box-shadow:0 10px 30px #0b5d3830}.hero h1{margin:0 0 6px;font-size:28px}.hero p{margin:0;opacity:.9}.stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:12px;margin:16px 0}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px #1018280c}.stat{padding:15px}.stat b{display:block;font-size:25px}.stat span{color:var(--muted)}.panel{padding:15px}.filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(2,minmax(150px,1fr)) auto;gap:10px}.filters input,.filters select,.filters button{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;padding:8px 11px;font:inherit}.filters button{background:#18212f;color:#fff;cursor:pointer}.meta{color:var(--muted);margin:12px 2px}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 4px 14px #1018280c}table{width:100%;border-collapse:separate;border-spacing:0;min-width:1500px}th,td{padding:10px 11px;border-bottom:1px solid #edf0f5;text-align:left;vertical-align:top}th{position:sticky;top:0;z-index:2;background:#eef7f2;color:#185b3c;white-space:nowrap}tbody tr:hover{background:#fbfdfc}.shiny{display:inline-block;background:#fff3cd;color:#7b5200;border:1px solid #f4cf70;border-radius:999px;padding:1px 8px;font-weight:700}.normal{color:#7a8494}.tag{display:inline-block;border-radius:999px;padding:2px 8px;font-weight:700;white-space:nowrap}.high{background:#dcfce7;color:#08743d}.use{background:#dbeafe;color:#165ca9}.collect{background:#fef3c7;color:#8a5800}.keep{background:#eef2f6;color:#4f5c6d}.nowrap{white-space:nowrap}.muted{color:var(--muted)}footer{color:var(--muted);padding:18px 2px}.hide{display:none}@media(max-width:800px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.hero h1{font-size:22px}}@media print{body{background:#fff}.hero{box-shadow:none}.filters{display:none}.wrap{max-width:none;padding:0}.tablebox{box-shadow:none;overflow:visible}table{min-width:0;font-size:9px}th,td{padding:4px}.stats{grid-template-columns:repeat(4,1fr)}}
+</style>
+<style>
+.island-guide{margin:16px 0;padding:18px}.guide-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px}.guide-head h2{margin:0 0 4px;font-size:22px}.guide-head p{margin:0;color:var(--muted)}.guide-stamp{flex:0 0 auto;background:#e7f8ef;color:#147347;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700}.island-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 10px;scrollbar-width:thin}.island-tab{flex:0 0 auto;border:1px solid #cfd9e5;border-radius:999px;background:#fff;color:#354052;padding:8px 13px;font:inherit;font-weight:700;cursor:pointer}.island-tab:hover{border-color:#62b68c}.island-tab.active{background:#16754b;border-color:#16754b;color:#fff}.island-summary{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:14px;margin-top:6px}.island-card{border:1px solid var(--line);border-radius:14px;background:#fbfdfc;padding:15px}.island-card h3{margin:0 0 8px;font-size:18px}.island-badges{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 12px}.island-badge{display:inline-flex;align-items:center;border-radius:999px;background:#eaf3ff;color:#195b9c;padding:3px 9px;font-size:12px;font-weight:700}.island-badge.ex{background:#fff0e6;color:#a94909}.focus-line{margin:0;color:#435063}.rank-list{display:grid;gap:7px;margin-top:12px}.rank-row{display:grid;grid-template-columns:28px minmax(130px,.8fr) 1.3fr;gap:8px;align-items:center;border-top:1px solid #e9eef3;padding-top:7px}.rank-no{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#dff4e9;color:#14663f;font-weight:800}.mon-link{border:0;background:none;color:#145f9c;padding:0;text-align:left;font:inherit;font-weight:800;cursor:pointer}.mon-link:hover{text-decoration:underline}.rank-why{color:var(--muted);font-size:13px}.team-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.team-slot{border:1px solid #d9e4ee;border-radius:12px;background:#fff;padding:10px 8px;min-height:100px}.team-slot b{display:block;color:#168052;font-size:12px;margin-bottom:6px}.team-slot .mon-link{display:block}.team-role{display:block;color:var(--muted);font-size:12px;margin-top:6px;line-height:1.35}.team-note{margin:12px 0 0;padding:10px 12px;border-left:3px solid #f3ad24;background:#fffaf0;color:#5f4a23;border-radius:0 9px 9px 0}.guide-sources{margin-top:12px;color:var(--muted);font-size:12px}.guide-sources a{color:#276aa6}.island-card[aria-live]{min-height:100%}@media(max-width:980px){.island-summary{grid-template-columns:1fr}.team-grid{grid-template-columns:repeat(5,minmax(105px,1fr));overflow-x:auto}.guide-head{flex-direction:column}.rank-row{grid-template-columns:28px minmax(120px,.7fr) 1.3fr}}@media(max-width:600px){.island-guide{padding:13px}.rank-row{grid-template-columns:28px 1fr}.rank-why{grid-column:2}.team-grid{grid-template-columns:repeat(5,120px)}}
+</style>
+<style>
+.recipe-guide{margin:16px 0;padding:18px}.recipe-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 12px;scrollbar-width:thin}.recipe-tab{flex:0 0 auto;border:1px solid #d3dbe6;border-radius:999px;background:#fff;color:#3e4959;padding:8px 13px;font:inherit;font-weight:800;cursor:pointer}.recipe-tab:hover{border-color:#8c72d8}.recipe-tab.active{background:#6045ad;border-color:#6045ad;color:#fff}.recipe-controls{display:grid;grid-template-columns:minmax(230px,2fr) minmax(170px,1fr) minmax(170px,1fr) auto;gap:10px}.recipe-controls input,.recipe-controls select,.recipe-controls button{min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;padding:8px 11px;font:inherit}.recipe-controls button{background:#18212f;color:#fff;font-weight:700;cursor:pointer}.recipe-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 2px;color:var(--muted)}.recipe-meta b{color:#523b98}.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}.recipe-card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff;padding:15px;box-shadow:0 3px 10px #1018280a}.recipe-card::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:#9aa4b2}.recipe-card.curry::before{background:#e7902e}.recipe-card.salad::before{background:#28a66a}.recipe-card.dessert::before{background:#8a63d2}.recipe-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.recipe-card h3{margin:4px 0 0;font-size:17px;line-height:1.35}.recipe-kind{display:inline-flex;border-radius:999px;padding:2px 8px;background:#f2f4f7;color:#596579;font-size:11px;font-weight:800;white-space:nowrap}.recipe-card.curry .recipe-kind{background:#fff0df;color:#9a5208}.recipe-card.salad .recipe-kind{background:#e7f8ef;color:#147347}.recipe-card.dessert .recipe-kind{background:#f0eaff;color:#6341a5}.recipe-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0}.recipe-stat{background:#f7f9fc;border-radius:10px;padding:9px}.recipe-stat span{display:block;color:var(--muted);font-size:11px}.recipe-stat b{display:block;font-size:20px;margin-top:1px}.recipe-stat.energy b{color:#d56d14}.recipe-stat.coefficient b{color:#6045ad}.ingredient-list{display:flex;flex-wrap:wrap;gap:7px}.ingredient-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid #dce3eb;border-radius:999px;background:#fbfcfe;color:#344054;padding:4px 8px;font:inherit;font-size:12px;cursor:pointer}.ingredient-chip:hover{border-color:#7e65cb;background:#f6f2ff}.ingredient-dot{width:8px;height:8px;border-radius:50%;background:var(--dot,#8b9bad)}.recipe-empty{color:var(--muted);font-size:12px}.recipe-source{display:inline-block;margin-top:12px;color:#276aa6;font-size:12px;text-decoration:none}.recipe-source:hover{text-decoration:underline}.recipe-none{grid-column:1/-1;text-align:center;padding:34px;border:1px dashed #bdc6d2;border-radius:14px;color:var(--muted)}@media(max-width:850px){.recipe-controls{grid-template-columns:1fr 1fr}.recipe-controls input{grid-column:1/-1}}@media(max-width:520px){.recipe-guide{padding:13px}.recipe-controls{grid-template-columns:1fr}.recipe-controls input{grid-column:auto}.recipe-grid{grid-template-columns:1fr}.recipe-meta{align-items:flex-start;flex-direction:column}}
+</style>
+<style>
+.ingredient-recommendation{margin:13px 0 4px;border:1px solid #d8cff5;border-radius:14px;background:linear-gradient(135deg,#fbf9ff,#f5f1ff);padding:14px}.ingredient-recommendation[hidden]{display:none}.ingredient-rec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.ingredient-rec-kicker{color:#6045ad;font-size:11px;font-weight:900;letter-spacing:.08em}.ingredient-rec-head h3{margin:2px 0 3px;font-size:19px}.ingredient-rec-head p{margin:0;color:var(--muted);font-size:12px}.ingredient-rec-clear{flex:0 0 auto;border:1px solid #cfc2f2;border-radius:9px;background:#fff;color:#6045ad;padding:7px 10px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.ingredient-rec-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.ingredient-rec-mon{position:relative;min-height:132px;border:1px solid #ded7f2;border-radius:12px;background:#fff;padding:11px;text-align:left;color:var(--ink);font:inherit;cursor:pointer}.ingredient-rec-mon:hover{border-color:#8068cb;box-shadow:0 4px 12px #5f44aa18}.ingredient-rec-rank{position:absolute;top:9px;right:9px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#eee9fb;color:#6045ad;font-weight:900}.ingredient-rec-mon b{display:block;padding-right:27px;color:#4f3795;font-size:14px}.ingredient-rec-mon small{display:block;margin-top:3px;color:var(--muted)}.ingredient-rec-slots{display:block;margin-top:9px;font-size:12px;line-height:1.4}.ingredient-rec-traits{display:block;margin-top:5px;color:#18734a;font-size:11px}.ingredient-rec-none{grid-column:1/-1;padding:15px;border:1px dashed #cabeea;border-radius:10px;background:#fff;color:var(--muted)}@media(max-width:900px){.ingredient-rec-grid{grid-template-columns:repeat(5,minmax(175px,1fr));overflow-x:auto;padding-bottom:4px}}@media(max-width:520px){.ingredient-rec-head{flex-direction:column}.ingredient-rec-clear{width:100%}}
+</style>
+<style>
+.species-tier{display:inline-flex;align-items:center;justify-content:center;min-width:34px;border-radius:999px;padding:2px 8px;font-weight:900}.species-tier.s{background:#fee4e2;color:#b42318}.species-tier.a{background:#fff1cc;color:#8a5b00}.species-tier.b{background:#dcfce7;color:#08743d}.species-tier.c{background:#e7efff;color:#245da8}.species-tier.d{background:#eef1f5;color:#596579}.species-tier-note{display:block;margin-top:3px;color:var(--muted);font-size:11px;white-space:nowrap}.tag.backup{background:#e9edf2;color:#4b5565}.advice-sources{margin:10px 2px 0;color:var(--muted);font-size:12px}.advice-sources a{color:#276aa6}
+</style>
+<style>
+.event-guide{margin:16px 0;padding:18px;border-color:#d9d1f4}.event-current{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px;padding:10px 12px;border-radius:11px;background:#fff5e8;color:#78420a}.event-current b{color:#9b5307}.event-current a{color:#8f4a05;font-weight:800}.event-overview{display:grid;grid-template-columns:minmax(280px,.78fr) minmax(0,1.22fr);gap:12px}.event-block{border:1px solid #e0e5ed;border-radius:14px;background:#fff;padding:15px}.event-block h3{margin:3px 0 8px;font-size:18px}.event-step-no{color:#7456c2;font-size:11px;font-weight:900;letter-spacing:.08em}.event-countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:13px 0}.event-time{border-radius:10px;background:#f3efff;padding:10px 5px;text-align:center}.event-time b{display:block;color:#6045ad;font-size:24px;line-height:1.1}.event-time span{color:var(--muted);font-size:11px}.event-countdown-state{color:#6045ad;font-weight:800}.event-date{color:var(--muted);font-size:12px}.event-badges{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 10px}.event-badge{border-radius:999px;background:#eee9fb;color:#5b419c;padding:3px 9px;font-size:12px;font-weight:800}.event-badge.area{background:#e7f8ef;color:#147347}.event-facts{margin:8px 0 0;padding-left:20px}.event-facts li+li{margin-top:5px}.event-team-wrap{margin-top:12px}.event-team-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}.event-team-mon{border:1px solid #d9d1ef;border-radius:12px;background:#fbf9ff;padding:11px;min-height:112px}.event-team-mon .mon-link{display:block;margin:4px 0}.event-team-role{display:block;color:var(--muted);font-size:12px}.event-team-reason{display:block;margin-top:6px;color:#5b419c;font-size:11px}.event-plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}.event-plan ol{margin:8px 0 0;padding-left:20px}.event-plan li+li{margin-top:7px}.event-plan strong{color:#503790}.event-sources{margin-top:12px;color:var(--muted);font-size:12px}.event-sources a{color:#276aa6}@media(max-width:980px){.event-overview{grid-template-columns:1fr}.event-team-grid{grid-template-columns:repeat(5,minmax(170px,1fr));overflow-x:auto}.event-plan{grid-template-columns:1fr}}@media(max-width:600px){.event-guide{padding:13px}.event-current{align-items:flex-start;flex-direction:column}.event-countdown{grid-template-columns:repeat(4,minmax(0,1fr))}.event-time b{font-size:20px}}
+</style>
+<style>
+[data-page][hidden]{display:none!important}.app-nav{position:sticky;top:10px;z-index:20;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:16px 0;padding:8px;border:1px solid #d9e1eb;border-radius:16px;background:#ffffffed;box-shadow:0 8px 24px #10182816;backdrop-filter:blur(12px)}.app-nav a{display:flex;align-items:center;gap:10px;min-width:0;border-radius:11px;padding:10px 12px;color:#485568;text-decoration:none;transition:.16s ease}.app-nav a:hover{background:#f0f5f8;color:#164f3a}.app-nav a.active{background:#16754b;color:#fff;box-shadow:0 4px 12px #14663f30}.app-nav-icon{display:grid;place-items:center;flex:0 0 auto;width:31px;height:31px;border-radius:9px;background:#e8f2ee;color:#147148;font-size:16px;font-weight:900}.app-nav a.active .app-nav-icon{background:#ffffff26;color:#fff}.app-nav-copy{min-width:0}.app-nav-copy b,.app-nav-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.app-nav-copy b{font-size:14px}.app-nav-copy small{margin-top:1px;color:#7a8797;font-size:11px}.app-nav a.active small{color:#d9f3e7}.box-page-head{margin:16px 0 0;padding:18px}.box-page-head h2{margin:0 0 4px;font-size:22px}.box-page-head p{margin:0;color:var(--muted)}[data-page]{scroll-margin-top:92px}@media(max-width:720px){.app-nav{top:6px;gap:4px;padding:5px}.app-nav a{justify-content:center;padding:9px 5px}.app-nav-icon{width:28px;height:28px}.app-nav-copy small{display:none}}@media(max-width:460px){.app-nav-copy b{font-size:12px}.app-nav a{gap:5px}.app-nav-icon{display:none}}@media print{.app-nav{display:none!important}[data-page][hidden]{display:block!important}}
+</style>
+</head>
+<body><main class="wrap">
+<section class="hero"><h1>Pokemon Sleep｜97只宝可梦整理</h1><p>依据你发来的个体详情截图整理；闪光信息以你手动确认的名单为准。</p></section>
+<nav class="app-nav" aria-label="主要功能">
+  <a href="#box" data-page-target="box"><span class="app-nav-icon">盒</span><span class="app-nav-copy"><b>盒子</b><small>97 只个体整理</small></span></a>
+  <a href="#islands" data-page-target="islands"><span class="app-nav-icon">岛</span><span class="app-nav-copy"><b>岛屿推荐</b><small>排序与队伍组合</small></span></a>
+  <a href="#recipes" data-page-target="recipes"><span class="app-nav-icon">食</span><span class="app-nav-copy"><b>料理食谱</b><small>能量、系数与食材</small></span></a>
+  <a href="#events" data-page-target="events"><span class="app-nav-icon">活</span><span class="app-nav-copy"><b>活动资讯</b><small>倒计时与活动计划</small></span></a>
+</nav>
+<section class="panel event-guide" aria-labelledby="eventGuideTitle" data-page="events" hidden>
+  <div class="guide-head"><div><h2 id="eventGuideTitle">近期活动周｜盒子专属计划</h2><p>当前活动、下次倒计时、队伍与前中后准备会一起显示。</p></div><span class="guide-stamp">官方公告快照 · 2026-08-23</span></div>
+  <div class="event-current"><span id="currentEventStatus"><b>当前：</b>动画联动周进行至 8 月 24 日 03:59；今天仍有料理 ×1.25、主技能率 ×1.25、睡眠 EXP ×1.25 与睡意之力 ×1.3。</span><a id="currentEventLink" href="https://www.pokemonsleep.net/en/news/343238373030393436313330373936353531/" target="_blank" rel="noreferrer">当前活动公告</a></div>
+  <div class="event-overview">
+    <article class="event-block">
+      <span class="event-step-no">01 · 下次活动倒计时</span>
+      <h3>梦幻迷你拍照惊喜任务</h3>
+      <div class="event-countdown-state" id="eventCountdownState">距离活动开始</div>
+      <div class="event-countdown" id="eventCountdown"><div class="event-time"><b>--</b><span>天</span></div><div class="event-time"><b>--</b><span>小时</span></div><div class="event-time"><b>--</b><span>分钟</span></div><div class="event-time"><b>--</b><span>秒</span></div></div>
+      <div class="event-date">8 月 31 日 04:00—9 月 7 日 03:59 · 全部岛屿</div>
+    </article>
+    <article class="event-block">
+      <span class="event-step-no">02 · 活动资讯</span>
+      <h3>活动重点与奖励</h3>
+      <div class="event-badges"><span class="event-badge area">全部岛屿</span><span class="event-badge">首次睡眠研究</span><span class="event-badge">梦幻／超能力系</span><span class="event-badge">迷你糖果加成</span></div>
+      <ul class="event-facts">
+        <li>每日第一次睡眠研究至少获得 2 张梦幻惊喜照片；睡姿越稀有，成为惊喜照片的概率越高。</li>
+        <li>惊喜照片糖果与研究 EXP ×1.25、梦之碎片额外 +1,000；首次研究保证 1 只宝可梦处于贪吃状态。</li>
+        <li>迷你糖果加成：糖果 EXP ×2、梦之碎片消耗 ×4，每天最多使用 50 颗糖果。</li>
+        <li>拉鲁拉丝、沙奈朵、太阳伊布、天然雀与食梦梦等超能力系出现率提高，为 9 月中旬超梦活动做准备。</li>
+      </ul>
+    </article>
+  </div>
+  <article class="event-block event-team-wrap">
+    <span class="event-step-no">03 · 推荐活动周队伍</span>
+    <h3>宝蓝湖畔｜冲稀有睡姿＋超梦预备队</h3>
+    <p class="focus-line">目标是尽快提高卡比兽能量以获得更稀有睡姿，同时让超能力系主力提前积累经验。点击成员可跳转到个体表。</p>
+    <div class="event-badges"><span class="event-badge">特殊宝可梦 1／1：#62 梦幻</span><span class="event-badge area">#90 克雷色利亚为二选一替补</span></div>
+    <div class="event-team-grid" id="eventTeam"></div>
+  </article>
+  <div class="event-plan">
+    <article class="event-block">
+      <span class="event-step-no">04 · 活动周前准备</span>
+      <h3>8 月 24—31 日</h3>
+      <ol>
+        <li><strong>岛屿：</strong>优先宝蓝湖畔；想补强治疗位时，以安然入睡（Snoozing）捕捉拉鲁拉丝一系。</li>
+        <li><strong>培养资源：</strong>预留最多 350 颗糖果的每日额度及足够梦之碎片，优先给 #62、#90、#39；#62 梦幻与 #90 克雷色利亚可分别培养，但编队时必须二选一。#48 作为备用沙奈朵候选。</li>
+        <li><strong>食材：</strong>本活动没有料理倍率，但高睡意之力有利于稀有睡姿。提前储备特选苹果、哞哞鲜奶、萌绿玉米、放松可可、甜甜蜜和特选蛋等跨料理通用食材。</li>
+        <li><strong>道具：</strong>保留好露营券、友好熏香和饼干；活动首日不要把资源花在低基准超能力系上。</li>
+      </ol>
+    </article>
+    <article class="event-block">
+      <span class="event-step-no">05 · 活动周该做些什么</span>
+      <h3>8 月 31 日—9 月 7 日</h3>
+      <ol>
+        <li><strong>每天只把第一次研究当主场：</strong>尽量完成一段长睡眠；第二次研究不会获得梦幻惊喜照片。</li>
+        <li><strong>周初冲能量：</strong>使用下方推荐队，三餐正常料理，尽早解锁高星睡姿以提高惊喜照片概率。</li>
+        <li><strong>每日糖果加成：</strong>优先 #62 梦幻、#90 克雷色利亚、#39 太阳伊布，再考虑 #48 奇鲁莉安；培养不受限制，但 #62 与 #90 不能在同一队。</li>
+        <li><strong>捕捉优先：</strong>拉鲁拉丝一系优先；你已有高质量 #73 后，不必为一般果然翁或魔墙人偶过量消耗饼干。</li>
+      </ol>
+    </article>
+    <article class="event-block">
+      <span class="event-step-no">06 · 活动周后准备</span>
+      <h3>9 月 7 日以后</h3>
+      <ol>
+        <li><strong>领奖期限：</strong>在 9 月 9 日 03:59 前领取迷你拍照任务奖励。</li>
+        <li><strong>梦幻资源：</strong>未拥有梦幻可借此入手；已有梦幻则保留获得的梦幻专用奇异种子，为超梦活动使用。</li>
+        <li><strong>超梦队：</strong>保留 #73、#39，以及 #90／#62 二选一候选的等级和技能资源，等待 9 月中旬正式倍率公告后再决定最终队伍。</li>
+        <li><strong>恢复库存：</strong>补回活动周消耗的食材与梦之碎片，保留饼干及熏香用于超梦 DNA／超梦熏香阶段。</li>
+      </ol>
+    </article>
+  </div>
+  <div class="event-sources">官方资料：<a href="https://www.pokemonsleep.net/en/news/343239373432303835363735393431383930/" target="_blank" rel="noreferrer">梦幻迷你拍照惊喜任务</a>、<a href="https://www.pokemonsleep.net/en/news/343239373432303836333638303032303631/" target="_blank" rel="noreferrer">9 月超梦活动预告</a>、<a href="https://www.pokemonsleep.net/en/news/333832393735353631373931373030393934/" target="_blank" rel="noreferrer">特殊宝可梦编队规则</a>；捕捉路线参考 <a href="https://game8.co/games/Pokemon-Sleep/archives/438911" target="_blank" rel="noreferrer">Game8 拉鲁拉丝资料</a> 与 <a href="https://pks.raenonx.cc/zh/event/list" target="_blank" rel="noreferrer">RaenonX 活动列表</a>。</div>
+</section>
+<section class="panel island-guide" aria-labelledby="islandGuideTitle" data-page="islands" hidden>
+  <div class="guide-head"><div><h2 id="islandGuideTitle">岛屿攻略｜当前盒子推荐</h2><p>按现有 97 只个体生成：先保证治疗，再平衡对应树果、食材与技能联动；通常每队最多 1 只特殊宝可梦，拉帝亚斯＋拉帝欧斯可同队。</p></div><span class="guide-stamp">9 个岛屿 · 数据快照 2026-08-23</span></div>
+  <div class="island-tabs" id="islandTabs" role="tablist" aria-label="选择岛屿"></div>
+  <div class="island-summary">
+    <article class="island-card" aria-live="polite"><h3 id="islandName"></h3><div class="island-badges" id="islandBadges"></div><p class="focus-line" id="islandFocus"></p><div class="rank-list" id="islandRanking"></div></article>
+    <article class="island-card" aria-live="polite"><h3>推荐队伍组合</h3><p class="focus-line">点击宝可梦名称可在下方个体表中定位对应编号。</p><div class="team-grid" id="islandTeam"></div><p class="team-note" id="islandNote"></p></article>
+  </div>
+  <div class="guide-sources">参考：<a href="https://pks.raenonx.cc/zh/map" target="_blank" rel="noreferrer">RaenonX 地图与树果资料</a>、<a href="https://game8.co/games/Pokemon-Sleep/archives/419789" target="_blank" rel="noreferrer">Game8 队伍构成原则</a>、<a href="https://www.pokemonsleep.net/en/news/343031343531353932353834323635373331/" target="_blank" rel="noreferrer">官方拉帝双子编队例外与技能联动</a>。排序与队伍是结合本页个体等级、SP、副技能及食材表得出的当前盒子建议；活动与 EX 每周规则变化时应再调整。</div>
+</section>
+<section class="panel recipe-guide" aria-labelledby="recipeGuideTitle" data-page="recipes" hidden>
+  <div class="guide-head"><div><h2 id="recipeGuideTitle">食谱查询｜基础能量、系数与食材</h2><p>原始食材能量 × 能量系数 = Lv.1 基础能量；不含食谱等级加成、额外填锅与大成功倍率。</p></div><span class="guide-stamp">81 项 · 数据快照 2026-08-23</span></div>
+  <div class="recipe-tabs" id="recipeTabs" role="tablist" aria-label="选择料理类别"></div>
+  <div class="recipe-controls">
+    <input id="recipeQ" placeholder="搜索食谱、食材、能量、系数或锅容量">
+    <select id="recipeIngredient" aria-label="按食材筛选"><option value="">全部食材</option></select>
+    <select id="recipeSort" aria-label="食谱排序"><option value="energy-desc">基础能量：高到低</option><option value="energy-asc">基础能量：低到高</option><option value="coefficient-desc">能量系数：高到低</option><option value="total-asc">锅容量：少到多</option><option value="total-desc">锅容量：多到少</option><option value="name">名称排序</option></select>
+    <button id="recipeReset" type="button">重置食谱筛选</button>
+  </div>
+  <section class="ingredient-recommendation" id="ingredientRecommendation" aria-live="polite" hidden>
+    <div class="ingredient-rec-head">
+      <div><span class="ingredient-rec-kicker">当前盒子食材产手</span><h3 id="ingredientRecommendationTitle"></h3><p id="ingredientRecommendationHint"></p></div>
+      <button class="ingredient-rec-clear" id="ingredientRecommendationClear" type="button">清除食材筛选</button>
+    </div>
+    <div class="ingredient-rec-grid" id="ingredientRecommendationGrid"></div>
+  </section>
+  <div class="recipe-meta"><span>找到 <b id="recipeShown">0</b> 项食谱</span><span id="recipeTopEnergy"></span></div>
+  <div class="recipe-grid" id="recipeGrid" aria-live="polite"></div>
+  <div class="guide-sources">食谱数据参考：<a href="https://pks.raenonx.cc/zh/meal" target="_blank" rel="noreferrer">RaenonX 食谱一览</a>，并参考 <a href="https://game8.co/games/Pokemon-Sleep/archives/419049" target="_blank" rel="noreferrer">Game8 食谱列表</a>交叉核对。网页使用本地数据文件，离线打开也能查询。</div>
+</section>
+<section class="panel box-page-head" data-page="box" aria-labelledby="boxPageTitle"><h2 id="boxPageTitle">宝可梦盒子</h2><p>搜索、筛选并比较当前 97 只个体；点击表头可切换排序。</p></section>
+<section class="stats" data-page="box"><div class="stat"><b id="total">97</b><span>总个体</span></div><div class="stat"><b id="shinyCount">44</b><span>闪光收藏</span></div><div class="stat"><b id="normalCount">53</b><span>非闪光</span></div><div class="stat"><b id="shown">97</b><span>当前显示</span></div></section>
+<section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、SP、食材、技能、性格、备注或输入 #编号"><select id="sf"><option value="">全部闪光状态</option><option value="是">仅闪光</option><option value="否">仅非闪光</option></select><select id="pf"><option value="">全部建议</option><option>重点培养</option><option>继续使用</option><option>按需求保留</option><option>备用</option><option>闪光收藏</option></select><button id="reset">重置筛选</button></section>
+<div class="meta" data-page="box">建议先受“种族基准”限制，再结合当前个体、等级与投入判断；C／D 基准即使词条优秀也只作备用。食材依次为 Lv.1 / Lv.30 / Lv.60，副技能依次为 Lv.10 / 25 / 50 / 70 / 80。</div>
+<div class="tablebox" data-page="box"><table id="tbl"><thead><tr><th data-k="id">#</th><th data-k="name">宝可梦</th><th data-k="speciesGrade">种族基准</th><th data-k="sp">SP</th><th data-k="lv">等级</th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>间隔</th><th data-k="inv">持有</th><th>主技能</th><th>副技能（Lv.10/25/50/70/80）</th><th>性格</th><th data-k="priority">建议</th><th>备注</th></tr></thead><tbody></tbody></table></div>
+<div class="advice-sources" data-page="box">种族基准综合参考：<a href="https://game8.co/games/Pokemon-Sleep/archives/418269" target="_blank" rel="noreferrer">Game8 Helper Tier List</a> 的实战定位，以及 <a href="https://pks.raenonx.cc/zh/pokedex/tier" target="_blank" rel="noreferrer">RaenonX 宝可梦强度排行</a> 的产能比较。进化前宝可梦显示的是最终形态潜力。</div>
+<footer data-page="box">说明：这是离线文件，可直接双击打开。数据来自截图人工整理；版本更新导致的基础数值变化不在本表中自动同步。</footer>
+</main>
+<script src="recipes.js"></script>
+<script>
+const raw=`
+1|妙蛙花|2961|52|否|蜂蜜×2／蜂蜜×5／番茄×7|38:58|33|食材获取S Lv.3|帮手奖励；食材概率M；帮忙速度S；树果数量S；持有上限M|坦率|重点培养|最开始提供的个体
+2|妙蛙花|1903|37|否|蜂蜜×2／蜂蜜×5／马铃薯×6|38:58|33|食材获取S Lv.3|技能概率M；食材概率M；帮忙速度S；食材概率S；技能概率S|怕寂寞：速度↑ 活力恢复↓|按需求保留|
+3|杰尼龟|650|16|否|牛奶×2／可可×3／牛奶×7|1:05:28|10|食材获取S Lv.1|树果数量S；帮手奖励；帮忙速度S；技能等级M；食材概率M|勇敢：速度↑ EXP↓|按需求保留|
+4|水箭龟|5581|63|否|牛奶×2／牛奶×5／牛奶×7|40:52|35|食材获取S Lv.6|帮手奖励；食材概率M；梦之碎片奖励；树果数量S；食材概率S|认真|重点培养|高等级纯牛奶产手
+5|巴大蝶|2669|47|否|蜂蜜×1／蜂蜜×2／蜂蜜×4|34:03|39|食材获取S Lv.7|技能等级M；梦之碎片奖励；技能概率S；帮忙速度S；持有上限S|勇敢：速度↑ EXP↓|继续使用|
+6|巴大蝶|893|16|是|蜂蜜×1／番茄×2／蜂蜜×4|43:26|49|食材获取S Lv.2|持有上限L；持有上限S；技能等级S；帮忙速度S；技能概率S|大胆：活力恢复↑ 速度↓|按需求保留|
+7|拉达|725|15|是|苹果×1／大豆×2／豆制肉×3|47:47|27|活力填充S Lv.2|持有上限S；帮忙速度S；食材概率S；技能概率S；梦之碎片奖励|乐天：活力恢复↑ 技能↓|闪光收藏|
+8|皮卡丘（巫师帽）|1103|31|否|苹果×1／苹果×2／苹果×4|39:10|19|能量填充S Lv.1|技能概率M；技能概率S；食材概率S；技能等级S；帮忙速度S|自大：技能↑ EXP↓|按需求保留|活动装扮
+9|皮卡丘（圣诞）|812|15|是|苹果×1／暖暖姜×2／苹果×4|40:30|20|梦之碎片获取S Lv.2|技能等级S；持有上限S；食材概率M；帮忙速度S；技能概率S|自大：技能↑ EXP↓|闪光收藏|活动装扮
+10|雷丘|1091|18|是|苹果×1／苹果×2／暖暖姜×3|35:25|31|能量填充S Lv.2|梦之碎片奖励；食材概率S；食材概率M；帮忙速度S；帮手奖励|浮躁|闪光且可用|
+11|胖丁|473|15|是|蜂蜜×1／蜂蜜×2／可可×2|58:45|14|活力全体疗愈S Lv.1|帮忙速度S；持有上限M；食材概率M；持有上限S；食材概率S|急躁：EXP↑ 活力恢复↓|闪光收藏|
+12|胖可丁|1961|31|否|蜂蜜×1／蜂蜜×2／储存油×3|43:51|33|活力全体疗愈S Lv.4|技能概率M；食材概率M；技能概率S；技能等级S；帮忙速度S|慎重：技能↑ 食材↓|继续使用|
+13|可达鸭|478|23|是|可可×1／可可×2／可可×4|1:32:29|8|能量填充S Lv.1|技能概率M；帮忙速度M；持有上限M；持有上限S；树果数量S|大胆：活力恢复↑ 速度↓|按需求保留|
+14|猴怪|480|14|是|豆制肉×1／蘑菇×1／蜂蜜×4|1:08:10|18|能量填充S Lv.1|持有上限S；持有上限M；食材概率S；帮忙速度S；技能概率S|悠闲：活力恢复↑ EXP↓|按需求保留|
+15|风速狗|1015|13|是|火辣香草×1／豆制肉×3／牛奶×5|43:43|21|帮手支援S Lv.3|技能等级S；持有上限L；持有上限M；帮忙速度S；帮忙速度M|大胆：活力恢复↑ 速度↓|按需求保留|
+16|大食花|945|21|否|番茄×2／马铃薯×4／马铃薯×6|40:19|27|活力填充S Lv.2|食材概率S；技能概率S；帮忙速度M；帮忙速度S；持有上限S|勇敢：速度↑ EXP↓|按需求保留|
+17|隆隆岩|3024|51|否|大豆×2／马铃薯×4／大豆×7|41:51|34|能量填充S Lv.3|食材概率S；食材概率M；帮手奖励；技能概率S；帮忙速度S|勇敢：速度↑ EXP↓|继续使用|
+18|小磁怪|434|11|否|储存油×1／火辣香草×2／储存油×4|1:34:44|8|料理强化S Lv.1|树果数量S；食材概率S；帮忙速度S；食材概率M；活力恢复奖励|急躁：EXP↑ 活力恢复↓|按需求保留|
+19|三合一磁怪|709|20|否|储存油×1／储存油×2／火辣香草×3|1:08:56|16|料理强化S Lv.2|技能等级S；帮手奖励；持有上限S；食材概率M；帮忙速度M|温和：技能↑ 速度↓|按需求保留|
+20|大葱鸭|851|23|是|大葱×2／豆制肉×8／暖暖姜×12|47:48|18|能量填充S Lv.1|食材概率S；技能概率S；食材概率M；持有上限L；帮忙速度S|害羞|闪光收藏|
+21|鬼斯|484|16|否|火辣香草×2／蘑菇×4／蘑菇×6|1:01:26|10|能量填充S Lv.1|帮手奖励；食材概率S；持有上限M；帮忙速度S；睡眠EXP奖励|慢吞吞：食材↑ 活力恢复↓|按需求保留|
+22|卡拉卡拉|493|15|是|暖暖姜×1／可可×2／可可×3|1:06:52|10|活力填充S Lv.1|帮忙速度M；持有上限S；食材概率S；技能概率S；帮忙速度S|认真|闪光收藏|
+23|魔墙人偶|1255|29|是|番茄×2／马铃薯×4／番茄×7|44:03|22|模仿（技能复制）Lv.4|技能等级M；食材概率S；持有上限L；睡眠EXP奖励；帮忙速度S|冷静：食材↑ EXP↓|闪光且可用|
+24|凯罗斯|979|23|是|蜂蜜×2／蜂蜜×5／苹果×8|38:14|24|能量填充M Lv.1|食材概率S；睡眠EXP奖励；持有上限S；帮忙速度S；帮忙速度M|乐天：活力恢复↑ 技能↓|闪光收藏|
+25|伊布|746|15|否|牛奶×1／可可×1／牛奶×4|59:56|12|食材获取S Lv.3|技能等级M；技能概率S；帮忙速度M；技能概率M；食材概率S|认真|按需求保留|
+26|伊布|707|13|否|牛奶×1／牛奶×2／牛奶×4|1:00:11|12|食材获取S Lv.1|树果数量S；梦之碎片奖励；食材概率S；睡眠EXP奖励；持有上限S|淘气：活力恢复↑ 食材↓|按需求保留|
+27|伊布|678|12|是|牛奶×1／可可×1／豆制肉×3|1:00:18|12|食材获取S Lv.3|技能等级M；持有上限S；技能概率S；树果数量S；梦之碎片奖励|慢吞吞：食材↑ 活力恢复↓|闪光收藏|
+28|伊布|802|14|是|牛奶×1／牛奶×2／牛奶×4|54:03|12|食材获取S Lv.3|技能等级M；持有上限S；技能概率S；帮忙速度S；食材概率S|固执：速度↑ 食材↓|闪光且可用|
+29|伊布（万圣节）|724|14|否|南瓜×1／可可×4／南瓜×4|51:56|30|食材获取S Lv.1|持有上限M；帮忙速度S；食材概率M；梦之碎片奖励；食材概率S|慎重：技能↑ 食材↓|按需求保留|活动装扮
+30|伊布（圣诞）|672|10|是|牛奶×1／可可×1／豆制肉×3|50:44|20|梦之碎片获取S Lv.1|食材概率M；持有上限M；技能概率S；食材概率S；帮忙速度M|自大：技能↑ EXP↓|闪光收藏|活动装扮
+31|伊布（圣诞）|725|15|是|牛奶×1／可可×1／可可×2|53:59|32|梦之碎片获取S Lv.1|持有上限M；帮忙速度S；食材概率S；帮忙速度M；技能概率S|胆小：EXP↑ 速度↓|闪光收藏|活动装扮
+32|水伊布|1201|28|否|牛奶×1／可可×1／可可×2|45:27|21|食材获取S Lv.2|睡眠EXP奖励；帮忙速度S；技能等级S；持有上限L；食材概率M|害羞|按需求保留|
+33|快龙|3169|43|否|火辣香草×2／火辣香草×5／火辣香草×7|34:08|31|活力填充S Lv.3|睡眠EXP奖励；帮忙速度M；食材概率S；持有上限L；技能等级S|马虎：食材↑ 技能↓|继续使用|
+34|蓝鳄|799|22|是|豆制肉×1／豆制肉×2／豆制肉×4|54:17|32|活力填充S Lv.1|持有上限M；梦之碎片奖励；帮忙速度S；技能概率S；持有上限S|害羞|闪光收藏|
+35|皮宝宝|441|15|是|苹果×1／蜂蜜×2／蜂蜜×3|1:21:38|16|挥指 Lv.1|持有上限S；技能等级S；食材概率M；技能概率M；帮忙速度M|勇敢：速度↑ EXP↓|闪光收藏|
+36|电龙|961|23|是|火辣香草×1／蛋×3／火辣香草×4|42:49|31|能量填充M Lv.2|持有上限S；技能等级S；技能概率S；梦之碎片奖励；树果数量S|大胆：活力恢复↑ 速度↓|闪光且可用|截图为绵绵形态
+37|树才怪|1001|25|是|番茄×1／大豆×2／大豆×4|59:01|22|能量填充M Lv.2|技能概率S；帮忙速度S；持有上限S；食材概率S；树果数量S|自大：技能↑ EXP↓|闪光收藏|
+38|乌波（城都）|464|14|是|蘑菇×2／马铃薯×6／马铃薯×10|1:35:46|10|活力填充S Lv.1|帮手奖励；持有上限S；技能概率S；帮忙速度S；食材概率M|坦率|闪光收藏|进化为沼王
+39|太阳伊布|1811|35|是|牛奶×1／牛奶×2／豆制肉×3|37:16|24|能量填充M Lv.3|帮手奖励；技能概率M；技能等级M；树果数量S；食材概率S|认真|闪光且可用|
+40|呆呆王|938|26|是|可可×1／可可×2／可可×4|53:50|46|活力疗愈S Lv.1|持有上限S；持有上限L；帮忙速度M；技能概率M；技能概率S|马虎：食材↑ 技能↓|闪光收藏|
+41|果然翁|737|18|是|苹果×1／番茄×2／番茄×4|56:21|39|活力疗愈S Lv.1|持有上限L；食材概率M；帮忙速度S；技能等级M；食材概率S|勤奋|闪光收藏|
+42|戴鲁比|599|14|是|火辣香草×1／暖暖姜×3／火辣香草×4|1:19:32|10|能量填充M Lv.1|梦之碎片奖励；帮忙速度S；睡眠EXP奖励；帮手奖励；持有上限L|浮躁|闪光收藏|
+43|炎帝|1525|26|是|储存油×1／番茄×2／储存油×4|38:00|19|帮手加速（火）Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|坦率|闪光且可用|
+44|幼基拉斯|450|14|是|暖暖姜×2／暖暖姜×5／豆制肉×8|1:17:55|9|活力填充S Lv.1|研究EXP奖励；食材概率S；帮忙速度M；树果数量S；持有上限L|爽朗：EXP↑ 食材↓|闪光收藏|
+45|沙基拉斯|660|18|是|暖暖姜×2／大豆×5／暖暖姜×7|57:57|30|活力填充S Lv.1|持有上限M；食材概率S；技能概率S；持有上限S；持有上限L|坦率|闪光收藏|
+46|森林蜥蜴|798|14|是|蛋×1／咖啡×2／蛋×4|53:34|16|树果迸增 Lv.2|活力恢复奖励；持有上限L；睡眠EXP奖励；技能概率S；帮忙速度S|慢吞吞：食材↑ 活力恢复↓|闪光收藏|
+47|沼跃鱼|946|25|是|玉米×1／牛奶×3／牛奶×5|43:52|21|料理成功S Lv.2|帮忙速度S；帮忙速度M；帮手奖励；技能等级S；持有上限M|急躁：EXP↑ 活力恢复↓|闪光且可用|
+48|奇鲁莉安|816|16|是|苹果×1／玉米×1／苹果×4|1:00:49|18|活力全体疗愈S Lv.2|技能概率M；技能等级M；持有上限M；帮忙速度M；持有上限M|温和：技能↑ 速度↓|闪光且可用|可进化沙奈朵
+49|吞食兽|791|22|是|大豆×1／蘑菇×1／大豆×4|55:53|30|梦之碎片获取S Lv.1|持有上限S；食材概率M；食材概率S；树果数量S；持有上限M|悠闲：活力恢复↑ EXP↓|闪光收藏|
+50|七夕青鸟|1296|26|是|蛋×1／大豆×3／蛋×4|55:25|19|活力填充S Lv.4|技能概率M；技能等级M；持有上限M；帮忙速度M；持有上限S|自大：技能↑ EXP↓|闪光且可用|
+51|海豹球|437|15|是|储存油×1／豆制肉×3／储存油×4|1:30:43|9|食材获取S Lv.3|技能等级M；活力恢复奖励；帮忙速度S；食材概率M；技能概率S|天真：EXP↑ 技能↓|闪光收藏|
+52|拉帝亚斯|1193|26|是|番茄×1／南瓜×1／番茄×4|44:20|25|治愈波动 Lv.1|技能概率S；持有上限S；食材概率M；帮忙速度S；技能概率M|勤奋|闪光收藏|
+53|草苗龟|581|14|是|蘑菇×1／蘑菇×2／暖暖姜×6|1:13:03|12|活力全体疗愈S Lv.1|睡眠EXP奖励；持有上限M；帮忙速度S；食材概率S；持有上限S|自大：技能↑ EXP↓|闪光收藏|
+54|飘飘球|420|14|是|玉米×1／储存油×3／玉米×4|1:23:45|9|蓄力（能量填充S）Lv.1|睡眠EXP奖励；食材概率S；研究EXP奖励；持有上限S；帮忙速度S|胆小：EXP↑ 速度↓|闪光收藏|
+55|雪笠怪|380|12|是|番茄×2／蛋×4／番茄×7|1:38:07|16|能量填充S Lv.1|持有上限S；技能等级S；帮忙速度S；帮忙速度M；持有上限M|大胆：活力恢复↑ 速度↓|闪光收藏|
+56|毛头小鹰|452|14|是|大豆×1／豆制肉×2／豆制肉×4|1:01:41|16|树果迸增 Lv.1|持有上限S；技能概率S；食材概率S；技能等级M；帮忙速度S|乐天：活力恢复↑ 技能↓|闪光收藏|
+57|勇士雄鹰|935|19|是|豆制肉×1／玉米×2／豆制肉×4|38:33|23|树果迸增 Lv.2|技能等级S；活力恢复奖励；食材概率S；帮忙速度S；技能概率S|认真|闪光且可用|
+58|摔角鹰人|953|24|是|火辣香草×1／火辣香草×2／火辣香草×4|38:09|21|食材精选S Lv.1|技能概率S；技能概率M；食材概率S；帮忙速度S；帮忙速度M|勤奋|闪光且可用|
+59|咚咚鼠|1124|25|是|苹果×1／番茄×2／可可×2|35:42|19|料理成功S Lv.2|技能等级S；技能概率M；食材概率S；帮忙速度S；睡眠EXP奖励|固执：速度↑ 食材↓|闪光且可用|
+60|童偶熊|527|14|是|玉米×2／豆制肉×6／玉米×7|1:11:32|13|能量填充S Lv.1|研究EXP奖励；持有上限S；技能等级S；帮手奖励；帮忙速度S|温和：技能↑ 速度↓|闪光收藏|
+61|铁哑铃|439|15|是|马铃薯×2／豆制肉×5／马铃薯×7|1:16:49|12|活力填充S Lv.1|帮忙速度S；帮忙速度M；食材概率S；持有上限M；技能等级S|勤奋|闪光收藏|
+62|梦幻|1560|27|否|蛋×2／火辣香草×4／—|45:49|32|十项全能（挥指）Lv.3|技能等级M；持有上限S；—；—；—|浮躁|继续使用|
+63|火爆兽|5111|63|否|暖暖姜×1／火辣香草×2／储存油×3|27:07|41|能量填充S Lv.3|帮手奖励；研究EXP奖励；帮忙速度M；技能概率S；帮忙速度S|固执：速度↑ 食材↓|重点培养|高等级高速个体
+64|乌波（城都）|437|11|否|蘑菇×2／马铃薯×6／蘑菇×7|1:36:22|10|活力填充S Lv.1|食材概率M；技能等级S；帮手奖励；持有上限S；帮忙速度M|浮躁|按需求保留|进化为沼王
+65|乌波（帕底亚）|456|14|否|可可×2／咖啡×4／马铃薯×9|1:33:30|9|活力填充S Lv.1|食材概率M；食材概率S；树果数量S；帮忙速度S；技能概率S|固执：速度↑ 技能↓|按需求保留|这只是进化成土王，不是沼王
+66|雷公|1531|27|否|豆制肉×1／火辣香草×2／大葱×2|33:10|22|帮手加速（电）Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|坦率|继续使用|
+67|水君|1409|26|否|苹果×1／番茄×2／玉米×2|38:28|35|帮手加速（水）Lv.1|持有上限L；技能概率S；食材概率S；帮手奖励；帮忙速度M|固执：速度↑ 食材↓|继续使用|
+68|水君|1762|30|否|苹果×1／储存油×2／苹果×4|42:23|17|帮手加速（水）Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|坦率|继续使用|
+69|森林蜥蜴|695|14|否|蛋×1／咖啡×2／大葱×2|1:13:03|8|树果迸增 Lv.3|技能等级M；树果数量S；帮忙速度S；持有上限L；睡眠EXP奖励|慎重：技能↑ 食材↓|按需求保留|
+70|森林蜥蜴|540|16|否|蛋×1／咖啡×2／咖啡×3|1:12:45|8|树果迸增 Lv.1|睡眠EXP奖励；梦之碎片奖励；帮忙速度S；帮手奖励；持有上限S|温顺：技能↑ 活力恢复↓|按需求保留|
+71|蜥蜴王|5325|58|否|蛋×1／咖啡×2／咖啡×3|26:49|35|树果迸增 Lv.6|树果数量S；帮忙速度M；帮忙速度S；技能概率S；持有上限M|认真|重点培养|高等级高速个体
+72|火稚鸡|712|15|否|蘑菇×1／蘑菇×2／储存油×5|1:02:41|12|活力填充S Lv.1|树果数量S；持有上限S；帮忙速度M；技能概率S；技能等级S|勇敢：速度↑ EXP↓|按需求保留|
+73|沙奈朵|4328|45|否|苹果×1／苹果×2／大葱×2|28:13|31|活力全体疗愈S Lv.6|睡眠EXP奖励；帮忙速度M；技能概率S；梦之碎片奖励；帮忙速度S|固执：速度↑ 食材↓|重点培养|队伍核心奶妈
+74|沙漠蜻蜓|2174|35|否|青色果实×2／青色果实×5／青色果实×7|29:49|28|能量填充S Lv.3|帮忙速度S；帮忙速度M；技能概率S；持有上限S；食材概率M|勇敢：速度↑ EXP↓|继续使用|食材图标名称待确认
+75|海豹球（节日）|705|14|否|储存油×1／豆制肉×3／储存油×4|53:34|20|料理成功S Lv.2|技能等级S；研究EXP奖励；帮忙速度S；食材概率S；持有上限M|认真|按需求保留|活动装扮
+76|帝牙海狮|2799|43|否|储存油×1／豆制肉×3／暖暖姜×4|41:13|31|食材获取S Lv.3|树果数量S；梦之碎片奖励；睡眠EXP奖励；帮忙速度S；技能等级M|固执：速度↑ 食材↓|继续使用|
+77|帝牙海狮|3607|52|否|储存油×1／豆制肉×3／储存油×4|38:36|31|食材获取S Lv.3|梦之碎片奖励；树果数量S；帮忙速度M；技能等级M；帮忙速度S|勤奋|继续使用|
+78|帝牙海狮|3956|56|否|储存油×1／豆制肉×3／豆制肉×4|34:26|36|食材获取S Lv.6|树果数量S；食材概率M；帮忙速度M；睡眠EXP奖励；技能概率S|顽皮：速度↑ 技能↓|重点培养|
+79|帝牙海狮|3731|50|否|储存油×1／豆制肉×3／储存油×4|34:54|31|食材获取S Lv.3|树果数量S；帮手奖励；帮忙速度M；帮忙速度S；梦之碎片奖励|顽皮：速度↑ 技能↓|继续使用|
+80|拉帝亚斯|1649|30|否|番茄×1／南瓜×1／南瓜×2|36:47|19|治愈波动 Lv.2|技能等级S；帮忙速度S；技能概率S；食材概率M；持有上限S|勇敢：速度↑ EXP↓|继续使用|
+81|拉帝欧斯|1426|30|否|番茄×1／蛋×2／番茄×4|40:52|19|流星群（树果迸增）Lv.1|帮忙速度S；技能概率S；技能等级S；食材概率S；梦之碎片奖励|慎重：技能↑ 食材↓|继续使用|
+82|草苗龟|540|15|否|蘑菇×1／马铃薯×3／蘑菇×4|1:12:54|12|活力全体疗愈S Lv.1|帮手奖励；技能概率M；研究EXP奖励；树果数量S；持有上限S|认真|按需求保留|
+83|草苗龟|557|20|否|蘑菇×1／蘑菇×2／暖暖姜×6|1:12:09|12|活力全体疗愈S Lv.2|技能等级S；技能概率M；研究EXP奖励；食材概率M；帮忙速度S|温顺：技能↑ 活力恢复↓|按需求保留|
+84|玛狃拉|972|26|否|豆制肉×1／豆制肉×2／大豆×4|42:45|26|料理成功S Lv.2|食材概率S；技能等级S；技能概率M；帮忙速度S；持有上限L|爽朗：EXP↑ 食材↓|按需求保留|
+85|自爆磁怪|1588|30|否|储存油×1／储存油×2／火辣香草×3|38:26|24|料理强化S Lv.3|帮忙速度M；帮忙速度S；持有上限S；食材概率S；技能等级M|坦率|继续使用|
+86|波克基斯|1886|34|否|蛋×1／蛋×2／暖暖姜×4|40:28|27|挥指 Lv.3|帮手奖励；研究EXP奖励；食材概率S；帮忙速度M；食材概率M|勤奋|重点培养|
+87|冰伊布|837|13|否|牛奶×1／牛奶×2／可可×2|52:03|23|料理强化S Lv.2|持有上限S；帮忙速度M；睡眠EXP奖励；食材概率S；帮忙速度S|浮躁|按需求保留|
+88|克雷色利亚|1337|29|否|暖暖姜×1／可可×2／番茄×4|36:11|29|新月祈祷 Lv.1|技能概率M；持有上限S；食材概率S；帮忙速度S；持有上限L|勤奋|继续使用|
+89|克雷色利亚|1206|26|否|暖暖姜×1／可可×2／暖暖姜×4|33:52|28|新月祈祷 Lv.1|帮忙速度S；持有上限S；技能等级S；技能概率S；持有上限L|温顺：技能↑ 活力恢复↓|继续使用|
+90|克雷色利亚|1562|29|否|暖暖姜×1／暖暖姜×2／暖暖姜×4|36:11|22|新月祈祷 Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|勤奋|继续使用|
+91|达克莱伊|2696|39|否|豆制肉×2／豆制肉×4／—|44:39|28|梦魇（能量填充M）Lv.1|帮手奖励；树果数量S；食材概率M；食材概率S；—|害羞|继续使用|
+92|仙子伊布|5023|64|否|牛奶×1／可可×1／豆制肉×3|32:34|28|活力全体疗愈S Lv.6|帮手奖励；帮忙速度M；技能等级M；技能概率S；食材概率S|自大：技能↑ EXP↓|重点培养|高等级队伍核心
+93|咚咚鼠|936|25|否|苹果×1／可可×1／可可×2|36:53|19|料理成功S Lv.2|帮忙速度S；技能等级S；持有上限S；食材概率M；持有上限L|勤奋|按需求保留|
+94|童偶熊|613|15|否|玉米×2／豆制肉×6／玉米×7|1:06:25|13|能量填充S Lv.1|树果数量S；食材概率S；食材概率M；持有上限S；持有上限M|浮躁|按需求保留|
+95|花疗环环|1684|35|否|玉米×2／玉米×5／可可×7|38:50|27|活力疗愈S Lv.1|持有上限S；技能概率S；帮忙速度S；食材概率S；食材概率M|马虎：食材↑ 技能↓|继续使用|
+96|古月鸟|1613|30|否|储存油×2／储存油×5／储存油×7|45:34|19|料理成功S Lv.1|食材概率M；活力恢复奖励；技能概率S；持有上限S；食材概率S|温和：技能↑ 活力恢复↓|继续使用|纯储存油食材表
+97|骨纹巨声鳄|1695|32|否|苹果×2／苹果×5／豆制肉×6|39:15|29|活力填充S Lv.3|帮手奖励；帮忙速度S；持有上限M；技能等级S；技能概率M|急躁：EXP↑ 活力恢复↓|继续使用|
+`;
+const cols=['id','name','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note'];
+const officialIngredientNames={'蜂蜜':'甜甜蜜','储存油':'纯粹油','大葱':'粗枝大葱','大豆':'萌绿大豆','蛋':'特选蛋','番茄':'好眠番茄','咖啡':'醒脑咖啡豆','可可':'放松可可','马铃薯':'窝心洋芋','蘑菇':'品鲜蘑菇','南瓜':'沉甸甸南瓜','牛奶':'哞哞鲜奶','苹果':'特选苹果','青色果实':'嫩亮酪梨','玉米':'萌绿玉米'};
+const normalizePokemonIngredients=value=>value.split('／').map(slot=>{const match=slot.match(/^(.+?)×(\d+)$/);return match?`${officialIngredientNames[match[1]]||match[1]}×${match[2]}`:slot}).join('／');
+let data=raw.trim().split('\n').map(line=>Object.fromEntries(line.split('|').map((v,i)=>[cols[i],v||''])));
+data.forEach(mon=>{mon.ingredients=normalizePokemonIngredients(mon.ingredients)});
+const currentEventEnd=new Date(2026,7,24,4,0,0),nextEventStart=new Date(2026,7,31,4,0,0),nextEventEnd=new Date(2026,8,7,4,0,0);
+function updateEventCountdown(){
+  const now=new Date(),before=now<nextEventStart,during=now>=nextEventStart&&now<nextEventEnd,target=before?nextEventStart:nextEventEnd;
+  const remaining=Math.max(0,target-now),days=Math.floor(remaining/86400000),hours=Math.floor(remaining%86400000/3600000),minutes=Math.floor(remaining%3600000/60000),seconds=Math.floor(remaining%60000/1000);
+  document.querySelector('#eventCountdownState').textContent=before?'距离活动开始':during?'活动进行中 · 距离结束':'活动已结束 · 等待下一次资料更新';
+  const currentStatus=document.querySelector('#currentEventStatus'),currentLink=document.querySelector('#currentEventLink');
+  if(now<currentEventEnd){currentStatus.innerHTML='<b>当前：</b>动画联动周进行至 8 月 24 日 03:59；今天仍有料理 ×1.25、主技能率 ×1.25、睡眠 EXP ×1.25 与睡意之力 ×1.3。';currentLink.href='https://www.pokemonsleep.net/en/news/343238373030393436313330373936353531/';currentLink.textContent='当前活动公告'}
+  else if(before){currentStatus.innerHTML='<b>准备周：</b>动画联动周已经结束；8 月 24—31 日请按下方计划储备食材、梦之碎片并培养超能力系。';currentLink.href='https://www.pokemonsleep.net/en/news/343239373432303835363735393431383930/';currentLink.textContent='下次活动公告'}
+  else if(during){currentStatus.innerHTML='<b>当前：</b>梦幻迷你拍照惊喜任务进行中；每日第一次睡眠研究是活动主场。';currentLink.href='https://www.pokemonsleep.net/en/news/343239373432303835363735393431383930/';currentLink.textContent='当前活动公告'}
+  else{currentStatus.innerHTML='<b>最近：</b>梦幻迷你拍照惊喜任务已经结束；请领取奖励并执行活动周后准备。';currentLink.href='https://www.pokemonsleep.net/en/news/343239373432303835363735393431383930/';currentLink.textContent='活动公告'}
+  const values=[days,hours,minutes,seconds];[...document.querySelector('#eventCountdown').children].forEach((box,index)=>{box.querySelector('b').textContent=String(values[index]).padStart(2,'0')});
+}
+updateEventCountdown();setInterval(updateEventCountdown,1000);
+const speciesTierGroups={
+  S:['水箭龟','大食花','雷丘','火爆兽','帝牙海狮','沙奈朵','达克莱伊','杰尼龟','鬼斯','蓝鳄','海豹球','奇鲁莉安'],
+  A:['妙蛙花','胖丁','胖可丁','隆隆岩','小磁怪','三合一磁怪','大葱鸭','伊布','快龙','电龙','太阳伊布','炎帝','幼基拉斯','沙基拉斯','森林蜥蜴','沼跃鱼','雷公','水君','蜥蜴王','火稚鸡','沙漠蜻蜓','玛狃拉','自爆磁怪','冰伊布','克雷色利亚','仙子伊布','古月鸟','拉帝欧斯','铁哑铃','梦幻','乌波（帕底亚）'],
+  B:['巴大蝶','猴怪','风速狗','呆呆王','戴鲁比','魔墙人偶','凯罗斯','伊布（万圣节）','七夕青鸟','拉帝亚斯','草苗龟','飘飘球','雪笠怪','毛头小鹰','勇士雄鹰','摔角鹰人','童偶熊','乌波（城都）','花疗环环','骨纹巨声鳄'],
+  C:['拉达','皮卡丘（巫师帽）','可达鸭','卡拉卡拉','水伊布','皮宝宝','果然翁','咚咚鼠','伊布（圣诞）','海豹球（节日）'],
+  D:['皮卡丘（圣诞）','树才怪','吞食兽','波克基斯']
+};
+const speciesTierMap={};Object.entries(speciesTierGroups).forEach(([grade,names])=>names.forEach(name=>{speciesTierMap[name]=grade}));
+const evolutionPotential=new Set(['杰尼龟','鬼斯','蓝鳄','海豹球','奇鲁莉安','胖丁','小磁怪','伊布','幼基拉斯','沙基拉斯','森林蜥蜴','沼跃鱼','火稚鸡','铁哑铃','猴怪','戴鲁比','草苗龟','飘飘球','雪笠怪','毛头小鹰','童偶熊','乌波（城都）','乌波（帕底亚）','可达鸭','卡拉卡拉','皮宝宝']);
+const speciesTierLabels={S:'核心强势',A:'优秀泛用',B:'条件可用',C:'针对备用',D:'低优先级'};
+function reassessPriority(mon){
+  const grade=mon.speciesGrade,original=mon.originalPriority;
+  if(grade==='C'||grade==='D')return mon.shiny==='是'?'闪光收藏':'备用';
+  if(grade==='B'){
+    if(original==='重点培养'||original==='继续使用')return '继续使用';
+    if(original==='闪光收藏')return '闪光收藏';
+    return original==='闪光且可用'?'按需求保留':'备用';
+  }
+  return original==='闪光且可用'?'继续使用':original;
+}
+data.forEach(mon=>{mon.originalPriority=mon.priority;mon.speciesGrade=speciesTierMap[mon.name]||'B';mon.speciesPotential=evolutionPotential.has(mon.name);mon.priority=reassessPriority(mon);mon.adviceAdjusted=mon.priority!==mon.originalPriority});
+let sortKey='id',dir=1;
+const tbody=document.querySelector('tbody'),q=document.querySelector('#q'),sf=document.querySelector('#sf'),pf=document.querySelector('#pf');
+const pageNames={box:'盒子',islands:'岛屿推荐',recipes:'料理食谱',events:'活动资讯'};
+const pageFromHash=()=>Object.hasOwn(pageNames,location.hash.slice(1))?location.hash.slice(1):'box';
+function showPage(page,{push=false,replace=false,scroll=true}={}){
+  if(!Object.hasOwn(pageNames,page))page='box';
+  document.querySelectorAll('[data-page]').forEach(section=>{const active=section.dataset.page===page;section.hidden=!active;section.setAttribute('aria-hidden',active?'false':'true')});
+  document.querySelectorAll('[data-page-target]').forEach(link=>{const active=link.dataset.pageTarget===page;link.classList.toggle('active',active);if(active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current')});
+  const hash=`#${page}`;if(push&&location.hash!==hash)history.pushState({page},'',hash);else if(replace&&location.hash!==hash)history.replaceState({page},'',hash);
+  document.title=`${pageNames[page]}｜Pokemon Sleep 助手`;
+  if(scroll)document.querySelector('.app-nav').scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.querySelector('.app-nav').addEventListener('click',event=>{const link=event.target.closest('[data-page-target]');if(!link)return;event.preventDefault();showPage(link.dataset.pageTarget,{push:true})});
+window.addEventListener('popstate',()=>showPage(pageFromHash(),{scroll:false}));
+window.addEventListener('hashchange',()=>showPage(pageFromHash(),{scroll:false}));
+const recipeBonus=window.POKEMON_SLEEP_RECIPE_BONUS||{};
+const recipeData=(window.POKEMON_SLEEP_RECIPES||[]).map(recipe=>{const bonus=Number(recipeBonus[recipe.id]||0);return {...recipe,bonus,coefficient:1+bonus/100,total:recipe.ingredients.reduce((sum,item)=>sum+item.amount,0)}});
+const recipeAliases={
+  '粗枝大葱':'大葱 葱','品鲜蘑菇':'蘑菇','特选蛋':'蛋','窝心洋芋':'马铃薯 土豆 洋芋','特选苹果':'苹果','火辣香草':'香草','豆制肉':'肉','哞哞鲜奶':'牛奶 鲜奶','甜甜蜜':'蜂蜜','纯粹油':'储存油 油','暖暖姜':'姜','好眠番茄':'番茄','放松可可':'可可','美味尾巴':'呆呆兽尾巴 尾巴','萌绿大豆':'大豆','萌绿玉米':'玉米','醒脑咖啡豆':'咖啡','沉甸甸南瓜':'南瓜','嫩亮酪梨':'牛油果 酪梨 青色果实'
+};
+const recipeTabs=document.querySelector('#recipeTabs'),recipeQ=document.querySelector('#recipeQ'),recipeIngredient=document.querySelector('#recipeIngredient'),recipeSort=document.querySelector('#recipeSort'),recipeGrid=document.querySelector('#recipeGrid');
+const ingredientRecommendation=document.querySelector('#ingredientRecommendation'),ingredientRecommendationTitle=document.querySelector('#ingredientRecommendationTitle'),ingredientRecommendationHint=document.querySelector('#ingredientRecommendationHint'),ingredientRecommendationGrid=document.querySelector('#ingredientRecommendationGrid');
+const recipeTypes=['全部','咖喱／浓汤','沙拉','点心／饮料'];
+let activeRecipeType='全部';
+const recipeEl=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el};
+const recipeClass=type=>type==='咖喱／浓汤'?'curry':type==='沙拉'?'salad':'dessert';
+const ingredientColor=name=>{const colors=['#e7902e','#28a66a','#8a63d2','#3b82c4','#d75b67','#b08b2f','#48a0a0'];let n=0;for(const char of name)n=(n*31+char.charCodeAt(0))>>>0;return colors[n%colors.length]};
+const ingredientUnlockLevels=[1,30,60];
+const parsePokemonIngredients=value=>value.split('／').map((slot,index)=>{const match=slot.match(/^(.+?)×(\d+)$/);return match?{name:match[1],amount:Number(match[2]),unlock:ingredientUnlockLevels[index]||60}:null}).filter(Boolean);
+const intervalInSeconds=value=>{const parts=value.split(':').map(Number);return parts.length===3?parts[0]*3600+parts[1]*60+parts[2]:parts[0]*60+parts[1]};
+function ingredientCandidate(mon,ingredient){
+  const lv=Number(mon.lv),slots=parsePokemonIngredients(mon.ingredients),matching=slots.filter(slot=>slot.name===ingredient);
+  if(!matching.length)return null;
+  const unlocked=slots.filter(slot=>slot.unlock<=lv),current=matching.filter(slot=>slot.unlock<=lv),next=matching.find(slot=>slot.unlock>lv);
+  const expected=current.reduce((sum,slot)=>sum+slot.amount,0)/Math.max(unlocked.length,1);
+  const rate=expected*3600/Math.max(intervalInSeconds(mon.interval),1);
+  let traitScore=0;const traits=[];
+  [['食材概率M',44],['食材概率S',25],['帮忙速度M',24],['帮忙速度S',14],['帮手奖励',20],['持有上限L',10],['持有上限M',6]].forEach(([tag,points])=>{if(mon.subs.includes(tag)){traitScore+=points;traits.push(tag)}});
+  if(mon.nature.includes('食材↑')){traitScore+=34;traits.unshift('性格食材↑')}if(mon.nature.includes('食材↓'))traitScore-=34;
+  if(mon.nature.includes('速度↑')){traitScore+=18;traits.push('性格速度↑')}if(mon.nature.includes('速度↓'))traitScore-=18;
+  const tierWeight={S:8000,A:5000,B:1800,C:-1800,D:-4500}[mon.speciesGrade]||0;
+  const score=(current.length?100000:0)+rate*10000+Number(mon.sp)/3+lv*7+traitScore+tierWeight-(current.length?0:(next?.unlock||60)*100);
+  return {mon,matching,current,next,traits,score};
+}
+function renderIngredientRecommendations(ingredient){
+  if(!ingredient){ingredientRecommendation.hidden=true;ingredientRecommendationGrid.replaceChildren();return}
+  const candidates=data.map(mon=>ingredientCandidate(mon,ingredient)).filter(Boolean).sort((a,b)=>b.score-a.score).slice(0,5);
+  const total=data.filter(mon=>parsePokemonIngredients(mon.ingredients).some(slot=>slot.name===ingredient)).length;
+  ingredientRecommendation.hidden=false;
+  ingredientRecommendationTitle.textContent=`${ingredient}｜推荐 ${candidates.length} 只`;
+  ingredientRecommendationHint.textContent=total?`从当前 97 只中找到 ${total} 只产手；按当前等级、SP、帮助间隔、已解锁槽位及食材／速度副技能排序。`:`当前 97 只中没有能采集“${ingredient}”的宝可梦。`;
+  if(!candidates.length){ingredientRecommendationGrid.replaceChildren(recipeEl('div','ingredient-rec-none',`当前盒子没有“${ingredient}”产手，请考虑捕捉或用食材券补充。`));return}
+  ingredientRecommendationGrid.replaceChildren(...candidates.map((entry,index)=>{
+    const {mon,matching,current,traits}=entry,card=recipeEl('button','ingredient-rec-mon');card.type='button';card.dataset.mon=mon.id;
+    const rank=recipeEl('span','ingredient-rec-rank',String(index+1)),name=recipeEl('b','',`#${mon.id} ${mon.name}`),meta=recipeEl('small','',`Lv.${mon.lv} · SP ${Number(mon.sp).toLocaleString('zh-CN')} · 间隔 ${mon.interval}`);
+    const slots=recipeEl('span','ingredient-rec-slots',matching.map(slot=>`${slot.unlock<=Number(mon.lv)?'已解锁':'Lv.'+slot.unlock+' 解锁'} ×${slot.amount}`).join(' · '));
+    const tierText=`种族${mon.speciesGrade}${mon.speciesPotential?'潜力':''}`,traitText=current.length?([tierText,...traits].slice(0,3).join(' · ')):`${tierText} · 目前未解锁，Lv.${matching.find(slot=>slot.unlock>Number(mon.lv))?.unlock||60} 可用`;
+    const trait=recipeEl('span','ingredient-rec-traits',traitText);card.append(rank,name,meta,slots,trait);return card
+  }));
+}
+const recipeSearchText=recipe=>[recipe.name,recipe.type,recipe.energy,recipe.total,recipe.bonus,recipe.coefficient.toFixed(2),...recipe.ingredients.flatMap(item=>[item.name,recipeAliases[item.name]||''])].join(' ').toLowerCase();
+recipeTypes.forEach(type=>{const button=recipeEl('button','recipe-tab',`${type} ${type==='全部'?recipeData.length:recipeData.filter(r=>r.type===type).length}`);button.type='button';button.role='tab';button.dataset.recipeType=type;recipeTabs.append(button)});
+[...new Set(recipeData.flatMap(r=>r.ingredients.map(item=>item.name)))].sort((a,b)=>a.localeCompare(b,'zh-CN')).forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;recipeIngredient.append(option)});
+function renderRecipes(){
+  const query=recipeQ.value.trim().toLowerCase(),ingredient=recipeIngredient.value;
+  renderIngredientRecommendations(ingredient);
+  let rows=recipeData.filter(recipe=>(activeRecipeType==='全部'||recipe.type===activeRecipeType)&&(!ingredient||recipe.ingredients.some(item=>item.name===ingredient))&&(!query||recipeSearchText(recipe).includes(query)));
+  const sorters={
+    'energy-desc':(a,b)=>b.energy-a.energy||a.name.localeCompare(b.name,'zh-CN'),
+    'energy-asc':(a,b)=>a.energy-b.energy||a.name.localeCompare(b.name,'zh-CN'),
+    'coefficient-desc':(a,b)=>b.coefficient-a.coefficient||b.energy-a.energy,
+    'total-asc':(a,b)=>(a.total||Number.MAX_SAFE_INTEGER)-(b.total||Number.MAX_SAFE_INTEGER)||b.energy-a.energy,
+    'total-desc':(a,b)=>b.total-a.total||b.energy-a.energy,
+    name:(a,b)=>a.name.localeCompare(b.name,'zh-CN')
+  };
+  rows.sort(sorters[recipeSort.value]||sorters['energy-desc']);
+  [...recipeTabs.children].forEach(button=>{const selected=button.dataset.recipeType===activeRecipeType;button.classList.toggle('active',selected);button.setAttribute('aria-selected',selected?'true':'false')});
+  document.querySelector('#recipeShown').textContent=rows.length;
+  const maxEnergy=rows.reduce((max,r)=>Math.max(max,r.energy),0);document.querySelector('#recipeTopEnergy').textContent=maxEnergy?`当前结果最高基础能量：${maxEnergy.toLocaleString('zh-CN')}`:'';
+  if(!rows.length){recipeGrid.replaceChildren(recipeEl('div','recipe-none','没有符合条件的食谱，请换一个名称、食材或类别。'));return}
+  recipeGrid.replaceChildren(...rows.map(recipe=>{
+    const card=recipeEl('article',`recipe-card ${recipeClass(recipe.type)}`),head=recipeEl('div','recipe-card-head'),title=recipeEl('h3','',recipe.name),kind=recipeEl('span','recipe-kind',recipe.type);
+    head.append(title,kind);
+    const stats=recipeEl('div','recipe-stats'),energy=recipeEl('div','recipe-stat energy'),coefficient=recipeEl('div','recipe-stat coefficient'),total=recipeEl('div','recipe-stat');
+    energy.append(recipeEl('span','',recipe.energy?'Lv.1 基础能量':'基础能量'),recipeEl('b','',recipe.energy?recipe.energy.toLocaleString('zh-CN'):'—'));
+    coefficient.append(recipeEl('span','',`食谱加成 +${recipe.bonus}%`),recipeEl('b','',`×${recipe.coefficient.toFixed(2)}`));
+    total.append(recipeEl('span','','所需锅容量'),recipeEl('b','',recipe.total?String(recipe.total):'任意'));
+    stats.append(energy,coefficient,total);
+    const list=recipeEl('div','ingredient-list');
+    if(recipe.ingredients.length)recipe.ingredients.forEach(item=>{const chip=recipeEl('button','ingredient-chip');chip.type='button';chip.dataset.ingredient=item.name;const dot=recipeEl('span','ingredient-dot');dot.style.setProperty('--dot',ingredientColor(item.name));chip.append(dot,document.createTextNode(`${item.name} ×${item.amount}`));list.append(chip)});else list.append(recipeEl('span','recipe-empty','任意食材；不会解锁固定食谱'));
+    const source=recipeEl('a','recipe-source','在 RaenonX 查看这道料理');source.href=`https://pks.raenonx.cc/zh/meal/${recipe.id}`;source.target='_blank';source.rel='noreferrer';
+    card.append(head,stats,list,source);return card
+  }));
+}
+recipeTabs.addEventListener('click',event=>{const button=event.target.closest('[data-recipe-type]');if(!button)return;activeRecipeType=button.dataset.recipeType;renderRecipes()});
+recipeQ.addEventListener('input',renderRecipes);recipeIngredient.addEventListener('change',renderRecipes);recipeSort.addEventListener('change',renderRecipes);
+recipeGrid.addEventListener('click',event=>{const chip=event.target.closest('[data-ingredient]');if(!chip)return;recipeIngredient.value=chip.dataset.ingredient;renderRecipes();document.querySelector('#recipeGuideTitle').scrollIntoView({behavior:'smooth',block:'start'})});
+document.querySelector('#recipeReset').addEventListener('click',()=>{activeRecipeType='全部';recipeQ.value='';recipeIngredient.value='';recipeSort.value='energy-desc';renderRecipes()});
+document.querySelector('#ingredientRecommendationClear').addEventListener('click',()=>{recipeIngredient.value='';renderRecipes()});
+const islandData=[
+  {name:'萌绿之岛',kind:'普通岛',types:'每周随机 3 种',berries:'随机树果',focus:'通用排序以当前练度、速度、帮手奖励和稳定治疗为主；周一看到树果后，再把输出位换成对应属性。',rank:[[71,'高等级高速，树果迸增与树果数量S兼顾'],[63,'高等级高速树果手，帮手奖励覆盖全队'],[4,'最高练度食材手，牛奶产量稳定'],[92,'Lv.6 全体治疗，全天队伍核心'],[78,'高等级树果数量S，泛用产能强'],[73,'第二套 Lv.6 全体治疗选择'],[1,'蜂蜜与番茄食材位，带帮手奖励'],[79,'树果数量S＋帮手奖励，夜间产能稳']],team:[[71,'主输出／树果迸增'],[63,'树果输出／全队加速'],[4,'牛奶食材核心'],[1,'蜂蜜与番茄食材'],[92,'全体活力治疗']],note:'萌绿树果随机。这套是周一开岛前的通用起步队；确定喜爱树果后，优先替换两个非对应树果的输出位。'},
+  {name:'天青沙滩',kind:'普通岛',types:'水／飞行／妖精',berries:'橙橙果／椰木果／桃桃果',focus:'水箭龟承担主食材，仙子伊布保活；水君联动水系，蓝鳄负责对应树果，沼跃鱼提供料理成功率。',rank:[[4,'高等级水系食材核心，牛奶产量优秀'],[92,'妖精系治疗核心，帮手奖励＋速度M'],[68,'水系帮手加速，当前主技能等级更高'],[95,'妖精系玉米食材，当前等级较完整'],[47,'水系料理成功S，速度M＋帮手奖励'],[57,'飞行系树果迸增，种族基准优于波克基斯'],[32,'水系食材获取，补牛奶和可可'],[34,'水系树果手，建议优先进化大力鳄']],team:[[4,'牛奶食材核心'],[92,'全体活力治疗'],[68,'水系帮手加速'],[47,'料理成功率／帮手奖励'],[34,'对应树果输出']],note:'#34 蓝鳄目前等级偏低，但它是盒内天青最明确的树果位；未进化或产能不足时，先换成 #95 花疗环环或 #57 勇士雄鹰。#86 波克基斯仅作为需要挥指娱乐性时的备用。'},
+  {name:'灰褐洞窟',kind:'普通岛',types:'火／地面／岩石',berries:'苹野果／勿花果／文柚果',focus:'火爆兽作为主树果手，隆隆岩和沙漠蜻蜓覆盖大豆、马铃薯及牛油果，炎帝提供火系联动。',rank:[[63,'本盒最成熟的对应树果输出'],[17,'岩石系食材手，帮手奖励＋双食材概率'],[74,'地面系食材手，速度双加成'],[43,'火系帮手加速，适合围绕火爆兽建队'],[37,'岩石系技能输出，可作临时替补'],[15,'火系帮手支援，练度提高后可强化炎帝联动'],[72,'火系树果数量S，长期培养价值高'],[22,'地面系速度M，低成本过渡']],team:[[63,'火系树果主输出'],[17,'大豆／马铃薯食材'],[74,'地面系食材／速度位'],[43,'火系帮手加速'],[92,'全体活力治疗']],note:'炎帝的收益随火系成员增加而提高。#15 风速狗或 #72 火稚鸡练成后，可按料理库存替换沙漠蜻蜓，组成更偏火系的队伍。'},
+  {name:'白花雪原',kind:'普通岛',types:'冰／一般／恶',berries:'柿仔果／莓莓果／异奇果',focus:'利用四只成熟帝牙海狮形成盒内最强岛屿专队；实战保留三只树果手、一个锅位和一个治疗位。',rank:[[78,'Lv.56 树果数量S，当前雪原第一输出'],[79,'树果数量S＋帮手奖励，团队价值最高'],[77,'Lv.52 树果数量S＋速度M'],[76,'Lv.43 树果数量S，可轮换上场'],[84,'恶系树果手兼料理成功S'],[87,'冰系料理强化，甜品周更有价值'],[7,'一般系树果手，低等级过渡'],[42,'恶系帮手奖励潜力，需继续培养']],team:[[78,'冰系树果主输出'],[79,'冰系树果／帮手奖励'],[77,'冰系树果／速度位'],[87,'料理锅扩容'],[92,'全体活力治疗']],note:'若锅容量和食材已经充足，用 #84 玛狃拉替换 #87 冰伊布，可把队伍切成更高树果输出；第四只帝牙海狮用于轮换。'},
+  {name:'宝蓝湖畔',kind:'普通岛',types:'草／超能力／格斗',berries:'金枕果／芒芒果／樱子果',focus:'蜥蜴王负责主输出，沙奈朵治疗，妙蛙花补蜂蜜与番茄；太阳伊布和克雷色利亚组成技能产能。',rank:[[71,'高等级草系核心，树果数量S＋双速度'],[73,'超能力系 Lv.6 全体治疗'],[1,'草系食材手，蜂蜜／番茄覆盖面好'],[39,'超能力系能量填充M，帮手奖励＋技能概率M'],[90,'超能力系新月祈祷Lv.2，当前练度最佳'],[89,'技能性格＋速度S，可作为第二克雷色利亚'],[23,'超能力系食材与技能复制'],[94,'格斗系玉米食材，值得为湖畔培养']],team:[[71,'草系主输出'],[73,'全体活力治疗'],[1,'蜂蜜／番茄食材'],[39,'能量填充M输出'],[90,'新月祈祷支援']],note:'需要大量玉米时，用 #94 或 #60 童偶熊替换太阳伊布；两只童偶熊目前等级偏低，先把其中一只集中培养即可。'},
+  {name:'黄金旧发电厂',kind:'普通岛',types:'电／幽灵／钢',berries:'萄葡果／墨莓果／靛莓果',focus:'雷公带雷丘与电龙形成三电联动，骨纹巨声鳄负责苹果食材，仙子伊布稳定全队活力。',rank:[[97,'幽灵系食材核心，当前等级与帮手奖励突出'],[85,'钢系料理强化，双速度副技能'],[66,'电系帮手加速核心'],[10,'电系树果手，速度快'],[36,'电系能量填充M，树果数量S潜力'],[19,'钢系料理强化与帮手奖励'],[61,'钢系食材手，双速度潜力'],[54,'幽灵系技能位，低等级过渡']],team:[[66,'电系帮手加速'],[10,'电系树果输出'],[36,'电系技能输出'],[97,'苹果食材／帮手奖励'],[92,'全体活力治疗']],note:'需要扩大锅容量时，用 #85 自爆磁怪替换电龙；雷公在三只电系同场时更适合作为常驻支援。'},
+  {name:'琥褐溪谷',kind:'普通岛',types:'毒／虫／龙',berries:'零余果／木子果／番荔果',focus:'快龙供应香草，巴大蝶负责虫系树果；拉帝亚斯与拉帝欧斯利用永久编队例外同队，互相强化主技能，再配全体治疗。',rank:[[33,'高等级龙系香草食材核心'],[5,'成熟虫系树果手，食材获取Lv.7'],[80,'当前更成熟的拉帝亚斯，速度与技能兼顾'],[81,'与拉帝亚斯同队时强化自己的树果产量'],[50,'龙系技能位，主技能Lv.4'],[24,'虫系蜂蜜／苹果食材手'],[49,'毒系树果数量S潜力'],[65,'毒系可可食材潜力，建议进化土王']],team:[[33,'龙系香草食材'],[5,'虫系树果输出'],[80,'拉帝双子／强化额外帮手'],[81,'拉帝双子／强化自身树果'],[92,'全体活力治疗']],note:'#80 拉帝亚斯＋#81 拉帝欧斯是特殊宝可梦的永久同队例外：拉帝亚斯的治愈波动会获得更多额外帮手，拉帝欧斯的流星群会增加自身获得的树果。活动期曾有的睡意之力 ×1.3 不属于常驻加成。'},
+  {name:'萌绿之岛 EX',kind:'EX',types:'每周随机 3 种',berries:'随机树果',focus:'EX 周规则会改变最优解。基础排序先看高等级、高速、帮手奖励与治疗；周一再按喜爱树果和加成／减益重排。',rank:[[71,'全盒顶级速度与树果数量S'],[63,'成熟高速树果手＋帮手奖励'],[4,'最高练度食材产能'],[92,'EX 稳定运行所需的主治疗'],[78,'高等级树果数量S'],[73,'第二治疗方案，适合规则克制时切换'],[1,'帮手奖励食材位'],[79,'帮手奖励树果位']],team:[[71,'主输出／规则适配'],[63,'高速树果输出'],[4,'稳定食材供给'],[78,'第二树果输出'],[92,'全体活力治疗']],note:'这是一套“未知周规则”的起步队，不是每周固定答案。进入 EX 后应优先把两个未命中喜爱树果或受到减益的输出位换掉，治疗位通常保留。'},
+  {name:'天青沙滩 EX',kind:'EX',types:'水／飞行／妖精',berries:'橙橙果／椰木果／桃桃果',focus:'全队尽量命中固定喜爱树果，同时优先使用已有中高等级个体；当前盒子以水箭龟、仙子伊布和水君为稳定核心。',rank:[[4,'高等级水系食材核心'],[92,'高等级妖精系全体治疗'],[68,'水系帮手加速，当前技能等级较高'],[95,'妖精系玉米食材，Lv.35 可直接实战'],[47,'水系料理成功S＋帮手奖励'],[57,'飞行系树果迸增，可作对应属性输出'],[32,'水系食材获取补给'],[34,'水系树果手，进化后优先级会明显上升']],team:[[4,'牛奶食材核心'],[92,'全体活力治疗'],[68,'水系帮手加速'],[95,'玉米／可可食材'],[47,'料理成功率／帮手奖励']],note:'当前盒子缺少高等级水／飞行／妖精树果专精，因此先采用高练度技能与食材队。#34 蓝鳄进化并提升等级后，优先替换沼跃鱼成为树果位；波克基斯不再作为常规推荐。'}
+];
+const monById=id=>data.find(r=>r.id===String(id));
+function monButton(id){const m=monById(id),b=document.createElement('button');b.type='button';b.className='mon-link';b.dataset.mon=id;b.textContent=m?`#${id} ${m.name}`:`#${id}`;return b}
+function focusMon(id){q.value=`#${id}`;sf.value='';pf.value='';render();showPage('box',{push:true,scroll:false});requestAnimationFrame(()=>document.querySelector('.tablebox').scrollIntoView({behavior:'smooth',block:'start'}))}
+const specialPokemonNames=new Set(['炎帝','雷公','水君','梦幻','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊','超梦']);
+const isSpecialPokemon=id=>{const mon=monById(id);return Boolean(mon&&specialPokemonNames.has(mon.name))};
+const isLatiasLatiosPair=team=>{const names=team.filter(([id])=>isSpecialPokemon(id)).map(([id])=>monById(id).name);return names.length===2&&names.includes('拉帝亚斯')&&names.includes('拉帝欧斯')};
+function canAddSpecialPokemon(result,id){if(!isSpecialPokemon(id))return true;const candidateName=monById(id).name,specialNames=result.filter(([memberId])=>isSpecialPokemon(memberId)).map(([memberId])=>monById(memberId).name);if(specialNames.length===0)return true;return specialNames.length===1&&specialNames[0]!==candidateName&&new Set([specialNames[0],candidateName]).size===2&&['拉帝亚斯','拉帝欧斯'].includes(specialNames[0])&&['拉帝亚斯','拉帝欧斯'].includes(candidateName)}
+function buildRuleSafeTeam(primary,backups=[]){const result=[],usedIds=new Set();for(const entry of [...primary,...backups]){const id=entry[0],key=String(id);if(usedIds.has(key)||!canAddSpecialPokemon(result,id))continue;result.push(entry);usedIds.add(key);if(result.length===5)break}return result}
+const countSpecialPokemon=team=>team.reduce((sum,[id])=>sum+(isSpecialPokemon(id)?1:0),0);
+const specialRuleLabel=team=>isLatiasLatiosPair(team)?'特殊宝可梦 2／1（拉帝双子例外）':`特殊宝可梦 ${countSpecialPokemon(team)}／1`;
+const eventTeamData=[[71,'主输出／湖畔草系树果','Lv.58 高速树果数量S，负责周初快速抬升卡比兽能量'],[73,'全体治疗／超能力','Lv.6 全体治疗，维持整队全天产能'],[39,'技能输出／超能力','帮手奖励＋技能概率M，兼顾队伍加速和能量输出'],[1,'食材支援／湖畔草系树果','帮手奖励并提供甜甜蜜与好眠番茄，兼顾料理和全队产能'],[62,'唯一特殊位／超能力','官方预告梦幻在超梦活动特别有用，提前获得经验与投入糖果']];
+function renderEventTeam(){const root=document.querySelector('#eventTeam'),safeTeam=buildRuleSafeTeam(eventTeamData);root.dataset.specialCount=countSpecialPokemon(safeTeam);root.replaceChildren(...safeTeam.map(([id,role,reason],index)=>{const mon=monById(id),slot=document.createElement('div');slot.className='event-team-mon';const pos=document.createElement('span');pos.className='event-step-no';pos.textContent=`位置 ${index+1}`;const meta=document.createElement('small');meta.className='event-team-role';meta.textContent=mon?`Lv.${mon.lv} · SP ${Number(mon.sp).toLocaleString('zh-CN')} · ${role}`:role;const why=document.createElement('span');why.className='event-team-reason';why.textContent=reason;slot.append(pos,monButton(id),meta,why);return slot}))}
+ingredientRecommendationGrid.addEventListener('click',event=>{const mon=event.target.closest('[data-mon]');if(mon)focusMon(mon.dataset.mon)});
+const islandTabs=document.querySelector('#islandTabs');
+islandData.forEach((island,i)=>{const b=document.createElement('button');b.type='button';b.className='island-tab';b.role='tab';b.textContent=island.name;b.addEventListener('click',()=>renderIsland(i));islandTabs.append(b)});
+function renderIsland(i){const island=islandData[i],rankingBackups=island.rank.map(([id,why])=>[id,`规则替补／${why}`]),safeTeam=buildRuleSafeTeam(island.team,rankingBackups);[...islandTabs.children].forEach((b,n)=>{b.classList.toggle('active',n===i);b.setAttribute('aria-selected',n===i?'true':'false')});document.querySelector('#islandName').textContent=island.name;const badges=document.querySelector('#islandBadges');badges.replaceChildren();[[island.kind,island.kind==='EX'?'island-badge ex':'island-badge'],[island.types,'island-badge'],[island.berries,'island-badge'],[specialRuleLabel(safeTeam),'island-badge']].forEach(([t,c])=>{const s=document.createElement('span');s.className=c;s.textContent=t;badges.append(s)});document.querySelector('#islandFocus').textContent=island.focus;const ranking=document.querySelector('#islandRanking');ranking.replaceChildren(...island.rank.map(([id,why],n)=>{const row=document.createElement('div');row.className='rank-row';const no=document.createElement('span');no.className='rank-no';no.textContent=n+1;const w=document.createElement('span');w.className='rank-why';w.textContent=why;row.append(no,monButton(id),w);return row}));const team=document.querySelector('#islandTeam');team.dataset.specialCount=countSpecialPokemon(safeTeam);team.dataset.specialException=isLatiasLatiosPair(safeTeam)?'latias-latios':'';team.replaceChildren(...safeTeam.map(([id,role],n)=>{const slot=document.createElement('div');slot.className='team-slot';const pos=document.createElement('b');pos.textContent=`位置 ${n+1}`;const why=document.createElement('span');why.className='team-role';why.textContent=role;slot.append(pos,monButton(id),why);return slot}));document.querySelector('#islandNote').textContent=island.note}
+document.querySelector('.island-guide').addEventListener('click',e=>{const b=e.target.closest('[data-mon]');if(b)focusMon(b.dataset.mon)});
+document.querySelector('.event-guide').addEventListener('click',e=>{const b=e.target.closest('[data-mon]');if(b)focusMon(b.dataset.mon)});
+const tagClass=p=>p==='重点培养'?'high':p==='继续使用'?'use':p==='闪光收藏'?'collect':p==='备用'?'backup':'keep';
+function filtered(){const s=q.value.trim().toLowerCase(),exact=s.match(/^#(\d+)$/);return data.filter(r=>(exact?r.id===exact[1]:!s||Object.values(r).join(' ').toLowerCase().includes(s))&&(!sf.value||r.shiny===sf.value)&&(!pf.value||r.priority===pf.value)).sort((a,b)=>{let x=a[sortKey],y=b[sortKey];if(['id','sp','lv','inv'].includes(sortKey)){x=+x;y=+y}else if(sortKey==='speciesGrade'){const order={S:0,A:1,B:2,C:3,D:4};x=order[x];y=order[y]}return(x>y?1:x<y?-1:0)*dir})}
+function cell(v,cls=''){const td=document.createElement('td');td.textContent=v;td.className=cls;return td}
+function render(){const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.append(cell(r.id,'nowrap'),cell(r.name,'nowrap'));const tier=cell('','nowrap'),badge=document.createElement('span');badge.className=`species-tier ${r.speciesGrade.toLowerCase()}`;badge.textContent=`${r.speciesGrade}${r.speciesPotential?'潜力':''}`;const tierNote=document.createElement('span');tierNote.className='species-tier-note';tierNote.textContent=speciesTierLabels[r.speciesGrade];tier.title=r.speciesGrade==='C'||r.speciesGrade==='D'?'种族上限偏低：好个体也只建议备用':r.speciesPotential?'按最终进化形态评估潜力':'综合 Game8 定位与 RaenonX 产能';tier.append(badge,tierNote);tr.append(tier,cell(r.sp,'nowrap'),cell(r.lv,'nowrap'));const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';tr.append(sh,cell(r.ingredients),cell(r.interval,'nowrap'),cell(r.inv,'nowrap'),cell(r.main),cell(r.subs),cell(r.nature),cell(''));const p=document.createElement('span');p.className='tag '+tagClass(r.priority);p.textContent=r.priority;tr.lastChild.append(p);const adjusted=r.adviceAdjusted?(r.speciesGrade==='C'||r.speciesGrade==='D'?`种族基准${r.speciesGrade}，优秀个体也仅作备用。`:`已按种族基准从“${r.originalPriority}”调整。`):'';tr.append(cell([r.note,adjusted].filter(Boolean).join(' '),'muted'));return tr}));document.querySelector('#shown').textContent=rows.length}
+q.addEventListener('input',render);sf.addEventListener('change',render);pf.addEventListener('change',render);document.querySelector('#reset').addEventListener('click',()=>{q.value='';sf.value='';pf.value='';render()});document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k)dir*=-1;else{sortKey=k;dir=1}render()}));
+const shiny=data.filter(r=>r.shiny==='是').length;document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;renderEventTeam();renderIsland(0);renderRecipes();render();showPage(pageFromHash(),{replace:true,scroll:false});
+</script></body></html>
