@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pokémon Sleep 评分"
+  short_description: "计算并维护树果、食材与技能手的透明评分规则"
+  default_prompt: "使用 $pokemon-sleep-scoring 计算或修改这只宝可梦的评分。"
