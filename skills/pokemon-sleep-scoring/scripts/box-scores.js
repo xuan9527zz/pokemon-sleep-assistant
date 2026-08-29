@@ -25,6 +25,17 @@ const INGREDIENT_PATTERN_COEFFICIENTS = Object.freeze({
   ABC: 0.50
 });
 
+// A 100-point subskill score means the best five-slot combination that can
+// actually exist for that specialty, not five copies of one 100-point skill.
+// The order is the optimal Lv.10/25/50/70/80 placement under the current slot
+// weights. Keep these reference builds synchronized with scoring-rules.md and
+// the self-test whenever a role-fit value changes.
+const LEGAL_SUBSKILL_MAX_BUILDS = Object.freeze({
+  berry: Object.freeze(['树果数量S', '帮手奖励', '帮忙速度M', '帮忙速度S', '技能概率M']),
+  ingredient: Object.freeze(['帮手奖励', '食材概率S', '食材概率M', '帮忙速度M', '帮忙速度S']),
+  skill: Object.freeze(['帮手奖励', '技能概率S', '技能概率M', '帮忙速度M', '帮忙速度S'])
+});
+
 const SUBSKILL_UPGRADE_FAMILIES = Object.freeze([
   Object.freeze(['帮忙速度S', '帮忙速度M']),
   Object.freeze(['食材概率S', '食材概率M']),
@@ -332,9 +343,7 @@ function interactionBonus(role, slots, finalRecord) {
   };
 }
 
-function individualScore(box, role, finalRecord) {
-  if (!['berry', 'ingredient', 'skill'].includes(role)) return null;
-  const rawSkills = box.subskills.split('；');
+function scoreSubskillSlots(rawSkills, role, finalRecord) {
   const slots = seedMaximizedSubskills(rawSkills);
   const interaction = interactionBonus(role, slots, finalRecord);
   const scoredSlots = slots.map((slot, index) => {
@@ -352,15 +361,48 @@ function individualScore(box, role, finalRecord) {
       contribution: round(effectiveFit * SLOT_WEIGHTS[index])
     };
   });
-  const subskillRawBeforeClamp = scoredSlots.reduce((sum, slot) => sum + slot.contribution, 0);
+  return {
+    slots: scoredSlots,
+    interaction,
+    raw: round(scoredSlots.reduce((sum, slot) => sum + slot.contribution, 0))
+  };
+}
+
+function legalSubskillMaximum(role, finalRecord) {
+  const build = LEGAL_SUBSKILL_MAX_BUILDS[role];
+  if (!build) return null;
+  const scored = scoreSubskillSlots(build, role, finalRecord);
+  const provisionalItems = [...new Set(scored.slots
+    .filter(slot => slot.fitStatus.startsWith('provisional'))
+    .map(slot => slot.scoredSkill))];
+  return {
+    raw: scored.raw,
+    build: [...build],
+    slots: scored.slots,
+    provisional: provisionalItems.length > 0,
+    provisionalItems
+  };
+}
+
+function individualScore(box, role, finalRecord) {
+  if (!['berry', 'ingredient', 'skill'].includes(role)) return null;
+  const rawSkills = box.subskills.split('；');
+  const scored = scoreSubskillSlots(rawSkills, role, finalRecord);
+  const scoredSlots = scored.slots;
+  const interaction = scored.interaction;
+  const subskillRawBeforeClamp = scored.raw;
   const subskillRaw = round(clamp(subskillRawBeforeClamp));
-  const subskillContribution = round(subskillRaw * SUBSKILL_WEIGHT);
+  const legalMaximum = legalSubskillMaximum(role, finalRecord);
+  const subskillScore = round(clamp(subskillRawBeforeClamp / legalMaximum.raw * 100));
+  const subskillContribution = round(subskillScore * SUBSKILL_WEIGHT);
   const natureRaw = natureScoring.scoreNatureText(role, box.nature, box.name);
-  const natureContribution = round(clamp(
-    natureRaw / NATURE_POSITIVE_BENCHMARK * NATURE_WEIGHT * 100,
-    -NATURE_WEIGHT * 100,
-    NATURE_WEIGHT * 100
-  ));
+  const natureScoreBeforeRound = clamp(
+    natureRaw / NATURE_POSITIVE_BENCHMARK * 100,
+    -100,
+    100
+  );
+  const natureScore = round(natureScoreBeforeRound);
+  const natureContribution = round(natureScoreBeforeRound * NATURE_WEIGHT);
   const individualBeforePattern = round(clamp(subskillContribution + natureContribution));
   const pattern = role === 'ingredient' ? ingredientPattern(box.ingredients) : '不适用';
   const patternCoefficient = role === 'ingredient'
@@ -368,12 +410,20 @@ function individualScore(box, role, finalRecord) {
     : 1;
   const score = round(individualBeforePattern * patternCoefficient);
   const provisionalSlots = scoredSlots.filter(slot => slot.fitStatus.startsWith('provisional'));
+  const provisionalItems = [...new Set([
+    ...provisionalSlots.map(slot => slot.scoredSkill),
+    ...legalMaximum.provisionalItems.map(skill => `合法满分基准：${skill}`)
+  ])];
   return {
     score,
     subskillRaw,
     subskillRawBeforeClamp: round(subskillRawBeforeClamp),
+    subskillLegalMaximum: legalMaximum.raw,
+    subskillLegalMaximumBuild: legalMaximum.build,
+    subskillScore,
     subskillContribution,
     natureRaw,
+    natureScore,
     natureContribution,
     individualBeforePattern,
     ingredientPattern: pattern,
@@ -381,8 +431,8 @@ function individualScore(box, role, finalRecord) {
     interactionMultiplier: interaction.multiplier,
     interactionBonus: interaction.score,
     slots: scoredSlots,
-    provisional: provisionalSlots.length > 0,
-    provisionalItems: [...new Set(provisionalSlots.map(slot => slot.scoredSkill))]
+    provisional: provisionalItems.length > 0,
+    provisionalItems
   };
 }
 
@@ -487,15 +537,20 @@ function buildOutput(boxRows, records) {
   const scored = rows.filter(row => Number.isFinite(row.finalScore));
   const pending = rows.filter(row => !Number.isFinite(row.finalScore));
   const ranked = [...scored].sort((left, right) => left.rank - right.rank);
+  const legalSubskillMaximums = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => {
+    const representative = records.find(record => record.specialty === role);
+    return [role, legalSubskillMaximum(role, representative).raw];
+  }));
   return {
     meta: {
       generatedAt: new Date().toISOString(),
       targetLevel: TARGET_LEVEL,
-      formula: '最终综合分=种族分×75%+个体分×25%；个体分=(副技能原始分×70%+性格修正×30%)×食材组合系数',
+      formula: '最终综合分=种族分×75%+个体分×25%；个体分=(副技能合法满分百分分×70%+性格理论百分分×30%)×食材组合系数',
       speciesWeight: SPECIES_WEIGHT,
       individualWeight: INDIVIDUAL_WEIGHT,
       subskillWeight: SUBSKILL_WEIGHT,
       natureWeight: NATURE_WEIGHT,
+      legalSubskillMaximums,
       collectionProfile: '技能手种族分使用4小时收菜、好露营券、50%额外食材满足率；操作韧性保留8小时模型',
       scored: scored.length,
       pending: pending.length,
@@ -539,8 +594,41 @@ function selfTest(boxRows, records) {
   if (!rows.filter(row => row.individual).every(row => row.individual.slots.length === 5)) {
     throw new Error('个体副技能栏位数量错误');
   }
+  const ceilingRecord = { ingredientRate: 0.2 };
+  const legalMaximums = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => [
+    role,
+    legalSubskillMaximum(role, ceilingRecord).raw
+  ]));
+  if (legalMaximums.berry !== 66.7 || legalMaximums.ingredient !== 70 || legalMaximums.skill !== 70) {
+    throw new Error(`副技能合法满分上限异常：${JSON.stringify(legalMaximums)}`);
+  }
+  const ceilingScores = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => {
+    const testBox = {
+      name: role === 'berry' ? '雷丘' : role === 'ingredient' ? '耿鬼' : '沙奈朵',
+      nature: '认真',
+      subskills: LEGAL_SUBSKILL_MAX_BUILDS[role].join('；'),
+      ingredients: 'A×1／A×1／A×1'
+    };
+    return [role, individualScore(testBox, role, ceilingRecord).subskillScore];
+  }));
+  if (!Object.values(ceilingScores).every(score => score === 100)) {
+    throw new Error(`合法最佳副技能组合没有归一化为100：${JSON.stringify(ceilingScores)}`);
+  }
+  const berryExample = individualScore({
+    name: '雷丘',
+    nature: '认真',
+    subskills: '帮手奖励；树果数量S；帮忙速度S；帮忙速度M；—',
+    ingredients: 'A×1／A×1／A×1'
+  }, 'berry', ceilingRecord);
+  if (berryExample.subskillRawBeforeClamp !== 61.2 || berryExample.subskillScore !== 91.8 || berryExample.score !== 64.3) {
+    throw new Error(`树果手合法百分制示例异常：${JSON.stringify(berryExample)}`);
+  }
+  if (!rows.filter(row => row.individual).every(row => (
+    row.individual.subskillScore >= 0 && row.individual.subskillScore <= 100
+    && row.individual.natureScore >= -100 && row.individual.natureScore <= 100
+  ))) throw new Error('副技能或性格百分分超出范围');
   return {
-    checks: 9,
+    checks: 13,
     rows: rows.length,
     scored: output.meta.scored,
     pending: output.meta.pending,
@@ -548,7 +636,13 @@ function selfTest(boxRows, records) {
     highest: output.meta.highest,
     kirliaSpeciesScore: output.scores['48'].speciesScore,
     gardevoirSpeciesScore: output.scores['73'].speciesScore,
-    eeveeRoute: output.scores['25'].finalFormNameZh
+    eeveeRoute: output.scores['25'].finalFormNameZh,
+    legalSubskillMaximums: legalMaximums,
+    berryExample: {
+      raw: berryExample.subskillRawBeforeClamp,
+      subskillScore: berryExample.subskillScore,
+      individualScore: berryExample.score
+    }
   };
 }
 
@@ -568,10 +662,13 @@ module.exports = Object.freeze({
   subskillFit: SUBSKILL_FIT,
   resourceSubskillFit: RESOURCE_SUBSKILL_FIT,
   boxFinalForm: BOX_FINAL_FORM,
+  legalSubskillMaxBuilds: LEGAL_SUBSKILL_MAX_BUILDS,
   parseBoxRows,
   seedMaximizedSubskills,
   ingredientPattern,
   interactionBonus,
+  scoreSubskillSlots,
+  legalSubskillMaximum,
   individualScore,
   boxScoreRows,
   buildOutput,
