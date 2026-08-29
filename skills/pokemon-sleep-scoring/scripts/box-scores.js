@@ -9,8 +9,8 @@ const speciesScoring = require('./species-scores.js');
 const skillSpeciesScoring = require('./skill-team-species-scores.js');
 
 const TARGET_LEVEL = 70;
-const SPECIES_WEIGHT = 0.5;
-const INDIVIDUAL_WEIGHT = 0.5;
+const SPECIES_WEIGHT = 0.75;
+const INDIVIDUAL_WEIGHT = 0.25;
 const SUBSKILL_WEIGHT = 0.7;
 const NATURE_WEIGHT = 0.3;
 const NATURE_POSITIVE_BENCHMARK = 55.6;
@@ -491,7 +491,7 @@ function buildOutput(boxRows, records) {
     meta: {
       generatedAt: new Date().toISOString(),
       targetLevel: TARGET_LEVEL,
-      formula: '最终综合分=种族分×50%+个体分×50%；个体分=(副技能原始分×70%+性格修正×30%)×食材组合系数',
+      formula: '最终综合分=种族分×75%+个体分×25%；个体分=(副技能原始分×70%+性格修正×30%)×食材组合系数',
       speciesWeight: SPECIES_WEIGHT,
       individualWeight: INDIVIDUAL_WEIGHT,
       subskillWeight: SUBSKILL_WEIGHT,
@@ -510,6 +510,9 @@ function buildOutput(boxRows, records) {
 function selfTest(boxRows, records) {
   const output = buildOutput(boxRows, records);
   const rows = Object.values(output.scores);
+  if (SPECIES_WEIGHT !== 0.75 || INDIVIDUAL_WEIGHT !== 0.25 || SPECIES_WEIGHT + INDIVIDUAL_WEIGHT !== 1) {
+    throw new Error('盒子综合分权重必须为种族75%＋个体25%');
+  }
   if (rows.length !== 97) throw new Error(`盒子数量错误：${rows.length}`);
   if (new Set(rows.map(row => row.id)).size !== rows.length) throw new Error('盒子评分存在重复ID');
   if (output.meta.scored !== 95 || output.meta.pending !== 2) {
@@ -520,6 +523,9 @@ function selfTest(boxRows, records) {
     && row.individualScore >= 0 && row.individualScore <= 100
     && row.finalScore >= 0 && row.finalScore <= 100
   ))) throw new Error('盒子评分超出0至100');
+  if (!rows.filter(row => Number.isFinite(row.finalScore)).every(row => (
+    row.finalScore === round(row.speciesScore * SPECIES_WEIGHT + row.individualScore * INDIVIDUAL_WEIGHT)
+  ))) throw new Error('盒子综合分未按75/25权重合成');
   if (!['62', '91'].every(id => output.scores[id]?.status === 'pending-all-rounder-formula')) {
     throw new Error('梦幻／达克莱伊没有保持全能型待定');
   }
@@ -534,7 +540,7 @@ function selfTest(boxRows, records) {
     throw new Error('个体副技能栏位数量错误');
   }
   return {
-    checks: 7,
+    checks: 9,
     rows: rows.length,
     scored: output.meta.scored,
     pending: output.meta.pending,

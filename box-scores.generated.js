@@ -2,11 +2,11 @@
   'use strict';
   root.POKEMON_SLEEP_BOX_SCORES=Object.freeze({
   "meta": {
-    "generatedAt": "2026-08-24T14:24:00.714Z",
+    "generatedAt": "2026-08-29T11:33:10.395Z",
     "targetLevel": 70,
-    "formula": "最终综合分=种族分×50%+个体分×50%；个体分=(副技能原始分×70%+性格修正×30%)×食材组合系数",
-    "speciesWeight": 0.5,
-    "individualWeight": 0.5,
+    "formula": "最终综合分=种族分×75%+个体分×25%；个体分=(副技能原始分×70%+性格修正×30%)×食材组合系数",
+    "speciesWeight": 0.75,
+    "individualWeight": 0.25,
     "subskillWeight": 0.7,
     "natureWeight": 0.3,
     "collectionProfile": "技能手种族分使用4小时收菜、好露营券、50%额外食材满足率；操作韧性保留8小时模型",
@@ -18,9 +18,9 @@
     ],
     "provisionalCount": 55,
     "highest": {
-      "id": "33",
-      "name": "快龙",
-      "score": 78.6
+      "id": "81",
+      "name": "拉帝欧斯",
+      "score": 85.5
     }
   },
   "scores": {
@@ -31,10 +31,10 @@
       "finalFormId": "3",
       "finalFormNameZh": "妙蛙花",
       "speciesScore": 80.7,
-      "speciesContribution": 40.4,
+      "speciesContribution": 60.5,
       "speciesSource": "ingredient-species-score",
       "individualScore": 32.1,
-      "individualContribution": 16.1,
+      "individualContribution": 8,
       "individual": {
         "score": 32.1,
         "subskillRaw": 65.4,
@@ -120,8 +120,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 56.4,
-      "rank": 35,
+      "finalScore": 68.6,
+      "rank": 34,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -133,10 +133,10 @@
       "finalFormId": "3",
       "finalFormNameZh": "妙蛙花",
       "speciesScore": 80.7,
-      "speciesContribution": 40.4,
+      "speciesContribution": 60.5,
       "speciesSource": "ingredient-species-score",
       "individualScore": 37.9,
-      "individualContribution": 19,
+      "individualContribution": 9.5,
       "individual": {
         "score": 37.9,
         "subskillRaw": 55.1,
@@ -222,8 +222,8 @@
           "技能概率S"
         ]
       },
-      "finalScore": 59.3,
-      "rank": 27,
+      "finalScore": 70,
+      "rank": 29,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -235,10 +235,10 @@
       "finalFormId": "9",
       "finalFormNameZh": "水箭龟",
       "speciesScore": 82.2,
-      "speciesContribution": 41.1,
+      "speciesContribution": 61.7,
       "speciesSource": "ingredient-species-score",
       "individualScore": 38.6,
-      "individualContribution": 19.3,
+      "individualContribution": 9.7,
       "individual": {
         "score": 38.6,
         "subskillRaw": 49.2,
@@ -324,7 +324,7 @@
           "技能等级M"
         ]
       },
-      "finalScore": 60.4,
+      "finalScore": 71.3,
       "rank": 23,
       "routeReason": null,
       "routeCandidates": null,
@@ -337,10 +337,10 @@
       "finalFormId": "9",
       "finalFormNameZh": "水箭龟",
       "speciesScore": 82.2,
-      "speciesContribution": 41.1,
+      "speciesContribution": 61.7,
       "speciesSource": "ingredient-species-score",
       "individualScore": 38.6,
-      "individualContribution": 19.3,
+      "individualContribution": 9.7,
       "individual": {
         "score": 38.6,
         "subskillRaw": 55.1,
@@ -425,7 +425,7 @@
           "树果数量S"
         ]
       },
-      "finalScore": 60.4,
+      "finalScore": 71.3,
       "rank": 24,
       "routeReason": null,
       "routeCandidates": null,
@@ -438,10 +438,10 @@
       "finalFormId": "12",
       "finalFormNameZh": "巴大蝶",
       "speciesScore": 77,
-      "speciesContribution": 38.5,
+      "speciesContribution": 57.8,
       "speciesSource": "berry-species-score",
       "individualScore": 23.1,
-      "individualContribution": 11.6,
+      "individualContribution": 5.8,
       "individual": {
         "score": 23.1,
         "subskillRaw": 19.9,
@@ -528,8 +528,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 50.1,
-      "rank": 46,
+      "finalScore": 63.5,
+      "rank": 47,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -541,10 +541,10 @@
       "finalFormId": "12",
       "finalFormNameZh": "巴大蝶",
       "speciesScore": 77,
-      "speciesContribution": 38.5,
+      "speciesContribution": 57.8,
       "speciesSource": "berry-species-score",
       "individualScore": 5.1,
-      "individualContribution": 2.6,
+      "individualContribution": 1.3,
       "individual": {
         "score": 5.1,
         "subskillRaw": 15.4,
@@ -632,8 +632,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 41.1,
-      "rank": 73,
+      "finalScore": 59,
+      "rank": 64,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -645,10 +645,10 @@
       "finalFormId": "20",
       "finalFormNameZh": "拉达",
       "speciesScore": 73.3,
-      "speciesContribution": 36.7,
+      "speciesContribution": 55,
       "speciesSource": "berry-species-score",
       "individualScore": 10.8,
-      "individualContribution": 5.4,
+      "individualContribution": 2.7,
       "individual": {
         "score": 10.8,
         "subskillRaw": 12.8,
@@ -734,8 +734,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 42.1,
-      "rank": 71,
+      "finalScore": 57.7,
+      "rank": 70,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -747,10 +747,10 @@
       "finalFormId": "9001-1",
       "finalFormNameZh": "皮卡丘（巫师帽）",
       "speciesScore": 76.6,
-      "speciesContribution": 38.3,
+      "speciesContribution": 57.5,
       "speciesSource": "berry-species-score",
       "individualScore": 5.5,
-      "individualContribution": 2.8,
+      "individualContribution": 1.4,
       "individual": {
         "score": 5.5,
         "subskillRaw": 11.9,
@@ -837,8 +837,8 @@
           "技能等级M"
         ]
       },
-      "finalScore": 41.1,
-      "rank": 74,
+      "finalScore": 58.8,
+      "rank": 65,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -850,10 +850,10 @@
       "finalFormId": "9002",
       "finalFormNameZh": "皮卡丘（佳节）",
       "speciesScore": 55.8,
-      "speciesContribution": 27.9,
+      "speciesContribution": 41.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 41.5,
-      "individualContribution": 20.8,
+      "individualContribution": 10.4,
       "individual": {
         "score": 41.5,
         "subskillRaw": 20.4,
@@ -936,8 +936,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 48.7,
-      "rank": 55,
+      "finalScore": 52.2,
+      "rank": 81,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -949,10 +949,10 @@
       "finalFormId": "26",
       "finalFormNameZh": "雷丘",
       "speciesScore": 87.5,
-      "speciesContribution": 43.8,
+      "speciesContribution": 65.6,
       "speciesSource": "berry-species-score",
       "individualScore": 5.9,
-      "individualContribution": 3,
+      "individualContribution": 1.5,
       "individual": {
         "score": 5.9,
         "subskillRaw": 8.5,
@@ -1035,8 +1035,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 46.7,
-      "rank": 62,
+      "finalScore": 67.1,
+      "rank": 38,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -1048,10 +1048,10 @@
       "finalFormId": "40",
       "finalFormNameZh": "胖可丁",
       "speciesScore": 78.8,
-      "speciesContribution": 39.4,
+      "speciesContribution": 59.1,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 9.6,
-      "individualContribution": 4.8,
+      "individualContribution": 2.4,
       "individual": {
         "score": 9.6,
         "subskillRaw": 11.3,
@@ -1134,8 +1134,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 44.2,
-      "rank": 68,
+      "finalScore": 61.5,
+      "rank": 58,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -1147,10 +1147,10 @@
       "finalFormId": "40",
       "finalFormNameZh": "胖可丁",
       "speciesScore": 78.8,
-      "speciesContribution": 39.4,
+      "speciesContribution": 59.1,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 61.9,
-      "individualContribution": 31,
+      "individualContribution": 15.5,
       "individual": {
         "score": 61.9,
         "subskillRaw": 45.6,
@@ -1233,8 +1233,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 70.4,
-      "rank": 4,
+      "finalScore": 74.6,
+      "rank": 14,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -1246,10 +1246,10 @@
       "finalFormId": "55",
       "finalFormNameZh": "哥达鸭",
       "speciesScore": 62.6,
-      "speciesContribution": 31.3,
+      "speciesContribution": 47,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 20.3,
-      "individualContribution": 10.2,
+      "individualContribution": 5.1,
       "individual": {
         "score": 20.3,
         "subskillRaw": 41.3,
@@ -1334,8 +1334,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 41.5,
-      "rank": 72,
+      "finalScore": 52,
+      "rank": 82,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1347,10 +1347,10 @@
       "finalFormId": "57",
       "finalFormNameZh": "火暴猴",
       "speciesScore": 75.6,
-      "speciesContribution": 37.8,
+      "speciesContribution": 56.7,
       "speciesSource": "berry-species-score",
       "individualScore": 5,
-      "individualContribution": 2.5,
+      "individualContribution": 1.3,
       "individual": {
         "score": 5,
         "subskillRaw": 8.4,
@@ -1437,8 +1437,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 40.3,
-      "rank": 76,
+      "finalScore": 58,
+      "rank": 68,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1450,7 +1450,7 @@
       "finalFormId": "59",
       "finalFormNameZh": "风速狗",
       "speciesScore": 60.4,
-      "speciesContribution": 30.2,
+      "speciesContribution": 45.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 0,
       "individualContribution": 0,
@@ -1536,7 +1536,7 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 30.2,
+      "finalScore": 45.3,
       "rank": 94,
       "routeReason": null,
       "routeCandidates": null,
@@ -1549,10 +1549,10 @@
       "finalFormId": "71",
       "finalFormNameZh": "大食花",
       "speciesScore": 74.6,
-      "speciesContribution": 37.3,
+      "speciesContribution": 56,
       "speciesSource": "ingredient-species-score",
       "individualScore": 43.6,
-      "individualContribution": 21.8,
+      "individualContribution": 10.9,
       "individual": {
         "score": 43.6,
         "subskillRaw": 53.4,
@@ -1638,8 +1638,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 59.1,
-      "rank": 28,
+      "finalScore": 66.9,
+      "rank": 39,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1651,10 +1651,10 @@
       "finalFormId": "76",
       "finalFormNameZh": "隆隆岩",
       "speciesScore": 76.5,
-      "speciesContribution": 38.3,
+      "speciesContribution": 57.4,
       "speciesSource": "ingredient-species-score",
       "individualScore": 48.6,
-      "individualContribution": 24.3,
+      "individualContribution": 12.2,
       "individual": {
         "score": 48.6,
         "subskillRaw": 67,
@@ -1739,8 +1739,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 62.6,
-      "rank": 17,
+      "finalScore": 69.5,
+      "rank": 32,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1752,10 +1752,10 @@
       "finalFormId": "462",
       "finalFormNameZh": "自爆磁怪",
       "speciesScore": 64.4,
-      "speciesContribution": 32.2,
+      "speciesContribution": 48.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 12.2,
-      "individualContribution": 6.1,
+      "individualContribution": 3.1,
       "individual": {
         "score": 12.2,
         "subskillRaw": 15,
@@ -1840,8 +1840,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 38.3,
-      "rank": 86,
+      "finalScore": 51.4,
+      "rank": 84,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1853,10 +1853,10 @@
       "finalFormId": "462",
       "finalFormNameZh": "自爆磁怪",
       "speciesScore": 64.4,
-      "speciesContribution": 32.2,
+      "speciesContribution": 48.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 35.1,
-      "individualContribution": 17.6,
+      "individualContribution": 8.8,
       "individual": {
         "score": 35.1,
         "subskillRaw": 25.3,
@@ -1939,8 +1939,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 49.8,
-      "rank": 48,
+      "finalScore": 57.1,
+      "rank": 71,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -1952,10 +1952,10 @@
       "finalFormId": "83",
       "finalFormNameZh": "大葱鸭",
       "speciesScore": 58.7,
-      "speciesContribution": 29.4,
+      "speciesContribution": 44,
       "speciesSource": "ingredient-species-score",
       "individualScore": 19.1,
-      "individualContribution": 9.6,
+      "individualContribution": 4.8,
       "individual": {
         "score": 19.1,
         "subskillRaw": 54.5,
@@ -2041,8 +2041,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 38.9,
-      "rank": 82,
+      "finalScore": 48.8,
+      "rank": 90,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2054,10 +2054,10 @@
       "finalFormId": "94",
       "finalFormNameZh": "耿鬼",
       "speciesScore": 68.4,
-      "speciesContribution": 34.2,
+      "speciesContribution": 51.3,
       "speciesSource": "ingredient-species-score",
       "individualScore": 61,
-      "individualContribution": 30.5,
+      "individualContribution": 15.3,
       "individual": {
         "score": 61,
         "subskillRaw": 61.3,
@@ -2142,8 +2142,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 64.7,
-      "rank": 14,
+      "finalScore": 66.6,
+      "rank": 41,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2155,10 +2155,10 @@
       "finalFormId": "105",
       "finalFormNameZh": "嘎啦嘎啦",
       "speciesScore": 69.9,
-      "speciesContribution": 35,
+      "speciesContribution": 52.4,
       "speciesSource": "berry-species-score",
       "individualScore": 10.7,
-      "individualContribution": 5.4,
+      "individualContribution": 2.7,
       "individual": {
         "score": 10.7,
         "subskillRaw": 15.3,
@@ -2244,8 +2244,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 40.3,
-      "rank": 77,
+      "finalScore": 55.1,
+      "rank": 76,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2257,10 +2257,10 @@
       "finalFormId": "122",
       "finalFormNameZh": "魔墙人偶",
       "speciesScore": 68.4,
-      "speciesContribution": 34.2,
+      "speciesContribution": 51.3,
       "speciesSource": "ingredient-species-score",
       "individualScore": 45.5,
-      "individualContribution": 22.8,
+      "individualContribution": 11.4,
       "individual": {
         "score": 45.5,
         "subskillRaw": 42.4,
@@ -2346,8 +2346,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 57,
-      "rank": 33,
+      "finalScore": 62.7,
+      "rank": 50,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2359,10 +2359,10 @@
       "finalFormId": "127",
       "finalFormNameZh": "凯罗斯",
       "speciesScore": 74.4,
-      "speciesContribution": 37.2,
+      "speciesContribution": 55.8,
       "speciesSource": "ingredient-species-score",
       "individualScore": 24.5,
-      "individualContribution": 12.3,
+      "individualContribution": 6.1,
       "individual": {
         "score": 24.5,
         "subskillRaw": 47.4,
@@ -2447,8 +2447,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 49.5,
-      "rank": 50,
+      "finalScore": 61.9,
+      "rank": 57,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2460,10 +2460,10 @@
       "finalFormId": "700",
       "finalFormNameZh": "仙子伊布",
       "speciesScore": 78.7,
-      "speciesContribution": 39.4,
+      "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 31.2,
-      "individualContribution": 15.6,
+      "individualContribution": 7.8,
       "individual": {
         "score": 31.2,
         "subskillRaw": 44.5,
@@ -2546,8 +2546,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 55,
-      "rank": 37,
+      "finalScore": 66.8,
+      "rank": 40,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -2600,10 +2600,10 @@
       "finalFormId": "700",
       "finalFormNameZh": "仙子伊布",
       "speciesScore": 78.7,
-      "speciesContribution": 39.4,
+      "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 7.4,
-      "individualContribution": 3.7,
+      "individualContribution": 1.9,
       "individual": {
         "score": 7.4,
         "subskillRaw": 8,
@@ -2688,8 +2688,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 43.1,
-      "rank": 70,
+      "finalScore": 60.9,
+      "rank": 62,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -2742,10 +2742,10 @@
       "finalFormId": "700",
       "finalFormNameZh": "仙子伊布",
       "speciesScore": 78.7,
-      "speciesContribution": 39.4,
+      "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 19.6,
-      "individualContribution": 9.8,
+      "individualContribution": 4.9,
       "individual": {
         "score": 19.6,
         "subskillRaw": 29.5,
@@ -2830,8 +2830,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 49.2,
-      "rank": 51,
+      "finalScore": 63.9,
+      "rank": 46,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -2884,10 +2884,10 @@
       "finalFormId": "700",
       "finalFormNameZh": "仙子伊布",
       "speciesScore": 78.7,
-      "speciesContribution": 39.4,
+      "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 42,
-      "individualContribution": 21,
+      "individualContribution": 10.5,
       "individual": {
         "score": 42,
         "subskillRaw": 36.2,
@@ -2970,8 +2970,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 60.4,
-      "rank": 25,
+      "finalScore": 69.5,
+      "rank": 31,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -3024,10 +3024,10 @@
       "finalFormId": "9005",
       "finalFormNameZh": "伊布（万圣节）",
       "speciesScore": 61,
-      "speciesContribution": 30.5,
+      "speciesContribution": 45.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 39,
-      "individualContribution": 19.5,
+      "individualContribution": 9.8,
       "individual": {
         "score": 39,
         "subskillRaw": 12.8,
@@ -3110,8 +3110,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 50,
-      "rank": 47,
+      "finalScore": 55.5,
+      "rank": 75,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -3123,10 +3123,10 @@
       "finalFormId": "9004",
       "finalFormNameZh": "伊布（佳节）",
       "speciesScore": 72.9,
-      "speciesContribution": 36.5,
+      "speciesContribution": 54.7,
       "speciesSource": "berry-species-score",
       "individualScore": 3.9,
-      "individualContribution": 2,
+      "individualContribution": 1,
       "individual": {
         "score": 3.9,
         "subskillRaw": 9.6,
@@ -3212,8 +3212,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 38.4,
-      "rank": 85,
+      "finalScore": 55.7,
+      "rank": 74,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3225,10 +3225,10 @@
       "finalFormId": "9004",
       "finalFormNameZh": "伊布（佳节）",
       "speciesScore": 72.9,
-      "speciesContribution": 36.5,
+      "speciesContribution": 54.7,
       "speciesSource": "berry-species-score",
       "individualScore": 5.5,
-      "individualContribution": 2.8,
+      "individualContribution": 1.4,
       "individual": {
         "score": 5.5,
         "subskillRaw": 14.6,
@@ -3314,8 +3314,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 39.2,
-      "rank": 79,
+      "finalScore": 56.1,
+      "rank": 72,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3327,10 +3327,10 @@
       "finalFormId": "134",
       "finalFormNameZh": "水伊布",
       "speciesScore": 62.3,
-      "speciesContribution": 31.2,
+      "speciesContribution": 46.7,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 12.8,
-      "individualContribution": 6.4,
+      "individualContribution": 3.2,
       "individual": {
         "score": 12.8,
         "subskillRaw": 18.3,
@@ -3413,8 +3413,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 37.6,
-      "rank": 89,
+      "finalScore": 49.9,
+      "rank": 87,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -3426,10 +3426,10 @@
       "finalFormId": "149",
       "finalFormNameZh": "快龙",
       "speciesScore": 92.2,
-      "speciesContribution": 46.1,
+      "speciesContribution": 69.2,
       "speciesSource": "ingredient-species-score",
       "individualScore": 65,
-      "individualContribution": 32.5,
+      "individualContribution": 16.3,
       "individual": {
         "score": 65,
         "subskillRaw": 50,
@@ -3515,8 +3515,8 @@
           "技能等级M"
         ]
       },
-      "finalScore": 78.6,
-      "rank": 1,
+      "finalScore": 85.4,
+      "rank": 2,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3528,10 +3528,10 @@
       "finalFormId": "160",
       "finalFormNameZh": "大力鳄",
       "speciesScore": 83.1,
-      "speciesContribution": 41.6,
+      "speciesContribution": 62.3,
       "speciesSource": "berry-species-score",
       "individualScore": 14.9,
-      "individualContribution": 7.5,
+      "individualContribution": 3.7,
       "individual": {
         "score": 14.9,
         "subskillRaw": 21.3,
@@ -3618,8 +3618,8 @@
           "持有上限M"
         ]
       },
-      "finalScore": 49,
-      "rank": 52,
+      "finalScore": 66.1,
+      "rank": 42,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3631,10 +3631,10 @@
       "finalFormId": "36",
       "finalFormNameZh": "皮可西",
       "speciesScore": 77.9,
-      "speciesContribution": 39,
+      "speciesContribution": 58.4,
       "speciesSource": "berry-species-score",
       "individualScore": 15.8,
-      "individualContribution": 7.9,
+      "individualContribution": 4,
       "individual": {
         "score": 15.8,
         "subskillRaw": 9.4,
@@ -3721,8 +3721,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 46.9,
-      "rank": 59,
+      "finalScore": 62.4,
+      "rank": 52,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3734,10 +3734,10 @@
       "finalFormId": "181",
       "finalFormNameZh": "电龙",
       "speciesScore": 68.1,
-      "speciesContribution": 34.1,
+      "speciesContribution": 51.1,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 12.1,
-      "individualContribution": 6.1,
+      "individualContribution": 3,
       "individual": {
         "score": 12.1,
         "subskillRaw": 29.5,
@@ -3822,7 +3822,7 @@
           "树果数量S"
         ]
       },
-      "finalScore": 40.1,
+      "finalScore": 54.1,
       "rank": 78,
       "routeReason": null,
       "routeCandidates": null,
@@ -3835,10 +3835,10 @@
       "finalFormId": "185",
       "finalFormNameZh": "树才怪",
       "speciesScore": 64.8,
-      "speciesContribution": 32.4,
+      "speciesContribution": 48.6,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 56.1,
-      "individualContribution": 28.1,
+      "individualContribution": 14,
       "individual": {
         "score": 56.1,
         "subskillRaw": 41.3,
@@ -3923,8 +3923,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 60.5,
-      "rank": 21,
+      "finalScore": 62.6,
+      "rank": 51,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3936,10 +3936,10 @@
       "finalFormId": "195",
       "finalFormNameZh": "沼王",
       "speciesScore": 61,
-      "speciesContribution": 30.5,
+      "speciesContribution": 45.8,
       "speciesSource": "ingredient-species-score",
       "individualScore": 29.7,
-      "individualContribution": 14.9,
+      "individualContribution": 7.4,
       "individual": {
         "score": 29.7,
         "subskillRaw": 49.8,
@@ -4025,8 +4025,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 45.4,
-      "rank": 66,
+      "finalScore": 53.2,
+      "rank": 80,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4038,10 +4038,10 @@
       "finalFormId": "196",
       "finalFormNameZh": "太阳伊布",
       "speciesScore": 75.7,
-      "speciesContribution": 37.9,
+      "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 33.1,
-      "individualContribution": 16.6,
+      "individualContribution": 8.3,
       "individual": {
         "score": 33.1,
         "subskillRaw": 47.3,
@@ -4126,8 +4126,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 54.4,
-      "rank": 39,
+      "finalScore": 65.1,
+      "rank": 45,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4139,7 +4139,7 @@
       "finalFormId": "199",
       "finalFormNameZh": "呆呆王",
       "speciesScore": 57.7,
-      "speciesContribution": 28.9,
+      "speciesContribution": 43.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 0,
       "individualContribution": 0,
@@ -4225,7 +4225,7 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 28.9,
+      "finalScore": 43.3,
       "rank": 95,
       "routeReason": null,
       "routeCandidates": null,
@@ -4238,10 +4238,10 @@
       "finalFormId": "202",
       "finalFormNameZh": "果然翁",
       "speciesScore": 62.8,
-      "speciesContribution": 31.4,
+      "speciesContribution": 47.1,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 8.8,
-      "individualContribution": 4.4,
+      "individualContribution": 2.2,
       "individual": {
         "score": 8.8,
         "subskillRaw": 12.5,
@@ -4324,8 +4324,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 35.8,
-      "rank": 91,
+      "finalScore": 49.3,
+      "rank": 88,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -4337,10 +4337,10 @@
       "finalFormId": "229",
       "finalFormNameZh": "黑鲁加",
       "speciesScore": 75.8,
-      "speciesContribution": 37.9,
+      "speciesContribution": 56.9,
       "speciesSource": "berry-species-score",
       "individualScore": 22,
-      "individualContribution": 11,
+      "individualContribution": 5.5,
       "individual": {
         "score": 22,
         "subskillRaw": 31.4,
@@ -4425,8 +4425,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 48.9,
-      "rank": 54,
+      "finalScore": 62.4,
+      "rank": 53,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4438,10 +4438,10 @@
       "finalFormId": "244",
       "finalFormNameZh": "炎帝",
       "speciesScore": 75.7,
-      "speciesContribution": 37.9,
+      "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 17.8,
-      "individualContribution": 8.9,
+      "individualContribution": 4.5,
       "individual": {
         "score": 17.8,
         "subskillRaw": 25.4,
@@ -4524,8 +4524,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 46.8,
-      "rank": 61,
+      "finalScore": 61.2,
+      "rank": 59,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -4537,10 +4537,10 @@
       "finalFormId": "248",
       "finalFormNameZh": "班基拉斯",
       "speciesScore": 86.4,
-      "speciesContribution": 43.2,
+      "speciesContribution": 64.8,
       "speciesSource": "ingredient-species-score",
       "individualScore": 4.8,
-      "individualContribution": 2.4,
+      "individualContribution": 1.2,
       "individual": {
         "score": 4.8,
         "subskillRaw": 48.6,
@@ -4626,8 +4626,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 45.6,
-      "rank": 65,
+      "finalScore": 66,
+      "rank": 43,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4639,10 +4639,10 @@
       "finalFormId": "248",
       "finalFormNameZh": "班基拉斯",
       "speciesScore": 86.4,
-      "speciesContribution": 43.2,
+      "speciesContribution": 64.8,
       "speciesSource": "ingredient-species-score",
       "individualScore": 21.1,
-      "individualContribution": 10.6,
+      "individualContribution": 5.3,
       "individual": {
         "score": 21.1,
         "subskillRaw": 37.7,
@@ -4730,8 +4730,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 53.8,
-      "rank": 40,
+      "finalScore": 70.1,
+      "rank": 27,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4743,10 +4743,10 @@
       "finalFormId": "254",
       "finalFormNameZh": "蜥蜴王",
       "speciesScore": 85.9,
-      "speciesContribution": 43,
+      "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 19.3,
-      "individualContribution": 9.7,
+      "individualContribution": 4.8,
       "individual": {
         "score": 19.3,
         "subskillRaw": 29.1,
@@ -4829,8 +4829,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 52.6,
-      "rank": 42,
+      "finalScore": 69.3,
+      "rank": 33,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -4842,10 +4842,10 @@
       "finalFormId": "260",
       "finalFormNameZh": "巨沼怪",
       "speciesScore": 88.5,
-      "speciesContribution": 44.3,
+      "speciesContribution": 66.4,
       "speciesSource": "berry-species-score",
       "individualScore": 29.4,
-      "individualContribution": 14.7,
+      "individualContribution": 7.4,
       "individual": {
         "score": 29.4,
         "subskillRaw": 39.5,
@@ -4931,8 +4931,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 59,
-      "rank": 29,
+      "finalScore": 73.7,
+      "rank": 18,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4944,10 +4944,10 @@
       "finalFormId": "282",
       "finalFormNameZh": "沙奈朵",
       "speciesScore": 85.7,
-      "speciesContribution": 42.9,
+      "speciesContribution": 64.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 42.7,
-      "individualContribution": 21.4,
+      "individualContribution": 10.7,
       "individual": {
         "score": 42.7,
         "subskillRaw": 36.2,
@@ -5030,8 +5030,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 64.2,
-      "rank": 16,
+      "finalScore": 75,
+      "rank": 13,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5043,7 +5043,7 @@
       "finalFormId": "317",
       "finalFormNameZh": "吞食兽",
       "speciesScore": 65,
-      "speciesContribution": 32.5,
+      "speciesContribution": 48.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 0.2,
       "individualContribution": 0.1,
@@ -5131,8 +5131,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 32.6,
-      "rank": 92,
+      "finalScore": 48.8,
+      "rank": 89,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5144,10 +5144,10 @@
       "finalFormId": "334",
       "finalFormNameZh": "七夕青鸟",
       "speciesScore": 76.3,
-      "speciesContribution": 38.2,
+      "speciesContribution": 57.2,
       "speciesSource": "berry-species-score",
       "individualScore": 10.6,
-      "individualContribution": 5.3,
+      "individualContribution": 2.7,
       "individual": {
         "score": 10.6,
         "subskillRaw": 19.1,
@@ -5235,8 +5235,8 @@
           "持有上限M"
         ]
       },
-      "finalScore": 43.4,
-      "rank": 69,
+      "finalScore": 59.9,
+      "rank": 63,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5248,10 +5248,10 @@
       "finalFormId": "365",
       "finalFormNameZh": "帝牙海狮",
       "speciesScore": 82.7,
-      "speciesContribution": 41.4,
+      "speciesContribution": 62,
       "speciesSource": "berry-species-score",
       "individualScore": 14.1,
-      "individualContribution": 7.1,
+      "individualContribution": 3.5,
       "individual": {
         "score": 14.1,
         "subskillRaw": 16.2,
@@ -5337,8 +5337,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 48.4,
-      "rank": 56,
+      "finalScore": 65.6,
+      "rank": 44,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5350,10 +5350,10 @@
       "finalFormId": "380",
       "finalFormNameZh": "拉帝亚斯",
       "speciesScore": 75.7,
-      "speciesContribution": 37.9,
+      "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 22.2,
-      "individualContribution": 11.1,
+      "individualContribution": 5.6,
       "individual": {
         "score": 22.2,
         "subskillRaw": 31.7,
@@ -5436,8 +5436,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 49,
-      "rank": 53,
+      "finalScore": 62.3,
+      "rank": 54,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5449,10 +5449,10 @@
       "finalFormId": "389",
       "finalFormNameZh": "土台龟",
       "speciesScore": 83.7,
-      "speciesContribution": 41.9,
+      "speciesContribution": 62.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 38.6,
-      "individualContribution": 19.3,
+      "individualContribution": 9.7,
       "individual": {
         "score": 38.6,
         "subskillRaw": 16.3,
@@ -5535,7 +5535,7 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 61.2,
+      "finalScore": 72.4,
       "rank": 19,
       "routeReason": null,
       "routeCandidates": null,
@@ -5548,10 +5548,10 @@
       "finalFormId": "426",
       "finalFormNameZh": "随风球",
       "speciesScore": 64.1,
-      "speciesContribution": 32.1,
+      "speciesContribution": 48.1,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 0.3,
-      "individualContribution": 0.2,
+      "individualContribution": 0.1,
       "individual": {
         "score": 0.3,
         "subskillRaw": 11.5,
@@ -5634,8 +5634,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 32.2,
-      "rank": 93,
+      "finalScore": 48.2,
+      "rank": 92,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5647,10 +5647,10 @@
       "finalFormId": "460",
       "finalFormNameZh": "暴雪王",
       "speciesScore": 72.8,
-      "speciesContribution": 36.4,
+      "speciesContribution": 54.6,
       "speciesSource": "ingredient-species-score",
       "individualScore": 4.7,
-      "individualContribution": 2.4,
+      "individualContribution": 1.2,
       "individual": {
         "score": 4.7,
         "subskillRaw": 20.7,
@@ -5737,8 +5737,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 38.8,
-      "rank": 83,
+      "finalScore": 55.8,
+      "rank": 73,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5750,7 +5750,7 @@
       "finalFormId": "628",
       "finalFormNameZh": "勇士雄鹰",
       "speciesScore": 77.2,
-      "speciesContribution": 38.6,
+      "speciesContribution": 57.9,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 0,
       "individualContribution": 0,
@@ -5836,8 +5836,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 38.6,
-      "rank": 84,
+      "finalScore": 57.9,
+      "rank": 69,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5849,10 +5849,10 @@
       "finalFormId": "628",
       "finalFormNameZh": "勇士雄鹰",
       "speciesScore": 77.2,
-      "speciesContribution": 38.6,
+      "speciesContribution": 57.9,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 16.4,
-      "individualContribution": 8.2,
+      "individualContribution": 4.1,
       "individual": {
         "score": 16.4,
         "subskillRaw": 23.4,
@@ -5935,8 +5935,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 46.8,
-      "rank": 60,
+      "finalScore": 62,
+      "rank": 56,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5948,10 +5948,10 @@
       "finalFormId": "701",
       "finalFormNameZh": "摔角鹰人",
       "speciesScore": 61.7,
-      "speciesContribution": 30.9,
+      "speciesContribution": 46.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 35,
-      "individualContribution": 17.5,
+      "individualContribution": 8.8,
       "individual": {
         "score": 35,
         "subskillRaw": 50,
@@ -6034,8 +6034,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 48.4,
-      "rank": 57,
+      "finalScore": 55,
+      "rank": 77,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6047,10 +6047,10 @@
       "finalFormId": "702",
       "finalFormNameZh": "咚咚鼠",
       "speciesScore": 89.8,
-      "speciesContribution": 44.9,
+      "speciesContribution": 67.4,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 43.4,
-      "individualContribution": 21.7,
+      "individualContribution": 10.9,
       "individual": {
         "score": 43.4,
         "subskillRaw": 38.2,
@@ -6133,8 +6133,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 66.6,
-      "rank": 11,
+      "finalScore": 78.2,
+      "rank": 4,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6146,10 +6146,10 @@
       "finalFormId": "760",
       "finalFormNameZh": "穿着熊",
       "speciesScore": 75.4,
-      "speciesContribution": 37.7,
+      "speciesContribution": 56.6,
       "speciesSource": "ingredient-species-score",
       "individualScore": 6.2,
-      "individualContribution": 3.1,
+      "individualContribution": 1.6,
       "individual": {
         "score": 6.2,
         "subskillRaw": 26.1,
@@ -6235,8 +6235,8 @@
           "技能等级M"
         ]
       },
-      "finalScore": 40.8,
-      "rank": 75,
+      "finalScore": 58.1,
+      "rank": 67,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6248,10 +6248,10 @@
       "finalFormId": "306",
       "finalFormNameZh": "波士可多拉",
       "speciesScore": 82.3,
-      "speciesContribution": 41.2,
+      "speciesContribution": 61.7,
       "speciesSource": "ingredient-species-score",
       "individualScore": 38.4,
-      "individualContribution": 19.2,
+      "individualContribution": 9.6,
       "individual": {
         "score": 38.4,
         "subskillRaw": 54.8,
@@ -6337,7 +6337,7 @@
           "技能等级M"
         ]
       },
-      "finalScore": 60.4,
+      "finalScore": 71.3,
       "rank": 22,
       "routeReason": null,
       "routeCandidates": null,
@@ -6364,10 +6364,10 @@
       "finalFormId": "157",
       "finalFormNameZh": "火爆兽",
       "speciesScore": 88.7,
-      "speciesContribution": 44.4,
+      "speciesContribution": 66.5,
       "speciesSource": "berry-species-score",
       "individualScore": 46.2,
-      "individualContribution": 23.1,
+      "individualContribution": 11.6,
       "individual": {
         "score": 46.2,
         "subskillRaw": 39.9,
@@ -6452,8 +6452,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 67.5,
-      "rank": 10,
+      "finalScore": 78.1,
+      "rank": 5,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6465,10 +6465,10 @@
       "finalFormId": "195",
       "finalFormNameZh": "沼王",
       "speciesScore": 61,
-      "speciesContribution": 30.5,
+      "speciesContribution": 45.8,
       "speciesSource": "ingredient-species-score",
       "individualScore": 31.2,
-      "individualContribution": 15.6,
+      "individualContribution": 7.8,
       "individual": {
         "score": 31.2,
         "subskillRaw": 55.7,
@@ -6554,8 +6554,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 46.1,
-      "rank": 64,
+      "finalScore": 53.6,
+      "rank": 79,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6567,10 +6567,10 @@
       "finalFormId": "980",
       "finalFormNameZh": "土王",
       "speciesScore": 64,
-      "speciesContribution": 32,
+      "speciesContribution": 48,
       "speciesSource": "ingredient-species-score",
       "individualScore": 11.5,
-      "individualContribution": 5.8,
+      "individualContribution": 2.9,
       "individual": {
         "score": 11.5,
         "subskillRaw": 56.7,
@@ -6656,8 +6656,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 37.8,
-      "rank": 88,
+      "finalScore": 50.9,
+      "rank": 85,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6669,10 +6669,10 @@
       "finalFormId": "243",
       "finalFormNameZh": "雷公",
       "speciesScore": 75.4,
-      "speciesContribution": 37.7,
+      "speciesContribution": 56.6,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 17.8,
-      "individualContribution": 8.9,
+      "individualContribution": 4.5,
       "individual": {
         "score": 17.8,
         "subskillRaw": 25.4,
@@ -6755,8 +6755,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 46.6,
-      "rank": 63,
+      "finalScore": 61,
+      "rank": 60,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6768,10 +6768,10 @@
       "finalFormId": "245",
       "finalFormNameZh": "水君",
       "speciesScore": 78.1,
-      "speciesContribution": 39.1,
+      "speciesContribution": 58.6,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 46.4,
-      "individualContribution": 23.2,
+      "individualContribution": 11.6,
       "individual": {
         "score": 46.4,
         "subskillRaw": 42.4,
@@ -6854,8 +6854,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 62.3,
-      "rank": 18,
+      "finalScore": 70.2,
+      "rank": 26,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6867,10 +6867,10 @@
       "finalFormId": "245",
       "finalFormNameZh": "水君",
       "speciesScore": 78.1,
-      "speciesContribution": 39.1,
+      "speciesContribution": 58.6,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 17.8,
-      "individualContribution": 8.9,
+      "individualContribution": 4.5,
       "individual": {
         "score": 17.8,
         "subskillRaw": 25.4,
@@ -6953,8 +6953,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 47.9,
-      "rank": 58,
+      "finalScore": 63,
+      "rank": 49,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6966,10 +6966,10 @@
       "finalFormId": "254",
       "finalFormNameZh": "蜥蜴王",
       "speciesScore": 85.9,
-      "speciesContribution": 43,
+      "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 42.5,
-      "individualContribution": 21.3,
+      "individualContribution": 10.6,
       "individual": {
         "score": 42.5,
         "subskillRaw": 17.8,
@@ -7054,8 +7054,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 64.2,
-      "rank": 15,
+      "finalScore": 75.1,
+      "rank": 12,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7067,10 +7067,10 @@
       "finalFormId": "254",
       "finalFormNameZh": "蜥蜴王",
       "speciesScore": 85.9,
-      "speciesContribution": 43,
+      "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 50,
-      "individualContribution": 25,
+      "individualContribution": 12.5,
       "individual": {
         "score": 50,
         "subskillRaw": 30.1,
@@ -7153,8 +7153,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 68,
-      "rank": 9,
+      "finalScore": 76.9,
+      "rank": 7,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -7166,10 +7166,10 @@
       "finalFormId": "254",
       "finalFormNameZh": "蜥蜴王",
       "speciesScore": 85.9,
-      "speciesContribution": 43,
+      "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 27.4,
-      "individualContribution": 13.7,
+      "individualContribution": 6.9,
       "individual": {
         "score": 27.4,
         "subskillRaw": 39.2,
@@ -7254,8 +7254,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 56.7,
-      "rank": 34,
+      "finalScore": 71.3,
+      "rank": 21,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7267,10 +7267,10 @@
       "finalFormId": "257",
       "finalFormNameZh": "火焰鸡",
       "speciesScore": 89.7,
-      "speciesContribution": 44.9,
+      "speciesContribution": 67.3,
       "speciesSource": "berry-species-score",
       "individualScore": 42.9,
-      "individualContribution": 21.5,
+      "individualContribution": 10.7,
       "individual": {
         "score": 42.9,
         "subskillRaw": 48.1,
@@ -7357,8 +7357,8 @@
           "技能等级M"
         ]
       },
-      "finalScore": 66.3,
-      "rank": 12,
+      "finalScore": 78,
+      "rank": 6,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7370,10 +7370,10 @@
       "finalFormId": "282",
       "finalFormNameZh": "沙奈朵",
       "speciesScore": 85.7,
-      "speciesContribution": 42.9,
+      "speciesContribution": 64.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 50.5,
-      "individualContribution": 25.3,
+      "individualContribution": 12.6,
       "individual": {
         "score": 50.5,
         "subskillRaw": 48.3,
@@ -7456,7 +7456,7 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 68.1,
+      "finalScore": 76.9,
       "rank": 8,
       "routeReason": null,
       "routeCandidates": null,
@@ -7469,10 +7469,10 @@
       "finalFormId": "330",
       "finalFormNameZh": "沙漠蜻蜓",
       "speciesScore": 67.3,
-      "speciesContribution": 33.7,
+      "speciesContribution": 50.5,
       "speciesSource": "ingredient-species-score",
       "individualScore": 42,
-      "individualContribution": 21,
+      "individualContribution": 10.5,
       "individual": {
         "score": 42,
         "subskillRaw": 40.1,
@@ -7558,8 +7558,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 54.7,
-      "rank": 38,
+      "finalScore": 61,
+      "rank": 61,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7571,10 +7571,10 @@
       "finalFormId": "9006",
       "finalFormNameZh": "海豹球（佳节）",
       "speciesScore": 79.1,
-      "speciesContribution": 39.6,
+      "speciesContribution": 59.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 10.7,
-      "individualContribution": 5.4,
+      "individualContribution": 2.7,
       "individual": {
         "score": 10.7,
         "subskillRaw": 15.3,
@@ -7657,8 +7657,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 44.9,
-      "rank": 67,
+      "finalScore": 62,
+      "rank": 55,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -7670,10 +7670,10 @@
       "finalFormId": "365",
       "finalFormNameZh": "帝牙海狮",
       "speciesScore": 82.7,
-      "speciesContribution": 41.4,
+      "speciesContribution": 62,
       "speciesSource": "berry-species-score",
       "individualScore": 48.9,
-      "individualContribution": 24.5,
+      "individualContribution": 12.2,
       "individual": {
         "score": 48.9,
         "subskillRaw": 42.8,
@@ -7758,8 +7758,8 @@
           "技能等级M"
         ]
       },
-      "finalScore": 65.8,
-      "rank": 13,
+      "finalScore": 74.3,
+      "rank": 16,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7771,10 +7771,10 @@
       "finalFormId": "365",
       "finalFormNameZh": "帝牙海狮",
       "speciesScore": 82.7,
-      "speciesContribution": 41.4,
+      "speciesContribution": 62,
       "speciesSource": "berry-species-score",
       "individualScore": 32.1,
-      "individualContribution": 16.1,
+      "individualContribution": 8,
       "individual": {
         "score": 32.1,
         "subskillRaw": 45.9,
@@ -7859,8 +7859,8 @@
           "技能等级M"
         ]
       },
-      "finalScore": 57.4,
-      "rank": 32,
+      "finalScore": 70.1,
+      "rank": 28,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7872,10 +7872,10 @@
       "finalFormId": "365",
       "finalFormNameZh": "帝牙海狮",
       "speciesScore": 82.7,
-      "speciesContribution": 41.4,
+      "speciesContribution": 62,
       "speciesSource": "berry-species-score",
       "individualScore": 38.5,
-      "individualContribution": 19.3,
+      "individualContribution": 9.6,
       "individual": {
         "score": 38.5,
         "subskillRaw": 37.8,
@@ -7960,7 +7960,7 @@
           "技能概率M"
         ]
       },
-      "finalScore": 60.6,
+      "finalScore": 71.7,
       "rank": 20,
       "routeReason": null,
       "routeCandidates": null,
@@ -7973,10 +7973,10 @@
       "finalFormId": "365",
       "finalFormNameZh": "帝牙海狮",
       "speciesScore": 82.7,
-      "speciesContribution": 41.4,
+      "speciesContribution": 62,
       "speciesSource": "berry-species-score",
       "individualScore": 57.3,
-      "individualContribution": 28.7,
+      "individualContribution": 14.3,
       "individual": {
         "score": 57.3,
         "subskillRaw": 64.7,
@@ -8059,8 +8059,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 70,
-      "rank": 6,
+      "finalScore": 76.4,
+      "rank": 9,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8072,10 +8072,10 @@
       "finalFormId": "380",
       "finalFormNameZh": "拉帝亚斯",
       "speciesScore": 75.7,
-      "speciesContribution": 37.9,
+      "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 43.6,
-      "individualContribution": 21.8,
+      "individualContribution": 10.9,
       "individual": {
         "score": 43.6,
         "subskillRaw": 42.4,
@@ -8158,8 +8158,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 59.7,
-      "rank": 26,
+      "finalScore": 67.7,
+      "rank": 36,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8171,10 +8171,10 @@
       "finalFormId": "381",
       "finalFormNameZh": "拉帝欧斯",
       "speciesScore": 93.9,
-      "speciesContribution": 47,
+      "speciesContribution": 70.4,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 60.4,
-      "individualContribution": 30.2,
+      "individualContribution": 15.1,
       "individual": {
         "score": 60.4,
         "subskillRaw": 43.4,
@@ -8257,8 +8257,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 77.2,
-      "rank": 2,
+      "finalScore": 85.5,
+      "rank": 1,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8270,10 +8270,10 @@
       "finalFormId": "389",
       "finalFormNameZh": "土台龟",
       "speciesScore": 83.7,
-      "speciesContribution": 41.9,
+      "speciesContribution": 62.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 33.1,
-      "individualContribution": 16.6,
+      "individualContribution": 8.3,
       "individual": {
         "score": 33.1,
         "subskillRaw": 47.3,
@@ -8358,8 +8358,8 @@
           "树果数量S"
         ]
       },
-      "finalScore": 58.4,
-      "rank": 30,
+      "finalScore": 71.1,
+      "rank": 25,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -8371,10 +8371,10 @@
       "finalFormId": "389",
       "finalFormNameZh": "土台龟",
       "speciesScore": 83.7,
-      "speciesContribution": 41.9,
+      "speciesContribution": 62.8,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 53.5,
-      "individualContribution": 26.8,
+      "individualContribution": 13.4,
       "individual": {
         "score": 53.5,
         "subskillRaw": 35.1,
@@ -8457,8 +8457,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 68.6,
-      "rank": 7,
+      "finalScore": 76.2,
+      "rank": 10,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8470,10 +8470,10 @@
       "finalFormId": "461",
       "finalFormNameZh": "玛狃拉",
       "speciesScore": 84.7,
-      "speciesContribution": 42.4,
+      "speciesContribution": 63.5,
       "speciesSource": "berry-species-score",
       "individualScore": 17.6,
-      "individualContribution": 8.8,
+      "individualContribution": 4.4,
       "individual": {
         "score": 17.6,
         "subskillRaw": 10.8,
@@ -8560,8 +8560,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 51.2,
-      "rank": 44,
+      "finalScore": 67.9,
+      "rank": 35,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -8573,10 +8573,10 @@
       "finalFormId": "462",
       "finalFormNameZh": "自爆磁怪",
       "speciesScore": 64.4,
-      "speciesContribution": 32.2,
+      "speciesContribution": 48.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 13.5,
-      "individualContribution": 6.8,
+      "individualContribution": 3.4,
       "individual": {
         "score": 13.5,
         "subskillRaw": 19.3,
@@ -8659,8 +8659,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 39,
-      "rank": 81,
+      "finalScore": 51.7,
+      "rank": 83,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8672,10 +8672,10 @@
       "finalFormId": "468",
       "finalFormNameZh": "波克基斯",
       "speciesScore": 55.1,
-      "speciesContribution": 27.6,
+      "speciesContribution": 41.3,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 19.3,
-      "individualContribution": 9.7,
+      "individualContribution": 4.8,
       "individual": {
         "score": 19.3,
         "subskillRaw": 27.6,
@@ -8758,8 +8758,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 37.2,
-      "rank": 90,
+      "finalScore": 46.2,
+      "rank": 93,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8771,10 +8771,10 @@
       "finalFormId": "471",
       "finalFormNameZh": "冰伊布",
       "speciesScore": 62.5,
-      "speciesContribution": 31.3,
+      "speciesContribution": 46.9,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 13.4,
-      "individualContribution": 6.7,
+      "individualContribution": 3.4,
       "individual": {
         "score": 13.4,
         "subskillRaw": 19.2,
@@ -8857,8 +8857,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 38,
-      "rank": 87,
+      "finalScore": 50.2,
+      "rank": 86,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8870,10 +8870,10 @@
       "finalFormId": "488",
       "finalFormNameZh": "克雷色利亚",
       "speciesScore": 92.3,
-      "speciesContribution": 46.2,
+      "speciesContribution": 69.2,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 23.9,
-      "individualContribution": 12,
+      "individualContribution": 6,
       "individual": {
         "score": 23.9,
         "subskillRaw": 34.2,
@@ -8956,8 +8956,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 58.1,
-      "rank": 31,
+      "finalScore": 75.2,
+      "rank": 11,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8969,10 +8969,10 @@
       "finalFormId": "488",
       "finalFormNameZh": "克雷色利亚",
       "speciesScore": 92.3,
-      "speciesContribution": 46.2,
+      "speciesContribution": 69.2,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 50.4,
-      "individualContribution": 25.2,
+      "individualContribution": 12.6,
       "individual": {
         "score": 50.4,
         "subskillRaw": 30.7,
@@ -9055,7 +9055,7 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 71.4,
+      "finalScore": 81.8,
       "rank": 3,
       "routeReason": null,
       "routeCandidates": null,
@@ -9068,10 +9068,10 @@
       "finalFormId": "488",
       "finalFormNameZh": "克雷色利亚",
       "speciesScore": 92.3,
-      "speciesContribution": 46.2,
+      "speciesContribution": 69.2,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 17.8,
-      "individualContribution": 8.9,
+      "individualContribution": 4.5,
       "individual": {
         "score": 17.8,
         "subskillRaw": 25.4,
@@ -9154,8 +9154,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 55.1,
-      "rank": 36,
+      "finalScore": 73.7,
+      "rank": 17,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -9181,10 +9181,10 @@
       "finalFormId": "700",
       "finalFormNameZh": "仙子伊布",
       "speciesScore": 78.7,
-      "speciesContribution": 39.4,
+      "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 61.9,
-      "individualContribution": 31,
+      "individualContribution": 15.5,
       "individual": {
         "score": 61.9,
         "subskillRaw": 49.5,
@@ -9267,8 +9267,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 70.3,
-      "rank": 5,
+      "finalScore": 74.5,
+      "rank": 15,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -9280,10 +9280,10 @@
       "finalFormId": "702",
       "finalFormNameZh": "咚咚鼠",
       "speciesScore": 89.8,
-      "speciesContribution": 44.9,
+      "speciesContribution": 67.4,
       "speciesSource": "team-calibrated-final-species-score",
       "individualScore": 9.3,
-      "individualContribution": 4.7,
+      "individualContribution": 2.3,
       "individual": {
         "score": 9.3,
         "subskillRaw": 13.3,
@@ -9366,8 +9366,8 @@
         "provisional": false,
         "provisionalItems": []
       },
-      "finalScore": 49.6,
-      "rank": 49,
+      "finalScore": 69.7,
+      "rank": 30,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -9379,10 +9379,10 @@
       "finalFormId": "760",
       "finalFormNameZh": "穿着熊",
       "speciesScore": 75.4,
-      "speciesContribution": 37.7,
+      "speciesContribution": 56.6,
       "speciesSource": "ingredient-species-score",
       "individualScore": 27,
-      "individualContribution": 13.5,
+      "individualContribution": 6.8,
       "individual": {
         "score": 27,
         "subskillRaw": 48.1,
@@ -9469,8 +9469,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 51.2,
-      "rank": 45,
+      "finalScore": 63.3,
+      "rank": 48,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -9482,10 +9482,10 @@
       "finalFormId": "764",
       "finalFormNameZh": "花疗环环",
       "speciesScore": 64.1,
-      "speciesContribution": 32.1,
+      "speciesContribution": 48.1,
       "speciesSource": "ingredient-species-score",
       "individualScore": 42.5,
-      "individualContribution": 21.3,
+      "individualContribution": 10.6,
       "individual": {
         "score": 42.5,
         "subskillRaw": 43.8,
@@ -9571,8 +9571,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 53.3,
-      "rank": 41,
+      "finalScore": 58.7,
+      "rank": 66,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -9584,10 +9584,10 @@
       "finalFormId": "845",
       "finalFormNameZh": "古月鸟",
       "speciesScore": 58.4,
-      "speciesContribution": 29.2,
+      "speciesContribution": 43.8,
       "speciesSource": "ingredient-species-score",
       "individualScore": 19.7,
-      "individualContribution": 9.9,
+      "individualContribution": 4.9,
       "individual": {
         "score": 19.7,
         "subskillRaw": 43.1,
@@ -9673,8 +9673,8 @@
           "持有上限L"
         ]
       },
-      "finalScore": 39.1,
-      "rank": 80,
+      "finalScore": 48.7,
+      "rank": 91,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -9686,10 +9686,10 @@
       "finalFormId": "911",
       "finalFormNameZh": "骨纹巨声鳄",
       "speciesScore": 83,
-      "speciesContribution": 41.5,
+      "speciesContribution": 62.3,
       "speciesSource": "ingredient-species-score",
       "individualScore": 20.9,
-      "individualContribution": 10.5,
+      "individualContribution": 5.2,
       "individual": {
         "score": 20.9,
         "subskillRaw": 40.1,
@@ -9776,8 +9776,8 @@
           "技能概率M"
         ]
       },
-      "finalScore": 52,
-      "rank": 43,
+      "finalScore": 67.5,
+      "rank": 37,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
