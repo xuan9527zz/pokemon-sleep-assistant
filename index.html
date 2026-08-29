@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./team-planner.css">
+<link rel="stylesheet" href="./ingredients.css">
 <title>Pokemon Sleep 助手</title>
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--ink:#18212f;--muted:#667085;--line:#dfe5ee;--green:#19b96b;--gold:#f3ad24;--blue:#2386e8;--red:#e85151}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}.wrap{max-width:1500px;margin:auto;padding:24px}.hero{background:linear-gradient(135deg,#116b42,#24c778);color:#fff;padding:26px;border-radius:18px;box-shadow:0 10px 30px #0b5d3830}.hero h1{margin:0 0 6px;font-size:28px}.hero p{margin:0;opacity:.9}.stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:12px;margin:16px 0}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px #1018280c}.stat{padding:15px}.stat b{display:block;font-size:25px}.stat span{color:var(--muted)}.panel{padding:15px}.filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(3,minmax(145px,1fr)) auto;gap:10px}.filters input,.filters select,.filters button{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;padding:8px 11px;font:inherit}.filters button{background:#18212f;color:#fff;cursor:pointer}.meta{color:var(--muted);margin:12px 2px}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 4px 14px #1018280c}table{width:100%;border-collapse:separate;border-spacing:0;min-width:1640px}th,td{padding:10px 11px;border-bottom:1px solid #edf0f5;text-align:left;vertical-align:top}th{position:sticky;top:0;z-index:2;background:#eef7f2;color:#185b3c;white-space:nowrap}tbody tr:hover{background:#fbfdfc}.shiny{display:inline-block;background:#fff3cd;color:#7b5200;border:1px solid #f4cf70;border-radius:999px;padding:1px 8px;font-weight:700}.normal{color:#7a8494}.tag{display:inline-block;border-radius:999px;padding:2px 8px;font-weight:700;white-space:nowrap}.high{background:#dcfce7;color:#08743d}.use{background:#dbeafe;color:#165ca9}.collect{background:#fef3c7;color:#8a5800}.keep{background:#eef2f6;color:#4f5c6d}.nowrap{white-space:nowrap}.muted{color:var(--muted)}footer{color:var(--muted);padding:18px 2px}.hide{display:none}@media(max-width:800px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.hero h1{font-size:22px}}@media print{body{background:#fff}.hero{box-shadow:none}.filters{display:none}.wrap{max-width:none;padding:0}.tablebox{box-shadow:none;overflow:visible}table{min-width:0;font-size:9px}th,td{padding:4px}.stats{grid-template-columns:repeat(4,1fr)}}
@@ -59,12 +60,20 @@
   </div>
   <div class="current-team-picker" id="currentTeamPicker" aria-label="当前队伍五个位置"></div>
   <p class="current-team-warning" id="currentTeamWarning" hidden></p>
+  <section class="current-team-saves" aria-labelledby="currentTeamSavesTitle">
+    <div class="current-team-saves-head">
+      <div><span>本机队伍收藏</span><h3 id="currentTeamSavesTitle">已保存队伍 <small id="currentTeamSavedCount">0／10</small></h3><p>保存五只个体及当前活力、好露营券设置；点击“切换”即可整队载入。</p></div>
+      <button id="currentTeamSave" type="button">保存当前队伍</button>
+    </div>
+    <p class="current-team-save-message" id="currentTeamSaveMessage" role="status" hidden></p>
+    <div class="current-team-saved-list" id="currentTeamSavedList"></div>
+  </section>
   <div class="current-team-summary" id="currentTeamSummary" aria-live="polite"></div>
   <div class="current-team-section-title"><h3>预计收获食材</h3><p>“每次”按页面给出的建议收菜间隔；“24小时”是假设全天维持该频率的期望值。</p></div>
   <div class="current-team-ingredients" id="currentTeamIngredients"></div>
   <div class="current-team-section-title"><h3>成员明细</h3><p>树果手满仓后仍会偷偷吃树果，但不会继续抽选食材与主技能。</p></div>
   <div class="current-team-members" id="currentTeamMembers"></div>
-  <p class="current-team-method">计算口径：页面记录的当前帮忙间隔已经包含个体等级、性格与自身速度副技能；模型额外计入当前队伍已解锁的“帮手奖励”、所选活力档位和好露营券。食材概率采用 <a href="https://pks.raenonx.cc/en/stats/base-rates" target="_blank" rel="noreferrer">RaenonX 研究快照</a>，并计入已解锁食材概率副技能及性格；概率不是官方公开值。好露营券按官方说明使用帮忙速度1.2倍、持有上限1.2倍。普通帮忙的已解锁食材栏暂按等机会估算；食材获取、食材精选、十项全能等主技能额外食材单独提示，不混入固定数量。</p>
+  <p class="current-team-method">计算口径：页面记录的当前帮忙间隔已经包含个体等级、性格与自身速度副技能；模型额外计入当前队伍已解锁的“帮手奖励”、所选活力档位和好露营券。食材概率采用 <a href="https://pks.raenonx.cc/en/stats/base-rates" target="_blank" rel="noreferrer">RaenonX 研究快照</a>，并计入已解锁食材概率副技能及性格；概率不是官方公开值。好露营券按官方说明使用帮忙速度1.2倍、持有上限1.2倍。普通帮忙的已解锁食材栏暂按等机会估算；食材获取、食材精选、十项全能等主技能额外食材单独提示，不混入固定数量。食材图标取自 <a href="https://game8.jp/pokemonsleep/542471" target="_blank" rel="noreferrer">Game8 食材资料</a>并保存在本地。</p>
 </section>
 <section class="panel event-guide" aria-labelledby="eventGuideTitle" data-page="events" hidden>
   <div class="guide-head"><div><h2 id="eventGuideTitle">近期活动周｜盒子专属计划</h2><p>当前活动、下次倒计时、队伍与前中后准备会一起显示。</p></div><span class="guide-stamp">官方公告快照 · 2026-08-23</span></div>
@@ -169,6 +178,7 @@
 </main>
 <script src="skills/pokemon-sleep-scoring/scripts/nature-scores.js"></script>
 <script src="box-scores.generated.js"></script>
+<script src="ingredients.js"></script>
 <script src="recipes.js"></script>
 <script src="team-production.generated.js"></script>
 <script src="team-planner.js"></script>
@@ -511,7 +521,9 @@ const recipeTypes=['全部','咖喱／浓汤','沙拉','点心／饮料'];
 let activeRecipeType='全部';
 const recipeEl=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el};
 const recipeClass=type=>type==='咖喱／浓汤'?'curry':type==='沙拉'?'salad':'dessert';
-const ingredientColor=name=>{const colors=['#e7902e','#28a66a','#8a63d2','#3b82c4','#d75b67','#b08b2f','#48a0a0'];let n=0;for(const char of name)n=(n*31+char.charCodeAt(0))>>>0;return colors[n%colors.length]};
+const ingredientIcons=window.POKEMON_SLEEP_INGREDIENTS;
+const decorateIngredients=root=>ingredientIcons?.decorate(root);
+const ingredientVisual=(name,suffix='')=>ingredientIcons?.create(name,{suffix})||document.createTextNode(`${name}${suffix}`);
 const ingredientUnlockLevels=[1,30,60];
 const parsePokemonIngredients=value=>value.split('／').map((slot,index)=>{const match=slot.match(/^(.+?)×(\d+)$/);return match?{name:match[1],amount:Number(match[2]),unlock:ingredientUnlockLevels[index]||60}:null}).filter(Boolean);
 const intervalInSeconds=value=>{const parts=value.split(':').map(Number);return parts.length===3?parts[0]*3600+parts[1]*60+parts[2]:parts[0]*60+parts[1]};
@@ -536,7 +548,7 @@ function renderIngredientRecommendations(ingredient){
   ingredientRecommendation.hidden=false;
   ingredientRecommendationTitle.textContent=`${ingredient}｜推荐 ${candidates.length} 只`;
   ingredientRecommendationHint.textContent=total?`从当前 97 只中找到 ${total} 只产手；按当前等级、SP、帮助间隔、已解锁槽位及食材／速度副技能排序。`:`当前 97 只中没有能采集“${ingredient}”的宝可梦。`;
-  if(!candidates.length){ingredientRecommendationGrid.replaceChildren(recipeEl('div','ingredient-rec-none',`当前盒子没有“${ingredient}”产手，请考虑捕捉或用食材券补充。`));return}
+  if(!candidates.length){ingredientRecommendationGrid.replaceChildren(recipeEl('div','ingredient-rec-none',`当前盒子没有“${ingredient}”产手，请考虑捕捉或用食材券补充。`));decorateIngredients(ingredientRecommendation);return}
   ingredientRecommendationGrid.replaceChildren(...candidates.map((entry,index)=>{
     const {mon,matching,current,traits}=entry,card=recipeEl('button','ingredient-rec-mon');card.type='button';card.dataset.mon=mon.id;
     const rank=recipeEl('span','ingredient-rec-rank',String(index+1)),name=recipeEl('b','',`#${mon.id} ${mon.name}`),role=specialtyBadge(mon,true),meta=recipeEl('small','',`Lv.${mon.lv} · SP ${Number(mon.sp).toLocaleString('zh-CN')} · 间隔 ${mon.interval}`);
@@ -544,6 +556,7 @@ function renderIngredientRecommendations(ingredient){
     const tierText=`种族${mon.speciesGrade}${mon.speciesPotential?'潜力':''}`,traitText=current.length?([tierText,...traits].slice(0,3).join(' · ')):`${tierText} · 目前未解锁，Lv.${matching.find(slot=>slot.unlock>Number(mon.lv))?.unlock||60} 可用`;
     const trait=recipeEl('span','ingredient-rec-traits',traitText);card.append(rank,name,role,meta,slots,trait);return card
   }));
+  decorateIngredients(ingredientRecommendation);
 }
 const recipeSearchText=recipe=>[recipe.name,recipe.type,recipe.energy,recipe.total,recipe.bonus,recipe.coefficient.toFixed(2),...recipe.ingredients.flatMap(item=>[item.name,recipeAliases[item.name]||''])].join(' ').toLowerCase();
 recipeTypes.forEach(type=>{const button=recipeEl('button','recipe-tab',`${type} ${type==='全部'?recipeData.length:recipeData.filter(r=>r.type===type).length}`);button.type='button';button.role='tab';button.dataset.recipeType=type;recipeTabs.append(button)});
@@ -574,10 +587,11 @@ function renderRecipes(){
     total.append(recipeEl('span','','所需锅容量'),recipeEl('b','',recipe.total?String(recipe.total):'任意'));
     stats.append(energy,coefficient,total);
     const list=recipeEl('div','ingredient-list');
-    if(recipe.ingredients.length)recipe.ingredients.forEach(item=>{const chip=recipeEl('button','ingredient-chip');chip.type='button';chip.dataset.ingredient=item.name;const dot=recipeEl('span','ingredient-dot');dot.style.setProperty('--dot',ingredientColor(item.name));chip.append(dot,document.createTextNode(`${item.name} ×${item.amount}`));list.append(chip)});else list.append(recipeEl('span','recipe-empty','任意食材；不会解锁固定食谱'));
+    if(recipe.ingredients.length)recipe.ingredients.forEach(item=>{const chip=recipeEl('button','ingredient-chip');chip.type='button';chip.dataset.ingredient=item.name;chip.append(ingredientVisual(item.name,` ×${item.amount}`));list.append(chip)});else list.append(recipeEl('span','recipe-empty','任意食材；不会解锁固定食谱'));
     const source=recipeEl('a','recipe-source','在 RaenonX 查看这道料理');source.href=`https://pks.raenonx.cc/zh/meal/${recipe.id}`;source.target='_blank';source.rel='noreferrer';
     card.append(head,stats,list,source);return card
   }));
+  decorateIngredients(recipeGrid);
 }
 recipeTabs.addEventListener('click',event=>{const button=event.target.closest('[data-recipe-type]');if(!button)return;activeRecipeType=button.dataset.recipeType;renderRecipes()});
 recipeQ.addEventListener('input',renderRecipes);recipeIngredient.addEventListener('change',renderRecipes);recipeSort.addEventListener('change',renderRecipes);
@@ -719,6 +733,7 @@ function renderIsland(i){
     document.querySelector('#islandAlternateTitle').textContent=`${alternate.kind==='special'?'特殊宝可梦':'无特殊宝可梦'}备选｜${alternate.label} · 指数 ${alternate.score.toLocaleString('zh-CN')}`;renderTeamGrid(document.querySelector('#islandAlternateTeam'),alternate,context);document.querySelector('#islandAlternateNote').textContent=alternate.kind==='special'?'适合想使用特殊宝可梦或触发特定技能联动时切换；若只追求本页预计产能，以主推荐为先。':'不占特殊位、波动更低的对照方案。';
   }else{alternateRoot.hidden=true;comparison.textContent='当前盒子没有可组成的特殊宝可梦备选队。'}
   document.querySelector('#islandNote').textContent=island.note;
+  decorateIngredients(document.querySelector('.island-guide'));
 }
 document.querySelector('.island-guide').addEventListener('click',e=>{const b=e.target.closest('[data-mon]');if(b)focusMon(b.dataset.mon)});
 document.querySelector('.event-guide').addEventListener('click',e=>{const b=e.target.closest('[data-mon]');if(b)focusMon(b.dataset.mon)});
@@ -744,7 +759,7 @@ function showScoreTooltip(target){scoreTooltip.textContent=target.dataset.scoreT
 function hideScoreTooltip(){scoreTooltip.hidden=true}
 function scoreBadge(mon){const button=document.createElement('button'),number=document.createElement('span'),unit=document.createElement('span'),score=mon.scoreTotal,pending=!Number.isFinite(score);button.type='button';button.className=`score-badge ${pending?'score-pending':score>=75?'score-top':score>=65?'score-great':score>=55?'score-good':'score-fair'}`;button.dataset.scoreTooltip=scoreBreakdownText(mon);button.setAttribute('aria-describedby','scoreTooltip');button.setAttribute('aria-label',pending?`${mon.name} 综合评分待定，悬停查看原因`:`${mon.name} 综合评分 ${score.toFixed(1)} 分，悬停查看构成`);number.className='score-number';number.textContent=pending?'待定':score.toFixed(1);unit.className='score-unit';unit.textContent=pending?'全能型':'/100';button.append(number,unit);button.addEventListener('mouseenter',()=>showScoreTooltip(button));button.addEventListener('mouseleave',hideScoreTooltip);button.addEventListener('focus',()=>showScoreTooltip(button));button.addEventListener('blur',hideScoreTooltip);return button}
 function subskillList(mon){const root=document.createElement('div');root.className='subskill-list';mon.subs.split('；').forEach((skill,index)=>{const row=document.createElement('div'),level=document.createElement('span'),name=document.createElement('span'),unlock=subskillUnlockLevels[index]||80;row.className='subskill-item';level.className='subskill-level';level.textContent=`Lv.${unlock}`;name.className='subskill-name';name.textContent=skill;row.append(level,name);root.append(row)});return root}
-function render(){const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.append(cell(r.id,'nowrap'),cell(r.name,'nowrap'));const role=cell('','nowrap');role.append(specialtyBadge(r));const score=cell('','score-cell');score.append(scoreBadge(r));tr.append(role,score);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));const priority=cell(''),p=document.createElement('span');p.className='tag '+tagClass(r.priority);p.textContent=r.priority;priority.append(p);tr.append(sh,cell(r.ingredients),cell(r.main),subs,cell(r.nature),priority,cell([r.note,r.stageAdvice].filter(Boolean).join(' '),'muted'));return tr}));document.querySelector('#shown').textContent=rows.length}
+function render(){const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.append(cell(r.id,'nowrap'),cell(r.name,'nowrap pokemon-name-cell'));const role=cell('','nowrap');role.append(specialtyBadge(r));const score=cell('','score-cell');score.append(scoreBadge(r));tr.append(role,score);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));const priority=cell(''),p=document.createElement('span');p.className='tag '+tagClass(r.priority);p.textContent=r.priority;priority.append(p);tr.append(sh,cell(r.ingredients),cell(r.main),subs,cell(r.nature),priority,cell([r.note,r.stageAdvice].filter(Boolean).join(' '),'muted'));return tr}));document.querySelector('#shown').textContent=rows.length;decorateIngredients(tbody)}
 const boxSortOptions={
   'id-asc':['id',1],
   'score-desc':['scoreTotal',-1],
@@ -753,5 +768,5 @@ const boxSortOptions={
   'individual-desc':['scoreIndividual',-1]
 };
 q.addEventListener('input',render);sf.addEventListener('change',render);rf.addEventListener('change',render);pf.addEventListener('change',render);sortSelect.addEventListener('change',()=>{[sortKey,dir]=boxSortOptions[sortSelect.value]||boxSortOptions['id-asc'];render()});document.querySelector('#reset').addEventListener('click',()=>{q.value='';sf.value='';rf.value='';pf.value='';sortSelect.value='id-asc';sortKey='id';dir=1;render()});document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k)dir*=-1;else{sortKey=k;dir=k==='scoreTotal'?-1:1}sortSelect.value=k==='scoreTotal'?(dir<0?'score-desc':'score-asc'):(k==='id'&&dir===1?'id-asc':'custom');render()}));
-const shiny=data.filter(r=>r.shiny==='是').length;document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;renderEventTeam();renderIsland(0);renderRecipes();render();window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION});showPage(pageFromHash(),{replace:true,scroll:false});
+const shiny=data.filter(r=>r.shiny==='是').length;document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;renderEventTeam();renderIsland(0);renderRecipes();render();window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION});decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});
 </script></body></html>

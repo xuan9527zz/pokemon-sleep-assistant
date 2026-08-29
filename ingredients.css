@@ -1,0 +1,10 @@
+.ingredient-visual{display:inline-flex;align-items:center;gap:.22em;max-width:100%;vertical-align:-.34em;white-space:nowrap}
+.ingredient-icon{display:inline-block;flex:0 0 auto;width:1.55em;height:1.55em;object-fit:contain;filter:drop-shadow(0 1px 1px #18212f1f)}
+.ingredient-icon.is-missing{display:none}
+.ingredient-visual-label{min-width:0}
+.ingredient-chip .ingredient-visual{gap:4px;vertical-align:middle}.ingredient-chip .ingredient-icon{width:25px;height:25px}
+.box-page-table .ingredient-icon{width:24px;height:24px}.box-page-table .ingredient-visual{margin:1px 0}
+.current-team-ingredient .ingredient-icon{width:30px;height:30px}.current-team-ingredient strong .ingredient-visual{font-size:14px;vertical-align:middle}
+.current-team-member-foods .ingredient-icon,.current-team-pick-detail .ingredient-icon{width:22px;height:22px}
+.recipe-card h3 .ingredient-icon,.ingredient-rec-head h3 .ingredient-icon{width:30px;height:30px}
+@media(max-width:520px){.ingredient-icon{width:1.4em;height:1.4em}.ingredient-chip .ingredient-icon{width:23px;height:23px}}

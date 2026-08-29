@@ -43,4 +43,35 @@ const camp = planner.calculateTeam([venusaur], rates, { goodCamp: true, energyPr
 assert.ok(camp.members[0].carry > noCamp.members[0].carry);
 assert.ok(camp.members[0].effectiveIntervalSec < noCamp.members[0].effectiveIntervalSec);
 
+const firstSaved = planner.upsertSavedTeam([], ['1', '2', '3', '4', '5'], {
+  goodCamp: false, energyProfile: 'steady', savedAt: '2026-08-30T00:00:00.000Z'
+});
+assert.strictEqual(firstSaved.ok, true);
+assert.strictEqual(firstSaved.created, true);
+assert.strictEqual(firstSaved.teams.length, 1);
+assert.strictEqual(firstSaved.team.name, '队伍 1');
+assert.strictEqual(firstSaved.team.goodCamp, false);
+
+const updatedSaved = planner.upsertSavedTeam(firstSaved.teams, ['1', '2', '3', '4', '5'], {
+  goodCamp: true, energyProfile: 'average', savedAt: '2026-08-30T01:00:00.000Z'
+});
+assert.strictEqual(updatedSaved.created, false);
+assert.strictEqual(updatedSaved.teams.length, 1);
+assert.strictEqual(updatedSaved.team.goodCamp, true);
+
+let tenTeams = updatedSaved.teams;
+for (let teamIndex = 2; teamIndex <= 10; teamIndex++) {
+  const start = teamIndex * 10;
+  const saved = planner.upsertSavedTeam(tenTeams, [start, start + 1, start + 2, start + 3, start + 4].map(String));
+  assert.strictEqual(saved.ok, true);
+  tenTeams = saved.teams;
+}
+assert.strictEqual(tenTeams.length, planner.MAX_SAVED_TEAMS);
+const overLimit = planner.upsertSavedTeam(tenTeams, ['201', '202', '203', '204', '205']);
+assert.strictEqual(overLimit.ok, false);
+assert.strictEqual(overLimit.reason, 'limit');
+assert.strictEqual(planner.upsertSavedTeam([], ['1', '2']).reason, 'incomplete');
+assert.strictEqual(planner.sameLineup(['1', '2'], ['1', '2']), true);
+assert.strictEqual(planner.sameLineup(['1', '2'], ['2', '1']), false);
+
 console.log('team-planner tests passed');

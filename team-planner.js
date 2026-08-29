@@ -7,6 +7,7 @@
   'use strict';
 
   const SUBSKILL_LEVELS=[10,25,50,70,80];
+  const MAX_SAVED_TEAMS=10;
   const SPECIAL_NAMES=new Set(['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊']);
   const ROLE_LABELS={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手',unknown:'待核对'};
   const ENERGY_PROFILES={
@@ -72,6 +73,58 @@
     return latiasLatiosOnly
       ?{valid:true,specials,exception:'拉帝亚斯＋拉帝欧斯例外'}
       :{valid:false,specials,message:`特殊宝可梦通常只能上场1只；当前选择了${specials.map(mon=>mon.name).join('、')}。只有拉帝亚斯＋拉帝欧斯可以同时上场。`};
+  }
+
+  function cleanMemberIds(members){
+    return Array.isArray(members)?members.slice(0,5).map(String).filter(Boolean):[];
+  }
+
+  function sameLineup(left,right){
+    const a=cleanMemberIds(left),b=cleanMemberIds(right);
+    return a.length===b.length&&a.every((id,index)=>id===b[index]);
+  }
+
+  function normalizeSavedTeams(value,validIds){
+    if(!Array.isArray(value))return [];
+    const allowed=validIds?new Set([...validIds].map(String)):null,usedSlots=new Set(),signatures=new Set(),result=[];
+    for(const raw of value){
+      if(!raw||typeof raw!=='object'||result.length>=MAX_SAVED_TEAMS)continue;
+      const members=cleanMemberIds(raw.members);
+      if(members.length!==5||new Set(members).size!==5||(allowed&&members.some(id=>!allowed.has(id))))continue;
+      const signature=members.join('|');if(signatures.has(signature))continue;
+      let slot=Number(raw.slot);
+      if(!Number.isInteger(slot)||slot<1||slot>MAX_SAVED_TEAMS||usedSlots.has(slot))slot=Array.from({length:MAX_SAVED_TEAMS},(_,index)=>index+1).find(candidate=>!usedSlots.has(candidate));
+      if(!slot)continue;
+      usedSlots.add(slot);signatures.add(signature);
+      const energyProfile=Object.hasOwn(ENERGY_PROFILES,raw.energyProfile)?raw.energyProfile:'average';
+      result.push({
+        id:typeof raw.id==='string'&&raw.id?raw.id:`team-${slot}`,
+        slot,
+        name:typeof raw.name==='string'&&raw.name.trim()?raw.name.trim().slice(0,30):`队伍 ${slot}`,
+        members,
+        goodCamp:raw.goodCamp!==false,
+        energyProfile,
+        savedAt:typeof raw.savedAt==='string'?raw.savedAt:''
+      });
+    }
+    return result.sort((a,b)=>a.slot-b.slot);
+  }
+
+  function upsertSavedTeam(savedTeams,members,options={}){
+    const teams=normalizeSavedTeams(savedTeams),clean=cleanMemberIds(members);
+    if(clean.length!==5||new Set(clean).size!==5)return {ok:false,reason:'incomplete',teams};
+    const energyProfile=Object.hasOwn(ENERGY_PROFILES,options.energyProfile)?options.energyProfile:'average';
+    const goodCamp=options.goodCamp!==false,savedAt=options.savedAt||new Date().toISOString();
+    const existingIndex=teams.findIndex(team=>sameLineup(team.members,clean));
+    if(existingIndex>=0){
+      const team={...teams[existingIndex],members:clean,goodCamp,energyProfile,savedAt};
+      const next=[...teams];next[existingIndex]=team;
+      return {ok:true,created:false,team,teams:next.sort((a,b)=>a.slot-b.slot)};
+    }
+    if(teams.length>=MAX_SAVED_TEAMS)return {ok:false,reason:'limit',teams};
+    const used=new Set(teams.map(team=>team.slot)),slot=Array.from({length:MAX_SAVED_TEAMS},(_,index)=>index+1).find(candidate=>!used.has(candidate));
+    const team={id:`team-${slot}`,slot,name:`队伍 ${slot}`,members:clean,goodCamp,energyProfile,savedAt};
+    return {ok:true,created:true,team,teams:[...teams,team].sort((a,b)=>a.slot-b.slot)};
   }
 
   function baseMemberModel(mon,production,options,helpingBonusCount){
@@ -203,9 +256,16 @@
     const campInput=document.querySelector('#currentTeamCamp');
     const energyInput=document.querySelector('#currentTeamEnergy');
     const clearButton=document.querySelector('#currentTeamClear');
+    const saveTeamButton=document.querySelector('#currentTeamSave');
+    const savedCountRoot=document.querySelector('#currentTeamSavedCount');
+    const savedListRoot=document.querySelector('#currentTeamSavedList');
+    const saveMessageRoot=document.querySelector('#currentTeamSaveMessage');
+    const ingredientApi=typeof globalThis!=='undefined'?globalThis.POKEMON_SLEEP_INGREDIENTS:null;
     const storageKey='pokemon-sleep-current-team-v1';
+    const savedStorageKey='pokemon-sleep-saved-teams-v1';
     const sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));
     let selected=loadSelection();
+    let savedTeams=loadSavedTeams(),deleteArmedId=null,saveMessageTimer=null;
     const selects=[];
 
     function loadSelection(){
@@ -218,6 +278,21 @@
 
     function saveSelection(){
       try{localStorage.setItem(storageKey,JSON.stringify(selected.filter(Boolean)))}catch(_error){}
+    }
+
+    function loadSavedTeams(){
+      try{return normalizeSavedTeams(JSON.parse(localStorage.getItem(savedStorageKey)||'[]'),mons.map(mon=>mon.id))}catch(_error){return []}
+    }
+
+    function persistSavedTeams(){
+      try{localStorage.setItem(savedStorageKey,JSON.stringify(savedTeams));return true}catch(_error){return false}
+    }
+
+    function showSaveMessage(text,type='success'){
+      if(!saveMessageRoot)return;
+      saveMessageRoot.textContent=text;saveMessageRoot.hidden=false;saveMessageRoot.className=`current-team-save-message ${type}`;
+      if(saveMessageTimer)clearTimeout(saveMessageTimer);
+      saveMessageTimer=setTimeout(()=>{saveMessageRoot.hidden=true},3600);
     }
 
     function optionLabel(mon){
@@ -286,7 +361,7 @@
       result.members.forEach((member,index)=>{
         const mon=member.mon,card=element('article','current-team-member');
         const head=element('div','current-team-member-head');
-        const title=element('div','');title.append(element('span','current-team-position',`位置 ${index+1}`),element('h3','',mon.name),element('small','',`Lv.${mon.lv} · ${ROLE_LABELS[mon.specialty]||'待核对'} · Lv.10 ${String(mon.subs).split('；')[0]||'—'}`));
+        const title=element('div','');title.append(element('span','current-team-position',`位置 ${index+1}`),element('h3','pokemon-name-text',mon.name),element('small','',`Lv.${mon.lv} · ${ROLE_LABELS[mon.specialty]||'待核对'} · Lv.10 ${String(mon.subs).split('；')[0]||'—'}`));
         const fullness=element('span',`current-team-fullness ${member.fullness>=.9?'danger':member.fullness>=.7?'warn':''}`,`收菜时约${Math.round(member.fullness*100)}%`);head.append(title,fullness);card.append(head);
         const stats=element('div','current-team-member-stats');
         [[formatInterval(member.effectiveIntervalSec),'有效帮忙间隔'],[`${number(member.probability.current*100)}%`,'当前食材概率'],[`${member.carry}`,'模型持有上限'],[formatHours(member.fullHours),'预计满仓']].forEach(([value,label])=>{const item=element('div','');item.append(element('strong','',value),element('span','',label));stats.append(item)});card.append(stats);
@@ -301,6 +376,46 @@
         if(notes.length)card.append(element('p','current-team-member-note',notes.join('；')+'。'));
         memberRoot.append(card);
       });
+    }
+
+    function renderSavedTeams(result){
+      if(!savedListRoot||!saveTeamButton)return;
+      const currentIds=selected.filter(Boolean),currentSaved=savedTeams.find(team=>sameLineup(team.members,currentIds));
+      const canSave=result.selectedCount===5&&result.valid,atLimit=savedTeams.length>=MAX_SAVED_TEAMS&&!currentSaved;
+      savedCountRoot.textContent=`${savedTeams.length}／${MAX_SAVED_TEAMS}`;
+      saveTeamButton.disabled=!canSave||atLimit;
+      saveTeamButton.textContent=currentSaved?'更新已保存队伍':'保存当前队伍';
+      saveTeamButton.title=!canSave?'选满五只且符合特殊宝可梦规则后才能保存':atLimit?'已经保存10队，请先删除一队':'';
+      savedListRoot.replaceChildren();
+      if(!savedTeams.length){savedListRoot.append(element('div','current-team-saved-empty','还没有保存队伍。选满五只后点击“保存当前队伍”。'));return}
+      savedTeams.forEach(team=>{
+        const card=element('article',`current-team-saved-card${sameLineup(team.members,currentIds)?' active':''}`);
+        const head=element('div','current-team-saved-card-head'),title=element('div','');
+        title.append(element('strong','',team.name),element('small','',`${ENERGY_PROFILES[team.energyProfile]?.label||ENERGY_PROFILES.average.label} · ${team.goodCamp?'好露营券':'无露营券'}`));
+        if(sameLineup(team.members,currentIds))head.append(title,element('span','current-team-saved-active','当前使用'));else head.append(title);
+        const membersRoot=element('div','current-team-saved-members');
+        team.members.forEach(id=>{const mon=mons.find(item=>item.id===id);membersRoot.append(element('span','',mon?`#${id} ${mon.name} Lv.${mon.lv}`:`#${id}`))});
+        const actions=element('div','current-team-saved-actions'),loadButton=element('button','current-team-saved-load','切换'),deleteButton=element('button','current-team-saved-delete',deleteArmedId===team.id?'确认删除':'删除');
+        loadButton.type='button';deleteButton.type='button';loadButton.setAttribute('aria-label',`切换到${team.name}`);deleteButton.setAttribute('aria-label',`${deleteArmedId===team.id?'确认删除':'删除'}${team.name}`);
+        loadButton.addEventListener('click',()=>{
+          selected=[...team.members];campInput.checked=team.goodCamp;energyInput.value=team.energyProfile;deleteArmedId=null;saveSelection();render();showSaveMessage(`已切换到${team.name}。`);
+        });
+        deleteButton.addEventListener('click',()=>{
+          if(deleteArmedId!==team.id){deleteArmedId=team.id;renderSavedTeams(result);showSaveMessage(`再次点击“确认删除”即可移除${team.name}。`,'warning');return}
+          savedTeams=savedTeams.filter(item=>item.id!==team.id);deleteArmedId=null;const persisted=persistSavedTeams();render();showSaveMessage(persisted?`${team.name}已删除。`:`${team.name}已从本次会话移除；浏览器未开放本地存储。`,persisted?'success':'warning');
+        });
+        actions.append(loadButton,deleteButton);card.append(head,membersRoot,actions);savedListRoot.append(card);
+      });
+    }
+
+    function saveCurrentTeam(){
+      const team=selected.filter(Boolean),result=calculateTeam(team.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value});
+      if(result.selectedCount!==5){showSaveMessage('请先选满五只宝可梦。','warning');return}
+      if(!result.valid){showSaveMessage(result.validation.message,'warning');return}
+      const saved=upsertSavedTeam(savedTeams,team,{goodCamp:campInput.checked,energyProfile:energyInput.value});
+      if(!saved.ok){showSaveMessage(saved.reason==='limit'?'最多只能保存10队，请先删除一队。':'当前队伍无法保存。','warning');return}
+      savedTeams=saved.teams;deleteArmedId=null;const persisted=persistSavedTeams();render();
+      const action=saved.created?'已保存':'已更新';showSaveMessage(persisted?`${action}${saved.team.name}。`:`${action}${saved.team.name}，但浏览器未开放本地存储，刷新后可能失效。`,persisted?'success':'warning');
     }
 
     function renderWarning(result){
@@ -320,16 +435,17 @@
       const team=selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean);
       const result=calculateTeam(team,productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value});
       countRoot.textContent=`${result.selectedCount}／5`;
-      renderWarning(result);renderSummary(result);renderMembers(result);
+      renderWarning(result);renderSummary(result);renderMembers(result);renderSavedTeams(result);ingredientApi?.decorate(page);
       return result;
     }
 
     campInput.addEventListener('change',render);
     energyInput.addEventListener('change',render);
-    clearButton.addEventListener('click',()=>{selected=[];saveSelection();selects.forEach(({select})=>{select.value=''});render()});
-    buildPickers();
+    saveTeamButton?.addEventListener('click',saveCurrentTeam);
+    clearButton.addEventListener('click',()=>{selected=[];deleteArmedId=null;saveSelection();selects.forEach(({select})=>{select.value=''});render()});
+    buildPickers();render();
     return {render,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value})};
   }
 
-  return {ENERGY_PROFILES,SPECIAL_NAMES,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,calculateTeam,formatHours,mount};
+  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,calculateTeam,formatHours,mount};
 });
