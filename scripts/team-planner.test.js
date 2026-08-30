@@ -2,6 +2,7 @@
 
 const assert = require('assert');
 const planner = require('../team-planner.js');
+const levels = require('../level-manager.js');
 
 assert.strictEqual(planner.parseInterval('38:58'), 2338);
 assert.strictEqual(planner.parseInterval('1:05:28'), 3928);
@@ -15,6 +16,7 @@ const latios = { name: '拉帝欧斯' };
 const suicune = { name: '水君' };
 assert.strictEqual(planner.validateSpecialTeam([latias, latios]).valid, true);
 assert.strictEqual(planner.validateSpecialTeam([latias, suicune]).valid, false);
+assert.strictEqual(planner.validateBattleTeam([{name:'闪光收藏',battleEligible:false}]).valid,false);
 
 const venusaur = {
   id: '1', name: '妙蛙花', lv: '52', interval: '38:58', inv: '33', specialty: 'ingredient',
@@ -37,11 +39,28 @@ assert.ok(result.collectionHours >= .5 && result.collectionHours <= 4);
 assert.ok(result.ingredients.some(item => item.name === '甜甜蜜'));
 assert.ok(result.members.every(member => Number.isFinite(member.fullHours) && member.fullHours > 0));
 assert.ok(result.members[0].effectiveIntervalSec < planner.parseInterval(venusaur.interval));
+assert.strictEqual(planner.helpingSpeedReduction(venusaur), .07);
+assert.ok(result.members[0].combinedSpeedReduction <= .35);
+
+const effectiveVenusaur = {...venusaur,effectiveSubs:'帮手奖励；食材概率M；帮忙速度M；树果数量S；持有上限M'};
+assert.strictEqual(planner.helpingSpeedReduction(effectiveVenusaur), .14);
+const collectionResult=planner.calculateTeam([{...gardevoir,battleEligible:false}],rates,{goodCamp:false,energyProfile:'average'});
+assert.strictEqual(collectionResult.valid,false);
+assert.ok(collectionResult.validation.message.includes('仅收藏'));
+assert.strictEqual(collectionResult.selectedCount,0,'仅收藏成员不应计入实战人数');
+assert.strictEqual(collectionResult.members.length,0,'仅收藏成员不应产生当前队伍收益');
+assert.strictEqual(collectionResult.ingredients.length,0,'仅收藏成员不应产生食材收益');
 
 const noCamp = planner.calculateTeam([venusaur], rates, { goodCamp: false, energyProfile: 'average' });
 const camp = planner.calculateTeam([venusaur], rates, { goodCamp: true, energyProfile: 'average' });
 assert.ok(camp.members[0].carry > noCamp.members[0].carry);
 assert.ok(camp.members[0].effectiveIntervalSec < noCamp.members[0].effectiveIntervalSec);
+
+const beforeLevelUpdateInterval = noCamp.members[0].baseIntervalSec;
+levels.applyLevel(venusaur, 60);
+const afterLevelUpdate = planner.calculateTeam([venusaur], rates, { goodCamp: false, energyProfile: 'average' });
+assert.ok(afterLevelUpdate.members[0].baseIntervalSec < beforeLevelUpdateInterval);
+assert.strictEqual(afterLevelUpdate.members[0].mon.lv, '60');
 
 const firstSaved = planner.upsertSavedTeam([], ['1', '2', '3', '4', '5'], {
   goodCamp: false, energyProfile: 'steady', savedAt: '2026-08-30T00:00:00.000Z'

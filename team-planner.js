@@ -42,7 +42,7 @@
   }
 
   function unlockedSubskills(mon){
-    return String(mon.subs||'').split('；').filter((skill,index)=>skill&&skill!=='—'&&(SUBSKILL_LEVELS[index]||80)<=Number(mon.lv));
+    return String(mon.effectiveSubs||mon.subs||'').split('；').filter((skill,index)=>skill&&skill!=='—'&&(SUBSKILL_LEVELS[index]||80)<=Number(mon.lv));
   }
 
   function natureIngredientMultiplier(nature){
@@ -73,6 +73,12 @@
     return latiasLatiosOnly
       ?{valid:true,specials,exception:'拉帝亚斯＋拉帝欧斯例外'}
       :{valid:false,specials,message:`特殊宝可梦通常只能上场1只；当前选择了${specials.map(mon=>mon.name).join('、')}。只有拉帝亚斯＋拉帝欧斯可以同时上场。`};
+  }
+
+  function validateBattleTeam(team){
+    const collectionOnly=team.filter(mon=>mon&&mon.battleEligible===false);
+    if(collectionOnly.length)return {valid:false,collectionOnly,message:`${collectionOnly.map(mon=>mon.name).join('、')}已设为“仅收藏”，不会参与实战计算。请在盒子管理中重新启用，或替换当前队员。`};
+    return validateSpecialTeam(team);
   }
 
   function cleanMemberIds(members){
@@ -127,12 +133,19 @@
     return {ok:true,created:true,team,teams:[...teams,team].sort((a,b)=>a.slot-b.slot)};
   }
 
+  function helpingSpeedReduction(mon){
+    return clamp(unlockedSubskills(mon).reduce((total,skill)=>total+(skill==='帮忙速度S'?.07:skill==='帮忙速度M'?.14:0),0),0,.35);
+  }
+
   function baseMemberModel(mon,production,options,helpingBonusCount){
     const baseIntervalSec=parseInterval(mon.interval);
     const energyFactor=Number(options.energyFactor)||2;
     const campSpeed=options.goodCamp?1.2:1;
-    const teamSpeedReduction=clamp(helpingBonusCount*.05,0,.35);
-    const effectiveIntervalSec=baseIntervalSec*(1-teamSpeedReduction)/(campSpeed*energyFactor);
+    const ownSpeedReduction=helpingSpeedReduction(mon);
+    const combinedSpeedReduction=clamp(ownSpeedReduction+helpingBonusCount*.05,0,.35);
+    const teamSpeedFactor=(1-combinedSpeedReduction)/Math.max(1-ownSpeedReduction,.65);
+    const teamSpeedReduction=1-teamSpeedFactor;
+    const effectiveIntervalSec=baseIntervalSec*teamSpeedFactor/(campSpeed*energyFactor);
     const carryBase=Number(mon.inv)||0;
     const carry=options.goodCamp?Math.ceil(carryBase*1.2):carryBase;
     const ingredients=parseIngredientSlots(mon.ingredients,mon.lv);
@@ -152,7 +165,7 @@
     return {
       mon,production,ingredients,probability,baseIntervalSec,effectiveIntervalSec,carryBase,carry,
       berryCount,berryFinding,expectedItemsPerHelp,helpsPerDay,fullHours,ingredientPerHelp,
-      helpingBonusCount,teamSpeedReduction
+      helpingBonusCount,ownSpeedReduction,combinedSpeedReduction,teamSpeedReduction
     };
   }
 
@@ -180,8 +193,9 @@
   }
 
   function calculateTeam(team,productionByBoxId,options={}){
-    const cleanTeam=team.filter(Boolean);
-    const validation=validateSpecialTeam(cleanTeam);
+    const selectedTeam=team.filter(Boolean);
+    const validation=validateBattleTeam(selectedTeam);
+    const cleanTeam=selectedTeam.filter(mon=>mon.battleEligible!==false);
     const energyProfile=ENERGY_PROFILES[options.energyProfile]||ENERGY_PROFILES.average;
     const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average'};
     const helpingBonusCount=cleanTeam.filter(mon=>unlockedSubskills(mon).includes('帮手奖励')).length;
@@ -263,7 +277,7 @@
     const ingredientApi=typeof globalThis!=='undefined'?globalThis.POKEMON_SLEEP_INGREDIENTS:null;
     const storageKey='pokemon-sleep-current-team-v1';
     const savedStorageKey='pokemon-sleep-saved-teams-v1';
-    const sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));
+    let sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));
     let selected=loadSelection();
     let savedTeams=loadSavedTeams(),deleteArmedId=null,saveMessageTimer=null;
     const selects=[];
@@ -296,11 +310,12 @@
     }
 
     function optionLabel(mon){
-      const lv10=String(mon.subs||'').split('；')[0]||'—';
-      return `${mon.name}｜Lv.${mon.lv}｜Lv.10 ${lv10}${mon.shiny==='是'?'｜★闪光':''}${SPECIAL_NAMES.has(mon.name)?'｜特殊':''}`;
+      const lv10=String(mon.effectiveSubs||mon.subs||'').split('；')[0]||'—';
+      return `${mon.name}｜Lv.${mon.lv}｜Lv.10 ${lv10}${mon.shiny==='是'?'｜★闪光':''}${SPECIAL_NAMES.has(mon.name)?'｜特殊':''}${mon.battleEligible===false?'｜仅收藏':''}`;
     }
 
     function buildPickers(){
+      selects.length=0;
       picker.replaceChildren();
       for(let index=0;index<5;index++){
         const card=element('div','current-team-pick');
@@ -308,7 +323,8 @@
         const select=document.createElement('select');
         select.setAttribute('aria-label',`当前队伍位置 ${index+1}`);
         const empty=document.createElement('option');empty.value='';empty.textContent='选择宝可梦';select.append(empty);
-        sortedMons.forEach(mon=>{const option=document.createElement('option');option.value=mon.id;option.textContent=optionLabel(mon);select.append(option)});
+        const optionMons=[...sortedMons];
+        optionMons.forEach(mon=>{const option=document.createElement('option');option.value=mon.id;option.textContent=optionLabel(mon);option.disabled=mon.battleEligible===false;select.append(option)});
         select.value=selected[index]||'';
         const detail=element('div','current-team-pick-detail','尚未选择');
         select.addEventListener('change',()=>{selected[index]=select.value;while(selected.length&&selected[selected.length-1]==='')selected.pop();saveSelection();render()});
@@ -326,8 +342,8 @@
         const mon=mons.find(item=>item.id===own);
         if(!mon){detail.textContent='尚未选择';detail.className='current-team-pick-detail';return}
         const foods=parseIngredientSlots(mon.ingredients,mon.lv).unlocked.map(slot=>`${slot.name}×${slot.quantity}`).join('／')||'暂无食材栏';
-        detail.textContent=`${ROLE_LABELS[mon.specialty]||'待核对'} · 当前食材：${foods}`;
-        detail.className=`current-team-pick-detail role-${mon.specialty||'unknown'}`;
+        detail.textContent=(mon.battleEligible===false?'仅收藏 · 不参与计算 · ':'')+`${ROLE_LABELS[mon.specialty]||'待核对'} · 当前食材：${foods}`;
+        detail.className=`current-team-pick-detail role-${mon.specialty||'unknown'}${mon.battleEligible===false?' collection-only':''}`;
       });
     }
 
@@ -346,7 +362,7 @@
       const cards=[
         ['建议收菜',formatHours(result.collectionHours),limiting?`按${limiting.mon.name}预计${formatHours(limiting.fullHours)}满仓，预留约15%空间`:'等待完整队伍'],
         ['食材合计',`${number(totalPerDay,1)} 个／24h`,'按建议频率全天执行的常规帮忙期望'],
-        ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`全队帮忙间隔缩短${result.helpingBonusCount*5}%`:'当前没有全队速度加成'],
+        ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`名义缩短${result.helpingBonusCount*5}%；与自身速度副技能合计后遵守35%上限`:'当前没有全队速度加成'],
         ['计算状态',`${result.selectedCount}／5 人`,result.energyProfile.label+(result.options.goodCamp?'＋好露营券':'＋无露营券')]
       ];
       cards.forEach(([label,value,note])=>{const card=element('article','current-team-stat');card.append(element('span','',label),element('strong','',value),element('small','',note));summary.append(card)});
@@ -361,7 +377,9 @@
       result.members.forEach((member,index)=>{
         const mon=member.mon,card=element('article','current-team-member');
         const head=element('div','current-team-member-head');
-        const title=element('div','');title.append(element('span','current-team-position',`位置 ${index+1}`),element('h3','pokemon-name-text',mon.name),element('small','',`Lv.${mon.lv} · ${ROLE_LABELS[mon.specialty]||'待核对'} · Lv.10 ${String(mon.subs).split('；')[0]||'—'}`));
+        const title=element('div',''),levelLine=element('div','current-team-level-line'),levelMeta=element('small','',`Lv.${mon.lv} · ${ROLE_LABELS[mon.specialty]||'待核对'} · Lv.10 ${String(mon.effectiveSubs||mon.subs).split('；')[0]||'—'}`),levelButton=element('button','current-team-level-edit','调整等级');
+        levelButton.type='button';levelButton.setAttribute('aria-label',`调整${mon.name}当前等级`);levelButton.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('pokemon-sleep:edit-level',{detail:{id:mon.id}})));
+        levelLine.append(levelMeta,levelButton);title.append(element('span','current-team-position',`位置 ${index+1}`),element('h3','pokemon-name-text',mon.name),levelLine);
         const fullness=element('span',`current-team-fullness ${member.fullness>=.9?'danger':member.fullness>=.7?'warn':''}`,`收菜时约${Math.round(member.fullness*100)}%`);head.append(title,fullness);card.append(head);
         const stats=element('div','current-team-member-stats');
         [[formatInterval(member.effectiveIntervalSec),'有效帮忙间隔'],[`${number(member.probability.current*100)}%`,'当前食材概率'],[`${member.carry}`,'模型持有上限'],[formatHours(member.fullHours),'预计满仓']].forEach(([value,label])=>{const item=element('div','');item.append(element('strong','',value),element('span','',label));stats.append(item)});card.append(stats);
@@ -394,7 +412,7 @@
         title.append(element('strong','',team.name),element('small','',`${ENERGY_PROFILES[team.energyProfile]?.label||ENERGY_PROFILES.average.label} · ${team.goodCamp?'好露营券':'无露营券'}`));
         if(sameLineup(team.members,currentIds))head.append(title,element('span','current-team-saved-active','当前使用'));else head.append(title);
         const membersRoot=element('div','current-team-saved-members');
-        team.members.forEach(id=>{const mon=mons.find(item=>item.id===id);membersRoot.append(element('span','',mon?`#${id} ${mon.name} Lv.${mon.lv}`:`#${id}`))});
+        team.members.forEach(id=>{const mon=mons.find(item=>item.id===id);membersRoot.append(element('span',mon&&mon.battleEligible===false?'collection-only':'',mon?`#${id} ${mon.name} Lv.${mon.lv}${mon.battleEligible===false?'［仅收藏］':''}`:`#${id}`))});
         const actions=element('div','current-team-saved-actions'),loadButton=element('button','current-team-saved-load','切换'),deleteButton=element('button','current-team-saved-delete',deleteArmedId===team.id?'确认删除':'删除');
         loadButton.type='button';deleteButton.type='button';loadButton.setAttribute('aria-label',`切换到${team.name}`);deleteButton.setAttribute('aria-label',`${deleteArmedId===team.id?'确认删除':'删除'}${team.name}`);
         loadButton.addEventListener('click',()=>{
@@ -444,8 +462,9 @@
     saveTeamButton?.addEventListener('click',saveCurrentTeam);
     clearButton.addEventListener('click',()=>{selected=[];deleteArmedId=null;saveSelection();selects.forEach(({select})=>{select.value=''});render()});
     buildPickers();render();
-    return {render,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value})};
+    function refresh(){sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));buildPickers();return render()}
+    return {render,refresh,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value})};
   }
 
-  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,calculateTeam,formatHours,mount};
+  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,calculateTeam,formatHours,mount};
 });
