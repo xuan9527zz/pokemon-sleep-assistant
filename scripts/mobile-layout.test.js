@@ -8,9 +8,9 @@ const projectRoot = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(projectRoot, 'mobile.css'), 'utf8');
 
-assert.ok(html.includes('href="./mobile.css"'), '首页应加载移动端样式');
+assert.ok(html.includes('href="./mobile.css'), '首页应加载移动端样式');
 assert.ok(html.includes('viewport-fit=cover'), 'iPhone安全区域适配缺失');
-assert.ok(html.indexOf('href="./mobile.css"') > html.indexOf('href="./box-manager.css"'), '移动端样式必须最后加载，且只覆盖窄屏规则');
+assert.ok(html.lastIndexOf('mobile.css') > html.lastIndexOf('</style>'), '移动端样式必须在全部内置样式之后加载，否则手机规则会被桌面规则覆盖');
 assert.ok(html.includes('id="mobileBoxList"'), '手机盒子卡片容器缺失');
 assert.ok(html.includes('id="mobileFilterToggle"'), '手机筛选开关缺失');
 assert.ok(html.includes('function mobilePokemonCard(mon)'), '手机盒子卡片渲染器缺失');
@@ -26,6 +26,8 @@ assert.strictEqual(
   '手机样式在断点外只能隐藏新增的手机专用控件'
 );
 assert.ok(css.includes('.app-nav{position:fixed;inset:auto 0 0'), '手机导航应固定在底部');
+assert.ok(css.includes('html,body{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}'), '页面根节点必须阻止iOS整页横向偏移');
+assert.ok(css.includes('.wrap{width:100%;max-width:100%'), '手机主容器必须限制在视口宽度内');
 assert.ok(css.includes('.box-page-table{display:none!important}'), '手机端应隐藏桌面宽表格');
 assert.ok(css.includes('.mobile-box-list{display:grid'), '手机端应显示卡片列表');
 assert.ok(css.includes('.box-manager-dialog{width:100vw;height:100vh;height:100dvh'), '盒子管理应使用手机全屏界面');
