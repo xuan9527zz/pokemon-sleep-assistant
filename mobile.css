@@ -104,14 +104,21 @@
   .current-team-member{padding:11px}
   .current-team-method{font-size:10px;line-height:1.55}
 
-  .island-tabs,.recipe-tabs{margin-inline:-3px;padding-inline:3px;scroll-snap-type:x proximity}
+  .island-guide{overflow-x:hidden}
+  .island-summary,.island-card,.rank-list,.rank-row,.berry-picker,.berry-controls,.team-alternate,.fixed-special-grid,.fixed-special-side{min-width:0;max-width:100%}
+  .island-summary{width:100%}
+  .island-tabs,.recipe-tabs{max-width:100%;margin-inline:-3px;padding-inline:3px;scroll-snap-type:x proximity}
   .island-tab,.recipe-tab{min-height:42px;scroll-snap-align:start}
   .island-card{padding:12px}
   .rank-row{grid-template-columns:27px minmax(0,1fr);gap:6px;border:1px solid #e5eaef;border-radius:11px;background:#fff;padding:9px}
   .rank-why{grid-column:2;font-size:11px}
-  .team-grid,.event-team-grid{display:flex!important;gap:9px;padding:2px 2px 7px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
-  .team-grid::-webkit-scrollbar,.event-team-grid::-webkit-scrollbar{display:none}
-  .team-slot,.event-team-mon{flex:0 0 min(72vw,245px);min-height:112px;scroll-snap-align:center}
+  .rank-row .mon-link,.rank-why,.focus-line,.team-comparison,.team-alternate summary,.team-alternate-note,.team-note,.team-method{min-width:0;overflow-wrap:anywhere}
+  .team-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:100%;gap:8px;padding:2px 0 7px;overflow:visible}
+  .team-slot{min-width:0;max-width:100%;min-height:112px;overflow-wrap:anywhere}
+  .team-slot .role-tag{width:100%;white-space:normal;overflow-wrap:anywhere}
+  .event-team-grid{display:flex!important;gap:9px;padding:2px 2px 7px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .event-team-grid::-webkit-scrollbar{display:none}
+  .event-team-mon{flex:0 0 min(72vw,245px);min-height:112px;scroll-snap-align:center}
   .berry-picker{padding:10px}
 
   .recipe-controls{grid-template-columns:1fr}
@@ -197,7 +204,7 @@
   .mobile-mon-title h3{font-size:18px}
   .mobile-mon-food{padding:10px 11px}
   .current-team-pick{flex-basis:350px}
-  .team-slot,.event-team-mon{flex-basis:278px}
+  .event-team-mon{flex-basis:278px}
   .score-tooltip{max-height:60dvh}
 }
 
@@ -205,6 +212,7 @@
   .wrap{padding-top:calc(7px + env(safe-area-inset-top));padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right))}
   .hero{display:none}
   .mobile-box-list,.recipe-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
   .current-team-summary{grid-template-columns:repeat(4,minmax(0,1fr))!important}
   .box-manager-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .event-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
