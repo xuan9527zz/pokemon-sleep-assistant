@@ -1,0 +1,40 @@
+'use strict';
+
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+
+const projectRoot = path.resolve(__dirname, '..');
+const html = fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8');
+const css = fs.readFileSync(path.join(projectRoot, 'mobile.css'), 'utf8');
+
+assert.ok(html.includes('href="./mobile.css"'), '首页应加载移动端样式');
+assert.ok(html.includes('viewport-fit=cover'), 'iPhone安全区域适配缺失');
+assert.ok(html.indexOf('href="./mobile.css"') > html.indexOf('href="./box-manager.css"'), '移动端样式必须最后加载，且只覆盖窄屏规则');
+assert.ok(html.includes('id="mobileBoxList"'), '手机盒子卡片容器缺失');
+assert.ok(html.includes('id="mobileFilterToggle"'), '手机筛选开关缺失');
+assert.ok(html.includes('function mobilePokemonCard(mon)'), '手机盒子卡片渲染器缺失');
+assert.ok(html.includes("window.matchMedia?.('(max-width:720px), (max-height:500px)"), '页面切换应识别手机竖屏与横屏断点');
+
+const firstMobileBreakpoint = css.indexOf('@media(max-width:720px),');
+assert.ok(firstMobileBreakpoint > 0, '缺少720px手机断点');
+assert.strictEqual((css.match(/{/g)||[]).length, (css.match(/}/g)||[]).length, '移动端CSS花括号数量不匹配');
+const desktopScope = css.slice(0, firstMobileBreakpoint).replace(/\s+/g, ' ').trim();
+assert.strictEqual(
+  desktopScope,
+  '.mobile-box-list,.mobile-filter-toggle,.mobile-score-note,.box-manager-mobile-back{display:none}',
+  '手机样式在断点外只能隐藏新增的手机专用控件'
+);
+assert.ok(css.includes('.app-nav{position:fixed;inset:auto 0 0'), '手机导航应固定在底部');
+assert.ok(css.includes('.box-page-table{display:none!important}'), '手机端应隐藏桌面宽表格');
+assert.ok(css.includes('.mobile-box-list{display:grid'), '手机端应显示卡片列表');
+assert.ok(css.includes('.box-manager-dialog{width:100vw;height:100vh;height:100dvh'), '盒子管理应使用手机全屏界面');
+assert.ok(css.includes('.level-manager-dialog{width:100vw;height:100vh;height:100dvh'), '等级管理应使用手机全屏界面');
+assert.ok(css.includes('min-height:44px'), '主要触控控件应至少44px高');
+assert.ok(css.includes('input,select,textarea{font-size:16px!important}'), 'iOS输入控件应避免聚焦时自动放大');
+assert.ok(css.includes('@media(min-width:398px) and (max-width:406px)'), '缺少iPhone 16 Pro 402pt宽度专项规则');
+assert.ok(css.includes('@media(orientation:landscape) and (max-height:500px)'), '缺少iPhone横屏规则');
+assert.ok(css.includes('env(safe-area-inset-top)'), '灵动岛顶部安全区域未处理');
+assert.ok(css.includes('env(safe-area-inset-bottom)'), '底部Home指示条安全区域未处理');
+
+console.log('mobile layout tests passed');

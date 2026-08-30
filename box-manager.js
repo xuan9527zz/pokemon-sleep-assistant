@@ -440,13 +440,15 @@
       if(!mon){renderInspectorEmpty('没有找到所选宝可梦。');return}
       const head=element('div','box-manager-inspector-head');
       const title=element('div','');title.append(element('span','box-manager-inspector-kicker','#'+mon.id+' · Lv.'+mon.lv),element('h3','',mon.name),element('p','',record.battleEligible?'会进入自动组队、食材推荐与当前队伍选择。':'仅作收藏显示，不进入任何自动实战计算。'));
-      head.append(title,element('span',record.battleEligible?'box-manager-battle':'box-manager-collection',record.battleEligible?'参与实战':'仅收藏'));
+      const headActions=element('div','box-manager-inspector-head-actions'),back=element('button','box-manager-mobile-back','返回盒子');back.type='button';back.addEventListener('click',function(){selected.clear();focusedId=null;renderAll()});headActions.append(element('span',record.battleEligible?'box-manager-battle':'box-manager-collection',record.battleEligible?'参与实战':'仅收藏'),back);head.append(title,headActions);
       const note=element('p','box-manager-seed-note','这里记录游戏中已经发生的升级，不改变Lv.70潜力评分。若同时有多个可升级的已解锁栏位，游戏实际使用种子时会随机抽选；本页不会模拟定向使用。');
       inspectorRoot.replaceChildren(head,note,renderSubskillEditor(mon,record));
     }
     function updateActions(){
       const disabled=!selected.size;
       moveButton.disabled=disabled;enableButton.disabled=disabled;disableButton.disabled=disabled;clearButton.disabled=disabled;
+      dialog.classList.toggle('single-selection',selected.size===1);
+      dialog.classList.toggle('multi-selection',selected.size>1);
     }
     function renderAll(){renderTabs();renderGrid();renderInspector();updateActions();updateToolbar()}
     function showDialog(){
@@ -454,6 +456,7 @@
     }
     function closeDialog(){
       selected.clear();focusedId=null;
+      dialog.classList.remove('single-selection','multi-selection');
       if(typeof dialog.close==='function'&&dialog.open)dialog.close();else dialog.removeAttribute('open');
     }
     function openBulk(){
