@@ -32,6 +32,9 @@ const rates = {
   '1': { ingredientRate: .266, baseBerryCount: 1 },
   '73': { ingredientRate: .144, baseBerryCount: 1 }
 };
+const catalogFallback=planner.ingredientProbability({...venusaur,ingredientRate:.31,baseBerryCount:2});
+assert.strictEqual(catalogFallback.base,.31,'new records should use catalog ingredient rate without a box snapshot');
+assert.strictEqual(catalogFallback.provisional,false,'catalog ingredient rate is not provisional');
 const result = planner.calculateTeam([venusaur, gardevoir], rates, { goodCamp: true, energyProfile: 'average' });
 assert.strictEqual(result.valid, true);
 assert.strictEqual(result.helpingBonusCount, 1);

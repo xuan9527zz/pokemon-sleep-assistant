@@ -89,6 +89,7 @@
   .mobile-mon-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px}
   .mobile-mon-actions button{min-height:44px;border:1px solid #c9d8d0;border-radius:10px;background:#f3faf6;color:#176d48;padding:8px;font:inherit;font-size:12px;font-weight:850}
   .mobile-mon-actions .manage{border-color:#d4c9ec;background:#f8f5ff;color:#6045ad}
+  .mobile-mon-actions button:last-child:nth-child(3){grid-column:1/-1}
 
   .score-tooltip{inset:auto 10px calc(74px + env(safe-area-inset-bottom))!important;width:auto!important;max-height:58dvh;overflow:auto;border-radius:16px;padding:14px;font-size:11px;line-height:1.55;pointer-events:auto}
 

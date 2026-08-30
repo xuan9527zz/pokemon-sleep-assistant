@@ -55,13 +55,14 @@
     const skills=unlockedSubskills(mon);
     const subskillBonus=(skills.includes('食材概率M')?.36:0)+(skills.includes('食材概率S')?.18:0);
     const natureMultiplier=natureIngredientMultiplier(mon.nature);
-    const base=Number(production&&production.ingredientRate);
+    const catalogRate=production&&production.ingredientRate!==undefined?production.ingredientRate:mon&&mon.ingredientRate;
+    const base=Number(catalogRate);
     return {
       base:Number.isFinite(base)?base:.2,
       current:clamp((Number.isFinite(base)?base:.2)*natureMultiplier*(1+subskillBonus),0,.95),
       natureMultiplier,
       subskillBonus,
-      provisional:!production||!Number.isFinite(base)
+      provisional:!Number.isFinite(base)
     };
   }
 
@@ -153,7 +154,8 @@
     const unlockedCount=Math.max(ingredients.unlocked.length,1);
     const averageIngredientQuantity=ingredients.unlocked.length?sum(ingredients.unlocked.map(slot=>slot.quantity))/unlockedCount:0;
     const berryFinding=unlockedSubskills(mon).includes('树果数量S')?1:0;
-    const baseBerryCount=Number(production&&production.baseBerryCount)||1;
+    const catalogBerryCount=production&&production.baseBerryCount!==undefined?production.baseBerryCount:mon&&mon.baseBerryCount;
+    const baseBerryCount=Number(catalogBerryCount)||1;
     const berryCount=baseBerryCount+berryFinding;
     const expectedItemsPerHelp=(1-probability.current)*berryCount+probability.current*averageIngredientQuantity;
     const helpsPerDay=86400/effectiveIntervalSec;
@@ -252,7 +254,7 @@
 
   function number(value,digits=1){return Number(value).toFixed(digits)}
 
-  function mount({pokemon,production}={}){
+  function mount({pokemon,production,onChange}={}){
     if(typeof document==='undefined')return null;
     const page=document.querySelector('[data-page="team"]');
     if(!page)return null;
@@ -282,6 +284,10 @@
     let savedTeams=loadSavedTeams(),deleteArmedId=null,saveMessageTimer=null;
     const selects=[];
 
+    function notifyChange(type){
+      if(typeof onChange==='function')onChange({type,currentTeam:[...selected.filter(Boolean)],savedTeams:savedTeams.map(team=>({...team,members:[...team.members]}))});
+    }
+
     function loadSelection(){
       try{
         const value=JSON.parse(localStorage.getItem(storageKey)||'[]');
@@ -292,6 +298,7 @@
 
     function saveSelection(){
       try{localStorage.setItem(storageKey,JSON.stringify(selected.filter(Boolean)))}catch(_error){}
+      notifyChange('current-team');
     }
 
     function loadSavedTeams(){
@@ -299,7 +306,7 @@
     }
 
     function persistSavedTeams(){
-      try{localStorage.setItem(savedStorageKey,JSON.stringify(savedTeams));return true}catch(_error){return false}
+      try{localStorage.setItem(savedStorageKey,JSON.stringify(savedTeams));notifyChange('saved-teams');return true}catch(_error){return false}
     }
 
     function showSaveMessage(text,type='success'){
