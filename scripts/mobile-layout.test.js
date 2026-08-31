@@ -43,5 +43,11 @@ assert.ok(css.includes('env(safe-area-inset-bottom)'), '底部Home指示条安�
 assert.ok(css.includes('.island-guide{overflow-x:hidden}'), '岛屿页外层必须阻止内容撑宽整页');
 assert.ok(css.includes('.team-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))'), '手机岛屿队伍应在页面内使用两列网格');
 assert.ok(!css.includes('.team-grid,.event-team-grid{display:flex!important'), '岛屿队伍不得继续复用横向滑动布局');
+assert.ok(css.includes('.weekly-planner{width:100%;max-width:100%;overflow:hidden}'), '本周计划外层必须限制在手机视口内');
+assert.ok(css.includes('.weekly-controls{display:grid!important;grid-template-columns:minmax(0,1fr)!important'), '本周计划表单在手机端应改为单列');
+assert.ok(css.includes('.weekly-field,.weekly-check,.weekly-berries{grid-column:1!important;width:100%;max-width:100%}'), '本周计划控件不得撑宽网格');
+assert.ok(css.includes('.weekly-berries[hidden]{display:none!important}'), '固定树果岛屿不应因手机覆盖规则显示隐藏控件');
+assert.ok(css.includes('.weekly-meals article{display:grid;grid-template-columns:minmax(0,1fr)!important'), '21餐安排在手机端应改为逐日纵向卡片');
+assert.ok(css.includes('.weekly-meals b{overflow:visible;text-overflow:clip;white-space:normal;overflow-wrap:anywhere'), '手机端长食谱名必须允许换行');
 
 console.log('mobile layout tests passed');
