@@ -7,7 +7,7 @@
   'use strict';
   return Object.freeze({
   "meta": {
-    "generatedAt": "2026-08-30T17:08:19.830Z",
+    "generatedAt": "2026-08-31T02:23:10.987Z",
     "sourceUpdatedAt": "2026-08-23T20:32:34.939Z",
     "count": 247,
     "speciesScoreCount": 127,
@@ -29,7 +29,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.257,
       "skillRatePct": 1.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "1",
+        "previous": null,
+        "next": [
+          {
+            "id": "2",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "3"
@@ -106,7 +128,32 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.255,
       "skillRatePct": 1.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "1",
+        "previous": {
+          "id": "1",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "3",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 24
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "3"
@@ -183,7 +230,18 @@
       "carryLimitRaisedFromFirstStage": 27,
       "ingredientRate": 0.266,
       "skillRatePct": 2.1,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "1",
+        "previous": {
+          "id": "2",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "3"
@@ -260,7 +318,29 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.201,
       "skillRatePct": 1.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "4",
+        "previous": null,
+        "next": [
+          {
+            "id": "5",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "6"
@@ -337,7 +417,32 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.227,
       "skillRatePct": 1.6,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "4",
+        "previous": {
+          "id": "4",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "6",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "6"
@@ -414,7 +519,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.224,
       "skillRatePct": 1.6,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "4",
+        "previous": {
+          "id": "5",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "6"
@@ -491,7 +607,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.271,
       "skillRatePct": 2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "7",
+        "previous": null,
+        "next": [
+          {
+            "id": "8",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "9"
@@ -568,7 +706,32 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.271,
       "skillRatePct": 2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "7",
+        "previous": {
+          "id": "7",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "9",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "9"
@@ -645,7 +808,18 @@
       "carryLimitRaisedFromFirstStage": 27,
       "ingredientRate": 0.275,
       "skillRatePct": 2.1,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "7",
+        "previous": {
+          "id": "8",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9"
@@ -722,7 +896,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.179,
       "skillRatePct": 0.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "10",
+        "previous": null,
+        "next": [
+          {
+            "id": "11",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 5
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "12"
@@ -799,7 +995,32 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.208,
       "skillRatePct": 1.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "10",
+        "previous": {
+          "id": "10",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "12",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 8
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "12"
@@ -876,7 +1097,18 @@
       "carryLimitRaisedFromFirstStage": 31,
       "ingredientRate": 0.197,
       "skillRatePct": 1.4,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "10",
+        "previous": {
+          "id": "11",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "12"
@@ -953,7 +1185,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.237,
       "skillRatePct": 3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "19",
+        "previous": null,
+        "next": [
+          {
+            "id": "20",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 15
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "20"
@@ -1030,7 +1284,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.237,
       "skillRatePct": 3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "19",
+        "previous": {
+          "id": "19",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "20"
@@ -1107,7 +1372,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.235,
       "skillRatePct": 3.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "23",
+        "previous": null,
+        "next": [
+          {
+            "id": "24",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 17
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "24"
@@ -1184,7 +1471,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.264,
       "skillRatePct": 5.7,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "23",
+        "previous": {
+          "id": "23",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "24"
@@ -1261,7 +1559,33 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.207,
       "skillRatePct": 2.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "172",
+        "previous": {
+          "id": "172",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "26",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 24,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "26"
@@ -1338,7 +1662,18 @@
       "carryLimitRaisedFromFirstStage": 31,
       "ingredientRate": 0.224,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "172",
+        "previous": {
+          "id": "25",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "26"
@@ -1415,7 +1750,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.1,
       "skillRatePct": 4.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "27",
+        "previous": null,
+        "next": [
+          {
+            "id": "28",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 17
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "28"
@@ -1492,7 +1849,18 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.108,
       "skillRatePct": 4.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "27",
+        "previous": {
+          "id": "27",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "28"
@@ -1569,7 +1937,33 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.168,
       "skillRatePct": 3.6,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "173",
+        "previous": {
+          "id": "173",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "36",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 27,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "36"
@@ -1646,7 +2040,18 @@
       "carryLimitRaisedFromFirstStage": 34,
       "ingredientRate": 0.168,
       "skillRatePct": 4,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "173",
+        "previous": {
+          "id": "35",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "36"
@@ -1723,7 +2128,30 @@
       "carryLimitRaisedFromFirstStage": 13,
       "ingredientRate": 0.168,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "37",
+        "previous": null,
+        "next": [
+          {
+            "id": "38",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 22,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "38"
@@ -1800,7 +2228,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.164,
       "skillRatePct": 2.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "37",
+        "previous": {
+          "id": "37",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "38"
@@ -1877,7 +2316,33 @@
       "carryLimitRaisedFromFirstStage": 14,
       "ingredientRate": 0.182,
       "skillRatePct": 4.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "174",
+        "previous": {
+          "id": "174",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "40",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 27,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "40"
@@ -1954,7 +2419,18 @@
       "carryLimitRaisedFromFirstStage": 32,
       "ingredientRate": 0.191,
       "skillRatePct": 4,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "174",
+        "previous": {
+          "id": "39",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "40"
@@ -2031,7 +2507,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.192,
       "skillRatePct": 2.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "50",
+        "previous": null,
+        "next": [
+          {
+            "id": "51",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 20
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "51"
@@ -2108,7 +2606,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.19,
       "skillRatePct": 2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "50",
+        "previous": {
+          "id": "50",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "51"
@@ -2185,7 +2694,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.163,
       "skillRatePct": 4.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "52",
+        "previous": null,
+        "next": [
+          {
+            "id": "53",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 21
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "53"
@@ -2255,7 +2786,18 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.169,
       "skillRatePct": 4.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "52",
+        "previous": {
+          "id": "52",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "53"
@@ -2325,7 +2867,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.136,
       "skillRatePct": 12.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "54",
+        "previous": null,
+        "next": [
+          {
+            "id": "55",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 25
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "55"
@@ -2402,7 +2966,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.162,
       "skillRatePct": 12.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "54",
+        "previous": {
+          "id": "54",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "55"
@@ -2479,7 +3054,29 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.197,
       "skillRatePct": 2.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "56",
+        "previous": null,
+        "next": [
+          {
+            "id": "57",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 21
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "57"
@@ -2556,7 +3153,18 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.2,
       "skillRatePct": 2.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "56",
+        "previous": {
+          "id": "56",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "57"
@@ -2633,7 +3241,30 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.138,
       "skillRatePct": 5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "58",
+        "previous": null,
+        "next": [
+          {
+            "id": "59",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 22,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "59"
@@ -2710,7 +3341,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.136,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "58",
+        "previous": {
+          "id": "58",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "59"
@@ -2787,7 +3429,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.233,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "69",
+        "previous": null,
+        "next": [
+          {
+            "id": "70",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 16
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "71"
@@ -2864,7 +3528,33 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.235,
       "skillRatePct": 4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "69",
+        "previous": {
+          "id": "69",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "71",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 25,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "71"
@@ -2941,7 +3631,18 @@
       "carryLimitRaisedFromFirstStage": 27,
       "ingredientRate": 0.233,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "69",
+        "previous": {
+          "id": "70",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "71"
@@ -3018,7 +3719,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.281,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "74",
+        "previous": null,
+        "next": [
+          {
+            "id": "75",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 19
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "76"
@@ -3095,7 +3818,33 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.272,
       "skillRatePct": 4.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "74",
+        "previous": {
+          "id": "74",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "76",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "76"
@@ -3172,7 +3921,18 @@
       "carryLimitRaisedFromFirstStage": 26,
       "ingredientRate": 0.28,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "74",
+        "previous": {
+          "id": "75",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "76"
@@ -3249,7 +4009,48 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.151,
       "skillRatePct": 7.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "79",
+        "previous": null,
+        "next": [
+          {
+            "id": "80",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 28
+              }
+            ]
+          },
+          {
+            "id": "199",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 31,
+                "count": 1
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "80",
@@ -3327,7 +4128,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.197,
       "skillRatePct": 8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "79",
+        "previous": {
+          "id": "79",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "80"
@@ -3404,7 +4216,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.182,
       "skillRatePct": 6.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "81",
+        "previous": null,
+        "next": [
+          {
+            "id": "82",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "462"
@@ -3474,7 +4308,33 @@
       "carryLimitRaisedFromFirstStage": 16,
       "ingredientRate": 0.182,
       "skillRatePct": 6.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "81",
+        "previous": {
+          "id": "81",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "462",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 24,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "462"
@@ -3544,7 +4404,15 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.16,
       "skillRatePct": 4.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "83",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "83"
@@ -3621,7 +4489,29 @@
       "carryLimitRaisedFromFirstStage": 13,
       "ingredientRate": 0.184,
       "skillRatePct": 2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "84",
+        "previous": null,
+        "next": [
+          {
+            "id": "85",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "85"
@@ -3698,7 +4588,18 @@
       "carryLimitRaisedFromFirstStage": 26,
       "ingredientRate": 0.184,
       "skillRatePct": 2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "84",
+        "previous": {
+          "id": "84",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "85"
@@ -3775,7 +4676,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.144,
       "skillRatePct": 1.5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "92",
+        "previous": null,
+        "next": [
+          {
+            "id": "93",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 19
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "94"
@@ -3852,7 +4775,33 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.157,
       "skillRatePct": 2.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "92",
+        "previous": {
+          "id": "92",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "94",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "94"
@@ -3929,7 +4878,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.161,
       "skillRatePct": 2.4,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "92",
+        "previous": {
+          "id": "93",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "94"
@@ -4006,7 +4966,35 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.132,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "95",
+        "previous": null,
+        "next": [
+          {
+            "id": "208",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 29,
+                "count": 1
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "208"
@@ -4083,7 +5071,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.223,
       "skillRatePct": 4.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "104",
+        "previous": null,
+        "next": [
+          {
+            "id": "105",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 21
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "105"
@@ -4153,7 +5163,18 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.225,
       "skillRatePct": 4.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "104",
+        "previous": {
+          "id": "104",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "105"
@@ -4223,7 +5244,32 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.236,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "440",
+        "previous": {
+          "id": "440",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "242",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "sleepTime",
+                "hours": 150
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "242"
@@ -4300,7 +5346,15 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.222,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "115",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "115"
@@ -4377,7 +5431,18 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.216,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "439",
+        "previous": {
+          "id": "439",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "122"
@@ -4454,7 +5519,15 @@
       "carryLimitRaisedFromFirstStage": 24,
       "ingredientRate": 0.216,
       "skillRatePct": 3.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "127",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "127"
@@ -4531,7 +5604,15 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.201,
       "skillRatePct": 3.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "132",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "132"
@@ -4608,7 +5689,135 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.192,
       "skillRatePct": 5.5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "133",
+        "previous": null,
+        "next": [
+          {
+            "id": "134",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 23,
+                "count": 1
+              }
+            ]
+          },
+          {
+            "id": "135",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 24,
+                "count": 1
+              }
+            ]
+          },
+          {
+            "id": "136",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 22,
+                "count": 1
+              }
+            ]
+          },
+          {
+            "id": "197",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "sleepTime",
+                "hours": 150
+              },
+              {
+                "type": "timing",
+                "startHour": 18,
+                "endHour": 6
+              }
+            ]
+          },
+          {
+            "id": "196",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "sleepTime",
+                "hours": 150
+              },
+              {
+                "type": "timing",
+                "startHour": 6,
+                "endHour": 18
+              }
+            ]
+          },
+          {
+            "id": "470",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 25,
+                "count": 1
+              }
+            ]
+          },
+          {
+            "id": "471",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 26,
+                "count": 1
+              }
+            ]
+          },
+          {
+            "id": "700",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "sleepTime",
+                "hours": 150
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "134",
@@ -4692,7 +5901,18 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.212,
       "skillRatePct": 6.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "134"
@@ -4769,7 +5989,18 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.151,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "135"
@@ -4846,7 +6077,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.185,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "136"
@@ -4923,7 +6165,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.25,
       "skillRatePct": 2,
+      "expType": 2,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "147",
+        "previous": null,
+        "next": [
+          {
+            "id": "148",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "149"
@@ -5000,7 +6264,32 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.262,
       "skillRatePct": 2.5,
+      "expType": 2,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "147",
+        "previous": {
+          "id": "147",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "149",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 100
+              },
+              {
+                "type": "level",
+                "level": 41
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "149"
@@ -5077,7 +6366,18 @@
       "carryLimitRaisedFromFirstStage": 30,
       "ingredientRate": 0.264,
       "skillRatePct": 2.6,
+      "expType": 2,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "147",
+        "previous": {
+          "id": "148",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "149"
@@ -5154,7 +6454,15 @@
       "carryLimitRaisedFromFirstStage": 26,
       "ingredientRate": 0.2,
       "skillRatePct": 4,
+      "expType": 4,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "151",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "151"
@@ -5186,7 +6494,29 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.169,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "152",
+        "previous": null,
+        "next": [
+          {
+            "id": "153",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "154"
@@ -5263,7 +6593,32 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.168,
       "skillRatePct": 3.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "152",
+        "previous": {
+          "id": "152",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "154",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 24
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "154"
@@ -5340,7 +6695,18 @@
       "carryLimitRaisedFromFirstStage": 30,
       "ingredientRate": 0.175,
       "skillRatePct": 4.6,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "152",
+        "previous": {
+          "id": "153",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "154"
@@ -5417,7 +6783,29 @@
       "carryLimitRaisedFromFirstStage": 14,
       "ingredientRate": 0.186,
       "skillRatePct": 2.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "155",
+        "previous": null,
+        "next": [
+          {
+            "id": "156",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 11
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "157"
@@ -5494,7 +6882,32 @@
       "carryLimitRaisedFromFirstStage": 23,
       "ingredientRate": 0.211,
       "skillRatePct": 4.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "155",
+        "previous": {
+          "id": "155",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "157",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "157"
@@ -5571,7 +6984,18 @@
       "carryLimitRaisedFromFirstStage": 33,
       "ingredientRate": 0.208,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "155",
+        "previous": {
+          "id": "156",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "157"
@@ -5648,7 +7072,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.253,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "158",
+        "previous": null,
+        "next": [
+          {
+            "id": "159",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 14
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "160"
@@ -5718,7 +7164,32 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.253,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "158",
+        "previous": {
+          "id": "158",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "160",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "160"
@@ -5788,7 +7259,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.257,
       "skillRatePct": 5.5,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "158",
+        "previous": {
+          "id": "159",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "160"
@@ -5858,7 +7340,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.21,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "172",
+        "previous": null,
+        "next": [
+          {
+            "id": "25",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 20
+              },
+              {
+                "type": "sleepTime",
+                "hours": 50
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "26"
@@ -5935,7 +7439,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.164,
       "skillRatePct": 3.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "173",
+        "previous": null,
+        "next": [
+          {
+            "id": "35",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 20
+              },
+              {
+                "type": "sleepTime",
+                "hours": 50
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "36"
@@ -6012,7 +7538,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.17,
       "skillRatePct": 3.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "174",
+        "previous": null,
+        "next": [
+          {
+            "id": "39",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 20
+              },
+              {
+                "type": "sleepTime",
+                "hours": 50
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "40"
@@ -6089,7 +7637,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.151,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "175",
+        "previous": null,
+        "next": [
+          {
+            "id": "176",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 20
+              },
+              {
+                "type": "sleepTime",
+                "hours": 50
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "468"
@@ -6166,7 +7736,33 @@
       "carryLimitRaisedFromFirstStage": 15,
       "ingredientRate": 0.163,
       "skillRatePct": 5.6,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "175",
+        "previous": {
+          "id": "175",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "468",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 28,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "468"
@@ -6243,7 +7839,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.185,
       "skillRatePct": 1.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "177",
+        "previous": null,
+        "next": [
+          {
+            "id": "178",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 19
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "178"
@@ -6320,7 +7938,18 @@
       "carryLimitRaisedFromFirstStage": 24,
       "ingredientRate": 0.191,
       "skillRatePct": 2.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "177",
+        "previous": {
+          "id": "177",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "178"
@@ -6397,7 +8026,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.128,
       "skillRatePct": 4.7,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "179",
+        "previous": null,
+        "next": [
+          {
+            "id": "180",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 11
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "181"
@@ -6467,7 +8118,32 @@
       "carryLimitRaisedFromFirstStage": 16,
       "ingredientRate": 0.127,
       "skillRatePct": 4.6,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "179",
+        "previous": {
+          "id": "179",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "181",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "181"
@@ -6537,7 +8213,18 @@
       "carryLimitRaisedFromFirstStage": 25,
       "ingredientRate": 0.13,
       "skillRatePct": 4.7,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "179",
+        "previous": {
+          "id": "180",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "181"
@@ -6607,7 +8294,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.217,
       "skillRatePct": 7.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "438",
+        "previous": {
+          "id": "438",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "185"
@@ -6684,7 +8382,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.201,
       "skillRatePct": 3.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "194",
+        "previous": null,
+        "next": [
+          {
+            "id": "195",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 15
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "195"
@@ -6761,7 +8481,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.19,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "194",
+        "previous": {
+          "id": "194",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "195"
@@ -6838,7 +8569,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.164,
       "skillRatePct": 4.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "196"
@@ -6915,7 +8657,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.219,
       "skillRatePct": 10.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "197"
@@ -6992,7 +8745,30 @@
       "carryLimitRaisedFromFirstStage": 13,
       "ingredientRate": 0.141,
       "skillRatePct": 6.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "198",
+        "previous": null,
+        "next": [
+          {
+            "id": "430",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 102,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "430"
@@ -7069,7 +8845,18 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.166,
       "skillRatePct": 8.7,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "79",
+        "previous": {
+          "id": "79",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "199"
@@ -7146,7 +8933,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.211,
       "skillRatePct": 8.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "360",
+        "previous": {
+          "id": "360",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "202"
@@ -7223,7 +9021,18 @@
       "carryLimitRaisedFromFirstStage": 30,
       "ingredientRate": 0.154,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "95",
+        "previous": {
+          "id": "95",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "208"
@@ -7300,7 +9109,15 @@
       "carryLimitRaisedFromFirstStage": 16,
       "ingredientRate": 0.205,
       "skillRatePct": 5.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "213",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "213"
@@ -7377,7 +9194,15 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.158,
       "skillRatePct": 4.7,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "214",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "214"
@@ -7454,7 +9279,35 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.255,
       "skillRatePct": 1.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "215",
+        "previous": null,
+        "next": [
+          {
+            "id": "461",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 97,
+                "count": 1
+              },
+              {
+                "type": "timing",
+                "startHour": 18,
+                "endHour": 6
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "461"
@@ -7531,7 +9384,15 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.188,
       "skillRatePct": 3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "225",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "225"
@@ -7608,7 +9469,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.201,
       "skillRatePct": 3.7,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "228",
+        "previous": null,
+        "next": [
+          {
+            "id": "229",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 18
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "229"
@@ -7685,7 +9568,18 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.203,
       "skillRatePct": 4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "228",
+        "previous": {
+          "id": "228",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "229"
@@ -7762,7 +9656,18 @@
       "carryLimitRaisedFromFirstStage": 31,
       "ingredientRate": 0.238,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "440",
+        "previous": {
+          "id": "113",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "242"
@@ -7839,7 +9744,15 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.192,
       "skillRatePct": 1.9,
+      "expType": 3,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "243",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "243"
@@ -7916,7 +9829,15 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.187,
       "skillRatePct": 2.3,
+      "expType": 3,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "244",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "244"
@@ -7993,7 +9914,15 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.277,
       "skillRatePct": 2.6,
+      "expType": 3,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "245",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "245"
@@ -8070,7 +9999,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.238,
       "skillRatePct": 4.1,
+      "expType": 2,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "246",
+        "previous": null,
+        "next": [
+          {
+            "id": "247",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "248"
@@ -8147,7 +10098,32 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.247,
       "skillRatePct": 4.5,
+      "expType": 2,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "246",
+        "previous": {
+          "id": "246",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "248",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 100
+              },
+              {
+                "type": "level",
+                "level": 41
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "248"
@@ -8224,7 +10200,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.266,
       "skillRatePct": 5.2,
+      "expType": 2,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "246",
+        "previous": {
+          "id": "247",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "248"
@@ -8301,7 +10288,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.172,
       "skillRatePct": 3.5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "252",
+        "previous": null,
+        "next": [
+          {
+            "id": "253",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "254"
@@ -8378,7 +10387,32 @@
       "carryLimitRaisedFromFirstStage": 16,
       "ingredientRate": 0.15,
       "skillRatePct": 3.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "252",
+        "previous": {
+          "id": "252",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "254",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "254"
@@ -8455,7 +10489,18 @@
       "carryLimitRaisedFromFirstStage": 27,
       "ingredientRate": 0.107,
       "skillRatePct": 3,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "252",
+        "previous": {
+          "id": "253",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "254"
@@ -8532,7 +10577,29 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.16,
       "skillRatePct": 4.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "255",
+        "previous": null,
+        "next": [
+          {
+            "id": "256",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "257"
@@ -8609,7 +10676,32 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.17,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "255",
+        "previous": {
+          "id": "255",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "257",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "257"
@@ -8686,7 +10778,18 @@
       "carryLimitRaisedFromFirstStage": 32,
       "ingredientRate": 0.153,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "255",
+        "previous": {
+          "id": "256",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "257"
@@ -8763,7 +10866,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.192,
       "skillRatePct": 2.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "258",
+        "previous": null,
+        "next": [
+          {
+            "id": "259",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "260"
@@ -8840,7 +10965,32 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.168,
       "skillRatePct": 2.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "258",
+        "previous": {
+          "id": "258",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "260",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "260"
@@ -8917,7 +11067,18 @@
       "carryLimitRaisedFromFirstStage": 30,
       "ingredientRate": 0.146,
       "skillRatePct": 3.4,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "258",
+        "previous": {
+          "id": "259",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "260"
@@ -8994,7 +11155,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.145,
       "skillRatePct": 4.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "280",
+        "previous": null,
+        "next": [
+          {
+            "id": "281",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 15
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "282",
@@ -9072,7 +11255,50 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.146,
       "skillRatePct": 4.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "280",
+        "previous": {
+          "id": "280",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "282",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          },
+          {
+            "id": "475",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "gender",
+                "gender": "male"
+              },
+              {
+                "type": "item",
+                "item": 35,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "282",
@@ -9150,7 +11376,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.144,
       "skillRatePct": 4.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "280",
+        "previous": {
+          "id": "281",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "282"
@@ -9227,7 +11464,29 @@
       "carryLimitRaisedFromFirstStage": 7,
       "ingredientRate": 0.216,
       "skillRatePct": 1.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "287",
+        "previous": null,
+        "next": [
+          {
+            "id": "288",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 14
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "289"
@@ -9304,7 +11563,32 @@
       "carryLimitRaisedFromFirstStage": 14,
       "ingredientRate": 0.204,
       "skillRatePct": 1.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "287",
+        "previous": {
+          "id": "287",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "289",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "289"
@@ -9381,7 +11665,18 @@
       "carryLimitRaisedFromFirstStage": 26,
       "ingredientRate": 0.339,
       "skillRatePct": 6.7,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "287",
+        "previous": {
+          "id": "288",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "289"
@@ -9458,7 +11753,15 @@
       "carryLimitRaisedFromFirstStage": 16,
       "ingredientRate": 0.188,
       "skillRatePct": 6.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "302",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "302"
@@ -9535,7 +11838,15 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.204,
       "skillRatePct": 3.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "303",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "303"
@@ -9612,7 +11923,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.273,
       "skillRatePct": 4.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "304",
+        "previous": null,
+        "next": [
+          {
+            "id": "305",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 24
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "306"
@@ -9689,7 +12022,32 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.277,
       "skillRatePct": 4.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "304",
+        "previous": {
+          "id": "304",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "306",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 32
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "306"
@@ -9766,7 +12124,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.285,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "304",
+        "previous": {
+          "id": "305",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "306"
@@ -9843,7 +12212,15 @@
       "carryLimitRaisedFromFirstStage": 16,
       "ingredientRate": 0.103,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "311",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "311"
@@ -9920,7 +12297,15 @@
       "carryLimitRaisedFromFirstStage": 16,
       "ingredientRate": 0.174,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "312",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "312"
@@ -9997,7 +12382,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.214,
       "skillRatePct": 6.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "316",
+        "previous": null,
+        "next": [
+          {
+            "id": "317",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 20
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "317"
@@ -10074,7 +12481,18 @@
       "carryLimitRaisedFromFirstStage": 24,
       "ingredientRate": 0.21,
       "skillRatePct": 7,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "316",
+        "previous": {
+          "id": "316",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "317"
@@ -10151,7 +12569,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.152,
       "skillRatePct": 3.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "328",
+        "previous": null,
+        "next": [
+          {
+            "id": "329",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 26
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "330"
@@ -10228,7 +12668,32 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.155,
       "skillRatePct": 3.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "328",
+        "previous": {
+          "id": "328",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "330",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 34
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "330"
@@ -10305,7 +12770,18 @@
       "carryLimitRaisedFromFirstStage": 27,
       "ingredientRate": 0.172,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "328",
+        "previous": {
+          "id": "329",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "330"
@@ -10382,7 +12858,29 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.177,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "333",
+        "previous": null,
+        "next": [
+          {
+            "id": "334",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 26
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "334"
@@ -10459,7 +12957,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.258,
       "skillRatePct": 6.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "333",
+        "previous": {
+          "id": "333",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "334"
@@ -10536,7 +13045,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.171,
       "skillRatePct": 2.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "353",
+        "previous": null,
+        "next": [
+          {
+            "id": "354",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 28
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "354"
@@ -10613,7 +13144,18 @@
       "carryLimitRaisedFromFirstStage": 24,
       "ingredientRate": 0.179,
       "skillRatePct": 3.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "353",
+        "previous": {
+          "id": "353",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "354"
@@ -10690,7 +13232,15 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.178,
       "skillRatePct": 3.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "359",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "359"
@@ -10767,7 +13317,29 @@
       "carryLimitRaisedFromFirstStage": 7,
       "ingredientRate": 0.213,
       "skillRatePct": 6.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "360",
+        "previous": null,
+        "next": [
+          {
+            "id": "202",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 20
+              },
+              {
+                "type": "level",
+                "level": 11
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "202"
@@ -10844,7 +13416,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.224,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "363",
+        "previous": null,
+        "next": [
+          {
+            "id": "364",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 24
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "365"
@@ -10921,7 +13515,32 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.221,
       "skillRatePct": 2.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "363",
+        "previous": {
+          "id": "363",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "365",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 33
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "365"
@@ -10998,7 +13617,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.223,
       "skillRatePct": 2.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "363",
+        "previous": {
+          "id": "364",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "365"
@@ -11075,7 +13705,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.209,
       "skillRatePct": 2.7,
+      "expType": 2,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "371",
+        "previous": null,
+        "next": [
+          {
+            "id": "372",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "373"
@@ -11152,7 +13804,32 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.206,
       "skillRatePct": 2.7,
+      "expType": 2,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "371",
+        "previous": {
+          "id": "371",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "373",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 100
+              },
+              {
+                "type": "level",
+                "level": 38
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "373"
@@ -11229,7 +13906,18 @@
       "carryLimitRaisedFromFirstStage": 32,
       "ingredientRate": 0.217,
       "skillRatePct": 3.4,
+      "expType": 2,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "371",
+        "previous": {
+          "id": "372",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "373"
@@ -11306,7 +13994,15 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.114,
       "skillRatePct": 4.9,
+      "expType": 3,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "380",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "380"
@@ -11383,7 +14079,15 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.198,
       "skillRatePct": 3,
+      "expType": 3,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "381",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "381"
@@ -11460,7 +14164,29 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.132,
       "skillRatePct": 4.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "387",
+        "previous": null,
+        "next": [
+          {
+            "id": "388",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 14
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "389"
@@ -11537,7 +14263,32 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.15,
       "skillRatePct": 4.6,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "387",
+        "previous": {
+          "id": "387",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "389",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 24
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "389"
@@ -11614,7 +14365,18 @@
       "carryLimitRaisedFromFirstStage": 27,
       "ingredientRate": 0.156,
       "skillRatePct": 4.8,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "387",
+        "previous": {
+          "id": "388",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "389"
@@ -11691,7 +14453,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.114,
       "skillRatePct": 3.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "390",
+        "previous": null,
+        "next": [
+          {
+            "id": "391",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 11
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "392"
@@ -11768,7 +14552,32 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.114,
       "skillRatePct": 3.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "390",
+        "previous": {
+          "id": "390",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "392",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "392"
@@ -11845,7 +14654,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.106,
       "skillRatePct": 3.3,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "390",
+        "previous": {
+          "id": "391",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "392"
@@ -11922,7 +14742,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.159,
       "skillRatePct": 2.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "393",
+        "previous": null,
+        "next": [
+          {
+            "id": "394",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "395"
@@ -11999,7 +14841,32 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.163,
       "skillRatePct": 3.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "393",
+        "previous": {
+          "id": "393",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "395",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "395"
@@ -12076,7 +14943,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.168,
       "skillRatePct": 3.8,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "393",
+        "previous": {
+          "id": "394",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "395"
@@ -12153,7 +15031,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.181,
       "skillRatePct": 1.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "403",
+        "previous": null,
+        "next": [
+          {
+            "id": "404",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 11
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "405"
@@ -12230,7 +15130,32 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.182,
       "skillRatePct": 1.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "403",
+        "previous": {
+          "id": "403",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "405",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 23
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "405"
@@ -12307,7 +15232,18 @@
       "carryLimitRaisedFromFirstStage": 31,
       "ingredientRate": 0.2,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "403",
+        "previous": {
+          "id": "404",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "405"
@@ -12384,7 +15320,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.137,
       "skillRatePct": 7.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "425",
+        "previous": null,
+        "next": [
+          {
+            "id": "426",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 21
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "426"
@@ -12461,7 +15419,18 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.128,
       "skillRatePct": 6.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "425",
+        "previous": {
+          "id": "425",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "426"
@@ -12538,7 +15507,18 @@
       "carryLimitRaisedFromFirstStage": 23,
       "ingredientRate": 0.143,
       "skillRatePct": 6.7,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "198",
+        "previous": {
+          "id": "198",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "430"
@@ -12615,7 +15595,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.189,
       "skillRatePct": 6.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "438",
+        "previous": null,
+        "next": [
+          {
+            "id": "185",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 20
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "185"
@@ -12692,7 +15694,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.201,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "439",
+        "previous": null,
+        "next": [
+          {
+            "id": "122",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "122"
@@ -12769,7 +15793,35 @@
       "carryLimitRaisedFromFirstStage": 7,
       "ingredientRate": 0.21,
       "skillRatePct": 1.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "440",
+        "previous": null,
+        "next": [
+          {
+            "id": "113",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 30,
+                "count": 1
+              },
+              {
+                "type": "timing",
+                "startHour": 6,
+                "endHour": 18
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "242"
@@ -12846,7 +15898,15 @@
       "carryLimitRaisedFromFirstStage": 27,
       "ingredientRate": 0.198,
       "skillRatePct": 3.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "442",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "442"
@@ -12923,7 +15983,34 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.126,
       "skillRatePct": 3.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "447",
+        "previous": null,
+        "next": [
+          {
+            "id": "448",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "sleepTime",
+                "hours": 150
+              },
+              {
+                "type": "timing",
+                "startHour": 6,
+                "endHour": 18
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "448"
@@ -13000,7 +16087,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.15,
       "skillRatePct": 5.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "447",
+        "previous": {
+          "id": "447",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "448"
@@ -13077,7 +16175,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.228,
       "skillRatePct": 4.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "453",
+        "previous": null,
+        "next": [
+          {
+            "id": "454",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 28
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "454"
@@ -13147,7 +16267,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.229,
       "skillRatePct": 4.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "453",
+        "previous": {
+          "id": "453",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "454"
@@ -13217,7 +16348,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.251,
       "skillRatePct": 4.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "459",
+        "previous": null,
+        "next": [
+          {
+            "id": "460",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 30
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "460"
@@ -13294,7 +16447,18 @@
       "carryLimitRaisedFromFirstStage": 26,
       "ingredientRate": 0.25,
       "skillRatePct": 4.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "459",
+        "previous": {
+          "id": "459",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "460"
@@ -13371,7 +16535,18 @@
       "carryLimitRaisedFromFirstStage": 26,
       "ingredientRate": 0.251,
       "skillRatePct": 1.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "215",
+        "previous": {
+          "id": "215",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "461"
@@ -13448,7 +16623,18 @@
       "carryLimitRaisedFromFirstStage": 23,
       "ingredientRate": 0.179,
       "skillRatePct": 6.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "81",
+        "previous": {
+          "id": "82",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "462"
@@ -13518,7 +16704,18 @@
       "carryLimitRaisedFromFirstStage": 26,
       "ingredientRate": 0.158,
       "skillRatePct": 5.3,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "175",
+        "previous": {
+          "id": "176",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "468"
@@ -13595,7 +16792,18 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.205,
       "skillRatePct": 6.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "470"
@@ -13672,7 +16880,18 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.219,
       "skillRatePct": 6.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "471"
@@ -13749,7 +16968,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.147,
       "skillRatePct": 5.4,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "280",
+        "previous": {
+          "id": "281",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "475"
@@ -13826,7 +17056,15 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.239,
       "skillRatePct": 4.1,
+      "expType": 3,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "488",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "488"
@@ -13903,7 +17141,15 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.192,
       "skillRatePct": 2.3,
+      "expType": 4,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "491",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "491"
@@ -14106,7 +17352,30 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.197,
       "skillRatePct": 4.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "517",
+        "previous": null,
+        "next": [
+          {
+            "id": "518",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 27,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "518"
@@ -14183,7 +17452,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.188,
       "skillRatePct": 4.1,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "517",
+        "previous": {
+          "id": "517",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "518"
@@ -14260,7 +17540,29 @@
       "carryLimitRaisedFromFirstStage": 8,
       "ingredientRate": 0.175,
       "skillRatePct": 5.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "557",
+        "previous": null,
+        "next": [
+          {
+            "id": "558",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 26
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "558"
@@ -14337,7 +17639,18 @@
       "carryLimitRaisedFromFirstStage": 22,
       "ingredientRate": 0.239,
       "skillRatePct": 6.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "557",
+        "previous": {
+          "id": "557",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "558"
@@ -14414,7 +17727,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.125,
       "skillRatePct": 3.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "627",
+        "previous": null,
+        "next": [
+          {
+            "id": "628",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 41
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "628"
@@ -14491,7 +17826,18 @@
       "carryLimitRaisedFromFirstStage": 23,
       "ingredientRate": 0.121,
       "skillRatePct": 3.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "627",
+        "previous": {
+          "id": "627",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "628"
@@ -14568,7 +17914,34 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.203,
       "skillRatePct": 2.4,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "696",
+        "previous": null,
+        "next": [
+          {
+            "id": "697",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 29
+              },
+              {
+                "type": "timing",
+                "startHour": 6,
+                "endHour": 18
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "697"
@@ -14645,7 +18018,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.178,
       "skillRatePct": 2.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "696",
+        "previous": {
+          "id": "696",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "697"
@@ -14722,7 +18106,18 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.178,
       "skillRatePct": 4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "133",
+        "previous": {
+          "id": "133",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "700"
@@ -14799,7 +18194,15 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.192,
       "skillRatePct": 5.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "701",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "701"
@@ -14876,7 +18279,15 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.177,
       "skillRatePct": 4.5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "702",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "702"
@@ -14953,7 +18364,30 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.12,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "710",
+        "previous": null,
+        "next": [
+          {
+            "id": "711-1",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "711-1"
@@ -15030,7 +18464,30 @@
       "carryLimitRaisedFromFirstStage": 7,
       "ingredientRate": 0.12,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "710",
+        "previous": null,
+        "next": [
+          {
+            "id": "711-2",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "711-2"
@@ -15107,7 +18564,30 @@
       "carryLimitRaisedFromFirstStage": 15,
       "ingredientRate": 0.12,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "710",
+        "previous": null,
+        "next": [
+          {
+            "id": "711-3",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "711-3"
@@ -15184,7 +18664,30 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.12,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "710",
+        "previous": null,
+        "next": [
+          {
+            "id": "711-4",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 21,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "711-4"
@@ -15261,7 +18764,18 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.13,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "710",
+        "previous": {
+          "id": "710-1",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "711-1"
@@ -15338,7 +18852,18 @@
       "carryLimitRaisedFromFirstStage": 15,
       "ingredientRate": 0.13,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "710",
+        "previous": {
+          "id": "710-2",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "711-2"
@@ -15415,7 +18940,18 @@
       "carryLimitRaisedFromFirstStage": 24,
       "ingredientRate": 0.13,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "710",
+        "previous": {
+          "id": "710-3",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "711-3"
@@ -15492,7 +19028,18 @@
       "carryLimitRaisedFromFirstStage": 30,
       "ingredientRate": 0.13,
       "skillRatePct": 4.9,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "710",
+        "previous": {
+          "id": "710-4",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "711-4"
@@ -15569,7 +19116,29 @@
       "carryLimitRaisedFromFirstStage": 7,
       "ingredientRate": 0.198,
       "skillRatePct": 4.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "714",
+        "previous": null,
+        "next": [
+          {
+            "id": "715",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 36
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "715"
@@ -15646,7 +19215,18 @@
       "carryLimitRaisedFromFirstStage": 23,
       "ingredientRate": 0.195,
       "skillRatePct": 4.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "714",
+        "previous": {
+          "id": "714",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "715"
@@ -15723,7 +19303,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.155,
       "skillRatePct": 2.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "736",
+        "previous": null,
+        "next": [
+          {
+            "id": "737",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 15
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "738"
@@ -15800,7 +19402,33 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.154,
       "skillRatePct": 2.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "736",
+        "previous": {
+          "id": "736",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "738",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 24,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "738"
@@ -15877,7 +19505,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.194,
       "skillRatePct": 5.1,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "736",
+        "previous": {
+          "id": "737",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "738"
@@ -15954,7 +19593,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.199,
       "skillRatePct": 1.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "742",
+        "previous": null,
+        "next": [
+          {
+            "id": "743",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 19
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "743"
@@ -16031,7 +19692,18 @@
       "carryLimitRaisedFromFirstStage": 24,
       "ingredientRate": 0.194,
       "skillRatePct": 2.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "742",
+        "previous": {
+          "id": "742",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "743"
@@ -16108,7 +19780,29 @@
       "carryLimitRaisedFromFirstStage": 13,
       "ingredientRate": 0.225,
       "skillRatePct": 1.1,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "759",
+        "previous": null,
+        "next": [
+          {
+            "id": "760",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 20
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "760"
@@ -16185,7 +19879,18 @@
       "carryLimitRaisedFromFirstStage": 25,
       "ingredientRate": 0.229,
       "skillRatePct": 1.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "759",
+        "previous": {
+          "id": "759",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "760"
@@ -16262,7 +19967,15 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.167,
       "skillRatePct": 3.5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "764",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "764"
@@ -16339,7 +20052,15 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.169,
       "skillRatePct": 5.5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "777",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "777"
@@ -16416,7 +20137,15 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.153,
       "skillRatePct": 3.5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "778",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "778"
@@ -16493,7 +20222,15 @@
       "carryLimitRaisedFromFirstStage": 25,
       "ingredientRate": 0.294,
       "skillRatePct": 4.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "780",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "780"
@@ -16570,7 +20307,15 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.165,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "845",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "845"
@@ -16647,7 +20392,77 @@
       "carryLimitRaisedFromFirstStage": 6,
       "ingredientRate": 0.209,
       "skillRatePct": 4.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "848",
+        "previous": null,
+        "next": [
+          {
+            "id": "849",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 23
+              },
+              {
+                "type": "nature",
+                "nature": [
+                  2,
+                  3,
+                  4,
+                  6,
+                  7,
+                  11,
+                  16,
+                  18,
+                  19,
+                  20,
+                  22,
+                  23,
+                  24
+                ]
+              }
+            ]
+          },
+          {
+            "id": "8001",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 23
+              },
+              {
+                "type": "nature",
+                "nature": [
+                  1,
+                  5,
+                  8,
+                  9,
+                  10,
+                  12,
+                  13,
+                  14,
+                  15,
+                  17,
+                  21,
+                  25
+                ]
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "849",
@@ -16725,7 +20540,18 @@
       "carryLimitRaisedFromFirstStage": 23,
       "ingredientRate": 0.239,
       "skillRatePct": 6.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "848",
+        "previous": {
+          "id": "848",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "849"
@@ -16802,7 +20628,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.208,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "906",
+        "previous": null,
+        "next": [
+          {
+            "id": "907",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "908"
@@ -16879,7 +20727,32 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.209,
       "skillRatePct": 2.3,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "906",
+        "previous": {
+          "id": "906",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "908",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "908"
@@ -16956,7 +20829,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.19,
       "skillRatePct": 2.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "906",
+        "previous": {
+          "id": "907",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "908"
@@ -17033,7 +20917,29 @@
       "carryLimitRaisedFromFirstStage": 11,
       "ingredientRate": 0.254,
       "skillRatePct": 5.3,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "909",
+        "previous": null,
+        "next": [
+          {
+            "id": "910",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "911"
@@ -17110,7 +21016,32 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.247,
       "skillRatePct": 5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "909",
+        "previous": {
+          "id": "909",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "911",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "911"
@@ -17187,7 +21118,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.268,
       "skillRatePct": 6.2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "909",
+        "previous": {
+          "id": "910",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "911"
@@ -17264,7 +21206,29 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.261,
       "skillRatePct": 2.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "912",
+        "previous": null,
+        "next": [
+          {
+            "id": "913",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 12
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "914"
@@ -17341,7 +21305,32 @@
       "carryLimitRaisedFromFirstStage": 19,
       "ingredientRate": 0.259,
       "skillRatePct": 2.7,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "912",
+        "previous": {
+          "id": "912",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "914",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 27
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "914"
@@ -17418,7 +21407,18 @@
       "carryLimitRaisedFromFirstStage": 29,
       "ingredientRate": 0.232,
       "skillRatePct": 2.4,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "912",
+        "previous": {
+          "id": "913",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "914"
@@ -17495,7 +21495,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.111,
       "skillRatePct": 3.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "921",
+        "previous": null,
+        "next": [
+          {
+            "id": "922",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 14
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "923"
@@ -17572,7 +21594,32 @@
       "carryLimitRaisedFromFirstStage": 17,
       "ingredientRate": 0.109,
       "skillRatePct": 3.6,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "921",
+        "previous": {
+          "id": "921",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "923",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "sleepTime",
+                "hours": 150
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "923"
@@ -17649,7 +21696,18 @@
       "carryLimitRaisedFromFirstStage": 28,
       "ingredientRate": 0.141,
       "skillRatePct": 3.9,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "921",
+        "previous": {
+          "id": "922",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "923"
@@ -17726,7 +21784,29 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.202,
       "skillRatePct": 1.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 2,
+        "lineId": "957",
+        "previous": null,
+        "next": [
+          {
+            "id": "958",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 18
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "959"
@@ -17803,7 +21883,32 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.186,
       "skillRatePct": 1.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 1,
+        "lineId": "957",
+        "previous": {
+          "id": "957",
+          "conditions": []
+        },
+        "next": [
+          {
+            "id": "959",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "level",
+                "level": 29
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "959"
@@ -17880,7 +21985,18 @@
       "carryLimitRaisedFromFirstStage": 30,
       "ingredientRate": 0.185,
       "skillRatePct": 2,
+      "expType": 1,
       "stage": 3,
+      "evolution": {
+        "stage": 3,
+        "stageToFinal": 0,
+        "lineId": "957",
+        "previous": {
+          "id": "958",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "959"
@@ -17957,7 +22073,30 @@
       "carryLimitRaisedFromFirstStage": 12,
       "ingredientRate": 0.223,
       "skillRatePct": 4.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "974",
+        "previous": null,
+        "next": [
+          {
+            "id": "975",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 26,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "975"
@@ -18034,7 +22173,18 @@
       "carryLimitRaisedFromFirstStage": 30,
       "ingredientRate": 0.209,
       "skillRatePct": 4.2,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "974",
+        "previous": {
+          "id": "974",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "975"
@@ -18111,7 +22261,18 @@
       "carryLimitRaisedFromFirstStage": 25,
       "ingredientRate": 0.208,
       "skillRatePct": 5.5,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "7054",
+        "previous": {
+          "id": "7054",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "980"
@@ -18188,7 +22349,30 @@
       "carryLimitRaisedFromFirstStage": 10,
       "ingredientRate": 0.23,
       "skillRatePct": 2.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "7006",
+        "previous": null,
+        "next": [
+          {
+            "id": "7007",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 26,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "7007"
@@ -18265,7 +22449,18 @@
       "carryLimitRaisedFromFirstStage": 25,
       "ingredientRate": 0.232,
       "skillRatePct": 2.8,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "7006",
+        "previous": {
+          "id": "7006",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "7007"
@@ -18342,7 +22537,29 @@
       "carryLimitRaisedFromFirstStage": 9,
       "ingredientRate": 0.209,
       "skillRatePct": 5.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "7054",
+        "previous": null,
+        "next": [
+          {
+            "id": "980",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 15
+              }
+            ]
+          }
+        ]
+      },
       "isFinalEvolution": false,
       "finalOptions": [
         "980"
@@ -18419,7 +22636,18 @@
       "carryLimitRaisedFromFirstStage": 23,
       "ingredientRate": 0.239,
       "skillRatePct": 6.4,
+      "expType": 1,
       "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "848",
+        "previous": {
+          "id": "848",
+          "conditions": []
+        },
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "8001"
@@ -18496,7 +22724,15 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.218,
       "skillRatePct": 2.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "9001",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9001-1"
@@ -18573,7 +22809,15 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.218,
       "skillRatePct": 2.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "9001",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9001-2"
@@ -18650,7 +22894,15 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.131,
       "skillRatePct": 4.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "9002",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9002"
@@ -18727,7 +22979,15 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.156,
       "skillRatePct": 3.2,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "9004",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9004"
@@ -18804,7 +23064,15 @@
       "carryLimitRaisedFromFirstStage": 18,
       "ingredientRate": 0.12,
       "skillRatePct": 4.6,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "9005",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9005"
@@ -18881,7 +23149,15 @@
       "carryLimitRaisedFromFirstStage": 20,
       "ingredientRate": 0.214,
       "skillRatePct": 5,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "9006",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9006"
@@ -18958,7 +23234,15 @@
       "carryLimitRaisedFromFirstStage": 21,
       "ingredientRate": 0.175,
       "skillRatePct": 1.8,
+      "expType": 1,
       "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "9007",
+        "previous": null,
+        "next": []
+      },
       "isFinalEvolution": true,
       "finalOptions": [
         "9007"

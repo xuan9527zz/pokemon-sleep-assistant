@@ -26,6 +26,8 @@ assert.strictEqual(
   '手机样式在断点外只能隐藏新增的手机专用控件'
 );
 assert.ok(css.includes('.app-nav{position:fixed;inset:auto 0 0'), '手机导航应固定在底部');
+assert.ok(css.includes('grid-template-columns:repeat(6,minmax(0,1fr))'), '手机底部导航应容纳六个主页面');
+assert.ok(html.includes('data-page-target="weekly"'), '手机和桌面导航都应包含本周计划页');
 assert.ok(css.includes('html,body{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}'), '页面根节点必须阻止iOS整页横向偏移');
 assert.ok(css.includes('.wrap{width:100%;max-width:100%'), '手机主容器必须限制在视口宽度内');
 assert.ok(css.includes('.box-page-table{display:none!important}'), '手机端应隐藏桌面宽表格');

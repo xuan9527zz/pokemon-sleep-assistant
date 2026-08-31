@@ -16,9 +16,10 @@
     levelOverrides:'pokemon-sleep-level-overrides-v1',
     levelHistory:'pokemon-sleep-level-history-v1',
     currentTeam:'pokemon-sleep-current-team-v1',
-    savedTeams:'pokemon-sleep-saved-teams-v1'
+    savedTeams:'pokemon-sleep-saved-teams-v1',
+    weeklyPlan:'pokemon-sleep-weekly-plan-v1'
   });
-  const FALLBACKS=Object.freeze({pokemon:[],recycleBin:[],dataMeta:{},boxManagement:{},levelOverrides:{},levelHistory:[],currentTeam:[],savedTeams:[]});
+  const FALLBACKS=Object.freeze({pokemon:[],recycleBin:[],dataMeta:{},boxManagement:{},levelOverrides:{},levelHistory:[],currentTeam:[],savedTeams:[],weeklyPlan:{}});
   function storage(){try{return root&&root.localStorage||null}catch(_error){return null}}
   function readJson(key,fallback,target=storage()){try{const raw=target&&target.getItem(key);return raw?JSON.parse(raw):fallback}catch(_error){return fallback}}
   function writeJson(key,value,target=storage()){try{target.setItem(key,JSON.stringify(value));return true}catch(_error){return false}}

@@ -114,7 +114,21 @@ const catalog = records.map(record => {
     carryLimitRaisedFromFirstStage: Number(record.carryLimitRaisedFromFirstStage || record.carryLimitBase || 0),
     ingredientRate: Number(record.ingredientRate || 0),
     skillRatePct: Number(record.skillRatePct || 0),
+    expType: Number(record.expType || 1),
     stage: Number(record.evolution?.stage || 1),
+    evolution: {
+      stage: Number(record.evolution?.stage || 1),
+      stageToFinal: Number(record.evolution?.stageToFinal || 0),
+      lineId: String(record.evolution?.lineId || id),
+      previous: record.evolution?.previous ? {
+        id: String(typeof record.evolution.previous === 'object' ? record.evolution.previous.id : record.evolution.previous),
+        conditions: typeof record.evolution.previous === 'object' && Array.isArray(record.evolution.previous.conditions) ? record.evolution.previous.conditions : []
+      } : null,
+      next: Array.isArray(record.evolution?.next) ? record.evolution.next.map(next => ({
+        id: String(next.id),
+        conditions: Array.isArray(next.conditions) ? next.conditions : []
+      })) : []
+    },
     isFinalEvolution: Boolean(record.isFinalEvolution),
     finalOptions: options,
     defaultFinalId: bestFinal(options),
