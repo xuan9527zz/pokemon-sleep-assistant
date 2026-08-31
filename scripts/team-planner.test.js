@@ -10,6 +10,12 @@ assert.strictEqual(planner.parseInterval('1:05:28'), 3928);
 const slots = planner.parseIngredientSlots('甜甜蜜×2／甜甜蜜×5／好眠番茄×7', 52);
 assert.deepStrictEqual(slots.unlocked.map(item => item.quantity), [2, 5]);
 assert.deepStrictEqual(slots.locked.map(item => item.quantity), [7]);
+const legacySlots = planner.parseIngredientSlots('牛奶×2／苹果×5／玉米×7', 60);
+assert.deepStrictEqual(
+  legacySlots.unlocked.map(item => item.name),
+  ['哞哞鲜奶', '特选苹果', '萌绿玉米'],
+  '旧盒子数据的食材简称应在产量与预算计算前统一成正式名称'
+);
 
 const latias = { name: '拉帝亚斯' };
 const latios = { name: '拉帝欧斯' };

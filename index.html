@@ -11,9 +11,9 @@
 <link rel="stylesheet" href="./box-manager.css">
 <link rel="stylesheet" href="./pokemon-manager.css?v=20260831-1">
 <link rel="stylesheet" href="./cloud-sync.css?v=20260831-1">
-<link rel="stylesheet" href="./weekly-planner.css?v=20260831-2">
+<link rel="stylesheet" href="./weekly-planner.css?v=20260831-3">
 <link rel="stylesheet" href="./investment-planner.css?v=20260831-2">
-<link rel="stylesheet" href="./retention-advisor.css?v=20260831-2">
+<link rel="stylesheet" href="./retention-advisor.css?v=20260831-3">
 <title>Pokemon Sleep 助手</title>
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--ink:#18212f;--muted:#667085;--line:#dfe5ee;--green:#19b96b;--gold:#f3ad24;--blue:#2386e8;--red:#e85151}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}.wrap{max-width:1500px;margin:auto;padding:24px}.hero{background:linear-gradient(135deg,#116b42,#24c778);color:#fff;padding:26px;border-radius:18px;box-shadow:0 10px 30px #0b5d3830}.hero h1{margin:0 0 6px;font-size:28px}.hero p{margin:0;opacity:.9}.stats{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:12px;margin:16px 0}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px #1018280c}.stat{padding:15px}.stat b{display:block;font-size:25px}.stat span{color:var(--muted)}.panel{padding:15px}.filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(6,minmax(130px,1fr)) auto;gap:10px}.filters input,.filters select,.filters button{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;padding:8px 11px;font:inherit}.filters button{background:#18212f;color:#fff;cursor:pointer}.meta{color:var(--muted);margin:12px 2px}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 4px 14px #1018280c}table{width:100%;border-collapse:separate;border-spacing:0;min-width:1640px}th,td{padding:10px 11px;border-bottom:1px solid #edf0f5;text-align:left;vertical-align:top}th{position:sticky;top:0;z-index:2;background:#eef7f2;color:#185b3c;white-space:nowrap}tbody tr:hover{background:#fbfdfc}.shiny{display:inline-block;background:#fff3cd;color:#7b5200;border:1px solid #f4cf70;border-radius:999px;padding:1px 8px;font-weight:700}.normal{color:#7a8494}.tag{display:inline-block;border-radius:999px;padding:2px 8px;font-weight:700;white-space:nowrap}.high{background:#dcfce7;color:#08743d}.use{background:#dbeafe;color:#165ca9}.collect{background:#fef3c7;color:#8a5800}.keep{background:#eef2f6;color:#4f5c6d}.nowrap{white-space:nowrap}.muted{color:var(--muted)}footer{color:var(--muted);padding:18px 2px}.hide{display:none}@media(max-width:800px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.hero h1{font-size:22px}}@media print{body{background:#fff}.hero{box-shadow:none}.filters{display:none}.wrap{max-width:none;padding:0}.tablebox{box-shadow:none;overflow:visible}table{min-width:0;font-size:9px}th,td{padding:4px}.stats{grid-template-columns:repeat(5,1fr)}}
@@ -46,14 +46,14 @@
 .filters{grid-template-columns:minmax(210px,1.7fr) repeat(4,minmax(125px,1fr)) auto}@media(max-width:800px){.filters{grid-template-columns:1fr}}
 .score-tooltip{width:min(390px,calc(100vw - 20px))}
 </style>
-<link rel="stylesheet" href="./mobile.css?v=20260831-3">
+<link rel="stylesheet" href="./mobile.css?v=20260831-4">
 </head>
 <body><main class="wrap">
 <section class="hero"><h1>Pokemon Sleep｜宝可梦助手</h1><p>盒子、队伍、本周计划、岛屿、料理与活动资料集中管理；登录后可在不同设备继续使用同一份数据。</p></section>
 <nav class="app-nav" aria-label="主要功能">
   <a href="#box" data-page-target="box"><span class="app-nav-icon">盒</span><span class="app-nav-copy"><b>盒子</b><small>97 只个体整理</small></span></a>
   <a href="#team" data-page-target="team"><span class="app-nav-icon">队</span><span class="app-nav-copy"><b>当前队伍</b><small>食材与收菜时间</small></span></a>
-  <a href="#weekly" data-page-target="weekly"><span class="app-nav-icon">周</span><span class="app-nav-copy"><b>本周计划</b><small>队伍与21餐总控</small></span></a>
+  <a href="#weekly" data-page-target="weekly"><span class="app-nav-icon">周</span><span class="app-nav-copy"><b>本周作战</b><small>目标、缺口与行动</small></span></a>
   <a href="#islands" data-page-target="islands"><span class="app-nav-icon">岛</span><span class="app-nav-copy"><b>岛屿推荐</b><small>排序与队伍组合</small></span></a>
   <a href="#recipes" data-page-target="recipes"><span class="app-nav-icon">食</span><span class="app-nav-copy"><b>料理食谱</b><small>能量、系数与食材</small></span></a>
   <a href="#events" data-page-target="events"><span class="app-nav-icon">活</span><span class="app-nav-copy"><b>活动资讯</b><small>倒计时与活动计划</small></span></a>
@@ -63,21 +63,20 @@
   <div class="cloud-sync-actions"><input id="cloudEmail" type="email" inputmode="email" autocomplete="email" placeholder="输入邮箱接收登录链接" aria-label="登录邮箱"><button id="cloudLogin" type="button">发送登录邮件</button><button class="secondary" id="cloudLogout" type="button" hidden>退出登录</button></div>
 </section>
 <section class="panel weekly-planner" id="weeklyPlanner" data-page="weekly" hidden aria-labelledby="weeklyPlannerTitle">
-  <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周计划｜队伍、21 餐与换人时间</h2><p>把岛屿、树果、料理、活动、锅容量和现有库存合并成一份可执行周计划。</p></div><span class="guide-stamp">P1 · 盒子动态计算</span></div>
+  <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周作战台｜这周先做什么</h2><p>确定一道目标食谱，直接查看食材缺口、当前用队、换队条件与完成进度。</p></div><span class="guide-stamp">当前盒子 · 自动保存</span></div>
   <div class="weekly-controls">
     <div class="weekly-field"><label for="weeklyIsland">本周岛屿</label><select id="weeklyIsland"></select></div>
-    <div class="weekly-field"><label for="weeklyRecipeType">料理类别</label><select id="weeklyRecipeType"><option>咖喱／浓汤</option><option>沙拉</option><option>点心／饮料</option><option>全部</option></select></div>
     <div class="weekly-field"><label for="weeklyActivity">活动档案</label><select id="weeklyActivity"></select></div>
-    <div class="weekly-field"><label for="weeklyStrategy">组队策略</label><select id="weeklyStrategy"><option value="balanced">均衡</option><option value="energy">树果／能量优先</option><option value="cooking">料理优先</option></select></div>
-    <div class="weekly-field"><label for="weeklyPot">基础锅容量</label><input id="weeklyPot" type="number" min="1" max="1000" inputmode="numeric" value="81"></div>
-    <div class="weekly-field"><label for="weeklyCustomMultiplier">自定义料理倍率</label><input id="weeklyCustomMultiplier" type="number" min="0.1" max="5" step="0.05" value="1"></div>
-    <label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox" checked><span>使用好露营券</span></label>
+    <div class="weekly-field"><label for="weeklyRecipeType">料理类别</label><select id="weeklyRecipeType"><option>咖喱／浓汤</option><option>沙拉</option><option>点心／饮料</option><option>全部</option></select></div>
+    <div class="weekly-field weekly-target-field"><label for="weeklyTargetRecipe">本周目标食谱</label><select id="weeklyTargetRecipe"></select></div>
+    <div class="weekly-field"><label for="weeklyMealGoal">目标餐数（1–21）</label><input id="weeklyMealGoal" type="number" min="1" max="21" inputmode="numeric" value="15"></div>
     <div class="weekly-berries" id="weeklyBerries" hidden></div>
   </div>
-  <details class="weekly-inventory-wrap"><summary>填写当前食材库存（默认全部为 0）</summary><div class="weekly-inventory" id="weeklyInventory"></div></details>
-  <div class="weekly-actions"><button class="weekly-generate" id="weeklyGenerate" type="button">生成／更新本周计划</button><span class="weekly-save-stamp" id="weeklySaveStamp">设置会自动保存并同步云端</span></div>
+  <details class="weekly-settings"><summary>高级设置：锅容量与好露营券</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">基础锅容量</label><input id="weeklyPot" type="number" min="1" max="1000" inputmode="numeric" value="81"></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox" checked><span>使用好露营券</span></label></div></details>
+  <details class="weekly-inventory-wrap"><summary>更新现在的食材库存</summary><p class="weekly-inventory-help">只需更新目标食谱相关食材；其余食材可保持原值。库存会随账号同步。</p><div class="weekly-inventory" id="weeklyInventory"></div></details>
+  <div class="weekly-save-line"><span class="weekly-save-stamp" id="weeklySaveStamp">设置与进度会自动保存并同步云端</span></div>
   <div class="weekly-result" id="weeklyResult" aria-live="polite"></div>
-  <p class="weekly-method">口径：料理按 Lv.60 食谱倍率 3.03 估算；平日大成功期望按 1.1、周日按 1.6。队伍建议是当前盒子内的透明启发式方案，活动临时倍率、技能保底与随机触发仍需以游戏内结果为准。</p>
+  <p class="weekly-method">口径：本页不再虚构未来 21 餐的具体菜单，只按目标食谱、剩余餐数、当前库存和盒子预计日产量计算行动建议。食材概率采用研究估算，技能触发、临时活动效果和实际收菜波动仍以游戏内结果为准。</p>
 </section>
 <section class="panel current-team-guide" aria-labelledby="currentTeamTitle" data-page="team" hidden>
   <div class="guide-head">
@@ -313,10 +312,10 @@
 <script src="pokemon-data.js?v=20260831-1"></script>
 <script src="box-manager.js"></script>
 <script src="level-manager.js"></script>
-<script src="team-planner.js?v=20260831-1"></script>
-<script src="weekly-planner.js?v=20260831-2"></script>
+<script src="team-planner.js?v=20260831-2"></script>
+<script src="weekly-planner.js?v=20260831-3"></script>
 <script src="investment-planner.js?v=20260831-2"></script>
-<script src="retention-advisor.js?v=20260831-2"></script>
+<script src="retention-advisor.js?v=20260831-3"></script>
 <script src="pokemon-manager.js?v=20260831-2"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.js"></script>
 <script src="supabase-config.js?v=20260831-1"></script>

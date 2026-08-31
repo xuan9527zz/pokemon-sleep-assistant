@@ -1,9 +1,10 @@
 (function(root,factory){
   'use strict';
-  const api=factory();
+  const ingredients=typeof module==='object'&&module.exports?require('./ingredients.js'):root.POKEMON_SLEEP_INGREDIENTS;
+  const api=factory(ingredients);
   if(typeof module==='object'&&module.exports)module.exports=api;
   root.POKEMON_SLEEP_TEAM_PLANNER=api;
-})(typeof window!=='undefined'?window:globalThis,function(){
+})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog){
   'use strict';
 
   const SUBSKILL_LEVELS=[10,25,50,70,80];
@@ -32,7 +33,11 @@
     const unlocks=[1,30,60];
     const slots=String(value||'').split('／').map((raw,index)=>{
       const match=raw.trim().match(/^(.+?)×(\d+)$/);
-      return {unlockLevel:unlocks[index]||60,name:match?match[1].trim():raw.trim(),quantity:match?Number(match[2]):0};
+      const sourceName=match?match[1].trim():raw.trim();
+      const name=ingredientCatalog&&typeof ingredientCatalog.canonicalize==='function'
+        ?ingredientCatalog.canonicalize(sourceName)||sourceName
+        :sourceName;
+      return {unlockLevel:unlocks[index]||60,name,quantity:match?Number(match[2]):0};
     }).filter(slot=>slot.name&&slot.name!=='—'&&slot.quantity>0);
     return {
       all:slots,

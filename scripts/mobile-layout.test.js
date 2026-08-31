@@ -47,7 +47,8 @@ assert.ok(css.includes('.weekly-planner{width:100%;max-width:100%;overflow:hidde
 assert.ok(css.includes('.weekly-controls{display:grid!important;grid-template-columns:minmax(0,1fr)!important'), '本周计划表单在手机端应改为单列');
 assert.ok(css.includes('.weekly-field,.weekly-check,.weekly-berries{grid-column:1!important;width:100%;max-width:100%}'), '本周计划控件不得撑宽网格');
 assert.ok(css.includes('.weekly-berries[hidden]{display:none!important}'), '固定树果岛屿不应因手机覆盖规则显示隐藏控件');
-assert.ok(css.includes('.weekly-meals article{display:grid;grid-template-columns:minmax(0,1fr)!important'), '21餐安排在手机端应改为逐日纵向卡片');
-assert.ok(css.includes('.weekly-meals b{overflow:visible;text-overflow:clip;white-space:normal;overflow-wrap:anywhere'), '手机端长食谱名必须允许换行');
+assert.ok(css.includes('.weekly-team-pair{grid-template-columns:minmax(0,1fr)!important}'), '作战台的准备队与输出队在手机端应纵向排列');
+assert.ok(css.includes('.weekly-budget-row{grid-template-columns:minmax(0,1fr)!important}'), '作战台食材预算不得撑宽手机页面');
+assert.ok(css.includes('.weekly-progress{grid-template-columns:repeat(2,minmax(0,1fr))!important}'), '目标料理勾选应使用手机两列布局');
 
 console.log('mobile layout tests passed');

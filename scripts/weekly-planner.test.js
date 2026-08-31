@@ -10,9 +10,19 @@ const scoring = require('../pokemon-scoring.js');
 
 assert.equal(weekly.effectivePot(81, false), 81);
 assert.equal(weekly.effectivePot(81, true), 121);
-const normalized=weekly.normalizeState({recipeType:'坏数据',activityKey:'bad',strategy:'bad',islandIndex:99},['特选苹果'],9);
+const monday=new Date(2026,7,31,12,0,0),sunday=new Date(2026,8,6,12,0,0);
+assert.equal(weekly.weekKey(monday),'2026-08-31');
+assert.equal(weekly.weekKey(sunday),'2026-08-31');
+assert.equal(weekly.daysRemainingInWeek(monday),7);
+assert.equal(weekly.daysRemainingInWeek(sunday),1);
+
+const normalized=weekly.normalizeState({recipeType:'坏数据',activityKey:'bad',islandIndex:99,mealGoal:80,weekKey:'2026-08-31',completedMeals:['d0-m0','bad']},['特选苹果'],9,monday);
 assert.equal(normalized.recipeType,'咖喱／浓汤');
 assert.equal(normalized.islandIndex,8);
+assert.equal(normalized.mealGoal,21);
+assert.deepEqual(normalized.completedMeals,['d0-m0']);
+const nextWeek=weekly.normalizeState(normalized,['特选苹果'],9,new Date(2026,8,7,12,0,0));
+assert.deepEqual(nextWeek.completedMeals,[]);
 
 const recipes = [
   {id:1,name:'小料理',type:'沙拉',energy:1000,total:10,ingredients:[{name:'特选苹果',amount:10}]},
@@ -22,14 +32,13 @@ const recipes = [
 assert.equal(weekly.chooseTargetRecipe(recipes,'沙拉',15,{},{}).id,1);
 assert.equal(weekly.chooseTargetRecipe(recipes,'沙拉',25,{'特选苹果':60},{'特选苹果':100}).id,2);
 
-const meals = weekly.simulateMeals({recipes,type:'沙拉',pot:25,daily:{'特选苹果':60},inventory:{'特选苹果':100},cookingMultiplier:1});
-assert.equal(meals.meals.length,21);
-assert.equal(meals.cooked,21);
-assert.ok(meals.expectedEnergy>meals.normalEnergy);
-assert.equal(meals.meals[18].critFactor,1.6);
-
-const shortages = weekly.targetShortages(recipes[1],{'特选苹果':30},{'特选苹果':0});
-assert.equal(shortages[0].shortage,210);
+const budget=weekly.ingredientBudget(recipes[1],{'特选苹果':30},{'特选苹果':0},15,5,7);
+assert.equal(budget.remaining,10);
+assert.equal(budget.rows[0].need,200);
+assert.equal(budget.rows[0].projectedGap,0);
+assert.equal(budget.rows[0].daysToStock,6.7);
+const impossible=weekly.ingredientBudget(recipes[1],{'特选苹果':5},{'特选苹果':0},15,0,2);
+assert.ok(impossible.projectedShortages.length>0);
 
 const projectRoot = path.resolve(__dirname,'..');
 const html = fs.readFileSync(path.join(projectRoot,'index.html'),'utf8');
@@ -45,12 +54,23 @@ const outputScore=mon=>Number(mon.sp)||100;
 const healer=mon=>/活力全体疗愈|新月祈祷/.test(mon.main);
 const special=mon=>['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊'].includes(mon.name);
 const recommend=()=>{const heal=box.filter(healer).sort((a,b)=>outputScore(b)-outputScore(a))[0],producers=box.filter(mon=>!healer(mon)&&!special(mon)).sort((a,b)=>outputScore(b)-outputScore(a)).slice(0,4);return {regular:{ids:[...producers.map(mon=>mon.id),heal.id],label:'无特殊宝可梦'}}};
-const realPlan=weekly.calculatePlan({pokemon:box,context:islandContext,recommendTeams:recommend,individualProductionScore:outputScore,isFullTeamHealer:healer,isSpecialPokemon:special,planner:teamPlanner,production:context.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,goodCamp:true,activityKey:'snapshot',recipes:realRecipes,recipeType:'沙拉',basePot:81,strategy:'balanced',inventory:{}});
-assert.equal(realPlan.team.members.length,5);
-assert.equal(realPlan.meals.meals.length,21);
-assert.ok(Object.keys(realPlan.team.daily).length>0);
-const wrongArea=weekly.calculatePlan({pokemon:box,context:islandContext,recommendTeams:recommend,individualProductionScore:outputScore,isFullTeamHealer:healer,isSpecialPokemon:special,planner:teamPlanner,production:context.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,goodCamp:true,activityKey:'mewtwo1',recipes:realRecipes,recipeType:'沙拉',basePot:81,strategy:'balanced',inventory:{}});
-assert.equal(wrongArea.team.carryBonus,0);
-const eventArea=weekly.calculatePlan({pokemon:box,context:{...islandContext,island:{name:'萌绿之岛',kind:'普通岛'}},recommendTeams:recommend,individualProductionScore:outputScore,isFullTeamHealer:healer,isSpecialPokemon:special,planner:teamPlanner,production:context.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,goodCamp:true,activityKey:'mewtwo1',recipes:realRecipes,recipeType:'沙拉',basePot:81,strategy:'balanced',inventory:{}});
-assert.equal(eventArea.team.carryBonus,8);
+const common={pokemon:box,context:islandContext,recommendTeams:recommend,individualProductionScore:outputScore,isFullTeamHealer:healer,isSpecialPokemon:monId=>special(box.find(mon=>String(mon.id)===String(monId))||{}),planner:teamPlanner,production:context.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,goodCamp:true,activityKey:'snapshot',recipes:realRecipes,recipeType:'沙拉',basePot:81,mealGoal:15,completedMeals:[],inventory:{},now:monday};
+const target=weekly.recipeRows(realRecipes,'沙拉',121)[0];
+const realPlan=weekly.calculatePlan({...common,targetRecipeId:target.id});
+assert.equal(realPlan.preparationTeam.members.length,5);
+assert.equal(realPlan.outputTeam.members.length,5);
+assert.equal(realPlan.targetRecipe.id,target.id);
+assert.equal(realPlan.budget.goal,15);
+assert.ok(realPlan.budget.rows.length>0);
+assert.ok(['prepare','adjust','output'].includes(realPlan.action.phase));
+assert.ok(Number(realPlan.action.collectionHours)>0);
+
+const wrongArea=weekly.calculatePlan({...common,activityKey:'mewtwo1'});
+assert.equal(wrongArea.preparationTeam.carryBonus,0);
+const eventArea=weekly.calculatePlan({...common,context:{...islandContext,island:{name:'萌绿之岛',kind:'普通岛'}},activityKey:'mewtwo1'});
+assert.equal(eventArea.preparationTeam.carryBonus,8);
+const completed=weekly.calculatePlan({...common,targetRecipeId:target.id,completedMeals:weekly.DAY_NAMES.flatMap((_day,day)=>weekly.MEAL_NAMES.map((_meal,meal)=>`d${day}-m${meal}`)).slice(0,15)});
+assert.equal(completed.action.phase,'complete');
+assert.equal(completed.budget.remaining,0);
+
 console.log('weekly planner tests passed');
