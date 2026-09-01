@@ -78,6 +78,8 @@ Only ingredient specialists and future all-rounders use this coefficient:
 
 This is a long-term Lv.70 route judgment. It changes individual quality, not species mechanics.
 
+These coefficients remain provisional display inputs. The course-derived selection layer separately enforces route eligibility: AAB/AAC are Lv.30 workers with an Lv.59 investment ceiling, unverified ABB requires species production evidence, and a high numeric individual score cannot restore a long-term graduation or core-cultivation label.
+
 ## Mechanical species models
 
 - Ingredient species: production 80%, final-form inventory 10%, main-skill synergy 10%. Production is ingredient-count efficiency 60% and base-strength efficiency 40%. Use the confirmed eight-hour unattended model and the evolved carry limit.
@@ -87,4 +89,4 @@ This is a long-term Lv.70 route judgment. It changes individual quality, not spe
 
 ## Cultivation and retention separation
 
-Scores measure potential. Cultivation advice also considers account stage, strategic role, direct superiors, stability, operation cost and team fit. Retention compares the same final form: ordinary helpers have four practical slots, limited special helpers one. Rank 5 or rank 2 respectively may become a release candidate only after the safeguards in `strategy-rules.md`.
+Scores measure potential. Cultivation advice also considers account stage, strategic role, direct superiors, stability, operation cost, team fit and the course-derived Lv.50/Lv.60 qualification gate. Failing that gate caps the cultivation label without rewriting the score. Retention compares the same final form: ordinary helpers have four practical slots, limited special helpers one. Rank 5 or rank 2 respectively may become a release candidate only after the safeguards in `strategy-rules.md`.

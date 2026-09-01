@@ -43,5 +43,12 @@ Latias and Latios are the only allowed two-Special pair and use separate final-f
 - All-Mighty: expose every selectable output; keep unknown trigger or Candy components pending.
 - Inventory affects trigger retention and two-trigger storage for skill specialists but receives no separate raw individual points.
 
-Use the relevant `--specialty skill-*` mode in `scripts/species-scores.js` for diagnostics. Unknown future skills remain pending rather than zero.
+## Selection-role boundary
 
+Main-skill output and panel graduation are separate judgments. For guide-derived selection advice, read [skill-selection-guide.md](skill-selection-guide.md): formal group healers are permanent support and require Helping Bonus for graduation; Berry Burst helpers are judged in their berry position; ordinary and short-deployment tool helpers use Skill Trigger M plus two additional effective gains, with Helping Bonus optional. Energy Charge, Energy restoration and other persistent-output skills remain role-specific unless a verified model or reviewed guide establishes a narrower rule.
+
+This split is executable in `pokemon-strategy.js` and caps cultivation labels in `cultivation-advisor.js`. Short-deployment tools still use the full-slot numerical replacement benchmark below; until a tested duty-cycle model exists, disclose that limitation instead of inventing a partial-slot coefficient.
+
+Prefer a usable panel by Lv.50. Do not convert a promising Lv.70 or Lv.80 unlock into present-day output, and do not let course trigger-count examples replace the executable species model.
+
+Use the relevant `--specialty skill-*` mode in `scripts/species-scores.js` for diagnostics. Unknown future skills remain pending rather than zero.

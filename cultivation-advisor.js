@@ -41,6 +41,17 @@
   const tier=id=>TIERS[id]||TIERS.manual;
   const stageProfile=id=>ACCOUNT_STAGES[id]||ACCOUNT_STAGES.mature;
 
+  function courseTierCap(minimum){
+    if(!minimum||minimum.status==='manual'||minimum.meetsGraduation)return null;
+    if(['keep','compromise'].includes(minimum.status))return 'stage';
+    return 'transition';
+  }
+
+  function capTierByCourse(tierId,minimum){
+    const capId=courseTierCap(minimum);
+    return capId&&tier(tierId).sort>tier(capId).sort?capId:tierId;
+  }
+
   function scoreFor(mon,override){
     return override||mon&&mon.scoreBreakdown||null;
   }
@@ -111,12 +122,19 @@
     if(Number(score.strategicBonus)>0)details.push(`战略岗位补正：机械种族分 ${Number(score.mechanicalSpeciesScore).toFixed(1)} ＋ ${Number(score.strategicBonus).toFixed(1)}；岗位为“${strategicProfile.role}”。`);
     else if(strategicProfile)details.push(`战略岗位：${strategicProfile.role}；机械种族分已足够，因此未追加补正。`);
     if(islandRole)details.push(`岛屿定位：${islandRoles.map(item=>`${item.island}·${item.note}`).join('；')}；用途证据不替代个体毕业线。`);
-    if(minimum)details.push(`攻略入盒线：${minimum.label}${minimum.missing.length?`；仍缺 ${minimum.missing.join('、')}`:''}。`);
+    if(minimum){
+      details.push(`课程严选线：${minimum.label}${minimum.missing.length?`；仍缺 ${minimum.missing.join('、')}`:''}。`);
+      if(minimum.routePattern&&minimum.routePattern!=='不适用')details.push(`课程路线判定：${minimum.routePattern}（${minimum.routeStatus}）。`);
+      if(minimum.courseNote)details.push(`课程提醒：${minimum.courseNote}`);
+      if(minimum.investmentLimit)details.push(`投入边界：${minimum.investmentLimit}。`);
+    }
     const direct=DIRECT_SUPERIORS[finalId];
     if(direct){
       const present=superiorInBox(direct,box),tierId=profile.id==='starter'?direct.starterTier:profile.id==='forming'?direct.formingTier:direct.matureTier;
       details.push(present?`盒内已有 ${direct.superiorName}（综合分 ${Number(present.score.finalScore).toFixed(1)}）。`:`盒内尚未检出可评分的 ${direct.superiorName}，可先保留过渡。`);
-      return result(tierId,{accountStage:profile,reason:direct.reason,details,directSuperior:{id:direct.superiorId,name:direct.superiorName,present:Boolean(present),boxId:present&&String(present.mon.id)},exception:direct.exception,evidence:direct.evidence,teamModel});
+      const cappedTier=capTierByCourse(tierId,minimum);
+      if(cappedTier!==tierId)details.push(`课程资格把培养上限从“${tier(tierId).label}”限制为“${tier(cappedTier).label}”。`);
+      return result(cappedTier,{accountStage:profile,reason:cappedTier===tierId?direct.reason:`${direct.reason} 同时，这只尚未达到课程的长期毕业面板。`,details,directSuperior:{id:direct.superiorId,name:direct.superiorName,present:Boolean(present),boxId:present&&String(present.mon.id)},exception:direct.exception,evidence:[direct.evidence,minimum&&strategy&&strategy.SELECTION_SOURCE&&strategy.SELECTION_SOURCE.label].filter(Boolean).join('；'),teamModel});
     }
 
     if(teamModel&&['special-fixed-team','latios-latias-shapley-attribution'].includes(teamModel.sourceType)){
@@ -147,19 +165,24 @@
 
     if(score.specialty==='ingredient'&&pattern&&pattern!=='不适用'){
       details.push(`食材路线 ${pattern}；组合系数 ${Number(score.individual.ingredientPatternCoefficient).toFixed(2)}。`);
-      if(profile.id==='mature'&&tierId==='core'&&pattern!=='AAA'){
-        tierId='stage';reason='整体配置优秀，但成熟账号的长期食材核心仍优先 AAA；先作为阶段性主力。';
-      }else if(profile.id==='mature'&&pattern==='ABC'&&['core','stage'].includes(tierId)){
-        tierId='transition';reason='ABC 只能覆盖分散食材，长期组合系数较低；更适合作为过渡或特定食谱补位。';
+      if(minimum&&['lv30-worker','review-abb','unverified'].includes(minimum.routeStatus)&&['core','stage'].includes(tierId)){
+        tierId='transition';reason=minimum.routeStatus==='lv30-worker'?'AAB／AAC只作为Lv.30食材工使用；不应为综合分继续解锁错误的Lv.60路线。':'当前食材路线尚未获得课程认可的长期毕业资格，只能先作过渡。';
       }
     }
     if(strategicProfile&&minimum&&minimum.meetsMinimum&&['avoid','transition'].includes(tierId)){
-      const strategicStage=strategicProfile.stage==='required'&&individualScore>=profile.stageIndividual&&pattern==='AAA';
+      const strategicStage=strategicProfile.stage==='required'&&individualScore>=profile.stageIndividual&&['long-term','verified-abb'].includes(minimum.routeStatus);
       tierId=strategicStage?'stage':'transition';
       reason=strategicStage?`这个个体达到攻略入盒线，并能承担“${strategicProfile.role}”这一明确缺口，可作为阶段性岗位手培养。`:`物种有“${strategicProfile.role}”这一明确缺口价值，但当前个体只达到保留线，先作过渡并继续筛选。`;
     }
+    const uncappedTier=tierId;
+    tierId=capTierByCourse(tierId,minimum);
+    if(tierId!==uncappedTier){
+      details.push(`课程资格把培养上限从“${tier(uncappedTier).label}”限制为“${tier(tierId).label}”。`);
+      reason=`机械分达到“${tier(uncappedTier).label}”区间，但课程的词条、路线或关键等级条件未毕业，因此暂不允许长期核心投入。`;
+    }
     if(mon&&mon.shiny==='是')details.push('闪光默认保留；这里的培养结论不等于收藏去留结论。');
-    return result(tierId,{accountStage:profile,reason,details,evidence:strategicProfile||islandRole?`${strategy.SOURCE.label}；本站机械种族分、战略岗位补正、个体分与账号阶段阈值`:'本站种族分、个体分与账号阶段阈值',teamModel});
+    const evidence=[minimum&&strategy&&strategy.SELECTION_SOURCE&&strategy.SELECTION_SOURCE.label,(strategicProfile||islandRole)&&strategy&&strategy.SOURCE&&strategy.SOURCE.label,strategicProfile||islandRole?'本站机械种族分、战略岗位补正、个体分与账号阶段阈值':'本站种族分、个体分与账号阶段阈值'].filter(Boolean).join('；');
+    return result(tierId,{accountStage:profile,reason,details,evidence,teamModel});
   }
 
   function explanation(value){
@@ -170,5 +193,5 @@
     return lines.filter(Boolean).join('\n');
   }
 
-  return Object.freeze({ACCOUNT_STAGES,TIERS,DIRECT_SUPERIORS,stageProfile,finalFormId,assess,explanation});
+  return Object.freeze({ACCOUNT_STAGES,TIERS,DIRECT_SUPERIORS,stageProfile,finalFormId,courseTierCap,capTierByCourse,assess,explanation});
 });

@@ -12,8 +12,11 @@ Use one reproducible data flow. Do not recreate scoring tables inside a webpage 
 1. Read [references/scoring-rules.md](references/scoring-rules.md) for every scoring task.
 2. Read [references/main-skill-models.md](references/main-skill-models.md) when skill specialists, healers, special Pokémon, or team replacement values are involved.
 3. Read [references/strategy-rules.md](references/strategy-rules.md) when evaluating strategic ingredient roles, Helping Bonus, weekly hunting, cultivation priority, or release safety.
-4. Treat [scripts/scoring-core.js](scripts/scoring-core.js) as the executable source of truth for individual scoring. Use [scripts/box-scores.js](scripts/box-scores.js) for box-wide scores and legal-ceiling audits.
-5. Treat [scripts/species-scores.js](scripts/species-scores.js) and the team-ranking scripts as the executable source for species and main-skill models. Never copy their old output back into a second handwritten table.
+4. Read [references/berry-selection-guide.md](references/berry-selection-guide.md) when judging strict berry-helper selection, Berry Burst or direct-Energy helpers used in berry slots, Helping Bonus team saturation, or speed-cap overflow.
+5. Read [references/ingredient-selection-guide.md](references/ingredient-selection-guide.md) when judging ingredient-route graduation, AAA/ABB exceptions, temporary workers versus long-term cultivation, ingredient-panel strictness, or Lv.60 investment.
+6. Read [references/skill-selection-guide.md](references/skill-selection-guide.md) when judging formal healers, ordinary or short-deployment tool skill helpers, role-specific Helping Bonus requirements, friendship-gauge exceptions, or Lv.50 versus Lv.70 investment timing.
+7. Treat [scripts/scoring-core.js](scripts/scoring-core.js) as the executable source of truth for individual scoring. Use [scripts/box-scores.js](scripts/box-scores.js) for box-wide scores and legal-ceiling audits.
+8. Treat [scripts/species-scores.js](scripts/species-scores.js) and the team-ranking scripts as the executable source for species and main-skill models. Never copy their old output back into a second handwritten table.
 
 ## Non-negotiable rules
 

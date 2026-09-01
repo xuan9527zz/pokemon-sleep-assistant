@@ -112,7 +112,7 @@
     const speciesRows=catalogApi&&Array.isArray(catalogApi.pokemon)?catalogApi.pokemon:[],bySpeciesId=new Map(speciesRows.map(row=>[String(row.id),row]));
     return strategyApi.targetsForIsland(islandName).map(target=>{
       const targetId=String(target.id),species=bySpeciesId.get(targetId),matches=(pokemon||[]).filter(mon=>String(mon.scoreBreakdown&&mon.scoreBreakdown.finalFormId||mon.finalFormId||mon.speciesId||'')===targetId).sort((a,b)=>(Number(b.scoreIndividual)||-Infinity)-(Number(a.scoreIndividual)||-Infinity)||(Number(b.scoreTotal)||-Infinity)-(Number(a.scoreTotal)||-Infinity)),best=matches[0]||null,specialty=best&&best.specialty||species&&species.specialty||'unknown';
-      const assessment=best?strategyApi.minimumStandard(best,{finalId:targetId,specialty,strategicProfile:target.profile}):null,rule=strategyApi.ruleFor(targetId,specialty),status=!best?'missing':assessment&&assessment.meetsMinimum?'covered':'upgrade';
+      const assessment=best?strategyApi.minimumStandard(best,{finalId:targetId,specialty,strategicProfile:target.profile}):null,rule=strategyApi.ruleFor(targetId,specialty,best),status=!best?'missing':assessment&&assessment.meetsGraduation?'covered':'upgrade';
       return {id:targetId,name:target.profile&&target.profile.name||species&&species.name||`图鉴 #${targetId}`,note:target.note,profile:target.profile||null,status,count:matches.length,best,assessment,minimum:rule&&rule.minimum||'依照定位与Lv.50前三栏人工判断'};
     }).sort((a,b)=>({missing:0,upgrade:1,covered:2}[a.status]-{missing:0,upgrade:1,covered:2}[b.status]));
   }

@@ -68,6 +68,9 @@ const huntTargets=weekly.buildHuntTargets([{id:'x',name:'大竺葵',specialty:'b
 assert.equal(huntTargets.find(row=>row.id==='154').status,'covered');
 assert.equal(huntTargets.find(row=>row.id==='254').status,'missing');
 assert.ok(huntTargets.find(row=>row.id==='154').minimum.includes('Lv.50'));
+assert.deepEqual(Object.fromEntries(huntTargets.map(row=>[row.id,row.name])),{
+  '154':'大竺葵','254':'蜥蜴王','392':'烈焰猴','282':'沙奈朵'
+});
 
 const wrongArea=weekly.calculatePlan({...common,activityKey:'mewtwo1'});
 assert.equal(wrongArea.preparationTeam.carryBonus,0);

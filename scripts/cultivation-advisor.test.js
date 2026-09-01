@@ -20,12 +20,14 @@ const box = boxScoring.parseBoxRows(html).map(mon => ({
 const byId = id => box.find(mon => mon.id === String(id));
 const mature = mon => advisor.assess(mon, box, { accountStage: 'mature' });
 
-assert.equal(mature(byId(73)).tier, 'core', 'strong Gardevoir should be a mature-account core');
+assert.equal(mature(byId(73)).tier, 'transition', 'a high mechanical Gardevoir without the course healer graduation panel must remain transitional');
 const walreinAdvice = mature(byId(79));
 assert.equal(walreinAdvice.tier, 'core', 'elite Walrein individual should clear the near-core species compensation line');
 assert.match(advisor.explanation(walreinAdvice), /白花雪原（四岛）主力树果手/, 'Walrein advice should retain its fourth-island core role');
 assert.equal(mature(byId(92)).tier, 'transition', 'Sylveon remains a transition healer when Gardevoir is the mature target');
-assert.equal(mature(byId(70)).tier, 'core', 'Sceptile should retain core status after positive slot replacement economics');
+assert.equal(mature(byId(70)).tier, 'transition', 'Berry Burst Sceptile without Berry Finding S cannot remain a long-term berry core');
+assert.equal(mature(byId(63)).tier, 'transition', 'a high-score berry helper without Berry Finding S is capped at transition');
+assert.equal(mature(byId(89)).tier, 'transition', 'Cresselia is a formal healer and cannot graduate without Skill Trigger M and Helping Bonus');
 assert.equal(mature(byId(85)).tier, 'avoid', 'Magnezone below break-even should not be a mature-account default investment');
 assert.equal(mature(byId(13)).tier, 'niche', 'Golduck operation/stability cost should remain visible');
 assert.equal(mature(byId(81)).tier, 'niche', 'Latios value depends on the Latias pair scenario');
@@ -70,4 +72,31 @@ const starterCaptain = advisor.assess(captain, [captain], { accountStage: 'start
 assert.equal(starterCaptain.tier, 'transition');
 assert.equal(advisor.explanation(captainAdvice).includes('不会反向修改综合评分'), true);
 
-console.log('cultivation advisor tests passed (stage, direct-superior, team-cost, berry scenarios)');
+const courseBerry = {
+  id: 'course-berry',
+  name: '课程毕业大竺葵',
+  finalFormId: '154',
+  lv: '50',
+  battleEligible: true,
+  subs: '树果数量S；帮手奖励；帮忙速度M；研究EXP奖励；睡眠EXP奖励',
+  nature: '认真',
+  scoreBreakdown: {finalFormId:'154',specialty:'berry',speciesScore:90,individualScore:90,finalScore:90}
+};
+assert.equal(advisor.assess(courseBerry, [courseBerry], {accountStage:'mature'}).tier, 'core', 'a mechanically strong course-graduated berry helper can remain core');
+
+const aabIngredient = {
+  id: 'aab-worker',
+  name: 'AAB水箭龟',
+  finalFormId: '9',
+  lv: '50',
+  battleEligible: true,
+  ingredients: '哞哞鲜奶×2／哞哞鲜奶×5／放松可可×7',
+  subs: '食材概率M；帮手奖励；帮忙速度M；研究EXP奖励；睡眠EXP奖励',
+  nature: '认真',
+  scoreBreakdown: {finalFormId:'9',specialty:'ingredient',speciesScore:90,individualScore:90,finalScore:90,individual:{ingredientPattern:'AAB',ingredientPatternCoefficient:.7}}
+};
+const aabAdvice=advisor.assess(aabIngredient,[aabIngredient],{accountStage:'mature'});
+assert.equal(aabAdvice.tier,'transition','AAB is a Lv.30 worker even when the mechanical score is high');
+assert.match(advisor.explanation(aabAdvice),/Lv\.59|Lv\.30食材工/);
+
+console.log('cultivation advisor tests passed (course caps, stage, direct-superior, team-cost, berry scenarios)');

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="./box-manager.css">
 <link rel="stylesheet" href="./pokemon-manager.css?v=20260831-1">
 <link rel="stylesheet" href="./cloud-sync.css?v=20260831-1">
-<link rel="stylesheet" href="./weekly-planner.css?v=20260901-1">
+<link rel="stylesheet" href="./weekly-planner.css?v=20260901-2">
 <link rel="stylesheet" href="./investment-planner.css?v=20260831-2">
 <link rel="stylesheet" href="./retention-advisor.css?v=20260901-1">
 <link rel="stylesheet" href="./cultivation-advisor.css?v=20260831-1">
@@ -308,11 +308,11 @@
 </dialog>
 </main>
 <script src="skills/pokemon-sleep-scoring/scripts/nature-scores.js"></script>
-<script src="skills/pokemon-sleep-scoring/scripts/scoring-core.js?v=20260901-1"></script>
-<script src="pokemon-strategy.js?v=20260901-1"></script>
-<script src="box-scores.generated.js?v=20260901-1"></script>
-<script src="pokemon-catalog.generated.js?v=20260901-1"></script>
-<script src="pokemon-scoring.js?v=20260901-1"></script>
+<script src="skills/pokemon-sleep-scoring/scripts/scoring-core.js?v=20260901-2"></script>
+<script src="pokemon-strategy.js?v=20260901-2"></script>
+<script src="box-scores.generated.js?v=20260901-2"></script>
+<script src="pokemon-catalog.generated.js?v=20260901-2"></script>
+<script src="pokemon-scoring.js?v=20260901-2"></script>
 <script src="cultivation-advisor.js?v=20260831-1"></script>
 <script src="ingredients.js"></script>
 <script src="recipes.js"></script>
@@ -320,10 +320,10 @@
 <script src="pokemon-data.js?v=20260831-1"></script>
 <script src="box-manager.js"></script>
 <script src="level-manager.js"></script>
-<script src="team-planner.js?v=20260901-1"></script>
-<script src="weekly-planner.js?v=20260901-1"></script>
+<script src="team-planner.js?v=20260901-2"></script>
+<script src="weekly-planner.js?v=20260901-2"></script>
 <script src="investment-planner.js?v=20260831-2"></script>
-<script src="retention-advisor.js?v=20260901-1"></script>
+<script src="retention-advisor.js?v=20260901-2"></script>
 <script src="pokemon-manager.js?v=20260831-2"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.js"></script>
 <script src="supabase-config.js?v=20260831-1"></script>
@@ -876,5 +876,5 @@ function refreshAfterBoxManagement(changes){
   changes.filter(change=>change.type==='subskill').forEach(change=>{const mon=monById(change.id);if(mon)window.POKEMON_SLEEP_LEVELS.applyLevel(mon,Number(mon.lv))});
   refreshCultivationAdvice();refreshBoxFilterOptions();refreshBoxStats();renderEventTeam();renderIsland(activeIslandIndex);if(recipeIngredient.value)renderIngredientRecommendations(recipeIngredient.value);render();teamPlannerController?.refresh();weeklyPlannerController?.render();levelManagerController?.render();window.POKEMON_SLEEP_DATA.emit('box-management',{changes});
 }
-const shiny=data.filter(r=>r.shiny==='是').length;document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;document.querySelector('.app-nav [data-page-target="box"] small').textContent=`${data.length} 只个体整理`;renderEventTeam();renderIsland(0);renderRecipes();render();levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialState:storedLevelState,onChange:refreshAfterLevelChange});teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,onChange:change=>window.POKEMON_SLEEP_DATA.emit('teams',change)});boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon});investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;refreshBoxFilterOptions();refreshBoxStats();render();decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});
+const shiny=data.filter(r=>r.shiny==='是').length;document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;document.querySelector('.app-nav [data-page-target="box"] small').textContent=`${data.length} 只个体整理`;renderEventTeam();renderIsland(0);renderRecipes();render();levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialState:storedLevelState,onChange:refreshAfterLevelChange});teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,onChange:change=>window.POKEMON_SLEEP_DATA.emit('teams',change)});boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG});investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;refreshBoxFilterOptions();refreshBoxStats();render();decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});
 </script></body></html>
