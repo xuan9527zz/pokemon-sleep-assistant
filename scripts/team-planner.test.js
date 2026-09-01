@@ -53,6 +53,9 @@ assert.ok(result.members[0].combinedSpeedReduction <= .35);
 
 const effectiveVenusaur = {...venusaur,effectiveSubs:'帮手奖励；食材概率M；帮忙速度M；树果数量S；持有上限M'};
 assert.strictEqual(planner.helpingSpeedReduction(effectiveVenusaur), .14);
+assert.ok(Math.abs(planner.helpingBonusOutputMultiplier({...gardevoir,subs:'睡眠EXP奖励；技能概率S'},1)-(1/.95))<1e-9,'one Helping Bonus should increase a neutral member output by 1/0.95');
+assert.ok(Math.abs(planner.helpingBonusOutputMultiplier(effectiveVenusaur,1)-(.86/.81))<1e-9,'Helping Bonus should stack with the member own speed reduction multiplicatively through interval');
+assert.ok(Math.abs(planner.helpingBonusOutputMultiplier(effectiveVenusaur,5)-(.86/.65))<1e-9,'speed reduction should stop at the combined 35% cap');
 const collectionResult=planner.calculateTeam([{...gardevoir,battleEligible:false}],rates,{goodCamp:false,energyProfile:'average'});
 assert.strictEqual(collectionResult.valid,false);
 assert.ok(collectionResult.validation.message.includes('仅收藏'));

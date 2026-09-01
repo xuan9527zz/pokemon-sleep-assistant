@@ -17,16 +17,19 @@ assert.equal(cloud.hashState(left), cloud.hashState(right));
 const first = new MemoryStorage();
 first.setItem('pokemon-sleep-user-pokemon-v1', JSON.stringify([{id:'1',name:'妙蛙花'}]));
 first.setItem('pokemon-sleep-weekly-plan-v1', JSON.stringify({islandIndex:4,basePot:81}));
+first.setItem('pokemon-sleep-advisor-preferences-v1', JSON.stringify({accountStage:'forming'}));
 first.setItem('pokemon-sleep-state-clock-v1', JSON.stringify({updatedAt:'2026-08-31T00:00:00.000Z'}));
 const state = cloud.collectState(first);
 assert.equal(state.schemaVersion, 1);
 assert.equal(state.data.pokemon.length, 1);
 assert.equal(state.data.weeklyPlan.islandIndex, 4);
+assert.equal(state.data.advisorPreferences.accountStage, 'forming');
 
 const second = new MemoryStorage();
 assert.equal(cloud.applyState(state, second), true);
 assert.deepEqual(JSON.parse(second.getItem('pokemon-sleep-user-pokemon-v1')), state.data.pokemon);
 assert.deepEqual(JSON.parse(second.getItem('pokemon-sleep-weekly-plan-v1')), state.data.weeklyPlan);
+assert.deepEqual(JSON.parse(second.getItem('pokemon-sleep-advisor-preferences-v1')), state.data.advisorPreferences);
 assert.equal(cloud.hashState(cloud.collectState(second)), cloud.hashState(state));
 
 assert.equal(cloud.errorMessage({code:'PGRST205',message:'schema cache'}).includes('SQL'), true);

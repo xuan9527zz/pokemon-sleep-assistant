@@ -7,6 +7,7 @@ const path = require('node:path');
 const speciesScoring = require('../skills/pokemon-sleep-scoring/scripts/species-scores.js');
 const skillSpeciesScoring = require('../skills/pokemon-sleep-scoring/scripts/skill-team-species-scores.js');
 const boxScoring = require('../skills/pokemon-sleep-scoring/scripts/box-scores.js');
+const strategy = require('../pokemon-strategy.js');
 
 const projectRoot = path.resolve(__dirname, '..');
 const sourcePath = path.join(projectRoot, 'data', 'raenonx-species.json');
@@ -36,24 +37,52 @@ const skillRows = skillSpeciesScoring.skillTeamSpeciesScoreRows(records, {
 
 const speciesScores = {};
 ingredientRows.forEach(row => {
+  const strategic = strategy.strategicAdjustment(row.id, row.speciesScore);
   speciesScores[String(row.id)] = {
     specialty: 'ingredient',
-    score: row.speciesScore,
-    source: 'ingredient-species-score'
+    mechanicalScore: strategic.mechanicalScore,
+    strategicRoleScore: strategic.strategicRoleScore,
+    strategicBonus: strategic.strategicBonus,
+    strategy: strategic.profile,
+    score: strategic.adjustedScore,
+    source: strategic.strategicBonus > 0 ? 'ingredient-mechanical-plus-strategic-role' : 'ingredient-species-score'
   };
 });
 berryRows.forEach(row => {
+  const strategic = strategy.strategicAdjustment(row.id, row.speciesScore);
   speciesScores[String(row.id)] = {
     specialty: 'berry',
-    score: row.speciesScore,
-    source: 'berry-species-score'
+    mechanicalScore: strategic.mechanicalScore,
+    strategicRoleScore: strategic.strategicRoleScore,
+    strategicBonus: strategic.strategicBonus,
+    strategy: strategic.profile,
+    score: strategic.adjustedScore,
+    source: 'berry-species-score',
+    scenarios: row.berryScenarios
   };
 });
 skillRows.forEach(row => {
+  const strategic = strategy.strategicAdjustment(row.id, row.finalSpeciesScore);
   speciesScores[String(row.id)] = {
     specialty: 'skill',
-    score: row.finalSpeciesScore,
-    source: 'team-calibrated-final-species-score'
+    mechanicalScore: strategic.mechanicalScore,
+    strategicRoleScore: strategic.strategicRoleScore,
+    strategicBonus: strategic.strategicBonus,
+    strategy: strategic.profile,
+    score: strategic.adjustedScore,
+    source: 'team-calibrated-final-species-score',
+    teamModel: {
+      role: row.role,
+      sourceType: row.sourceType,
+      islandNameZh: row.islandNameZh,
+      candidateTeam: row.candidateTeam,
+      baselineTeam: row.baselineTeam,
+      yieldCoefficient: row.yieldCoefficient,
+      stabilityScore: row.stabilityScore,
+      operationScore: row.operationScore,
+      versatilityScore: row.versatilityScore,
+      scoringStatus: row.scoringStatus
+    }
   };
 });
 records.filter(record => record.specialty === 'all' && record.isFinalEvolution).forEach(record => {

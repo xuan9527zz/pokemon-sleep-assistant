@@ -143,13 +143,20 @@
     return clamp(unlockedSubskills(mon).reduce((total,skill)=>total+(skill==='帮忙速度S'?.07:skill==='帮忙速度M'?.14:0),0),0,.35);
   }
 
+  function helpingBonusOutputMultiplier(mon,helpingBonusCount){
+    const ownSpeedReduction=helpingSpeedReduction(mon);
+    const combinedSpeedReduction=clamp(ownSpeedReduction+Math.max(0,Number(helpingBonusCount)||0)*.05,0,.35);
+    return (1-ownSpeedReduction)/Math.max(1-combinedSpeedReduction,.65);
+  }
+
   function baseMemberModel(mon,production,options,helpingBonusCount){
     const baseIntervalSec=parseInterval(mon.interval);
     const energyFactor=Number(options.energyFactor)||2;
     const campSpeed=options.goodCamp?1.2:1;
     const ownSpeedReduction=helpingSpeedReduction(mon);
+    const outputMultiplier=helpingBonusOutputMultiplier(mon,helpingBonusCount);
     const combinedSpeedReduction=clamp(ownSpeedReduction+helpingBonusCount*.05,0,.35);
-    const teamSpeedFactor=(1-combinedSpeedReduction)/Math.max(1-ownSpeedReduction,.65);
+    const teamSpeedFactor=1/outputMultiplier;
     const teamSpeedReduction=1-teamSpeedFactor;
     const effectiveIntervalSec=baseIntervalSec*teamSpeedFactor/(campSpeed*energyFactor);
     const carryBase=Number(mon.inv)||0;
@@ -172,7 +179,7 @@
     return {
       mon,production,ingredients,probability,baseIntervalSec,effectiveIntervalSec,carryBase,carry,
       berryCount,berryFinding,expectedItemsPerHelp,helpsPerDay,fullHours,ingredientPerHelp,
-      helpingBonusCount,ownSpeedReduction,combinedSpeedReduction,teamSpeedReduction
+      helpingBonusCount,ownSpeedReduction,combinedSpeedReduction,teamSpeedReduction,helpingBonusOutputMultiplier:outputMultiplier
     };
   }
 
@@ -374,7 +381,7 @@
       const cards=[
         ['建议收菜',formatHours(result.collectionHours),limiting?`按${limiting.mon.name}预计${formatHours(limiting.fullHours)}满仓，预留约15%空间`:'等待完整队伍'],
         ['食材合计',`${number(totalPerDay,1)} 个／24h`,'按建议频率全天执行的常规帮忙期望'],
-        ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`名义缩短${result.helpingBonusCount*5}%；与自身速度副技能合计后遵守35%上限`:'当前没有全队速度加成'],
+        ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`每名成员按自身速度补正逐只重算；队内叠加${result.helpingBonusCount*5}%，与速度副技能合计遵守35%上限`:'当前没有全队速度加成'],
         ['计算状态',`${result.selectedCount}／5 人`,result.energyProfile.label+(result.options.goodCamp?'＋好露营券':'＋无露营券')]
       ];
       cards.forEach(([label,value,note])=>{const card=element('article','current-team-stat');card.append(element('span','',label),element('strong','',value),element('small','',note));summary.append(card)});
@@ -478,5 +485,5 @@
     return {render,refresh,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value})};
   }
 
-  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,calculateTeam,formatHours,mount};
+  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateTeam,formatHours,mount};
 });

@@ -7,7 +7,7 @@
   'use strict';
   return Object.freeze({
   "meta": {
-    "generatedAt": "2026-08-31T02:23:10.987Z",
+    "generatedAt": "2026-09-01T01:05:08.518Z",
     "sourceUpdatedAt": "2026-08-23T20:32:34.939Z",
     "count": 247,
     "speciesScoreCount": 127,
@@ -23308,156 +23308,597 @@
   "speciesScores": {
     "3": {
       "specialty": "ingredient",
+      "mechanicalScore": 80.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "妙蛙花",
+        "stage": "required",
+        "role": "甜甜蜜专职",
+        "ingredient": "甜甜蜜",
+        "rank": "primary",
+        "reason": "高阶甜甜蜜岗位。"
+      },
       "score": 80.7,
       "source": "ingredient-species-score"
     },
     "6": {
       "specialty": "ingredient",
+      "mechanicalScore": 79.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "喷火龙",
+        "stage": "required",
+        "role": "豆制肉专职",
+        "ingredient": "豆制肉",
+        "rank": "primary",
+        "reason": "豆制肉主要供给路线之一。"
+      },
       "score": 79.8,
       "source": "ingredient-species-score"
     },
     "9": {
       "specialty": "ingredient",
+      "mechanicalScore": 82.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "水箭龟",
+        "stage": "required",
+        "role": "鲜奶／可可核心",
+        "ingredient": "哞哞鲜奶",
+        "rank": "primary",
+        "reason": "鲜奶核心，同时可承担可可路线。"
+      },
       "score": 82.2,
       "source": "ingredient-species-score"
     },
     "12": {
       "specialty": "berry",
+      "mechanicalScore": 77,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 77,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 64.39,
+          "berryStrengthPerDay": 8499.4,
+          "productionScore": 79,
+          "rank": 23
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 80.19,
+          "berryStrengthPerDay": 10584.5,
+          "productionScore": 77,
+          "rank": 24
+        },
+        "rankChangeWhenFull": -1,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "20": {
       "specialty": "berry",
+      "mechanicalScore": 73.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 73.3,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 51.85,
+          "berryStrengthPerDay": 7984.7,
+          "productionScore": 74.2,
+          "rank": 29
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 67.95,
+          "berryStrengthPerDay": 10464.9,
+          "productionScore": 76.1,
+          "rank": 25
+        },
+        "rankChangeWhenFull": 4,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "24": {
       "specialty": "berry",
+      "mechanicalScore": 71.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 71.8,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 43.39,
+          "berryStrengthPerDay": 7637.4,
+          "productionScore": 71,
+          "rank": 30
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 58.96,
+          "berryStrengthPerDay": 10377,
+          "productionScore": 75.5,
+          "rank": 26
+        },
+        "rankChangeWhenFull": 4,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "26": {
       "specialty": "berry",
+      "mechanicalScore": 87.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 87.5,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 70.71,
+          "berryStrengthPerDay": 9687.2,
+          "productionScore": 90,
+          "rank": 8
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 91.12,
+          "berryStrengthPerDay": 12483.4,
+          "productionScore": 90.8,
+          "rank": 3
+        },
+        "rankChangeWhenFull": 5,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "28": {
       "specialty": "skill",
+      "mechanicalScore": 62.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "灰褐洞窟",
+        "candidateTeam": "沙奈朵＋穿山王＋火爆獸×3",
+        "baselineTeam": "沙奈朵＋火爆獸×4",
+        "yieldCoefficient": 0.9718,
+        "stabilityScore": 72.4,
+        "operationScore": 70.5,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "36": {
       "specialty": "berry",
+      "mechanicalScore": 77.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 77.9,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 59.57,
+          "berryStrengthPerDay": 8518,
+          "productionScore": 79.1,
+          "rank": 22
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 10238,
+          "productionScore": 74.5,
+          "rank": 28
+        },
+        "rankChangeWhenFull": -6,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "38": {
       "specialty": "berry",
+      "mechanicalScore": 85.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 85.5,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 64.46,
+          "berryStrengthPerDay": 9539.6,
+          "productionScore": 88.6,
+          "rank": 10
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 77.1,
+          "berryStrengthPerDay": 11411,
+          "productionScore": 83,
+          "rank": 14
+        },
+        "rankChangeWhenFull": -4,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "40": {
       "specialty": "skill",
+      "mechanicalScore": 78.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 78.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "胖可丁＋大力鳄×4",
+        "baselineTeam": "大力鳄×5",
+        "yieldCoefficient": 1.083,
+        "stabilityScore": 100,
+        "operationScore": 72.2,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;dynamic-energy-confirmed-brackets"
+      }
     },
     "51": {
       "specialty": "ingredient",
+      "mechanicalScore": 61.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61.7,
       "source": "ingredient-species-score"
     },
     "53": {
       "specialty": "skill",
+      "mechanicalScore": 61,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "白花雪原",
+        "candidateTeam": "沙奈朵＋猫老大＋九尾（阿羅拉的樣子）×3",
+        "baselineTeam": "沙奈朵＋九尾（阿羅拉的樣子）×4",
+        "yieldCoefficient": 0.9888,
+        "stabilityScore": 100,
+        "operationScore": 58.1,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;computed-standard-team"
+      }
     },
     "55": {
       "specialty": "skill",
+      "mechanicalScore": 62.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.6,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "沙奈朵＋哥达鸭＋大力鱷×3",
+        "baselineTeam": "沙奈朵＋大力鱷×4",
+        "yieldCoefficient": 1.0124,
+        "stabilityScore": 40,
+        "operationScore": 56.9,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "57": {
       "specialty": "berry",
+      "mechanicalScore": 75.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 75.6,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 57.28,
+          "berryStrengthPerDay": 8476.8,
+          "productionScore": 78.8,
+          "rank": 24
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 10596,
+          "productionScore": 77.1,
+          "rank": 23
+        },
+        "rankChangeWhenFull": 1,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "59": {
       "specialty": "skill",
+      "mechanicalScore": 60.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 60.4,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "灰褐洞窟",
+        "candidateTeam": "沙奈朵＋风速狗＋火爆獸×3",
+        "baselineTeam": "沙奈朵＋火爆獸×4",
+        "yieldCoefficient": 0.9858,
+        "stabilityScore": 54.1,
+        "operationScore": 59.7,
+        "versatilityScore": 77.7,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "71": {
       "specialty": "ingredient",
+      "mechanicalScore": 74.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 74.6,
       "source": "ingredient-species-score"
     },
     "76": {
       "specialty": "ingredient",
+      "mechanicalScore": 76.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "隆隆岩",
+        "stage": "required",
+        "role": "萌绿大豆专职",
+        "ingredient": "萌绿大豆",
+        "rank": "primary",
+        "reason": "大豆主要供给路线之一。"
+      },
       "score": 76.5,
       "source": "ingredient-species-score"
     },
     "80": {
       "specialty": "skill",
+      "mechanicalScore": 64.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 64.1,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "呆壳兽＋大力鳄×4",
+        "baselineTeam": "大力鳄×5",
+        "yieldCoefficient": 1.0076,
+        "stabilityScore": 80,
+        "operationScore": 64.7,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;random-target-uniform-expectation;dynamic-energy-confirmed-brackets"
+      }
     },
     "83": {
       "specialty": "ingredient",
-      "score": 58.7,
-      "source": "ingredient-species-score"
+      "mechanicalScore": 58.7,
+      "strategicRoleScore": 70,
+      "strategicBonus": 4.3,
+      "strategy": {
+        "name": "大葱鸭",
+        "stage": "optional",
+        "role": "粗枝大葱补位",
+        "ingredient": "粗枝大葱",
+        "rank": "alternative",
+        "scorePolicy": {
+          "targetFloor": 63,
+          "maxBonus": 5,
+          "value": 70
+        },
+        "reason": "大葱专项补位；机械分低时仍保留明确食谱岗位。"
+      },
+      "score": 63,
+      "source": "ingredient-mechanical-plus-strategic-role"
     },
     "85": {
       "specialty": "berry",
+      "mechanicalScore": 84.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 84.8,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 71.12,
+          "berryStrengthPerDay": 9388,
+          "productionScore": 87.2,
+          "rank": 13
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 87.16,
+          "berryStrengthPerDay": 11504.9,
+          "productionScore": 83.7,
+          "rank": 12
+        },
+        "rankChangeWhenFull": 1,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "94": {
       "specialty": "ingredient",
+      "mechanicalScore": 68.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 68.4,
       "source": "ingredient-species-score"
     },
     "105": {
       "specialty": "berry",
+      "mechanicalScore": 69.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 69.9,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 47.08,
+          "berryStrengthPerDay": 7485.5,
+          "productionScore": 69.5,
+          "rank": 31
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 60.75,
+          "berryStrengthPerDay": 9658.7,
+          "productionScore": 70.3,
+          "rank": 31
+        },
+        "rankChangeWhenFull": 0,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "115": {
       "specialty": "ingredient",
+      "mechanicalScore": 72.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 72.9,
       "source": "ingredient-species-score"
     },
     "122": {
       "specialty": "ingredient",
+      "mechanicalScore": 68.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 68.4,
       "source": "ingredient-species-score"
     },
     "127": {
       "specialty": "ingredient",
+      "mechanicalScore": 74.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 74.4,
       "source": "ingredient-species-score"
     },
     "132": {
       "specialty": "ingredient",
+      "mechanicalScore": 54.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 54.2,
       "source": "ingredient-species-score"
     },
     "134": {
       "specialty": "skill",
+      "mechanicalScore": 62.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.3,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "沙奈朵＋水伊布＋大力鱷×3",
+        "baselineTeam": "沙奈朵＋大力鱷×4",
+        "yieldCoefficient": 0.986,
+        "stabilityScore": 66.3,
+        "operationScore": 66.2,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "135": {
       "specialty": "skill",
+      "mechanicalScore": 60.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 60.3,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋雷伊布＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 0.9779,
+        "stabilityScore": 53.1,
+        "operationScore": 61.2,
+        "versatilityScore": 76.5,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "136": {
       "specialty": "skill",
+      "mechanicalScore": 62.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.4,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "灰褐洞窟",
+        "candidateTeam": "沙奈朵＋火伊布＋火爆獸×3",
+        "baselineTeam": "沙奈朵＋火爆獸×4",
+        "yieldCoefficient": 0.9554,
+        "stabilityScore": 100,
+        "operationScore": 65.3,
+        "versatilityScore": 69.8,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "149": {
       "specialty": "ingredient",
+      "mechanicalScore": 92.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "快龙",
+        "stage": "required",
+        "role": "火辣香草专职",
+        "ingredient": "火辣香草",
+        "rank": "primary",
+        "reason": "长期香草准神路线。"
+      },
       "score": 92.2,
       "source": "ingredient-species-score"
     },
@@ -23468,288 +23909,1196 @@
     },
     "154": {
       "specialty": "berry",
+      "mechanicalScore": 88.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 88.3,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 59.07,
+          "berryStrengthPerDay": 9745.8,
+          "productionScore": 90.5,
+          "rank": 4
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 11813.1,
+          "productionScore": 85.9,
+          "rank": 9
+        },
+        "rankChangeWhenFull": -5,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "157": {
       "specialty": "berry",
+      "mechanicalScore": 88.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 88.7,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 66.15,
+          "berryStrengthPerDay": 9790.7,
+          "productionScore": 91,
+          "rank": 3
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 83.53,
+          "berryStrengthPerDay": 12361.9,
+          "productionScore": 89.9,
+          "rank": 4
+        },
+        "rankChangeWhenFull": -1,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "160": {
       "specialty": "berry",
+      "mechanicalScore": 83.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 83.1,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 53.19,
+          "berryStrengthPerDay": 9043.1,
+          "productionScore": 84,
+          "rank": 19
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 12171,
+          "productionScore": 88.5,
+          "rank": 5
+        },
+        "rankChangeWhenFull": 14,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "178": {
       "specialty": "berry",
+      "mechanicalScore": 83.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 83.9,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 64.87,
+          "berryStrengthPerDay": 9276.4,
+          "productionScore": 86.2,
+          "rank": 15
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 80.19,
+          "berryStrengthPerDay": 11466.5,
+          "productionScore": 83.4,
+          "rank": 13
+        },
+        "rankChangeWhenFull": 2,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "181": {
       "specialty": "skill",
+      "mechanicalScore": 68.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 68.1,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋电龙＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 1.0164,
+        "stabilityScore": 100,
+        "operationScore": 71.2,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "185": {
       "specialty": "skill",
+      "mechanicalScore": 64.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 64.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "灰褐洞窟",
+        "candidateTeam": "沙奈朵＋树才怪＋火爆獸×3",
+        "baselineTeam": "沙奈朵＋火爆獸×4",
+        "yieldCoefficient": 0.9782,
+        "stabilityScore": 100,
+        "operationScore": 84.7,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "195": {
       "specialty": "ingredient",
+      "mechanicalScore": 61,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61,
       "source": "ingredient-species-score"
     },
     "196": {
       "specialty": "skill",
+      "mechanicalScore": 75.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 75.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "沙奈朵＋太阳伊布＋大竺葵×3",
+        "baselineTeam": "沙奈朵＋大竺葵×4",
+        "yieldCoefficient": 1.012,
+        "stabilityScore": 100,
+        "operationScore": 62.7,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;computed-standard-team"
+      }
     },
     "197": {
       "specialty": "skill",
+      "mechanicalScore": 60.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 60.1,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "白花雪原",
+        "candidateTeam": "月亮伊布＋阿罗拉九尾×4",
+        "baselineTeam": "阿罗拉九尾×5",
+        "yieldCoefficient": 0.9371,
+        "stabilityScore": 36,
+        "operationScore": 50.3,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;random-target-uniform-expectation;dynamic-energy-confirmed-brackets"
+      }
     },
     "199": {
       "specialty": "skill",
+      "mechanicalScore": 57.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 57.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "呆呆王＋大力鳄×4",
+        "baselineTeam": "大力鳄×5",
+        "yieldCoefficient": 1.0307,
+        "stabilityScore": 80,
+        "operationScore": 60.4,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;random-target-uniform-expectation;dynamic-energy-confirmed-brackets"
+      }
     },
     "202": {
       "specialty": "skill",
+      "mechanicalScore": 62.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "果然翁＋大竺葵×4",
+        "baselineTeam": "大竺葵×5",
+        "yieldCoefficient": 0.9965,
+        "stabilityScore": 80,
+        "operationScore": 62.1,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;random-target-uniform-expectation;dynamic-energy-confirmed-brackets"
+      }
     },
     "208": {
       "specialty": "berry",
+      "mechanicalScore": 92,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 92,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 56.53,
+          "berryStrengthPerDay": 10232.1,
+          "productionScore": 95.1,
+          "rank": 2
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 66.82,
+          "berryStrengthPerDay": 12094.7,
+          "productionScore": 88,
+          "rank": 7
+        },
+        "rankChangeWhenFull": -5,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "213": {
       "specialty": "skill",
+      "mechanicalScore": 84.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 84.2,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "壶壶＋暴飞龙×4",
+        "baselineTeam": "暴飞龙×5",
+        "yieldCoefficient": 1.0769,
+        "stabilityScore": 93.5,
+        "operationScore": 53.7,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;berry-juice-25pct-provisional;berry-juice-stateful-expected-inventory;berry-juice-use-at-80-or-lower;dynamic-energy-confirmed-brackets"
+      }
     },
     "214": {
       "specialty": "skill",
+      "mechanicalScore": 82.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 82.3,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "沙奈朵＋赫拉克罗斯＋暴飛龍×3",
+        "baselineTeam": "沙奈朵＋暴飛龍×4",
+        "yieldCoefficient": 1.1429,
+        "stabilityScore": 84.8,
+        "operationScore": 62.4,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "225": {
       "specialty": "ingredient",
+      "mechanicalScore": 67.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 67.5,
       "source": "ingredient-species-score"
     },
     "229": {
       "specialty": "berry",
+      "mechanicalScore": 75.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 75.8,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 48.42,
+          "berryStrengthPerDay": 8230.6,
+          "productionScore": 76.5,
+          "rank": 27
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 60.75,
+          "berryStrengthPerDay": 10326.9,
+          "productionScore": 75.1,
+          "rank": 27
+        },
+        "rankChangeWhenFull": 0,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "242": {
       "specialty": "ingredient",
-      "score": 71.4,
-      "source": "ingredient-species-score"
+      "mechanicalScore": 71.4,
+      "strategicRoleScore": 75,
+      "strategicBonus": 0.6,
+      "strategy": {
+        "name": "幸福蛋",
+        "stage": "forming",
+        "role": "特选蛋专职",
+        "ingredient": "特选蛋",
+        "rank": "primary",
+        "scorePolicy": {
+          "targetFloor": 72,
+          "maxBonus": 2,
+          "value": 75
+        },
+        "reason": "特选蛋是多道高系数料理的高需求原料。"
+      },
+      "score": 72,
+      "source": "ingredient-mechanical-plus-strategic-role"
     },
     "243": {
       "specialty": "skill",
+      "mechanicalScore": 75.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 75.4,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "特殊额外技能位",
+        "sourceType": "special-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋雷公＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 1.0328,
+        "stabilityScore": 100,
+        "operationScore": 57.7,
+        "versatilityScore": 55.6,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;legal-one-special-pokemon;linear-natural-berry-helper-skills;fixed-equivalent-yield-not-dynamic-energy-overcap"
+      }
     },
     "244": {
       "specialty": "skill",
+      "mechanicalScore": 75.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 75.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "特殊额外技能位",
+        "sourceType": "special-fixed-team",
+        "islandNameZh": "灰褐洞窟",
+        "candidateTeam": "沙奈朵＋炎帝＋火爆兽×3",
+        "baselineTeam": "沙奈朵＋火爆兽×4",
+        "yieldCoefficient": 1.0353,
+        "stabilityScore": 100,
+        "operationScore": 55.5,
+        "versatilityScore": 55.6,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;legal-one-special-pokemon;linear-natural-berry-helper-skills;fixed-equivalent-yield-not-dynamic-energy-overcap"
+      }
     },
     "245": {
       "specialty": "skill",
+      "mechanicalScore": 78.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 78.1,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "特殊额外技能位",
+        "sourceType": "special-fixed-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "沙奈朵＋水君＋大力鳄×3",
+        "baselineTeam": "沙奈朵＋大力鳄×4",
+        "yieldCoefficient": 1.0501,
+        "stabilityScore": 100,
+        "operationScore": 54,
+        "versatilityScore": 55.6,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;legal-one-special-pokemon;linear-natural-berry-helper-skills;fixed-equivalent-yield-not-dynamic-energy-overcap"
+      }
     },
     "248": {
       "specialty": "ingredient",
+      "mechanicalScore": 86.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "班基拉斯",
+        "stage": "required",
+        "role": "暖暖姜专职",
+        "ingredient": "暖暖姜",
+        "rank": "primary",
+        "reason": "长期暖暖姜准神路线。"
+      },
       "score": 86.4,
       "source": "ingredient-species-score"
     },
     "254": {
       "specialty": "skill",
+      "mechanicalScore": 85.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 85.9,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "沙奈朵＋蜥蜴王＋大竺葵×3",
+        "baselineTeam": "沙奈朵＋大竺葵×4",
+        "yieldCoefficient": 1.1322,
+        "stabilityScore": 100,
+        "operationScore": 79.4,
+        "versatilityScore": 73.7,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "257": {
       "specialty": "berry",
+      "mechanicalScore": 89.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 89.7,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 65.31,
+          "berryStrengthPerDay": 9665.1,
+          "productionScore": 89.8,
+          "rank": 9
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 77.1,
+          "berryStrengthPerDay": 11411,
+          "productionScore": 83,
+          "rank": 15
+        },
+        "rankChangeWhenFull": -6,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "260": {
       "specialty": "berry",
+      "mechanicalScore": 88.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 88.5,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 61.14,
+          "berryStrengthPerDay": 9721.5,
+          "productionScore": 90.3,
+          "rank": 6
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 11383.5,
+          "productionScore": 82.8,
+          "rank": 16
+        },
+        "rankChangeWhenFull": -10,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "282": {
       "specialty": "skill",
+      "mechanicalScore": 85.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 85.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "沙奈朵＋大竺葵×4",
+        "baselineTeam": "大竺葵×5",
+        "yieldCoefficient": 1.1271,
+        "stabilityScore": 100,
+        "operationScore": 65.6,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;dynamic-energy-confirmed-brackets"
+      }
     },
     "289": {
       "specialty": "berry",
+      "mechanicalScore": 55.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 55.9,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 36.81,
+          "berryStrengthPerDay": 5668.3,
+          "productionScore": 52.7,
+          "rank": 32
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 55.68,
+          "berryStrengthPerDay": 8575.4,
+          "productionScore": 62.4,
+          "rank": 32
+        },
+        "rankChangeWhenFull": 0,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "302": {
       "specialty": "skill",
+      "mechanicalScore": 62.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.6,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "白花雪原",
+        "candidateTeam": "沙奈朵＋勾魂眼＋九尾（阿羅拉的樣子）×3",
+        "baselineTeam": "沙奈朵＋九尾（阿羅拉的樣子）×4",
+        "yieldCoefficient": 1.0171,
+        "stabilityScore": 40,
+        "operationScore": 66.6,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "303": {
       "specialty": "ingredient",
+      "mechanicalScore": 60.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 60.6,
       "source": "ingredient-species-score"
     },
     "306": {
       "specialty": "ingredient",
+      "mechanicalScore": 82.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "波士可多拉",
+        "stage": "required",
+        "role": "豆制肉／咖啡路线",
+        "ingredient": "豆制肉",
+        "rank": "primary",
+        "reason": "肉位核心，并可补咖啡。"
+      },
       "score": 82.3,
       "source": "ingredient-species-score"
     },
     "311": {
       "specialty": "skill",
+      "mechanicalScore": 58.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 58.9,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋正电拍拍＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 0.9711,
+        "stabilityScore": 80.2,
+        "operationScore": 48.3,
+        "versatilityScore": 58.7,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "312": {
       "specialty": "skill",
+      "mechanicalScore": 60.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 60.3,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋负电拍拍＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 0.9503,
+        "stabilityScore": 95.4,
+        "operationScore": 44.7,
+        "versatilityScore": 76.4,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "317": {
       "specialty": "skill",
+      "mechanicalScore": 65,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 65,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "沙奈朵＋吞食兽＋暴飛龍×3",
+        "baselineTeam": "沙奈朵＋暴飛龍×4",
+        "yieldCoefficient": 1.0194,
+        "stabilityScore": 40,
+        "operationScore": 83.6,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "330": {
       "specialty": "ingredient",
-      "score": 67.3,
-      "source": "ingredient-species-score"
+      "mechanicalScore": 67.3,
+      "strategicRoleScore": 100,
+      "strategicBonus": 7.7,
+      "strategy": {
+        "name": "沙漠蜻蜓",
+        "stage": "required",
+        "role": "高阶酪梨专职",
+        "ingredient": "嫩亮酪梨",
+        "rank": "best",
+        "scorePolicy": {
+          "targetFloor": 75,
+          "maxBonus": 8,
+          "value": 100
+        },
+        "reason": "当前食材手中最稳定的酪梨专职；酪梨同时进入两道1.78高系数料理。"
+      },
+      "score": 75,
+      "source": "ingredient-mechanical-plus-strategic-role"
     },
     "334": {
       "specialty": "berry",
+      "mechanicalScore": 76.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 76.3,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 42.5,
+          "berryStrengthPerDay": 8159.7,
+          "productionScore": 75.8,
+          "rank": 28
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 57.28,
+          "berryStrengthPerDay": 10996.9,
+          "productionScore": 80,
+          "rank": 19
+        },
+        "rankChangeWhenFull": 9,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "354": {
       "specialty": "berry",
+      "mechanicalScore": 81.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 81.3,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 63.3,
+          "berryStrengthPerDay": 9052,
+          "productionScore": 84.1,
+          "rank": 18
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 77.1,
+          "berryStrengthPerDay": 11025.5,
+          "productionScore": 80.2,
+          "rank": 18
+        },
+        "rankChangeWhenFull": 0,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "359": {
       "specialty": "ingredient",
+      "mechanicalScore": 61.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61.2,
       "source": "ingredient-species-score"
     },
     "365": {
       "specialty": "berry",
+      "mechanicalScore": 82.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 82.7,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 51.92,
+          "berryStrengthPerDay": 9138,
+          "productionScore": 84.9,
+          "rank": 16
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 66.82,
+          "berryStrengthPerDay": 11760.6,
+          "productionScore": 85.6,
+          "rank": 11
+        },
+        "rankChangeWhenFull": 5,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "373": {
       "specialty": "berry",
+      "mechanicalScore": 97.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 97.2,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 56.06,
+          "berryStrengthPerDay": 10763.2,
+          "productionScore": 100,
+          "rank": 1
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 13746.1,
+          "productionScore": 100,
+          "rank": 1
+        },
+        "rankChangeWhenFull": 0,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "380": {
       "specialty": "skill",
+      "mechanicalScore": 75.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 75.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "拉帝亚斯＋暴飞龙×4",
+        "baselineTeam": "暴飞龙×5",
+        "yieldCoefficient": 1.0928,
+        "stabilityScore": 90,
+        "operationScore": 61.6,
+        "versatilityScore": 73.8,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;random-target-uniform-expectation;dynamic-energy-confirmed-brackets"
+      }
     },
     "381": {
       "specialty": "skill",
+      "mechanicalScore": 93.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 93.9,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "拉帝双龙组合归因",
+        "sourceType": "latios-latias-shapley-attribution",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "沙奈朵＋拉帝欧斯＋拉帝亚斯＋暴飞龙×2",
+        "baselineTeam": "沙奈朵＋暴飞龙×4",
+        "yieldCoefficient": 1.206,
+        "stabilityScore": 100,
+        "operationScore": 63.5,
+        "versatilityScore": 59.1,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;shapley-attribution-of-latios-latias-pair-over-gardevoir-four-salamence"
+      }
     },
     "389": {
       "specialty": "skill",
+      "mechanicalScore": 83.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 83.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "灰褐洞窟",
+        "candidateTeam": "土台龟＋火爆兽×4",
+        "baselineTeam": "火爆兽×5",
+        "yieldCoefficient": 1.1151,
+        "stabilityScore": 100,
+        "operationScore": 64.8,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;dynamic-energy-confirmed-brackets"
+      }
     },
     "392": {
       "specialty": "skill",
+      "mechanicalScore": 82.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 82.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "沙奈朵＋烈焰猴＋大竺葵×3",
+        "baselineTeam": "沙奈朵＋大竺葵×4",
+        "yieldCoefficient": 1.1116,
+        "stabilityScore": 100,
+        "operationScore": 81.8,
+        "versatilityScore": 73.6,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "395": {
       "specialty": "berry",
+      "mechanicalScore": 86.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 86.8,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 52.12,
+          "berryStrengthPerDay": 9433.8,
+          "productionScore": 87.6,
+          "rank": 12
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 62.65,
+          "berryStrengthPerDay": 11338.7,
+          "productionScore": 82.5,
+          "rank": 17
+        },
+        "rankChangeWhenFull": -5,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "405": {
       "specialty": "ingredient",
+      "mechanicalScore": 75.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 75.2,
       "source": "ingredient-species-score"
     },
     "426": {
       "specialty": "skill",
+      "mechanicalScore": 64.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 64.1,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋随风球＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 1.0095,
+        "stabilityScore": 75.8,
+        "operationScore": 61,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "430": {
       "specialty": "skill",
+      "mechanicalScore": 61.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61.6,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "白花雪原",
+        "candidateTeam": "沙奈朵＋乌鸦头头＋九尾（阿羅拉的樣子）×3",
+        "baselineTeam": "沙奈朵＋九尾（阿羅拉的樣子）×4",
+        "yieldCoefficient": 0.9905,
+        "stabilityScore": 41.8,
+        "operationScore": 76.2,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "442": {
       "specialty": "ingredient",
+      "mechanicalScore": 63.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 63.6,
       "source": "ingredient-species-score"
     },
     "448": {
       "specialty": "skill",
+      "mechanicalScore": 64.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 64.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "沙奈朵＋路卡利欧＋大竺葵×3",
+        "baselineTeam": "沙奈朵＋大竺葵×4",
+        "yieldCoefficient": 1.0699,
+        "stabilityScore": 100,
+        "operationScore": 58.2,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;computed-standard-team"
+      }
     },
     "454": {
       "specialty": "ingredient",
-      "score": 61.6,
-      "source": "ingredient-species-score"
+      "mechanicalScore": 61.6,
+      "strategicRoleScore": 96,
+      "strategicBonus": 8,
+      "strategy": {
+        "name": "毒骷蛙",
+        "stage": "required",
+        "role": "纯粹油专职",
+        "ingredient": "纯粹油",
+        "rank": "best",
+        "scorePolicy": {
+          "targetFloor": 70,
+          "maxBonus": 8,
+          "value": 96
+        },
+        "reason": "纯油岗位的高效率专职；纯粹油进入多道高系数料理。"
+      },
+      "score": 69.6,
+      "source": "ingredient-mechanical-plus-strategic-role"
     },
     "460": {
       "specialty": "ingredient",
+      "mechanicalScore": 72.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 72.8,
       "source": "ingredient-species-score"
     },
     "461": {
       "specialty": "berry",
+      "mechanicalScore": 84.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 84.7,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 55.61,
+          "berryStrengthPerDay": 9453.7,
+          "productionScore": 87.8,
+          "rank": 11
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 74.25,
+          "berryStrengthPerDay": 12621.8,
+          "productionScore": 91.8,
+          "rank": 2
+        },
+        "rankChangeWhenFull": 9,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "462": {
       "specialty": "skill",
+      "mechanicalScore": 64.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 64.4,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋自爆磁怪＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 0.9688,
+        "stabilityScore": 100,
+        "operationScore": 80,
+        "versatilityScore": 69.8,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "468": {
       "specialty": "skill",
+      "mechanicalScore": 55.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 55.1,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "沙奈朵＋波克基斯＋大力鱷×3",
+        "baselineTeam": "沙奈朵＋大力鱷×4",
+        "yieldCoefficient": 1.0258,
+        "stabilityScore": 14.6,
+        "operationScore": 72.2,
+        "versatilityScore": 91,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;computed-standard-team"
+      }
     },
     "470": {
       "specialty": "skill",
+      "mechanicalScore": 55.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 55.3,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "叶伊布＋大竺葵×4",
+        "baselineTeam": "大竺葵×5",
+        "yieldCoefficient": 1.0192,
+        "stabilityScore": 80,
+        "operationScore": 50.4,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;random-target-uniform-expectation;dynamic-energy-confirmed-brackets"
+      }
     },
     "471": {
       "specialty": "skill",
+      "mechanicalScore": 62.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.5,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "白花雪原",
+        "candidateTeam": "沙奈朵＋冰伊布＋九尾（阿羅拉的樣子）×3",
+        "baselineTeam": "沙奈朵＋九尾（阿羅拉的樣子）×4",
+        "yieldCoefficient": 0.9377,
+        "stabilityScore": 100,
+        "operationScore": 67.3,
+        "versatilityScore": 69.8,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "475": {
       "specialty": "skill",
+      "mechanicalScore": 64.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 64.4,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "沙奈朵＋艾路雷朵＋大竺葵×3",
+        "baselineTeam": "沙奈朵＋大竺葵×4",
+        "yieldCoefficient": 1.0115,
+        "stabilityScore": 54.5,
+        "operationScore": 78.9,
+        "versatilityScore": 77.1,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "488": {
       "specialty": "skill",
+      "mechanicalScore": 92.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 92.3,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "宝蓝湖畔",
+        "candidateTeam": "克雷色利亚＋大竺葵×4",
+        "baselineTeam": "大竺葵×5",
+        "yieldCoefficient": 1.1992,
+        "stabilityScore": 100,
+        "operationScore": 52.5,
+        "versatilityScore": 60.7,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;dynamic-energy-confirmed-brackets"
+      }
     },
     "491": {
       "specialty": "all",
@@ -23758,188 +25107,700 @@
     },
     "518": {
       "specialty": "berry",
+      "mechanicalScore": 73.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 73.5,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 58.13,
+          "berryStrengthPerDay": 8313.2,
+          "productionScore": 77.2,
+          "rank": 26
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 10238,
+          "productionScore": 74.5,
+          "rank": 29
+        },
+        "rankChangeWhenFull": -3,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "558": {
       "specialty": "skill",
+      "mechanicalScore": 73.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 73.5,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "沙奈朵＋岩殿居蟹＋暴飛龍×3",
+        "baselineTeam": "沙奈朵＋暴飛龍×4",
+        "yieldCoefficient": 0.9266,
+        "stabilityScore": 89.2,
+        "operationScore": 68.3,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "628": {
       "specialty": "skill",
+      "mechanicalScore": 77.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 77.2,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "沙奈朵＋勇士雄鹰＋大力鱷×3",
+        "baselineTeam": "沙奈朵＋大力鱷×4",
+        "yieldCoefficient": 1.1047,
+        "stabilityScore": 100,
+        "operationScore": 70,
+        "versatilityScore": 73.5,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;computed-standard-team"
+      }
     },
     "697": {
       "specialty": "berry",
+      "mechanicalScore": 87.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 87.6,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 58.85,
+          "berryStrengthPerDay": 9710.3,
+          "productionScore": 90.2,
+          "rank": 7
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 71.59,
+          "berryStrengthPerDay": 11813.1,
+          "productionScore": 85.9,
+          "rank": 10
+        },
+        "rankChangeWhenFull": -3,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "700": {
       "specialty": "skill",
+      "mechanicalScore": 78.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 78.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "仙子伊布＋大力鳄×4",
+        "baselineTeam": "大力鳄×5",
+        "yieldCoefficient": 1.0958,
+        "stabilityScore": 100,
+        "operationScore": 52.2,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;dynamic-energy-confirmed-brackets"
+      }
     },
     "701": {
       "specialty": "skill",
+      "mechanicalScore": 61.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61.7,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "天青沙滩",
+        "candidateTeam": "沙奈朵＋摔角鹰人＋大力鱷×3",
+        "baselineTeam": "沙奈朵＋大力鱷×4",
+        "yieldCoefficient": 0.9631,
+        "stabilityScore": 90.4,
+        "operationScore": 54.1,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "702": {
       "specialty": "skill",
+      "mechanicalScore": 89.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 89.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋咚咚鼠＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 1.1675,
+        "stabilityScore": 98.9,
+        "operationScore": 69,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;aggregated-tasty-chance-team-state"
+      }
     },
     "715": {
       "specialty": "skill",
+      "mechanicalScore": 74.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 74.5,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "沙奈朵＋音波龙＋暴飛龍×3",
+        "baselineTeam": "沙奈朵＋暴飛龍×4",
+        "yieldCoefficient": 1.0015,
+        "stabilityScore": 100,
+        "operationScore": 74,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "738": {
       "specialty": "ingredient",
+      "mechanicalScore": 71.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 71.7,
       "source": "ingredient-species-score"
     },
     "743": {
       "specialty": "ingredient",
+      "mechanicalScore": 72.7,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 72.7,
       "source": "ingredient-species-score"
     },
     "760": {
       "specialty": "ingredient",
+      "mechanicalScore": 75.4,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "穿着熊",
+        "stage": "required",
+        "role": "萌绿玉米专职",
+        "ingredient": "萌绿玉米",
+        "rank": "primary",
+        "reason": "玉米长期岗位；当前机械分已能表达其基础价值，不额外加分。"
+      },
       "score": 75.4,
       "source": "ingredient-species-score"
     },
     "764": {
       "specialty": "ingredient",
+      "mechanicalScore": 64.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 64.1,
       "source": "ingredient-species-score"
     },
     "777": {
       "specialty": "skill",
+      "mechanicalScore": 61.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61.2,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "托戈德玛尔＋雷丘×4",
+        "baselineTeam": "雷丘×5",
+        "yieldCoefficient": 1.0158,
+        "stabilityScore": 52.4,
+        "operationScore": 44.4,
+        "versatilityScore": 83.8,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;random-target-uniform-expectation;nuzzle-one-generation-bonus;dynamic-energy-confirmed-brackets"
+      }
     },
     "778": {
       "specialty": "skill",
+      "mechanicalScore": 73.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 73.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋谜拟丘＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 1.1012,
+        "stabilityScore": 74,
+        "operationScore": 62.3,
+        "versatilityScore": 73.3,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;computed-standard-team"
+      }
     },
     "780": {
       "specialty": "ingredient",
+      "mechanicalScore": 72.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 72.9,
       "source": "ingredient-species-score"
     },
     "845": {
       "specialty": "ingredient",
-      "score": 58.4,
-      "source": "ingredient-species-score"
+      "mechanicalScore": 58.4,
+      "strategicRoleScore": 78,
+      "strategicBonus": 5.6,
+      "strategy": {
+        "name": "古月鸟",
+        "stage": "optional",
+        "role": "纯油兼料理功能",
+        "ingredient": "纯粹油",
+        "rank": "alternative",
+        "scorePolicy": {
+          "targetFloor": 64,
+          "maxBonus": 6,
+          "value": 78
+        },
+        "reason": "机械食材底盘偏低，但同时补纯油与料理功能，不能只按AAA基础产量判断。"
+      },
+      "score": 64,
+      "source": "ingredient-mechanical-plus-strategic-role"
     },
     "849": {
       "specialty": "skill",
+      "mechanicalScore": 61.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61.6,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "沙奈朵＋颤弦蝾螈（高调的样子）＋暴飛龍×3",
+        "baselineTeam": "沙奈朵＋暴飛龍×4",
+        "yieldCoefficient": 0.9419,
+        "stabilityScore": 77.9,
+        "operationScore": 74.7,
+        "versatilityScore": 65.5,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "908": {
       "specialty": "ingredient",
+      "mechanicalScore": 69.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "魔幻假面喵",
+        "stage": "forming",
+        "role": "窝心洋芋专职",
+        "ingredient": "窝心洋芋",
+        "rank": "primary",
+        "reason": "土豆岗位明确，但现有机械种族分已经处于可培养区间，不额外补正。"
+      },
       "score": 69.9,
       "source": "ingredient-species-score"
     },
     "911": {
       "specialty": "ingredient",
+      "mechanicalScore": 83,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 83,
       "source": "ingredient-species-score"
     },
     "914": {
       "specialty": "ingredient",
+      "mechanicalScore": 75.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "狂欢浪舞鸭",
+        "stage": "required",
+        "role": "萌绿大豆替代",
+        "ingredient": "萌绿大豆",
+        "rank": "alternative",
+        "reason": "大豆替代供给路线。"
+      },
       "score": 75.3,
       "source": "ingredient-species-score"
     },
     "923": {
       "specialty": "skill",
+      "mechanicalScore": 81.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 81.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "回复位",
+        "sourceType": "dynamic-healer-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "巴布土拨＋雷丘×4",
+        "baselineTeam": "雷丘×5",
+        "yieldCoefficient": 1.1204,
+        "stabilityScore": 100,
+        "operationScore": 59.4,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;dynamic-energy-confirmed-brackets"
+      }
     },
     "959": {
       "specialty": "berry",
+      "mechanicalScore": 88.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 88.1,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 68.07,
+          "berryStrengthPerDay": 9734.6,
+          "productionScore": 90.4,
+          "rank": 5
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 83.53,
+          "berryStrengthPerDay": 11944.3,
+          "productionScore": 86.9,
+          "rank": 8
+        },
+        "rankChangeWhenFull": -3,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "975": {
       "specialty": "ingredient",
+      "mechanicalScore": 71.5,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": {
+        "name": "浩大鲸",
+        "stage": "forming",
+        "role": "窝心洋芋替代",
+        "ingredient": "窝心洋芋",
+        "rank": "alternative",
+        "reason": "土豆替代路线；现有机械种族分已经足够，不额外补正。"
+      },
       "score": 71.5,
       "source": "ingredient-species-score"
     },
     "980": {
       "specialty": "ingredient",
-      "score": 64,
-      "source": "ingredient-species-score"
+      "mechanicalScore": 64,
+      "strategicRoleScore": 76,
+      "strategicBonus": 4,
+      "strategy": {
+        "name": "土王",
+        "stage": "required",
+        "role": "可可替代专职",
+        "ingredient": "放松可可",
+        "rank": "alternative",
+        "scorePolicy": {
+          "targetFloor": 68,
+          "maxBonus": 4,
+          "value": 76
+        },
+        "reason": "水箭龟之外的可可覆盖位，适合补齐高系数点心的可可缺口。"
+      },
+      "score": 68,
+      "source": "ingredient-mechanical-plus-strategic-role"
     },
     "7007": {
       "specialty": "berry",
+      "mechanicalScore": 85.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 85.1,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 53.09,
+          "berryStrengthPerDay": 9343.6,
+          "productionScore": 86.8,
+          "rank": 14
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 69.13,
+          "berryStrengthPerDay": 12166.1,
+          "productionScore": 88.5,
+          "rank": 6
+        },
+        "rankChangeWhenFull": 8,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "8001": {
       "specialty": "skill",
+      "mechanicalScore": 62.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 62.9,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "琥珀溪谷",
+        "candidateTeam": "沙奈朵＋颤弦蝾螈（低调的样子）＋暴飛龍×3",
+        "baselineTeam": "沙奈朵＋暴飛龍×4",
+        "yieldCoefficient": 0.9288,
+        "stabilityScore": 95.4,
+        "operationScore": 72,
+        "versatilityScore": 76.4,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;aggregated-cooking-power-team-state-weighted-slots"
+      }
     },
     "9002": {
       "specialty": "skill",
+      "mechanicalScore": 55.8,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 55.8,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "黄金发电厂",
+        "candidateTeam": "沙奈朵＋皮卡丘（佳节）＋雷丘×3",
+        "baselineTeam": "沙奈朵＋雷丘×4",
+        "yieldCoefficient": 1.0209,
+        "stabilityScore": 100,
+        "operationScore": 62.1,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;computed-standard-team"
+      }
     },
     "9004": {
       "specialty": "berry",
+      "mechanicalScore": 72.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 72.9,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 54.58,
+          "berryStrengthPerDay": 8405,
+          "productionScore": 78.1,
+          "rank": 25
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 64.67,
+          "berryStrengthPerDay": 9958.5,
+          "productionScore": 72.4,
+          "rank": 30
+        },
+        "rankChangeWhenFull": -5,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "9005": {
       "specialty": "skill",
+      "mechanicalScore": 61,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 61,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "白花雪原",
+        "candidateTeam": "沙奈朵＋伊布（万圣节）＋九尾（阿羅拉的樣子）×3",
+        "baselineTeam": "沙奈朵＋九尾（阿羅拉的樣子）×4",
+        "yieldCoefficient": 0.9459,
+        "stabilityScore": 66.3,
+        "operationScore": 65.1,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;computed-standard-team"
+      }
     },
     "9006": {
       "specialty": "skill",
+      "mechanicalScore": 79.1,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 79.1,
-      "source": "team-calibrated-final-species-score"
+      "source": "team-calibrated-final-species-score",
+      "teamModel": {
+        "role": "额外技能位",
+        "sourceType": "ordinary-fixed-team",
+        "islandNameZh": "白花雪原",
+        "candidateTeam": "沙奈朵＋海豹球（佳节）＋九尾（阿羅拉的樣子）×3",
+        "baselineTeam": "沙奈朵＋九尾（阿羅拉的樣子）×4",
+        "yieldCoefficient": 1.1146,
+        "stabilityScore": 98.2,
+        "operationScore": 77.8,
+        "versatilityScore": 100,
+        "scoringStatus": "team-yield-coefficient-normalized-above-one;main-skill-70-10-10-10;species-95-5;skill-role-gap-compensation-0.5;user-manual-species-adjustment;aggregated-tasty-chance-team-state"
+      }
     },
     "9007": {
       "specialty": "berry",
+      "mechanicalScore": 81,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 81,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 66.15,
+          "berryStrengthPerDay": 9063,
+          "productionScore": 84.2,
+          "rank": 17
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 80.19,
+          "berryStrengthPerDay": 10985.4,
+          "productionScore": 79.9,
+          "rank": 22
+        },
+        "rankChangeWhenFull": -5,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "711-4": {
       "specialty": "ingredient",
+      "mechanicalScore": 56.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 56.3,
       "source": "ingredient-species-score"
     },
     "711-3": {
       "specialty": "ingredient",
+      "mechanicalScore": 55.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 55.6,
       "source": "ingredient-species-score"
     },
     "711-2": {
       "specialty": "ingredient",
+      "mechanicalScore": 55.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 55.2,
       "source": "ingredient-species-score"
     },
     "711-1": {
       "specialty": "ingredient",
+      "mechanicalScore": 55.2,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 55.2,
       "source": "ingredient-species-score"
     },
     "9001-1": {
       "specialty": "berry",
+      "mechanicalScore": 76.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 76.6,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 62.71,
+          "berryStrengthPerDay": 8590.6,
+          "productionScore": 79.8,
+          "rank": 20
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 80.19,
+          "berryStrengthPerDay": 10985.4,
+          "productionScore": 79.9,
+          "rank": 20
+        },
+        "rankChangeWhenFull": 0,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     },
     "9001-2": {
       "specialty": "berry",
+      "mechanicalScore": 76.6,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
       "score": 76.6,
-      "source": "berry-species-score"
+      "source": "berry-species-score",
+      "scenarios": {
+        "status": "confirmed-separate-species-baselines",
+        "targetLevel": 70,
+        "normalCollection": {
+          "berryCountPerDay": 62.71,
+          "berryStrengthPerDay": 8590.6,
+          "productionScore": 79.8,
+          "rank": 21
+        },
+        "fullBagSneakySnacking": {
+          "berryCountPerDay": 80.19,
+          "berryStrengthPerDay": 10985.4,
+          "productionScore": 79.9,
+          "rank": 21
+        },
+        "rankChangeWhenFull": 0,
+        "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
+      }
     }
   },
   "existingNameTargets": {

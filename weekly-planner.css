@@ -56,6 +56,28 @@
 .weekly-team span{color:#16754b;font-size:8px;font-weight:900}
 .weekly-team b{margin-top:3px;font-size:11px}
 .weekly-team small{margin-top:3px;color:#6b7789;font-size:9px}
+.weekly-hunt{background:linear-gradient(145deg,#fff,#f8fbff)}
+.weekly-hunt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.weekly-hunt-card{min-width:0;border:1px solid #dce4ed;border-radius:11px;background:#fff;padding:10px}
+.weekly-hunt-card.status-missing{border-color:#efc6c1;background:#fffafa}
+.weekly-hunt-card.status-upgrade{border-color:#ead39d;background:#fffdf7}
+.weekly-hunt-card.status-covered{border-color:#c9e1d3;background:#fafffc}
+.weekly-hunt-card>div{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.weekly-hunt-card>div span{flex:0 0 auto;border-radius:999px;background:#eef2f6;color:#526377;padding:3px 6px;font-size:8px;font-weight:900}
+.weekly-hunt-card.status-missing>div span{background:#feeceb;color:#b42318}
+.weekly-hunt-card.status-upgrade>div span{background:#fff2d2;color:#895d00}
+.weekly-hunt-card.status-covered>div span{background:#e3f6eb;color:#147347}
+.weekly-hunt-card b{font-size:12px;text-align:right;overflow-wrap:anywhere}
+.weekly-hunt-card>p{margin:8px 0 4px;color:#44586c;font-size:10px;line-height:1.45}
+.weekly-hunt-card>small{display:block;color:#748195;font-size:9px;line-height:1.45;overflow-wrap:anywhere}
+.weekly-hunt-card details{margin-top:8px;border-top:1px solid #e6ebf1;padding-top:7px}
+.weekly-hunt-card summary{color:#236e50;font-size:9px;font-weight:850;cursor:pointer}
+.weekly-hunt-card details p{margin:6px 0 0;color:#647386;font-size:9px;line-height:1.5}
+.weekly-logistics{min-width:0;border:1px solid #dfe5ec;border-radius:14px;background:#f8fafc;padding:0 12px}
+.weekly-logistics>summary{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:48px;color:#34485c;font-weight:900;cursor:pointer}
+.weekly-logistics>summary small{color:#718095;font-size:9px;font-weight:700}
+.weekly-logistics-body{display:grid;gap:10px;padding-bottom:12px}
+.weekly-logistics-body>.weekly-section{box-shadow:none}
 .weekly-budget{display:grid;gap:7px;margin-top:10px}
 .weekly-budget-row{display:grid;grid-template-columns:minmax(145px,.75fr) minmax(320px,1.25fr) auto;gap:10px;align-items:center;min-width:0;border:1px solid #e2e8ef;border-radius:11px;background:#fbfcfe;padding:9px 10px}
 .weekly-budget-row.short{border-color:#efc6c1;background:#fff9f8}
@@ -91,6 +113,7 @@
   .weekly-inventory{grid-template-columns:repeat(3,minmax(0,1fr))}
   .weekly-overview{grid-template-columns:1fr}
   .weekly-team-pair{grid-template-columns:1fr}
+  .weekly-hunt-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .weekly-team-panel.wide{grid-column:auto}
   .weekly-budget-row{grid-template-columns:minmax(140px,.7fr) minmax(0,1.3fr)}
   .weekly-budget-state{grid-column:1/-1;text-align:left}
@@ -105,6 +128,9 @@
   .weekly-section-head>small{max-width:none;text-align:left}
   .weekly-action-head>b{align-self:flex-start}
   .weekly-team-pair{grid-template-columns:minmax(0,1fr)}
+  .weekly-hunt-grid{grid-template-columns:minmax(0,1fr)}
+  .weekly-logistics{padding:0 10px}
+  .weekly-logistics>summary{align-items:flex-start;flex-direction:column;justify-content:center;padding:8px 0}
   .weekly-budget-row{grid-template-columns:minmax(0,1fr)}
   .weekly-budget-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .weekly-budget-state{grid-column:auto}

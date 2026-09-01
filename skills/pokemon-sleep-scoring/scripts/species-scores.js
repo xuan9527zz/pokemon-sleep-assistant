@@ -5420,6 +5420,10 @@ function berryProductionRows(records) {
       * (1 - record.ingredientRate)
       * record.baseBerryCount
     );
+    const fullBagCount = (
+      86400 / interval
+      * record.baseBerryCount
+    );
     return {
       id: record.id,
       pokedexId: record.pokedexId,
@@ -5432,6 +5436,8 @@ function berryProductionRows(records) {
       level70BerryStrength: berryStrength,
       standardBerryCount: standardCount,
       standardBerryStrength: standardCount * berryStrength,
+      fullBagBerryCount: fullBagCount,
+      fullBagBerryStrength: fullBagCount * berryStrength,
       mainSkill: record.mainSkill,
       skillRatePct: record.skillRatePct,
       standardSkillTriggerIndex: 86400 / interval * record.skillRatePct / 100,
@@ -5440,9 +5446,11 @@ function berryProductionRows(records) {
   });
 
   const bestProduction = Math.max(...rows.map(row => row.standardBerryStrength));
+  const bestFullBagProduction = Math.max(...rows.map(row => row.fullBagBerryStrength));
   const bestSkillTriggerIndex = Math.max(...rows.map(row => row.standardSkillTriggerIndex));
-  return rows.map(row => {
+  const scoredRows = rows.map(row => {
     const productionScore = row.standardBerryStrength / bestProduction * 100;
+    const fullBagProductionScore = row.fullBagBerryStrength / bestFullBagProduction * 100;
     const productionContribution = productionScore * BERRY_SPECIES_WEIGHTS.production;
     const skillTriggerEfficiencyScore = row.standardSkillTriggerIndex / bestSkillTriggerIndex * 100;
     const naturalMainSkillLevelScore = Math.min(Math.max(row.naturalMainSkillLevel - 1, 0) / 2, 1) * 100;
@@ -5458,6 +5466,9 @@ function berryProductionRows(records) {
       level70HelpIntervalSec: round(row.level70HelpIntervalSec),
       standardBerryCount: round(row.standardBerryCount, 2),
       standardBerryStrength: round(row.standardBerryStrength),
+      fullBagBerryCount: round(row.fullBagBerryCount, 2),
+      fullBagBerryStrength: round(row.fullBagBerryStrength),
+      fullBagProductionScore: round(fullBagProductionScore),
       productionScore: round(productionScore),
       productionContribution: round(productionContribution),
       confirmedSubtotal: round(productionContribution),
@@ -5467,6 +5478,39 @@ function berryProductionRows(records) {
       mainSkillScore: mainSkillScore === null ? null : round(mainSkillScore),
       mainSkillContribution: mainSkillContribution === null ? null : round(mainSkillContribution),
       speciesScore: mainSkillContribution === null ? null : round(productionContribution + mainSkillContribution)
+    };
+  });
+  const normalRankById = new Map([...scoredRows].sort((left, right) => (
+    right.standardBerryStrength - left.standardBerryStrength
+    || left.pokedexId - right.pokedexId
+  )).map((row, index) => [String(row.id), index + 1]));
+  const fullBagRankById = new Map([...scoredRows].sort((left, right) => (
+    right.fullBagBerryStrength - left.fullBagBerryStrength
+    || left.pokedexId - right.pokedexId
+  )).map((row, index) => [String(row.id), index + 1]));
+  return scoredRows.map(row => {
+    const normalRank = normalRankById.get(String(row.id));
+    const fullBagRank = fullBagRankById.get(String(row.id));
+    return {
+      ...row,
+      berryScenarios: {
+        status: 'confirmed-separate-species-baselines',
+        targetLevel: TARGET_LEVEL,
+        normalCollection: {
+          berryCountPerDay: row.standardBerryCount,
+          berryStrengthPerDay: row.standardBerryStrength,
+          productionScore: row.productionScore,
+          rank: normalRank
+        },
+        fullBagSneakySnacking: {
+          berryCountPerDay: row.fullBagBerryCount,
+          berryStrengthPerDay: row.fullBagBerryStrength,
+          productionScore: row.fullBagProductionScore,
+          rank: fullBagRank
+        },
+        rankChangeWhenFull: normalRank - fullBagRank,
+        scope: 'Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output'
+      }
     };
   }).sort((left, right) => (
     (right.speciesScore ?? right.confirmedSubtotal) - (left.speciesScore ?? left.confirmedSubtotal)

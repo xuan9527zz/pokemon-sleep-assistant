@@ -64,6 +64,10 @@ assert.equal(realPlan.budget.goal,15);
 assert.ok(realPlan.budget.rows.length>0);
 assert.ok(['prepare','adjust','output'].includes(realPlan.action.phase));
 assert.ok(Number(realPlan.action.collectionHours)>0);
+const huntTargets=weekly.buildHuntTargets([{id:'x',name:'大竺葵',specialty:'berry',subs:'树果数量S；帮手奖励；帮忙速度M；研究EXP奖励；睡眠EXP奖励',nature:'固执：速度↑ 食材↓',scoreIndividual:88,scoreTotal:82,scoreBreakdown:{finalFormId:'154'}}],'宝蓝湖畔');
+assert.equal(huntTargets.find(row=>row.id==='154').status,'covered');
+assert.equal(huntTargets.find(row=>row.id==='254').status,'missing');
+assert.ok(huntTargets.find(row=>row.id==='154').minimum.includes('Lv.50'));
 
 const wrongArea=weekly.calculatePlan({...common,activityKey:'mewtwo1'});
 assert.equal(wrongArea.preparationTeam.carryBonus,0);

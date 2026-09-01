@@ -1,9 +1,11 @@
 (function(root,factory){
   'use strict';
-  const api=factory();
+  const strategy=typeof module==='object'&&module.exports?require('./pokemon-strategy.js'):root.POKEMON_SLEEP_STRATEGY;
+  const catalog=typeof module==='object'&&module.exports?require('./pokemon-catalog.generated.js'):root.POKEMON_SLEEP_CATALOG;
+  const api=factory(strategy,catalog);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_WEEKLY_PLANNER=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(){
+})(typeof globalThis!=='undefined'?globalThis:this,function(strategy,catalog){
   'use strict';
 
   const STORAGE_KEY='pokemon-sleep-weekly-plan-v1';
@@ -104,10 +106,21 @@
     const days=Number.isFinite(budget.maxDaysToStock)?Math.max(.1,budget.maxDaysToStock):budget.daysRemaining;
     return {phase:'prepare',title:'现在先用食材准备队',detail:`预计约 ${round(days,1)} 天补齐剩余 ${budget.remaining} 餐；达到下列库存后切换岛屿输出队。`,collectionHours,collectAt,thresholds:budget.rows.filter(row=>row.gapNow>.05).map(row=>`${row.name}库存到 ${Math.ceil(row.need)}`)};
   }
+  function buildHuntTargets(pokemon,islandName,options={}){
+    const strategyApi=options.strategy||strategy,catalogApi=options.catalog||catalog;
+    if(!strategyApi||typeof strategyApi.targetsForIsland!=='function')return [];
+    const speciesRows=catalogApi&&Array.isArray(catalogApi.pokemon)?catalogApi.pokemon:[],bySpeciesId=new Map(speciesRows.map(row=>[String(row.id),row]));
+    return strategyApi.targetsForIsland(islandName).map(target=>{
+      const targetId=String(target.id),species=bySpeciesId.get(targetId),matches=(pokemon||[]).filter(mon=>String(mon.scoreBreakdown&&mon.scoreBreakdown.finalFormId||mon.finalFormId||mon.speciesId||'')===targetId).sort((a,b)=>(Number(b.scoreIndividual)||-Infinity)-(Number(a.scoreIndividual)||-Infinity)||(Number(b.scoreTotal)||-Infinity)-(Number(a.scoreTotal)||-Infinity)),best=matches[0]||null,specialty=best&&best.specialty||species&&species.specialty||'unknown';
+      const assessment=best?strategyApi.minimumStandard(best,{finalId:targetId,specialty,strategicProfile:target.profile}):null,rule=strategyApi.ruleFor(targetId,specialty),status=!best?'missing':assessment&&assessment.meetsMinimum?'covered':'upgrade';
+      return {id:targetId,name:target.profile&&target.profile.name||species&&species.name||`图鉴 #${targetId}`,note:target.note,profile:target.profile||null,status,count:matches.length,best,assessment,minimum:rule&&rule.minimum||'依照定位与Lv.50前三栏人工判断'};
+    }).sort((a,b)=>({missing:0,upgrade:1,covered:2}[a.status]-{missing:0,upgrade:1,covered:2}[b.status]));
+  }
   function calculatePlan(options){
     const activity=ACTIVITY_PROFILES[options.activityKey]||ACTIVITY_PROFILES.normal,pot=effectivePot(options.basePot,options.goodCamp),now=dateValue(options.now),daysRemaining=daysRemainingInWeek(now),mealGoal=clamp(Math.round(options.mealGoal||activity.defaultMealGoal),1,21),completedMeals=Array.isArray(options.completedMeals)?options.completedMeals.length:Number(options.completedMeals)||0,candidates=recipeRows(options.recipes,options.recipeType,pot),targetRecipe=candidates.find(recipe=>String(recipe.id)===String(options.targetRecipeId))||chooseTargetRecipe(options.recipes,options.recipeType,pot,{},options.inventory,mealGoal),remainingMeals=Math.max(0,mealGoal-Math.min(mealGoal,completedMeals));
     const preparationTeam=buildPreparationTeam({...options,activity,targetRecipe,remainingMeals,daysRemaining}),outputTeam=buildOutputTeam({...options,carryBonus:preparationTeam.carryBonus,fallbackMembers:preparationTeam.members}),budget=ingredientBudget(targetRecipe,preparationTeam.daily,options.inventory,mealGoal,completedMeals,daysRemaining),action=createActionPlan(budget,targetRecipe,preparationTeam,outputTeam,now),currentTeam=['output','complete'].includes(action.phase)?outputTeam:preparationTeam;
-    return {activity,pot,targetRecipe,preparationTeam,outputTeam,currentTeam,budget,action,weekKey:weekKey(now)};
+    const huntTargets=buildHuntTargets(options.pokemon,options.context&&options.context.island&&options.context.island.name,{strategy:options.strategy,catalog:options.catalog});
+    return {activity,pot,targetRecipe,preparationTeam,outputTeam,currentTeam,budget,action,huntTargets,weekKey:weekKey(now)};
   }
   function defaults(ingredients,now){
     return {schemaVersion:2,islandIndex:0,berries:[],recipeType:'咖喱／浓汤',activityKey:'snapshot',goodCamp:true,basePot:81,mealGoal:15,targetRecipeId:'',completedMeals:[],weekKey:weekKey(now),inventory:Object.fromEntries(ingredients.map(name=>[name,0]))};
@@ -160,6 +173,13 @@
       if(!['output','complete'].includes(report.action.phase)){const after=document.createElement('article');after.className='weekly-team-panel';after.innerHTML='<div class="weekly-team-panel-head"><span>食材补齐后</span><b>切换岛屿输出队</b></div>';after.append(teamCards(report.outputTeam));pair.append(after)}else current.classList.add('wide');
       section.append(pair);return section;
     }
+    function huntSection(report){
+      const section=document.createElement('section');section.className='weekly-section weekly-hunt';section.innerHTML='<div class="weekly-section-head"><div><span>WEEKLY HUNT</span><h3>本周严选目标</h3></div><small>先补缺失岗位，再筛低于入盒线的个体；达标后才追毕业词条</small></div>';
+      const grid=document.createElement('div');grid.className='weekly-hunt-grid';
+      (report.huntTargets||[]).forEach(target=>{const card=document.createElement('article');card.className=`weekly-hunt-card status-${target.status}`;const status={missing:'盒内缺失',upgrade:'继续严选',covered:'已有达标'}[target.status]||'人工判断',best=target.best?`当前最好：#${target.best.id} ${target.best.name} · 个体 ${Number(target.best.scoreIndividual).toFixed(1)}${target.assessment?` · ${target.assessment.label}`:''}`:'盒内尚无该最终形态';card.innerHTML=`<div><span>${status}</span><b>${target.name}</b></div><p>${target.note}</p><small>${best}</small><details><summary>查看最低入盒标准</summary><p>${target.minimum}</p>${target.assessment&&target.assessment.missing.length?`<p>当前还缺：${target.assessment.missing.join('、')}</p>`:''}</details>`;grid.append(card)});
+      if(!report.huntTargets||!report.huntTargets.length){const empty=document.createElement('p');empty.className='weekly-empty';empty.textContent='这个岛屿的攻略严选清单仍在整理中。';grid.append(empty)}
+      section.append(grid);return section;
+    }
     function budgetSection(report){
       const section=document.createElement('section');section.className='weekly-section';section.innerHTML='<div class="weekly-section-head"><div><span>INGREDIENT BUDGET</span><h3>剩余目标的食材预算</h3></div><small>库存是现在持有的数量；预计值按准备队与本周剩余天数计算</small></div>';const grid=document.createElement('div');grid.className='weekly-budget';
       if(!report.budget.rows.length){const empty=document.createElement('p');empty.className='weekly-empty';empty.textContent='选择目标食谱后会显示食材预算。';grid.append(empty)}
@@ -169,9 +189,10 @@
       const section=document.createElement('section');section.className='weekly-section';const head=document.createElement('div');head.className='weekly-section-head weekly-progress-head';head.innerHTML=`<div><span>MEAL CHECK</span><h3>目标料理完成记录 · ${report.budget.completed}/${report.budget.goal}</h3></div>`;const reset=document.createElement('button');reset.type='button';reset.className='weekly-reset';reset.textContent='清空本周勾选';reset.addEventListener('click',()=>{if(!resetArmed){resetArmed=true;reset.textContent='再点一次确认清空';if(resetTimer)clearTimeout(resetTimer);resetTimer=setTimeout(()=>{resetArmed=false;reset.textContent='清空本周勾选'},3000);return}resetArmed=false;if(resetTimer)clearTimeout(resetTimer);state.completedMeals=[];persist();render()});head.append(reset);const grid=document.createElement('div');grid.className='weekly-progress';
       DAY_NAMES.forEach((dayName,day)=>{const card=document.createElement('article');card.className='weekly-progress-day';const title=document.createElement('b');title.textContent=dayName;const meals=document.createElement('div');meals.className='weekly-progress-meals';MEAL_NAMES.forEach((mealName,meal)=>{const key=`d${day}-m${meal}`,label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=state.completedMeals.includes(key);label.className=input.checked?'done':'';input.setAttribute('aria-label',`${dayName}${mealName}餐已完成目标食谱`);input.addEventListener('change',()=>{const keys=new Set(state.completedMeals);input.checked?keys.add(key):keys.delete(key);state.completedMeals=[...keys].filter(value=>VALID_MEAL_KEYS.has(value));persist();render()});label.append(input,document.createTextNode(`${mealName}餐`));meals.append(label)});card.append(title,meals);grid.append(card)});section.append(head,grid);return section;
     }
+    function logisticsDetails(report){const details=document.createElement('details');details.className='weekly-logistics';const summary=document.createElement('summary');summary.innerHTML=`<span>食材预算与料理记录</span><small>${report.budget.rows.filter(row=>row.gapNow>.05).length} 种缺口 · 已完成 ${report.budget.completed}/${report.budget.goal} 餐</small>`;const body=document.createElement('div');body.className='weekly-logistics-body';body.append(budgetSection(report),progressSection(report));details.append(summary,body);return details}
     function render(){
       if(!pokemon.length||!islands.length)return null;if(state.weekKey!==weekKey()){state.weekKey=weekKey();state.completedMeals=[];persist()}
-      const report=calculatePlan({pokemon,context:context(),recommendTeams:options.recommendTeams,individualProductionScore:options.individualProductionScore,isFullTeamHealer:options.isFullTeamHealer,isSpecialPokemon:options.isSpecialPokemon,planner:teamPlanner,production,goodCamp:state.goodCamp,activityKey:state.activityKey,recipes,recipeType:state.recipeType,targetRecipeId:state.targetRecipeId,basePot:state.basePot,mealGoal:state.mealGoal,completedMeals:state.completedMeals,inventory:state.inventory});controls.result.replaceChildren(overviewSection(report),actionSection(report),teamSection(report),budgetSection(report),progressSection(report));return report;
+      const report=calculatePlan({pokemon,context:context(),recommendTeams:options.recommendTeams,individualProductionScore:options.individualProductionScore,isFullTeamHealer:options.isFullTeamHealer,isSpecialPokemon:options.isSpecialPokemon,planner:teamPlanner,production,goodCamp:state.goodCamp,activityKey:state.activityKey,recipes,recipeType:state.recipeType,targetRecipeId:state.targetRecipeId,basePot:state.basePot,mealGoal:state.mealGoal,completedMeals:state.completedMeals,inventory:state.inventory,strategy:options.strategy,catalog:options.catalog});controls.result.replaceChildren(overviewSection(report),actionSection(report),huntSection(report),teamSection(report),logisticsDetails(report));return report;
     }
     controls.island.addEventListener('change',()=>{state.islandIndex=Number(controls.island.value);state.berries=[];renderBerryControls();persist();render()});
     controls.recipeType.addEventListener('change',()=>{state.recipeType=controls.recipeType.value;renderRecipeOptions(true);persist();render()});
@@ -182,5 +203,5 @@
     controls.pot.addEventListener('change',()=>{state.basePot=clamp(Math.round(controls.pot.value),1,1000);controls.pot.value=String(state.basePot);renderRecipeOptions(true);persist();render()});
     syncControls();render();return {render,getState:()=>({...state}),calculatePlan};
   }
-  return Object.freeze({STORAGE_KEY,ACTIVITY_PROFILES,MEAL_NAMES,DAY_NAMES,weekKey,daysRemainingInWeek,effectivePot,recipeRows,chooseTargetRecipe,individualIngredientProduction,buildPreparationTeam,buildOutputTeam,ingredientBudget,createActionPlan,calculatePlan,normalizeState,mount});
+  return Object.freeze({STORAGE_KEY,ACTIVITY_PROFILES,MEAL_NAMES,DAY_NAMES,weekKey,daysRemainingInWeek,effectivePot,recipeRows,chooseTargetRecipe,individualIngredientProduction,buildPreparationTeam,buildOutputTeam,ingredientBudget,createActionPlan,buildHuntTargets,calculatePlan,normalizeState,mount});
 });

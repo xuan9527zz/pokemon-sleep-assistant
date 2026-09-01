@@ -42,4 +42,14 @@ assert.equal(secondSpecial.verdict,'放生候选');
 const shinySpecial=retention.assessCandidate({id:'s3',recordId:'s3',key:'suicune2',name:'水君',shiny:'是'},[{id:'s1',recordId:'s1',key:'suicune1',name:'水君',shiny:'否'}],scoring);
 assert.equal(shinySpecial.verdict,'闪光收藏');
 
+const flygonStrategy={role:'高阶酪梨专职',ingredient:'嫩亮酪梨'};
+const strategicScores=Object.fromEntries(['f1','f2','f3','f4','f5'].map((key,index)=>[key,{finalScore:90-index*5,speciesScore:75,individualScore:90-index*8,finalFormId:'330',finalFormNameZh:'沙漠蜻蜓',specialty:'ingredient',strategy:flygonStrategy}]));
+const strategicScoring={scorePokemon:mon=>strategicScores[mon.key]};
+const otherFlygons=['f1','f2','f3','f4'].map((key,index)=>({id:key,recordId:key,key,name:'沙漠蜻蜓',shiny:'否',ingredients:'特选苹果×2／特选苹果×5／特选苹果×7',subs:'食材概率M；帮手奖励；帮忙速度M；研究EXP奖励；睡眠EXP奖励',nature:'认真'}));
+const avocadoFlygon={id:'f5',recordId:'f5',key:'f5',name:'沙漠蜻蜓',shiny:'否',ingredients:'嫩亮酪梨×2／嫩亮酪梨×5／嫩亮酪梨×7',subs:'食材概率M；帮手奖励；帮忙速度M；研究EXP奖励；睡眠EXP奖励',nature:'认真'};
+const strategicGuard=retention.assessCandidate(avocadoFlygon,otherFlygons,strategicScoring);
+assert.equal(strategicGuard.exceedsLimit,true);
+assert.equal(strategicGuard.uniqueStrategicRoute,true);
+assert.equal(strategicGuard.verdict,'战略岗位复核');
+
 console.log('retention advisor tests passed');

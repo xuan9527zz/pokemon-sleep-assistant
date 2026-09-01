@@ -1,0 +1,200 @@
+{
+  "source": {
+    "title": "【Pokemonsleep】宝可梦sleep丨8.17更新攻略图，新增小锻匠一家",
+    "url": "https://www.bilibili.com/opus/1237353277411033128",
+    "author": "白河夜船_Velpro",
+    "published": "2026-08-17",
+    "reviewed": "2026-09-01",
+    "imageAudit": {
+      "bodyImages": 2,
+      "guideImageWidth": 3240,
+      "guideImageHeight": 3518,
+      "columns": 3,
+      "reviewSegments": 12
+    }
+  },
+  "scope": "攻略作者的培养阶段与用途判断；不等于本站固定种族分",
+  "roleSubskillGuides": {
+    "berry": {
+      "label": "树果型",
+      "required": ["树果数量S"],
+      "primary": ["帮手奖励", "帮忙速度M"],
+      "primaryNatures": ["固执", "顽皮", "勇敢", "怕寂寞"],
+      "secondary": ["帮忙速度S"],
+      "seedUpgradeRule": "帮忙速度M不存在时，帮忙速度S按可用副技能种子升级为M处理；S与M同时存在时S不能重复升级为M",
+      "levelWindow": 50,
+      "authorBenchmarks": {
+        "selfReroll": "前两格保证树果数量S，前三格再尽量同时覆盖帮手奖励与一个帮忙增益；作者简写为果S、金帮、单帮起步",
+        "purchasedStarterPerfect": "Lv.50内树果数量S＋帮手奖励＋帮忙速度M＋帮忙速度上升性格"
+      }
+    },
+    "berryOrientedSkill": {
+      "label": "树果定位的技能型",
+      "families": ["毛头小鹰→勇士雄鹰", "木守宫→蜥蜴王", "小火焰猴→烈焰猴"],
+      "baseGuide": "先套用树果型标准，优先Lv.50内树果数量S",
+      "priorityAfterBerryRule": [
+        "帮忙速度上升性格（不含顽皮）",
+        "技能概率提升M",
+        "顽皮≈技能概率上升且不降低帮忙速度的性格"
+      ],
+      "reason": "高速、低技能概率、低食材概率的基础面板使普通帮忙速度能同时增加树果产量与技能触发期望，结果比只堆技能概率更稳定"
+    },
+    "skill": {
+      "label": "技能型",
+      "required": ["技能概率提升M"],
+      "primary": ["帮手奖励", "帮忙速度M", "技能概率提升S"],
+      "primaryNatures": ["慎重", "自大", "温顺"],
+      "otherUsefulNatures": ["温和", "固执", "勇敢", "怕寂寞"],
+      "secondary": ["帮忙速度S"],
+      "seedUpgradeRule": "技能概率提升M不存在时，技能概率提升S按可用副技能种子升级为M处理",
+      "levelWindow": 50,
+      "authorBenchmarks": {
+        "graduation": "1个必需＋2个主增益",
+        "ordering": "相同词条越早解锁越强，尽量避免核心词条只在Lv.70出现",
+        "healerMinimumOriginalShorthand": "Lv.50内双技概＋单帮，或单技概M＋双帮",
+        "healerPreference": "回复手常驻队伍，优先追求带帮手奖励的毕业个体"
+      }
+    },
+    "ingredient": {
+      "label": "食材型",
+      "required": ["食材概率提升M"],
+      "primary": ["帮手奖励", "帮忙速度M", "食材概率提升S"],
+      "primaryNatures": ["马虎", "冷静", "慢吞吞"],
+      "otherUsefulNatures": ["内敛", "顽皮", "勇敢", "怕寂寞"],
+      "secondary": ["帮忙速度S"],
+      "seedUpgradeRule": "食材概率提升M不存在时，食材概率提升S按可用副技能种子升级为M处理",
+      "levelWindow": 50,
+      "authorBenchmarks": {
+        "ingredientPatternPremise": "通常AAA，个别宝可梦接受ABB；AAX结合目标食谱判断",
+        "acceptable": "1个必需＋1个主增益",
+        "graduation": "1个必需＋2个主增益",
+        "ordering": "相同词条越早解锁越强，尽量避免核心词条只在Lv.70出现",
+        "worker": "Lv.30内食材概率提升M，且AAX命中当前目标食谱即可先用",
+        "authorLongTermNote": "AAA是长期毕业硬标准；ABB是妥协下位，新手阶段只特别推荐杰尼龟采用ABB"
+      }
+    }
+  },
+  "specialSubskillGuides": {
+    "达克莱伊": {
+      "recommended": ["树果数量S", "帮手奖励", "帮忙速度M", "技能概率提升M"],
+      "classification": "专属推荐四项；原图未标必需／主增益／次增益，也未要求四项缺一不可",
+      "context": "位于中后期必需补强区；有明确副技能建议，但未单独写核心／过渡培养档位"
+    }
+  },
+  "stage1Starter": {
+    "berryBurst": [
+      {"family": "毛头小鹰→勇士雄鹰", "role": "天青沙滩长期树果骤增主力，进化晚，不适合立即开荒"},
+      {"family": "木守宫→蜥蜴王", "role": "宝蓝湖畔长期树果骤增主力"},
+      {"family": "小火焰猴→烈焰猴", "role": "宝蓝湖畔长期树果骤增主力"}
+    ],
+    "islandBerryCore": [
+      {"island": "天青沙滩", "families": ["小锯鳄→大力鳄", "小锻匠→巨锻匠"]},
+      {"island": "灰褐洞窟", "families": ["火球鼠→火爆兽", "宝宝暴龙→怪颚龙"]},
+      {"island": "白花雪原", "families": ["六尾（阿罗拉的样子）→九尾（阿罗拉的样子）", "海豹球→帝牙海狮"]},
+      {"island": "宝蓝湖畔", "families": ["菊草叶→大竺葵"]},
+      {"island": "黄金旧发电厂", "families": ["皮丘→雷丘"]},
+      {"island": "琥珀溪谷", "families": ["宝贝龙→暴飞龙"]}
+    ],
+    "healers": [
+      {"family": "草苗龟→土台龟", "role": "过渡回复手①"},
+      {"family": "布拨→巴布土拨", "role": "过渡回复手②"},
+      {"family": "拉鲁拉丝→沙奈朵", "role": "最佳长期回复手，宝蓝湖畔限定"}
+    ]
+  },
+  "stage2Forming": {
+    "secondLineBerry": [
+      {"family": "水跃鱼→巨沼怪", "island": "灰褐洞窟"},
+      {"family": "天然雀→天然鸟", "island": "宝蓝湖畔"},
+      {"family": "波加曼→帝王拿波", "island": "黄金旧发电厂"},
+      {"family": "六尾→九尾", "island": "灰褐洞窟"},
+      {"family": "嘟嘟→嘟嘟利", "island": "天青沙滩"},
+      {"family": "火稚鸡→火焰鸡", "island": "宝蓝湖畔"}
+    ],
+    "ingredientRoutes": [
+      {"ingredient": "甜甜蜜", "families": ["妙蛙种子→妙蛙花"], "recipe": "胖丁百汇布丁"},
+      {"ingredient": "特选蛋", "families": ["小福蛋→幸福蛋"], "recipe": "胖丁百汇布丁"},
+      {"ingredient": "哞哞鲜奶", "families": ["杰尼龟→水箭龟"], "recipe": "胖丁百汇布丁"},
+      {"ingredient": "特选苹果", "families": ["呆火鳄→骨纹巨声鳄"], "recipe": "胖丁百汇布丁"},
+      {"ingredient": "窝心洋芋", "families": ["新叶喵→魔幻假面喵", "走鲸→浩大鲸"], "recipe": "绝对睡眠奶油咖喱"},
+      {"ingredient": "好眠番茄", "families": ["喇叭芽→大食花", "雪笠怪→暴雪王", "小猫怪→伦琴猫"], "recipe": "绝对睡眠奶油咖喱"},
+      {"ingredient": "牛奶／可可", "families": ["杰尼龟→水箭龟", "帕底亚乌波→土王"], "recipe": "绝对睡眠奶油咖喱"},
+      {"ingredient": "特选苹果", "families": ["阿勃梭鲁"], "recipe": "冥想甜拌沙拉", "laterVerdict": "不建议专门追抓"},
+      {"ingredient": "甜甜蜜", "families": ["凯罗斯"], "recipe": "冥想甜拌沙拉", "laterVerdict": "不建议专门追抓"},
+      {"ingredient": "萌绿玉米", "families": ["花疗环环"], "recipe": "冥想甜拌沙拉", "laterVerdict": "仅作打工／解锁用途"},
+      {"ingredient": "火辣香草", "families": ["迷你龙→快龙"], "recipe": "冥想甜拌沙拉", "longTerm": "按AAA准神标准严选"}
+    ]
+  },
+  "stage3Required": {
+    "ingredientRoles": [
+      {"ingredient": "甜甜蜜", "families": ["妙蛙种子→妙蛙花"]},
+      {"ingredient": "萌绿玉米", "families": ["童偶熊→穿着熊"]},
+      {"ingredient": "纯粹油", "families": ["不良蛙→毒骷蛙", "古月鸟"]},
+      {"ingredient": "可可", "families": ["杰尼龟→水箭龟", "帕底亚乌波→土王"]},
+      {"ingredient": "嫩亮酪梨", "families": ["大颚蚁→沙漠蜻蜓"]},
+      {"ingredient": "火辣香草", "families": ["迷你龙→快龙"]},
+      {"ingredient": "萌绿大豆", "families": ["小拳石→隆隆岩", "润水鸭→狂欢浪舞鸭"]},
+      {"ingredient": "窝心洋芋", "families": ["新叶喵→魔幻假面喵", "走鲸→浩大鲸"]},
+      {"ingredient": "哞哞鲜奶", "families": ["杰尼龟→水箭龟"]},
+      {"ingredient": "豆制肉", "families": ["小火龙→喷火龙", "可可多拉→波士可多拉"]},
+      {"ingredient": "暖暖姜", "families": ["幼基拉斯→班基拉斯"]}
+    ],
+    "skillRoles": [
+      {"family": "咚咚鼠", "role": "料理成功手；稳定制作50档料理后再严选，日常一只、周日可两只"},
+      {"family": "达克莱伊", "role": "列在必需补强栏并明确给出树果数量S／帮手奖励／帮忙速度M／技能概率提升M四项推荐副技能，但未写四项内部顺序或独立培养档位"}
+    ]
+  },
+  "stage3Optional": [
+    {"family": "大颚蚁→沙漠蜻蜓", "role": "酪梨补位"},
+    {"family": "南瓜精→南瓜怪人", "role": "南瓜补位"},
+    {"family": "乌波→沼王", "role": "蘑菇补位"},
+    {"family": "强颚鸡母虫→锹农炮虫", "role": "咖啡补位，六岛限定"},
+    {"family": "古月鸟", "role": "纯油兼料理功能"},
+    {"family": "大葱鸭", "role": "大葱补位"},
+    {"family": "狃拉→玛狃拉", "role": "强树果长期可选，16格严选"},
+    {"family": "谜拟Ｑ", "role": "强树果技能手长期可选，16格严选"},
+    {"family": "溶食兽→吞食兽", "role": "梦之碎片首选补强"},
+    {"family": "利欧路→路卡利欧", "role": "梦之碎片备选"},
+    {"family": "食梦梦→梦梦蚀", "role": "梦碎兼五岛上分"}
+  ],
+  "stage4Worker": [
+    {"families": ["戴鲁比→黑鲁加", "小拉达→拉达", "懒人獭→请假王"], "role": "白花雪原打工树果"},
+    {"families": ["怨影娃娃→诅咒娃娃"], "role": "黄金旧发电厂打工树果"},
+    {"families": ["青绵鸟→七夕青鸟", "绿毛虫→巴大蝶", "阿柏蛇→阿柏怪"], "role": "琥珀溪谷打工树果"},
+    {"families": ["大岩蛇→大钢蛇"], "role": "岩石／钢树果打工，16格严选"},
+    {"families": ["壶壶"], "role": "副回复／料理辅助"},
+    {"families": ["老翁龙"], "role": "大豆补位"},
+    {"families": ["萌虻→蝶结萌虻"], "role": "蜂蜜打工"},
+    {"families": ["魔尼尼→魔墙人偶"], "role": "第四番茄手"},
+    {"families": ["鬼斯→耿鬼"], "role": "蘑菇手次选"},
+    {"families": ["拉帝亚斯"], "role": "必须搭配拉帝欧斯的条件位"},
+    {"families": ["嗡蝠→音波龙", "咩利羊→电龙", "太阳伊布"], "role": "能量填充M补位，非必需"},
+    {"families": ["小磁怪→自爆磁怪", "冰伊布", "火伊布"], "role": "扩锅手；拥有一只即可，自爆磁怪优先"}
+  ],
+  "stage5NoTargetCatch": {
+    "weakOrOutclassed": [
+      "赫拉克罗斯", "信使鸟", "花岩怪", "阿勃梭鲁", "大嘴娃", "凯罗斯", "百变怪",
+      "猴怪→火爆猴", "皮宝宝→皮可西", "卡拉卡拉→嘎啦嘎啦",
+      "花疗环环", "袋兽", "地鼠→三地鼠", "勾魂眼", "喵喵→猫老大", "盆才怪→树才怪"
+    ],
+    "recipePoolRisk": [
+      {"family": "石居蟹→岩殿居蟹", "pool": "115咖喱食材精选"},
+      {"family": "穿山鼠→穿山王", "pool": "95沙拉食材精选"},
+      {"family": "摔角鹰人", "pool": "112咖喱食材精选"}
+    ],
+    "conditionalEevee": ["太阳伊布", "冰伊布", "火伊布", "仙子伊布"],
+    "transitionHealers": ["宝宝丁→胖可丁", "仙子伊布"],
+    "stableSuperior": ["可达鸭→哥达鸭", "飘飘球→随风球"],
+    "pairedHighInvestment": ["正电拍拍", "负电拍拍", "毒电婴→颤弦蝾螈（高调的样子）", "毒电婴→颤弦蝾螈（低调的样子）"],
+    "lottery": ["波克比→波克基斯", "水伊布", "黑暗鸦→乌鸦头头"],
+    "unstableRecovery": ["月亮伊布", "叶伊布", "呆呆兽→呆壳兽／呆呆王", "小果然→果然翁"],
+    "unstableHelping": ["托戈德玛尔", "雷伊布", "卡蒂狗→风速狗", "艾路雷朵"]
+  },
+  "articleTextAdditions": [
+    {"family": "小锻匠→巨锻匠", "role": "一线妖精树果主力；满包略弱于大力鳄但基本持平"},
+    {"family": "皮卡丘（船长）", "role": "常规弱于2000小时普通皮卡丘；主要是雷公队不同种类拼图"}
+  ],
+  "notIndividuallyTiered": [
+    "雷公", "炎帝", "水君", "拉帝欧斯", "梦幻", "克雷色利亚",
+    "皮卡丘（万圣节）", "皮卡丘（佳节）", "伊布（佳节）", "伊布（万圣节）", "海豹球（佳节）"
+  ]
+}

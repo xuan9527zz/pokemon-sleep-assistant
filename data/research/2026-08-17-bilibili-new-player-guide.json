@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "id": "bilibili-1237353277411033128",
+  "title": "【Pokemonsleep】宝可梦sleep丨8.17更新攻略图，新增小锻匠一家",
+  "author": "白河夜船_Velpro",
+  "sourceUrl": "https://www.bilibili.com/opus/1237353277411033128",
+  "publishedAt": "2026-08-17T10:33:00+08:00",
+  "reviewedAt": "2026-08-31",
+  "summaryOnly": true,
+  "fullPositioningFile": "data/research/2026-08-17-bilibili-full-positioning.json",
+  "scope": "结构化摘要、机制核验与本项目评分差异；不逐字转录图片",
+  "evidenceClasses": {
+    "verifiedData": "可由当前 Game8、RaenonX 快照或已实装规则交叉核验",
+    "authorJudgment": "作者的强弱、捕捉、培养与过渡建议",
+    "prediction": "作者对未来环境和玩法的预测"
+  },
+  "guideFramework": {
+    "method": "account-stage-first",
+    "stages": [
+      {
+        "id": 1,
+        "name": "新手初玩",
+        "goals": [
+          "树果混分",
+          "培养过渡回复手",
+          "抓出可用的一线树果主力"
+        ],
+        "rules": [
+          "树果手优先树果数量S",
+          "其后看帮手奖励、帮忙速度和速度性格",
+          "回复位允许过渡，但成熟目标是稳定全队回复手"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "中期成型",
+        "goals": [
+          "围绕约Lv.50可稳定制作的料理建立食材阵容",
+          "继续补强树果位",
+          "替换过渡回复手"
+        ],
+        "rules": [
+          "食材手先看食材组合，再看副技能和性格",
+          "AAA是长期毕业标准",
+          "必须考虑Lv.60食材槽改变长期职责"
+        ]
+      },
+      {
+        "id": 3,
+        "name": "中后期补强",
+        "goals": [
+          "提高主力料理等级",
+          "补齐高级食谱的稀有食材",
+          "补充属性树果覆盖"
+        ],
+        "rules": [
+          "牛油果、南瓜、蘑菇、咖啡等按食谱缺口补齐",
+          "料理成功和扩锅等条件技能在基础阵容稳定后投资",
+          "理论有收益不等于值得占固定队伍位置"
+        ]
+      },
+      {
+        "id": 4,
+        "name": "打工过渡",
+        "goals": [
+          "核心个体未获得时临时补位",
+          "补本周喜爱树果、单一食材或特殊用途"
+        ],
+        "rules": [
+          "不建议长期严选",
+          "正确技能和性格也不自动等于核心培养目标"
+        ]
+      },
+      {
+        "id": 5,
+        "name": "非特定需求不抓或不进化",
+        "reasons": [
+          "强度低或不稳定",
+          "存在明显上位",
+          "依赖搭档、岛屿或特定食谱",
+          "捕捉、进化或糖果成本高",
+          "随机单体回复、摇奖或帮手技能难以稳定承担固定位置"
+        ]
+      }
+    ],
+    "islandGrowthPathAsShown": "1/2/4岛→5岛→3/4/7岛",
+    "candyEtiquette": {
+      "hasSafeRiskAndEliminationLines": true,
+      "sitePolicy": "只视为好友糖果礼仪，禁止直接映射为盒子放生线"
+    }
+  },
+  "articleUpdates": [
+    {
+      "species": "巨锻匠",
+      "pokedexId": 959,
+      "verifiedData": {
+        "specialty": "berry",
+        "baseHelpIntervalSec": 2400,
+        "mainSkill": "能量填充M",
+        "ingredientsABC": [
+          "好眠番茄",
+          "放松可可",
+          "窝心洋芋"
+        ],
+        "ingredientRate": 0.185,
+        "skillRatePct": 2.0
+      },
+      "authorJudgment": [
+        "一线妖精树果主力",
+        "补强皮可西所在的弱妖精树果赛道",
+        "满包条件与大力鳄基本持平但略弱"
+      ],
+      "crossCheck": {
+        "game8Tier": "SS",
+        "localSpeciesScore": 88.1,
+        "localComparison": {
+          "大力鳄": 83.1,
+          "皮可西": 77.9
+        },
+        "fullBagScreenshot": {
+          "大力鳄": {
+            "berryCount": 408.22,
+            "berryEnergy": 257179
+          },
+          "巨锻匠": {
+            "berryCount": 476.03,
+            "berryEnergy": 252298
+          },
+          "tinkatonRelativePct": -1.9
+        },
+        "differenceReason": "文章使用满包偷偷吃树果，食材概率不再分流；本站使用正常收菜的期望树果模型，并计入主技能协同。"
+      }
+    },
+    {
+      "species": "皮卡丘（船长）",
+      "pokedexId": 9007,
+      "verifiedData": {
+        "specialty": "berry",
+        "baseHelpIntervalSec": 2500,
+        "carryLimit": 21,
+        "mainSkill": "食材获取S",
+        "ingredientsABC": [
+          "特选苹果",
+          "暖暖姜",
+          "特选蛋"
+        ],
+        "ingredientRate": 0.175,
+        "skillRatePct": 1.8
+      },
+      "authorJudgment": [
+        "主要价值是雷公队的不同种类拼图",
+        "常规培养存在雷丘等上位",
+        "一般不需要长期严选"
+      ],
+      "crossCheck": {
+        "game8Tier": "A",
+        "localSpeciesScore": 81.0,
+        "localComparison": {
+          "雷丘": 87.5,
+          "皮卡丘（万圣节）": 76.6
+        },
+        "interpretation": "81.0是原始正常收菜产出，不等于培养优先级；应另加直接上位与限定队伍用途标签。"
+      },
+      "shinyAvailability": {
+        "status": "unverified",
+        "articleClaim": "依据RaenonX解包似乎不存在异色",
+        "sitePolicy": "没有足够交叉证据前不写入正式规则"
+      }
+    }
+  ],
+  "mechanicsChecks": [
+    {
+      "claim": "天青沙滩EX的非喜爱树果宝可梦帮忙时间增加35%",
+      "status": "verified",
+      "source": "https://game8.jp/pokemonsleep/695174"
+    },
+    {
+      "claim": "未来所有EX2都采用相同35%且以主树果辅料理为最优",
+      "status": "prediction",
+      "source": "article-author"
+    },
+    {
+      "claim": "帮手哨子立即取得3小时树果和食材，不消耗活力，主技能不发动，帮手奖励有效",
+      "status": "verified",
+      "source": "https://game8.jp/pokemonsleep/542163"
+    },
+    {
+      "claim": "帮手哨子完全不受好露营券和EX正负面加成",
+      "status": "insufficient-evidence",
+      "source": "article-author"
+    }
+  ],
+  "modelDifferences": [
+    {
+      "topic": "树果手产出",
+      "currentSite": "正常收菜的树果期望与主技能协同",
+      "article": "同时重视满包偷偷吃树果",
+      "candidate": "并列正常收菜与满包两种情景"
+    },
+    {
+      "topic": "食材手",
+      "currentSite": "固定AAA、ABB等组合系数",
+      "article": "先按账号阶段与目标食谱判断",
+      "candidate": "固定个体分之外增加食谱适配层"
+    },
+    {
+      "topic": "技能手",
+      "currentSite": "技能产出、稳定性、操作、位置成本",
+      "article": "区分核心、后期补强和限定用途",
+      "candidate": "增加账号阶段与投资门槛"
+    },
+    {
+      "topic": "去留",
+      "currentSite": "同最终形态席位排名",
+      "article": "还考虑直接上位与好友糖果礼仪",
+      "candidate": "保留理论分；建议层增加直接上位，糖果礼仪不参与放生"
+    }
+  ],
+  "adoptionCandidates": [
+    "增加独立培养优先级：核心、阶段性培养、过渡、限定用途、暂不建议",
+    "树果手增加正常收菜与满包偷偷吃树果双情景",
+    "显示同赛道直接上位和例外队伍用途",
+    "建议层读取食谱等级、目标岛、已有回复手和现有上位个体",
+    "预测内容必须与可验证数据分栏"
+  ],
+  "implementation": {
+    "implementedAt": "2026-08-31",
+    "features": [
+      "独立培养判断层，不修改任何数值评分",
+      "新手起步、队伍成型、成熟补强三种可保存账号阶段",
+      "树果手正常收菜与满包偷偷吃树果双情景及名次变化",
+      "直接上位、盒内上位存在状态与例外用途",
+      "技能手标准队替换系数、稳定性、操作成本与固定队条件进入建议解释",
+      "预测与好友糖果礼仪禁止进入自动培养或放生"
+    ],
+    "deferred": [
+      "自动读取目标食谱等级",
+      "自动读取当周目标岛",
+      "自动读取具体食材库存"
+    ]
+  },
+  "notAppliedThisReview": [
+    "种族分、个体分、性格分和副技能权重",
+    "好友送糖线映射为放生规则",
+    "船长皮卡丘无异色",
+    "未来EX2构筑预测",
+    "帮手哨子忽略全部好露营券和EX加成"
+  ]
+}

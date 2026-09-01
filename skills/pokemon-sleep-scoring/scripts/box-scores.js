@@ -4,113 +4,18 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const natureScoring = require('./nature-scores.js');
 const speciesScoring = require('./species-scores.js');
 const skillSpeciesScoring = require('./skill-team-species-scores.js');
+const core = require('./scoring-core.js');
+const strategy = require('../../../pokemon-strategy.js');
 
 const TARGET_LEVEL = 70;
-const SPECIES_WEIGHT = 0.75;
-const INDIVIDUAL_WEIGHT = 0.25;
-const SUBSKILL_WEIGHT = 0.7;
-const NATURE_WEIGHT = 0.3;
-const NATURE_POSITIVE_BENCHMARK = 55.6;
-const SLOT_LEVELS = Object.freeze([10, 25, 50, 70, 80]);
-const SLOT_WEIGHTS = Object.freeze([0.25, 0.25, 0.25, 0.15, 0.10]);
-const INGREDIENT_PATTERN_COEFFICIENTS = Object.freeze({
-  AAA: 1,
-  ABB: 0.85,
-  ABA: 0.80,
-  AAB: 0.70,
-  AAC: 0.70,
-  ABC: 0.50
-});
-
-// A 100-point subskill score means the best five-slot combination that can
-// actually exist for that specialty, not five copies of one 100-point skill.
-// The order is the optimal Lv.10/25/50/70/80 placement under the current slot
-// weights. Keep these reference builds synchronized with scoring-rules.md and
-// the self-test whenever a role-fit value changes.
-const LEGAL_SUBSKILL_MAX_BUILDS = Object.freeze({
-  berry: Object.freeze(['树果数量S', '帮手奖励', '帮忙速度M', '帮忙速度S', '技能概率M']),
-  ingredient: Object.freeze(['帮手奖励', '食材概率S', '食材概率M', '帮忙速度M', '帮忙速度S']),
-  skill: Object.freeze(['帮手奖励', '技能概率S', '技能概率M', '帮忙速度M', '帮忙速度S'])
-});
-
-const SUBSKILL_UPGRADE_FAMILIES = Object.freeze([
-  Object.freeze(['帮忙速度S', '帮忙速度M']),
-  Object.freeze(['食材概率S', '食材概率M']),
-  Object.freeze(['技能概率S', '技能概率M']),
-  Object.freeze(['技能等级S', '技能等级M']),
-  Object.freeze(['持有上限S', '持有上限M', '持有上限L'])
-]);
-
-// Confirmed values come from scoring-rules.md. The remaining values are explicit
-// provisional bridges so the user's box can be ranked before those low-impact
-// secondary cases receive their own mechanism model.
-const SUBSKILL_FIT = Object.freeze({
-  berry: Object.freeze({
-    '树果数量S': [100, 'confirmed'],
-    '帮手奖励': [75, 'confirmed'],
-    '帮忙速度M': [47, 'confirmed'],
-    '帮忙速度S': [22, 'confirmed'],
-    '技能概率M': [30, 'provisional'],
-    '技能概率S': [15, 'provisional'],
-    '技能等级M': [8, 'provisional'],
-    '技能等级S': [4, 'provisional'],
-    '持有上限L': [8, 'provisional'],
-    '持有上限M': [5, 'provisional'],
-    '持有上限S': [3, 'provisional']
-  }),
-  ingredient: Object.freeze({
-    '树果数量S': [25, 'provisional'],
-    '食材概率M': [100, 'confirmed'],
-    '食材概率S': [50, 'confirmed'],
-    '帮手奖励': [75, 'confirmed'],
-    '帮忙速度M': [45, 'confirmed'],
-    '帮忙速度S': [21, 'confirmed'],
-    '技能概率M': [25, 'provisional'],
-    '技能概率S': [12.5, 'provisional'],
-    '技能等级M': [8, 'provisional'],
-    '技能等级S': [4, 'provisional'],
-    '持有上限L': [25, 'provisional'],
-    '持有上限M': [12, 'provisional'],
-    '持有上限S': [6, 'provisional']
-  }),
-  skill: Object.freeze({
-    '树果数量S': [10, 'provisional'],
-    '食材概率M': [0, 'confirmed-not-applicable-before-cap'],
-    '食材概率S': [0, 'confirmed-not-applicable-before-cap'],
-    '技能概率M': [100, 'confirmed'],
-    '技能概率S': [50, 'confirmed'],
-    '帮手奖励': [75, 'confirmed'],
-    '帮忙速度M': [45, 'confirmed'],
-    '帮忙速度S': [21, 'confirmed'],
-    '技能等级M': [8, 'confirmed'],
-    '技能等级S': [4, 'confirmed'],
-    '持有上限L': [0, 'confirmed-no-separate-individual-score'],
-    '持有上限M': [0, 'confirmed-no-separate-individual-score'],
-    '持有上限S': [0, 'confirmed-no-separate-individual-score']
-  })
-});
-
-const RESOURCE_SUBSKILL_FIT = Object.freeze({
-  '睡眠EXP奖励': [20, 'confirmed'],
-  '活力恢复奖励': [12, 'confirmed'],
-  '梦之碎片奖励': [10, 'confirmed'],
-  '研究EXP奖励': [8, 'confirmed'],
-  '—': [0, 'not-present']
-});
-
-const HELP_SPEED_REDUCTION = Object.freeze({
-  '帮忙速度S': 0.07,
-  '帮忙速度M': 0.14
-});
-const PROBABILITY_BOOST = Object.freeze({
-  '食材概率S': 0.18,
-  '食材概率M': 0.36,
-  '技能概率S': 0.18,
-  '技能概率M': 0.36
-});
+const SPECIES_WEIGHT = core.weights.species;
+const INDIVIDUAL_WEIGHT = core.weights.individual;
+const SUBSKILL_WEIGHT = core.weights.subskill;
+const NATURE_WEIGHT = core.weights.nature;
+const INGREDIENT_PATTERN_COEFFICIENTS = core.ingredientPatternCoefficients;
+const LEGAL_SUBSKILL_MAX_BUILDS = core.legalSubskillMaxBuilds;
 
 const BOX_FINAL_FORM = Object.freeze({
   '巴大蝶': ['12', '巴大蝶'],
@@ -202,14 +107,8 @@ const EEVEE_ROUTE_IDS = Object.freeze([
   ['700', '仙子伊布']
 ]);
 
-function round(value, digits = 1) {
-  const scale = 10 ** digits;
-  return Math.round((Number(value) + Number.EPSILON) * scale) / scale;
-}
-
-function clamp(value, minimum = 0, maximum = 100) {
-  return Math.min(maximum, Math.max(minimum, value));
-}
+const round = core.round;
+const clamp = core.clamp;
 
 function option(args, name) {
   const index = args.indexOf(name);
@@ -229,212 +128,12 @@ function parseBoxRows(html) {
   });
 }
 
-function seedMaximizedSubskills(skills) {
-  const slots = skills.map(skill => ({
-    skill,
-    scoredSkill: skill,
-    seedUpgraded: false,
-    seedNote: ''
-  }));
-  for (const family of SUBSKILL_UPGRADE_FAMILIES) {
-    const members = slots.map((slot, index) => ({
-      slot,
-      index,
-      rank: family.indexOf(slot.skill)
-    })).filter(member => member.rank >= 0).sort((left, right) => left.rank - right.rank);
-    if (!members.length) continue;
-    const firstTargetRank = family.length - members.length;
-    members.forEach((member, order) => {
-      const targetSkill = family[firstTargetRank + order];
-      member.slot.scoredSkill = targetSkill;
-      member.slot.seedUpgraded = targetSkill !== member.slot.skill;
-      if (member.slot.seedUpgraded) member.slot.seedNote = '按副技能种子最高合法形态计分';
-    });
-    if (members.length > 1) {
-      members.forEach(member => {
-        member.slot.seedNote = [member.slot.seedNote, '同系技能分别占位并叠加'].filter(Boolean).join('；');
-      });
-    }
-  }
-  return slots;
-}
-
-function ingredientPattern(ingredients) {
-  const names = String(ingredients).split('／').map(slot => slot.replace(/×\d+$/, '').trim());
-  const letters = new Map();
-  let next = 0;
-  return names.map(name => {
-    if (!letters.has(name)) letters.set(name, String.fromCharCode(65 + next++));
-    return letters.get(name);
-  }).join('');
-}
-
-function subskillFit(role, skill, finalRecord) {
-  if (Object.hasOwn(RESOURCE_SUBSKILL_FIT, skill)) {
-    const [score, status] = RESOURCE_SUBSKILL_FIT[skill];
-    return { score, status };
-  }
-  if (role === 'berry' && (skill === '食材概率M' || skill === '食材概率S')) {
-    const probabilityBoost = PROBABILITY_BOOST[skill];
-    const p = Number(finalRecord.ingredientRate);
-    const score = -(p * probabilityBoost / (1 - p)) / 0.5 * 100;
-    return { score: round(score), status: 'confirmed-dynamic-negative' };
-  }
-  const entry = SUBSKILL_FIT[role]?.[skill];
-  if (!entry) return { score: 0, status: 'provisional-unlisted-zero' };
-  return { score: entry[0], status: entry[1] };
-}
-
-function interactionBonus(role, slots, finalRecord) {
-  const relevant = [];
-  const speedEffects = [];
-  let speedReduction = 0;
-  let probabilityBoost = 0;
-  let berryFinding = 0;
-  slots.forEach((slot, index) => {
-    const speed = HELP_SPEED_REDUCTION[slot.scoredSkill] || 0;
-    if (speed) {
-      speedReduction += speed;
-      speedEffects.push(speed / (1 - speed));
-      relevant.push(index);
-    }
-    const isRoleProbability = (
-      (role === 'ingredient' && slot.scoredSkill.startsWith('食材概率'))
-      || (role === 'skill' && slot.scoredSkill.startsWith('技能概率'))
-      || (role === 'berry' && slot.scoredSkill.startsWith('食材概率'))
-    );
-    if (isRoleProbability) {
-      probabilityBoost += PROBABILITY_BOOST[slot.scoredSkill] || 0;
-      relevant.push(index);
-    }
-    if (role === 'berry' && slot.scoredSkill === '树果数量S') {
-      berryFinding = 1;
-      relevant.push(index);
-    }
-  });
-  if (relevant.length < 2) return { score: 0, slotIndex: null, multiplier: 1 };
-
-  let multiplier;
-  let separateEffect;
-  let scale;
-  if (role === 'berry') {
-    const p = Number(finalRecord.ingredientRate);
-    multiplier = (
-      1 / (1 - speedReduction)
-      * (1 - p * (1 + probabilityBoost)) / (1 - p)
-      * (1 + berryFinding * 0.5)
-    );
-    separateEffect = (
-      speedEffects.reduce((sum, value) => sum + value, 0)
-      - p * probabilityBoost / (1 - p)
-      + berryFinding * 0.5
-    );
-    scale = 200;
-  } else {
-    multiplier = (1 + probabilityBoost) / (1 - speedReduction);
-    separateEffect = probabilityBoost + speedEffects.reduce((sum, value) => sum + value, 0);
-    scale = 277.78;
-  }
-  const synergyEffect = multiplier - 1 - separateEffect;
-  return {
-    score: round(synergyEffect * scale),
-    slotIndex: Math.max(...relevant),
-    multiplier: round(multiplier, 4)
-  };
-}
-
-function scoreSubskillSlots(rawSkills, role, finalRecord) {
-  const slots = seedMaximizedSubskills(rawSkills);
-  const interaction = interactionBonus(role, slots, finalRecord);
-  const scoredSlots = slots.map((slot, index) => {
-    const fit = subskillFit(role, slot.scoredSkill, finalRecord);
-    const interactionScore = interaction.slotIndex === index ? interaction.score : 0;
-    const effectiveFit = fit.score + interactionScore;
-    return {
-      level: SLOT_LEVELS[index],
-      weight: SLOT_WEIGHTS[index],
-      ...slot,
-      fitScore: round(fit.score),
-      fitStatus: fit.status,
-      interactionScore: round(interactionScore),
-      effectiveFitScore: round(effectiveFit),
-      contribution: round(effectiveFit * SLOT_WEIGHTS[index])
-    };
-  });
-  return {
-    slots: scoredSlots,
-    interaction,
-    raw: round(scoredSlots.reduce((sum, slot) => sum + slot.contribution, 0))
-  };
-}
-
-function legalSubskillMaximum(role, finalRecord) {
-  const build = LEGAL_SUBSKILL_MAX_BUILDS[role];
-  if (!build) return null;
-  const scored = scoreSubskillSlots(build, role, finalRecord);
-  const provisionalItems = [...new Set(scored.slots
-    .filter(slot => slot.fitStatus.startsWith('provisional'))
-    .map(slot => slot.scoredSkill))];
-  return {
-    raw: scored.raw,
-    build: [...build],
-    slots: scored.slots,
-    provisional: provisionalItems.length > 0,
-    provisionalItems
-  };
-}
-
-function individualScore(box, role, finalRecord) {
-  if (!['berry', 'ingredient', 'skill'].includes(role)) return null;
-  const rawSkills = box.subskills.split('；');
-  const scored = scoreSubskillSlots(rawSkills, role, finalRecord);
-  const scoredSlots = scored.slots;
-  const interaction = scored.interaction;
-  const subskillRawBeforeClamp = scored.raw;
-  const subskillRaw = round(clamp(subskillRawBeforeClamp));
-  const legalMaximum = legalSubskillMaximum(role, finalRecord);
-  const subskillScore = round(clamp(subskillRawBeforeClamp / legalMaximum.raw * 100));
-  const subskillContribution = round(subskillScore * SUBSKILL_WEIGHT);
-  const natureRaw = natureScoring.scoreNatureText(role, box.nature, box.name);
-  const natureScoreBeforeRound = clamp(
-    natureRaw / NATURE_POSITIVE_BENCHMARK * 100,
-    -100,
-    100
-  );
-  const natureScore = round(natureScoreBeforeRound);
-  const natureContribution = round(natureScoreBeforeRound * NATURE_WEIGHT);
-  const individualBeforePattern = round(clamp(subskillContribution + natureContribution));
-  const pattern = role === 'ingredient' ? ingredientPattern(box.ingredients) : '不适用';
-  const patternCoefficient = role === 'ingredient'
-    ? (INGREDIENT_PATTERN_COEFFICIENTS[pattern] ?? INGREDIENT_PATTERN_COEFFICIENTS.ABC)
-    : 1;
-  const score = round(individualBeforePattern * patternCoefficient);
-  const provisionalSlots = scoredSlots.filter(slot => slot.fitStatus.startsWith('provisional'));
-  const provisionalItems = [...new Set([
-    ...provisionalSlots.map(slot => slot.scoredSkill),
-    ...legalMaximum.provisionalItems.map(skill => `合法满分基准：${skill}`)
-  ])];
-  return {
-    score,
-    subskillRaw,
-    subskillRawBeforeClamp: round(subskillRawBeforeClamp),
-    subskillLegalMaximum: legalMaximum.raw,
-    subskillLegalMaximumBuild: legalMaximum.build,
-    subskillScore,
-    subskillContribution,
-    natureRaw,
-    natureScore,
-    natureContribution,
-    individualBeforePattern,
-    ingredientPattern: pattern,
-    ingredientPatternCoefficient: patternCoefficient,
-    interactionMultiplier: interaction.multiplier,
-    interactionBonus: interaction.score,
-    slots: scoredSlots,
-    provisional: provisionalItems.length > 0,
-    provisionalItems
-  };
-}
+const seedMaximizedSubskills = core.seedMaximizedSubskills;
+const ingredientPattern = core.ingredientPattern;
+const interactionBonus = core.interactionBonus;
+const scoreSubskillSlots = core.scoreSubskillSlots;
+const legalSubskillMaximum = core.legalSubskillMaximum;
+const individualScore = core.individualScore;
 
 function buildSpeciesSources(records) {
   const ingredient = speciesScoring.ingredientProductionRows(records);
@@ -456,7 +155,7 @@ function targetForBox(box, sources, recordsById) {
     const routes = EEVEE_ROUTE_IDS.map(([id, nameZh]) => {
       const row = sources.skill.get(id);
       if (!row) throw new Error(`缺少伊布进化路线${nameZh}的技能手种族分`);
-      return { id, nameZh, speciesScore: row.finalSpeciesScore };
+      return { id, nameZh, speciesScore: strategy.strategicAdjustment(id, row.finalSpeciesScore).adjustedScore };
     }).sort((left, right) => right.speciesScore - left.speciesScore || left.id.localeCompare(right.id));
     const best = routes[0];
     return {
@@ -497,7 +196,9 @@ function boxScoreRows(boxRows, records) {
     }
     const source = sources[role]?.get(target.id);
     if (!source) throw new Error(`缺少${box.name}→${target.nameZh}的${role}种族分`);
-    const speciesScore = role === 'skill' ? source.finalSpeciesScore : source.speciesScore;
+    const mechanicalSpeciesScore = role === 'skill' ? source.finalSpeciesScore : source.speciesScore;
+    const strategic = strategy.strategicAdjustment(target.id, mechanicalSpeciesScore);
+    const speciesScore = strategic.adjustedScore;
     if (!Number.isFinite(speciesScore)) throw new Error(`${target.nameZh}种族分待定`);
     const individual = individualScore(box, role, finalRecord);
     const finalScore = round(
@@ -510,9 +211,26 @@ function boxScoreRows(boxRows, records) {
       specialty: role,
       finalFormId: target.id,
       finalFormNameZh: target.nameZh,
+      mechanicalSpeciesScore: strategic.mechanicalScore,
+      strategicRoleScore: strategic.strategicRoleScore,
+      strategicBonus: strategic.strategicBonus,
+      strategy: strategic.profile,
       speciesScore,
       speciesContribution: round(speciesScore * SPECIES_WEIGHT),
-      speciesSource: role === 'skill' ? 'team-calibrated-final-species-score' : `${role}-species-score`,
+      speciesSource: strategic.strategicBonus > 0 ? `${role}-mechanical-plus-strategic-role` : role === 'skill' ? 'team-calibrated-final-species-score' : `${role}-species-score`,
+      speciesScenarios: role === 'berry' ? source.berryScenarios : null,
+      teamModel: role === 'skill' ? {
+        role: source.role,
+        sourceType: source.sourceType,
+        islandNameZh: source.islandNameZh,
+        candidateTeam: source.candidateTeam,
+        baselineTeam: source.baselineTeam,
+        yieldCoefficient: source.yieldCoefficient,
+        stabilityScore: source.stabilityScore,
+        operationScore: source.operationScore,
+        versatilityScore: source.versatilityScore,
+        scoringStatus: source.scoringStatus
+      } : null,
       individualScore: individual.score,
       individualContribution: round(individual.score * INDIVIDUAL_WEIGHT),
       individual,
@@ -659,8 +377,8 @@ module.exports = Object.freeze({
     nature: NATURE_WEIGHT
   }),
   ingredientPatternCoefficients: INGREDIENT_PATTERN_COEFFICIENTS,
-  subskillFit: SUBSKILL_FIT,
-  resourceSubskillFit: RESOURCE_SUBSKILL_FIT,
+  subskillFit: core.subskillFitTable,
+  resourceSubskillFit: core.resourceSubskillFit,
   boxFinalForm: BOX_FINAL_FORM,
   legalSubskillMaxBuilds: LEGAL_SUBSKILL_MAX_BUILDS,
   parseBoxRows,
