@@ -68,6 +68,26 @@ const camp = planner.calculateTeam([venusaur], rates, { goodCamp: true, energyPr
 assert.ok(camp.members[0].carry > noCamp.members[0].carry);
 assert.ok(camp.members[0].effectiveIntervalSec < noCamp.members[0].effectiveIntervalSec);
 
+const stufful = {
+  id:'94',name:'童偶熊',lv:'15',interval:'1:06:25',inv:'13',specialty:'ingredient',
+  ingredients:'玉米×2／豆制肉×6／玉米×7',subs:'树果数量S；食材概率S；食材概率M；持有上限S；持有上限M',
+  nature:'浮躁',main:'能量填充S Lv.1'
+};
+const comfey = {
+  id:'95',name:'花疗环环',lv:'35',interval:'38:50',inv:'27',specialty:'ingredient',
+  ingredients:'玉米×2／玉米×5／可可×7',subs:'持有上限S；技能概率S；帮忙速度S；食材概率S；食材概率M',
+  nature:'马虎：食材↑ 技能↓',main:'活力疗愈S Lv.1'
+};
+const stuffulMember=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average',teammateHelpingBonusCount:0});
+const comfeyMember=planner.calculateMember(comfey,{ingredientRate:.167,baseBerryCount:1},{goodCamp:true,energyProfile:'average',teammateHelpingBonusCount:0});
+const ingredientTotal=(result,name)=>result.member.ingredients.filter(item=>item.name===name).reduce((total,item)=>total+item.perDay,0);
+assert.strictEqual(stuffulMember.valid,true);
+assert.strictEqual(comfeyMember.valid,true);
+assert.ok(ingredientTotal(comfeyMember,'萌绿玉米')>ingredientTotal(stuffulMember,'萌绿玉米'),'当前盒子的花疗环环每天玉米产量应高于童偶熊');
+const boostedComfey=planner.calculateMember(comfey,{ingredientRate:.167,baseBerryCount:1},{goodCamp:true,energyProfile:'average',teammateHelpingBonusCount:4});
+assert.ok(ingredientTotal(boostedComfey,'萌绿玉米')>ingredientTotal(comfeyMember,'萌绿玉米'),'其他队友的帮手奖励应提升目标个体产出');
+assert.ok(boostedComfey.member.combinedSpeedReduction<=.35,'单成员对比同样必须遵守35%速度缩减上限');
+
 const beforeLevelUpdateInterval = noCamp.members[0].baseIntervalSec;
 levels.applyLevel(venusaur, 60);
 const afterLevelUpdate = planner.calculateTeam([venusaur], rates, { goodCamp: false, energyProfile: 'average' });

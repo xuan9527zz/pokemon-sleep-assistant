@@ -206,6 +206,23 @@
     return clamp(Math.floor(safe*4)/4,.5,4);
   }
 
+  function calculateMember(mon,production,options={}){
+    if(!mon)return {valid:false,member:null,message:'没有可计算的宝可梦。'};
+    if(mon.battleEligible===false)return {valid:false,member:null,message:`${mon.name||'这个体'}已设为“仅收藏”，不参与上场产出计算。`};
+    const energyProfile=ENERGY_PROFILES[options.energyProfile]||ENERGY_PROFILES.average;
+    const teammateHelpingBonusCount=clamp(Math.round(Number(options.teammateHelpingBonusCount)||0),0,4);
+    const ownHelpingBonus=unlockedSubskills(mon).includes('帮手奖励')?1:0;
+    const helpingBonusCount=teammateHelpingBonusCount+ownHelpingBonus;
+    const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average'};
+    const base=baseMemberModel(mon,production,resolvedOptions,helpingBonusCount);
+    const requestedCollectionHours=Number(options.collectionHours);
+    const collectionHours=Number.isFinite(requestedCollectionHours)
+      ?clamp(requestedCollectionHours,.5,24)
+      :recommendedCollectionHours([base]);
+    const member=addCollectionModel(base,collectionHours);
+    return {valid:true,member,energyProfile,options:resolvedOptions,teammateHelpingBonusCount,ownHelpingBonus,helpingBonusCount,collectionHours};
+  }
+
   function calculateTeam(team,productionByBoxId,options={}){
     const selectedTeam=team.filter(Boolean);
     const validation=validateBattleTeam(selectedTeam);
@@ -485,5 +502,5 @@
     return {render,refresh,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value})};
   }
 
-  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateTeam,formatHours,mount};
+  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateMember,calculateTeam,formatHours,mount};
 });
