@@ -239,7 +239,7 @@
         if(scope==='priority'&&mon.priority!=='重点培养')return false;
         if(scope==='recent'&&!overrides[mon.id]?.updatedAt)return false;
         const lv10=String(mon.effectiveSubs||mon.subs||'').split('；')[0]||'—';
-        return !query||[`#${mon.id}`,mon.id,mon.name,mon.shiny,mon.priority,lv10].join(' ').toLowerCase().includes(query);
+        return !query||[`#${mon.id}`,mon.id,mon.name,mon.nickname,mon.customNumber,mon.shiny,mon.priority,lv10].join(' ').toLowerCase().includes(query);
       });
       if(scope==='recent')rows.sort((a,b)=>String(overrides[b.id]?.updatedAt||'').localeCompare(String(overrides[a.id]?.updatedAt||''))||Number(a.id)-Number(b.id));
       else rows.sort((a,b)=>Number(a.id)-Number(b.id));
@@ -255,7 +255,7 @@
 
     function renderRow(mon){
       const row=element('article',`level-manager-row${drafts.has(mon.id)?' changed':''}`),identity=element('div','level-manager-identity');
-      const nameLine=element('div','level-manager-name'),number=element('span','level-manager-number',`#${mon.id}`),name=element('strong','pokemon-name-text',mon.name);
+      const nameLine=element('div','level-manager-name'),number=element('span','level-manager-number',`#${mon.id}${mon.customNumber?` · ${mon.customNumber}`:''}`),name=element('strong','pokemon-name-text',mon.nickname||mon.name);if(mon.nickname)name.title=mon.name;
       nameLine.append(number,name);
       if(mon.shiny==='是')nameLine.append(element('span','level-manager-shiny','★ 闪光'));
       const lv10=String(mon.effectiveSubs||mon.subs||'').split('；')[0]||'—';

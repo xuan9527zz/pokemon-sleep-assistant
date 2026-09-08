@@ -275,9 +275,9 @@
   function mount(options={}){
     const root=options.root||globalThis,doc=root.document,mons=Array.isArray(options.pokemon)?options.pokemon:[],strategy=options.strategy||root.POKEMON_SLEEP_STRATEGY,teamPlanner=options.teamPlanner||root.POKEMON_SLEEP_TEAM_PLANNER,production=options.production||root.POKEMON_SLEEP_TEAM_PRODUCTION;
     if(!doc)return {render(){},select(){},comparison(){return comparePokemon(null,null,{strategy})}};
-    const panel=doc.querySelector(options.panelSelector||'#pokemonComparison'),leftSelect=doc.querySelector(options.leftSelector||'#pokemonCompareLeft'),rightSelect=doc.querySelector(options.rightSelector||'#pokemonCompareRight'),swapButton=doc.querySelector(options.swapSelector||'#pokemonCompareSwap'),matchButton=doc.querySelector(options.matchSelector||'#pokemonCompareMatch'),verdict=doc.querySelector(options.verdictSelector||'#pokemonComparisonVerdict'),grid=doc.querySelector(options.gridSelector||'#pokemonComparisonGrid');
+    const panel=doc.querySelector(options.panelSelector||'#pokemonComparison'),openButton=doc.querySelector(options.openSelector||'#pokemonComparisonOpen'),closeButton=doc.querySelector(options.closeSelector||'#pokemonComparisonClose'),leftPickerButton=doc.querySelector(options.leftPickerSelector||'#pokemonCompareLeftPicker'),rightPickerButton=doc.querySelector(options.rightPickerSelector||'#pokemonCompareRightPicker'),leftSelect=doc.querySelector(options.leftSelector||'#pokemonCompareLeft'),rightSelect=doc.querySelector(options.rightSelector||'#pokemonCompareRight'),swapButton=doc.querySelector(options.swapSelector||'#pokemonCompareSwap'),matchButton=doc.querySelector(options.matchSelector||'#pokemonCompareMatch'),verdict=doc.querySelector(options.verdictSelector||'#pokemonComparisonVerdict'),grid=doc.querySelector(options.gridSelector||'#pokemonComparisonGrid');
     if(!panel||!leftSelect||!rightSelect||!verdict||!grid)return {render(){},select(){},comparison(){return comparePokemon(null,null,{strategy})}};
-    const ingredientSelect=doc.querySelector(options.ingredientSelector||'#pokemonCompareIngredient'),energySelect=doc.querySelector(options.energySelector||'#pokemonCompareEnergy'),helpingBonusSelect=doc.querySelector(options.helpingBonusSelector||'#pokemonCompareHelpingBonus'),campInput=doc.querySelector(options.campSelector||'#pokemonCompareCamp'),productionResult=doc.querySelector(options.productionResultSelector||'#pokemonComparisonProductionResult');
+    const ingredientSelect=doc.querySelector(options.ingredientSelector||'#pokemonCompareIngredient'),energySelect=doc.querySelector(options.energySelector||'#pokemonCompareEnergy'),helpingBonusSelect=doc.querySelector(options.helpingBonusSelector||'#pokemonCompareHelpingBonus'),campInput=doc.querySelector(options.campSelector||'#pokemonCompareCamp'),productionResult=doc.querySelector(options.productionResultSelector||'#pokemonComparisonProductionResult'),picker=options.picker||root.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER;
     const saved=readSelection(root),defaults=chooseDefaults(mons,strategy);
     let leftId=mons.some(mon=>String(mon.id)===saved.left)?saved.left:String(defaults.left&&defaults.left.id||''),rightId=mons.some(mon=>String(mon.id)===saved.right&&String(mon.id)!==leftId)?saved.right:String(defaults.right&&defaults.right.id||'');
     let targetIngredient=saved.ingredient,energyProfile=teamPlanner&&teamPlanner.ENERGY_PROFILES&&teamPlanner.ENERGY_PROFILES[saved.energyProfile]?saved.energyProfile:'average',teammateHelpingBonusCount=saved.teammateHelpingBonusCount,goodCamp=saved.goodCamp;
@@ -286,6 +286,7 @@
     function renderOptions(){
       const sorted=[...mons].sort((a,b)=>numberId(a.id)-numberId(b.id));
       [leftSelect,rightSelect].forEach((select,index)=>{const selected=index===0?leftId:rightId;select.replaceChildren();sorted.forEach(mon=>{const item=element(doc,'option','',optionLabel(mon));item.value=String(mon.id);select.append(item)});select.value=selected});
+      if(picker&&typeof picker.setButton==='function'){picker.setButton(leftPickerButton,byId(leftId),{emptyLabel:'选择个体 A'});picker.setButton(rightPickerButton,byId(rightId),{emptyLabel:'选择个体 B'})}
     }
     function currentComparison(){return comparePokemon(byId(leftId),byId(rightId),{strategy})}
     function availableIngredients(){
@@ -321,11 +322,14 @@
       else{rightId=value;if(leftId===value){const alternate=mons.find(mon=>String(mon.id)!==value);leftId=String(alternate&&alternate.id||'')}}
       render();return true;
     }
+    function openPicker(side){if(!picker||typeof picker.open!=='function')return;picker.open({title:`选择个体 ${side==='left'?'A':'B'}`,pokemon:mons,allowCollection:true,selectedIds:[leftId,rightId].filter(Boolean),disabledIds:[side==='left'?rightId:leftId].filter(Boolean),onSelect:id=>select(side,id)})}
     leftSelect.addEventListener('change',()=>select('left',leftSelect.value));rightSelect.addEventListener('change',()=>select('right',rightSelect.value));
     if(ingredientSelect)ingredientSelect.addEventListener('change',()=>{targetIngredient=ingredientSelect.value;render()});
     if(energySelect)energySelect.addEventListener('change',()=>{energyProfile=teamPlanner&&teamPlanner.ENERGY_PROFILES&&teamPlanner.ENERGY_PROFILES[energySelect.value]?energySelect.value:'average';render()});
     if(helpingBonusSelect)helpingBonusSelect.addEventListener('change',()=>{teammateHelpingBonusCount=Math.max(0,Math.min(4,Number(helpingBonusSelect.value)||0));render()});
     if(campInput)campInput.addEventListener('change',()=>{goodCamp=campInput.checked;render()});
+    leftPickerButton?.addEventListener('click',()=>openPicker('left'));rightPickerButton?.addEventListener('click',()=>openPicker('right'));
+    openButton?.addEventListener('click',()=>{render();panel.showModal?panel.showModal():panel.setAttribute('open','')});closeButton?.addEventListener('click',()=>panel.close?panel.close():panel.removeAttribute('open'));panel.addEventListener('click',event=>{if(event.target===panel&&panel.close)panel.close()});
     if(swapButton)swapButton.addEventListener('click',()=>{const previous=leftId;leftId=rightId;rightId=previous;render()});
     if(matchButton)matchButton.addEventListener('click',()=>{const left=byId(leftId),matches=mons.filter(mon=>String(mon.id)!==leftId&&finalFormId(mon)===finalFormId(left)).sort((a,b)=>comparePriority(a,b,strategy));if(matches.length){rightId=String(matches[0].id);render();matchButton.dataset.state='matched';matchButton.textContent='已选择同最终形态'}else{matchButton.dataset.state='missing';matchButton.textContent='盒内没有同最终形态';setTimeout(()=>{matchButton.removeAttribute('data-state');matchButton.textContent='找同最终形态'},1600)}});
     render();return {render,select,comparison:currentComparison,productionComparison:currentProductionComparison};

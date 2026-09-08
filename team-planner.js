@@ -3,10 +3,11 @@
   const ingredients=typeof module==='object'&&module.exports?require('./ingredients.js'):root.POKEMON_SLEEP_INGREDIENTS;
   const boxManager=typeof module==='object'&&module.exports?require('./box-manager.js'):root.POKEMON_SLEEP_BOX_MANAGER;
   const energyMechanics=typeof module==='object'&&module.exports?require('./snorlax-energy.js'):root.POKEMON_SLEEP_SNORLAX_ENERGY;
-  const api=factory(ingredients,boxManager,energyMechanics);
+  const personalSettings=typeof module==='object'&&module.exports?require('./personal-settings.js'):root.POKEMON_SLEEP_PERSONAL_SETTINGS;
+  const api=factory(ingredients,boxManager,energyMechanics,personalSettings);
   if(typeof module==='object'&&module.exports)module.exports=api;
   root.POKEMON_SLEEP_TEAM_PLANNER=api;
-})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog,boxManager,energyMechanics){
+})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog,boxManager,energyMechanics,personalSettings){
   'use strict';
 
   const SUBSKILL_LEVELS=[10,25,50,70,80];
@@ -350,7 +351,7 @@
 
   function number(value,digits=1){return Number(value).toFixed(digits)}
 
-  function mount({pokemon,production,onChange}={}){
+  function mount({pokemon,production,onChange,profile,picker:pokemonPicker,catalog}={}){
     if(typeof document==='undefined')return null;
     const page=document.querySelector('[data-page="team"]');
     if(!page)return null;
@@ -367,14 +368,16 @@
     const countRoot=document.querySelector('#currentTeamCount');
     const campInput=document.querySelector('#currentTeamCamp');
     const energyInput=document.querySelector('#currentTeamEnergy');
-    const islandInput=document.querySelector('#currentTeamIsland');
     const durationInput=document.querySelector('#currentTeamDuration');
-    const islandBonusInput=document.querySelector('#currentTeamIslandBonus');
     const clearButton=document.querySelector('#currentTeamClear');
     const saveTeamButton=document.querySelector('#currentTeamSave');
     const savedCountRoot=document.querySelector('#currentTeamSavedCount');
     const savedListRoot=document.querySelector('#currentTeamSavedList');
     const saveMessageRoot=document.querySelector('#currentTeamSaveMessage');
+    const drawer=document.querySelector('#currentTeamDrawer');
+    const drawerOpen=document.querySelector('#currentTeamDrawerOpen');
+    const drawerClose=document.querySelector('#currentTeamDrawerClose');
+    const drawerSlots=document.querySelector('#currentTeamDrawerSlots');
     const ingredientApi=typeof globalThis!=='undefined'?globalThis.POKEMON_SLEEP_INGREDIENTS:null;
     const storageKey='pokemon-sleep-current-team-v1';
     const savedStorageKey='pokemon-sleep-saved-teams-v1';
@@ -382,29 +385,28 @@
     let sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));
     let selected=loadSelection();
     let savedTeams=loadSavedTeams(),deleteArmedId=null,saveMessageTimer=null;
-    const selects=[];
+    const slots=[];
 
     function loadEnergySettings(){
       try{return normalizeEnergySettings(JSON.parse(localStorage.getItem(energySettingsStorageKey)||'{}'))}catch(_error){return {...DEFAULT_ENERGY_SETTINGS}}
     }
 
     let energySettings=loadEnergySettings();
-    if(islandInput)islandInput.value=energySettings.islandProfile;
     if(durationInput)durationInput.value=String(energySettings.durationHours);
-    if(islandBonusInput)islandBonusInput.value=String(energySettings.islandBonusPct);
 
     function teamOptions(){
-      return {goodCamp:campInput.checked,energyProfile:energyInput.value,...energySettings};
+      const personal=profile&&typeof profile.getState==='function'?profile.getState():personalSettings&&personalSettings.read?personalSettings.read():null;
+      const selectedIsland=personal&&personalSettings&&personalSettings.island?personalSettings.island(personal):null;
+      return {goodCamp:campInput.checked,energyProfile:energyInput.value,...energySettings,islandProfile:selectedIsland&&selectedIsland.teamProfile||energySettings.islandProfile||'none',islandBonusPct:personal&&personalSettings?personalSettings.islandBonus(personal):energySettings.islandBonusPct||0};
     }
 
     function saveEnergySettings(){
       energySettings=normalizeEnergySettings({
-        islandProfile:islandInput&&islandInput.value,
         durationHours:durationInput&&durationInput.value,
-        islandBonusPct:islandBonusInput&&islandBonusInput.value
+        islandProfile:energySettings.islandProfile,
+        islandBonusPct:energySettings.islandBonusPct
       });
       if(durationInput)durationInput.value=String(energySettings.durationHours);
-      if(islandBonusInput)islandBonusInput.value=String(energySettings.islandBonusPct);
       try{localStorage.setItem(energySettingsStorageKey,JSON.stringify(energySettings))}catch(_error){}
     }
 
@@ -440,41 +442,26 @@
       saveMessageTimer=setTimeout(()=>{saveMessageRoot.hidden=true},3600);
     }
 
-    function optionLabel(mon){
-      const lv10=String(mon.effectiveSubs||mon.subs||'').split('；')[0]||'—';
-      return `${mon.name}｜Lv.${mon.lv}｜Lv.10 ${lv10}${mon.shiny==='是'?'｜★闪光':''}${SPECIAL_NAMES.has(mon.name)?'｜特殊':''}${mon.battleEligible===false?'｜仅收藏':''}`;
+    function chooseFor(index){
+      const pickerController=pokemonPicker||globalThis.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER;if(!pickerController||typeof pickerController.open!=='function')return;
+      pickerController.open({title:`选择队伍位置 ${index+1}`,pokemon:sortedMons,selectedIds:selected.filter(Boolean),disabledIds:selected.filter((id,slot)=>slot!==index&&Boolean(id)),onSelect:id=>{selected[index]=id;while(selected.length&&selected[selected.length-1]==='')selected.pop();saveSelection();render()}});
     }
 
     function buildPickers(){
-      selects.length=0;
-      picker.replaceChildren();
+      slots.length=0;picker.replaceChildren();drawerSlots?.replaceChildren();
       for(let index=0;index<5;index++){
-        const card=element('div','current-team-pick');
-        const label=element('label','current-team-pick-label',`位置 ${index+1}`);
-        const select=document.createElement('select');
-        select.setAttribute('aria-label',`当前队伍位置 ${index+1}`);
-        const empty=document.createElement('option');empty.value='';empty.textContent='选择宝可梦';select.append(empty);
-        const optionMons=[...sortedMons];
-        optionMons.forEach(mon=>{const option=document.createElement('option');option.value=mon.id;option.textContent=optionLabel(mon);option.disabled=mon.battleEligible===false;select.append(option)});
-        select.value=selected[index]||'';
-        const detail=element('div','current-team-pick-detail','尚未选择');
-        select.addEventListener('change',()=>{selected[index]=select.value;while(selected.length&&selected[selected.length-1]==='')selected.pop();saveSelection();render()});
-        label.htmlFor=`currentTeamSlot${index+1}`;select.id=label.htmlFor;
-        card.append(label,select,detail);picker.append(card);selects.push({select,detail});
+        const main=element('button','current-team-roster-card');main.type='button';main.addEventListener('click',()=>chooseFor(index));picker.append(main);
+        const row=element('div','current-team-drawer-slot'),position=element('span','current-team-pick-label',`位置 ${index+1}`),select=element('button','pokemon-selection-button');select.type='button';select.addEventListener('click',()=>chooseFor(index));const remove=element('button','current-team-slot-remove','清除');remove.type='button';remove.addEventListener('click',()=>{selected[index]='';while(selected.length&&selected[selected.length-1]==='')selected.pop();saveSelection();render()});row.append(position,select,remove);drawerSlots?.append(row);slots.push({main,select,remove,index});
       }
     }
 
     function updatePickers(){
-      const chosen=selected.filter(Boolean);
-      selects.forEach(({select,detail},index)=>{
-        const own=selected[index]||'';
-        [...select.options].forEach(option=>{option.disabled=Boolean(option.value&&option.value!==own&&chosen.includes(option.value))});
-        select.value=own;
-        const mon=mons.find(item=>item.id===own);
-        if(!mon){detail.textContent='尚未选择';detail.className='current-team-pick-detail';return}
-        const foods=parseIngredientSlots(mon.ingredients,mon.lv).unlocked.map(slot=>`${slot.name}×${slot.quantity}`).join('／')||'暂无食材栏';
-        detail.textContent=(mon.battleEligible===false?'仅收藏 · 不参与计算 · ':'')+`${ROLE_LABELS[mon.specialty]||'待核对'} · 当前食材：${foods}`;
-        detail.className=`current-team-pick-detail role-${mon.specialty||'unknown'}${mon.battleEligible===false?' collection-only':''}`;
+      const pickerController=pokemonPicker||globalThis.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER;
+      slots.forEach(({main,select,remove,index})=>{const mon=mons.find(item=>item.id===(selected[index]||''));
+        if(pickerController&&typeof pickerController.setButton==='function'){
+          main.replaceChildren();if(mon&&typeof pickerController.createIcon==='function')main.append(pickerController.createIcon(mon,{size:'large'}));else main.textContent='＋';main.classList.toggle('is-empty',!mon);pickerController.setButton(select,mon,{emptyLabel:'选择宝可梦'});
+        }else{main.textContent=mon?`${mon.nickname||mon.name} #${mon.id}`:`位置 ${index+1} ＋`;select.textContent=mon?`${mon.nickname||mon.name} #${mon.id}`:'选择宝可梦'}
+        main.dataset.position=String(index+1);main.title=mon?`${mon.nickname||mon.name} · #${mon.id} · Lv.${mon.lv}`:`位置 ${index+1}`;main.setAttribute('aria-label',mon?`更换位置${index+1}的${mon.nickname||mon.name}`:`选择位置${index+1}的宝可梦`);remove.disabled=!mon;
       });
     }
 
@@ -595,13 +582,14 @@
 
     campInput.addEventListener('change',render);
     energyInput.addEventListener('change',render);
-    islandInput?.addEventListener('change',()=>{saveEnergySettings();render()});
     durationInput?.addEventListener('input',()=>{saveEnergySettings();render()});
     durationInput?.addEventListener('change',()=>{durationInput.value=String(normalizeEnergySettings({durationHours:durationInput.value}).durationHours)});
-    islandBonusInput?.addEventListener('input',()=>{saveEnergySettings();render()});
-    islandBonusInput?.addEventListener('change',()=>{islandBonusInput.value=String(normalizeEnergySettings({islandBonusPct:islandBonusInput.value}).islandBonusPct)});
     saveTeamButton?.addEventListener('click',saveCurrentTeam);
-    clearButton.addEventListener('click',()=>{selected=[];deleteArmedId=null;saveSelection();selects.forEach(({select})=>{select.value=''});render()});
+    clearButton.addEventListener('click',()=>{selected=[];deleteArmedId=null;saveSelection();render()});
+    drawerOpen?.addEventListener('click',()=>drawer.showModal?drawer.showModal():drawer.setAttribute('open',''));
+    drawerClose?.addEventListener('click',()=>drawer.close?drawer.close():drawer.removeAttribute('open'));
+    drawer?.addEventListener('click',event=>{if(event.target===drawer&&drawer.close)drawer.close()});
+    globalThis.addEventListener?.('pokemon-sleep:personal-settings-change',event=>{if(['current-island','island-bonus'].includes(event.detail&&event.detail.type))render()});
     buildPickers();render();
     function refresh(){sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));buildPickers();return render()}
     return {render,refresh,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,teamOptions())};

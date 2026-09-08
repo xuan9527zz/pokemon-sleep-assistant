@@ -342,7 +342,7 @@
         if(mode==='battle'&&!record.battleEligible)return false;
         if(mode==='collection'&&record.battleEligible)return false;
         const lv10=effectiveSubskills(mon)[0]||'—';
-        return !query||['#'+mon.id,mon.id,mon.name,mon.shiny,mon.priority,lv10].join(' ').toLowerCase().includes(query);
+        return !query||['#'+mon.id,mon.id,mon.name,mon.nickname,mon.customNumber,mon.shiny,mon.priority,lv10].join(' ').toLowerCase().includes(query);
       }).sort(function(a,b){return Number(a.id)-Number(b.id)});
     }
     function renderTabs(){
@@ -381,7 +381,7 @@
         card.addEventListener('click',function(){toggleSelected(mon.id)});
         const head=element('span','box-manager-card-head');
         head.append(element('span','box-manager-card-number','#'+mon.id),element('span','box-manager-card-check',pressed?'✓':''));
-        const name=element('strong','',mon.name);
+        const name=element('strong','',mon.nickname||mon.name);if(mon.nickname)name.title=mon.name;if(mon.customNumber)name.append(element('small','box-manager-custom-number',' · '+mon.customNumber));
         const badges=element('span','box-manager-card-badges');
         if(mon.shiny==='是')badges.append(element('span','shiny','★ 闪光'));
         badges.append(element('span',record.battleEligible?'box-manager-battle':'box-manager-collection',record.battleEligible?'参与实战':'仅收藏'));

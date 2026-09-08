@@ -265,3 +265,10 @@
 @media print{
   .mobile-box-list,.mobile-filter-toggle,.mobile-score-note{display:none!important}
 }
+
+@media(max-width:720px){
+  .current-team-picker{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important;overflow:visible!important}
+  .current-team-roster-icon{min-width:0!important;padding:7px 3px!important}
+  .current-team-roster-icon strong{font-size:10px!important}
+  .team-drawer,.personal-settings-dialog,.pokemon-picker-dialog{width:100vw!important;height:100dvh!important;margin:0!important;border-radius:0!important}
+}

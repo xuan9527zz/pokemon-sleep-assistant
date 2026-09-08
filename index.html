@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="./cultivation-advisor.css?v=20260831-1">
 <link rel="stylesheet" href="./pokemon-comparison.css?v=20260901-1">
 <link rel="stylesheet" href="./box-filter.css?v=20260902-1">
+<link rel="stylesheet" href="./personal-settings.css?v=20260908-1">
+<link rel="stylesheet" href="./pokemon-picker.css?v=20260908-1">
 <title>Pokemon Sleep 助手</title>
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--ink:#18212f;--muted:#667085;--line:#dfe5ee;--green:#19b96b;--gold:#f3ad24;--blue:#2386e8;--red:#e85151}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}.wrap{max-width:1500px;margin:auto;padding:24px}.hero{background:linear-gradient(135deg,#116b42,#24c778);color:#fff;padding:26px;border-radius:18px;box-shadow:0 10px 30px #0b5d3830}.hero h1{margin:0 0 6px;font-size:28px}.hero p{margin:0;opacity:.9}.stats{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:12px;margin:16px 0}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px #1018280c}.stat{padding:15px}.stat b{display:block;font-size:25px}.stat span{color:var(--muted)}.panel{padding:15px}.filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(6,minmax(130px,1fr)) auto;gap:10px}.filters input,.filters select,.filters button{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;padding:8px 11px;font:inherit}.filters button{background:#18212f;color:#fff;cursor:pointer}.meta{color:var(--muted);margin:12px 2px}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 4px 14px #1018280c}table{width:100%;border-collapse:separate;border-spacing:0;min-width:1640px}th,td{padding:10px 11px;border-bottom:1px solid #edf0f5;text-align:left;vertical-align:top}th{position:sticky;top:0;z-index:2;background:#eef7f2;color:#185b3c;white-space:nowrap}tbody tr:hover{background:#fbfdfc}.shiny{display:inline-block;background:#fff3cd;color:#7b5200;border:1px solid #f4cf70;border-radius:999px;padding:1px 8px;font-weight:700}.normal{color:#7a8494}.tag{display:inline-block;border-radius:999px;padding:2px 8px;font-weight:700;white-space:nowrap}.high{background:#dcfce7;color:#08743d}.use{background:#dbeafe;color:#165ca9}.collect{background:#fef3c7;color:#8a5800}.keep{background:#eef2f6;color:#4f5c6d}.nowrap{white-space:nowrap}.muted{color:var(--muted)}footer{color:var(--muted);padding:18px 2px}.hide{display:none}@media(max-width:800px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.hero h1{font-size:22px}}@media print{body{background:#fff}.hero{box-shadow:none}.filters{display:none}.wrap{max-width:none;padding:0}.tablebox{box-shadow:none;overflow:visible}table{min-width:0;font-size:9px}th,td{padding:4px}.stats{grid-template-columns:repeat(5,1fr)}}
@@ -49,10 +51,13 @@
 .filters{grid-template-columns:minmax(210px,1.7fr) repeat(4,minmax(125px,1fr)) auto}@media(max-width:800px){.filters{grid-template-columns:1fr}}
 .score-tooltip{width:min(390px,calc(100vw - 20px))}
 </style>
-<link rel="stylesheet" href="./mobile.css?v=20260831-4">
+<style>
+.recipe-controls{grid-template-columns:minmax(220px,1.6fr) minmax(190px,1fr) minmax(160px,1fr) minmax(180px,.9fr) auto}.recipe-controls .recipe-ingredient-filter{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;font:inherit}.recipe-ingredient-filter{position:relative}.recipe-ingredient-filter summary{display:flex;align-items:center;min-height:40px;padding:8px 11px;cursor:pointer;font-weight:750}.recipe-ingredient-options{position:absolute;z-index:12;top:calc(100% + 6px);left:0;display:grid;width:min(460px,85vw);grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:320px;overflow:auto;border:1px solid #d6dde7;border-radius:12px;background:#fff;padding:9px;box-shadow:0 14px 35px #10182824}.recipe-controls .recipe-ingredient-option{display:flex;align-items:center;justify-content:flex-start;gap:7px;min-height:38px;border-color:#e2e7ee;background:#fff;color:#354052;text-align:left}.recipe-controls .recipe-ingredient-option.active{border-color:#6850b4;background:#f1edff;color:#54349c}.recipe-card.is-uncooked{border-style:dashed}.recipe-card-badges{display:flex;align-items:flex-end;flex-direction:column;gap:5px}.recipe-status{display:inline-flex;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}.recipe-status.cooked{background:#e7f8ef;color:#147347}.recipe-status.uncooked{background:#fff3d8;color:#8b5b00}.recipe-card-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}.recipe-cooked-toggle{border:1px solid #d5dce5;border-radius:8px;background:#fff;color:#465467;padding:6px 9px;font:inherit;font-size:11px;font-weight:800;cursor:pointer}.recipe-card-actions .recipe-source{margin-top:0}@media(max-width:1050px){.recipe-controls{grid-template-columns:1fr 1fr}}@media(max-width:520px){.recipe-ingredient-options{position:fixed;inset:auto 10px 78px;width:auto;max-height:55dvh;grid-template-columns:1fr}}
+</style>
+<link rel="stylesheet" href="./mobile.css?v=20260908-1">
 </head>
 <body><main class="wrap">
-<section class="hero"><h1>Pokemon Sleep｜宝可梦助手</h1><p>盒子、队伍、本周计划、岛屿、料理与活动资料集中管理；登录后可在不同设备继续使用同一份数据。</p></section>
+<section class="hero"><h1>Pokemon Sleep｜宝可梦助手</h1><p>盒子、队伍、本周计划、岛屿、料理与活动资料集中管理；登录后可在不同设备继续使用同一份数据。</p><button class="settings-launch" id="personalSettingsOpen" type="button" aria-label="打开个人设置" title="个人设置">⚙</button></section>
 <nav class="app-nav" aria-label="主要功能">
   <a href="#box" data-page-target="box"><span class="app-nav-icon">盒</span><span class="app-nav-copy"><b>盒子</b><small>97 只个体整理</small></span></a>
   <a href="#team" data-page-target="team"><span class="app-nav-icon">队</span><span class="app-nav-copy"><b>当前队伍</b><small>食材与收菜时间</small></span></a>
@@ -61,55 +66,60 @@
   <a href="#recipes" data-page-target="recipes"><span class="app-nav-icon">食</span><span class="app-nav-copy"><b>料理食谱</b><small>能量、系数与食材</small></span></a>
   <a href="#events" data-page-target="events"><span class="app-nav-icon">活</span><span class="app-nav-copy"><b>活动资讯</b><small>倒计时与活动计划</small></span></a>
 </nav>
-<section class="cloud-sync-panel" id="cloudSyncPanel" aria-label="云端同步">
+<dialog class="personal-settings-dialog" id="personalSettingsDialog" aria-labelledby="personalSettingsTitle">
+  <div class="personal-settings-shell">
+    <header class="personal-settings-head"><div><span>PERSONAL SETTINGS</span><h2 id="personalSettingsTitle">个人设置</h2><p>这里是全站唯一的岛屿、食谱和库存资料来源。</p></div><button class="drawer-close" id="personalSettingsClose" type="button" aria-label="关闭个人设置">×</button></header>
+    <div class="personal-settings-body">
+      <section class="profile-settings-card"><h3>当前作战环境</h3><p>队伍能量、本周作战和食谱计算都会读取这里的同一份设置。</p><div class="profile-settings-grid">
+        <label class="profile-field"><span>当前岛屿</span><select id="profileCurrentIsland"></select></label>
+        <label class="profile-field"><span>本周类型</span><select id="profileWeekMode"></select></label>
+        <label class="profile-field"><span>活动效果</span><select id="profileActivity"></select></label>
+      </div><div class="advisor-stage-panel" aria-labelledby="advisorStageTitle"><div class="advisor-stage-copy"><strong id="advisorStageTitle">培养判断按账号阶段解释，不改综合评分</strong><span id="advisorStageDescription">已有成熟料理与队伍，优先长期上限、稀缺覆盖和明确的队伍增益。</span></div><div class="advisor-stage-control"><label for="accountStage">账号阶段</label><select id="accountStage"><option value="starter">新手起步</option><option value="forming">队伍成型</option><option value="mature">成熟补强</option></select></div></div></section>
+      <section class="profile-settings-card"><h3>各岛屿加成</h3><p>当前队伍会自动读取所选岛屿对应的加成，不再在页面里重复输入。</p><div class="profile-island-bonuses" id="profileIslandBonuses"></div></section>
+      <section class="profile-settings-card"><div class="profile-stock-head"><div><h3>食材库存</h3><p>全站共用，硬上限 800 个。</p></div><span class="profile-stock-total" id="profileStockTotal">0 / 800</span></div><div class="profile-ingredient-stock" id="profileIngredientStock"></div></section>
+      <section class="profile-settings-card"><h3>全食谱进度与等级加成</h3><p>逐道记录等级加成与是否做过；食谱页会直接调用。</p><div class="profile-recipe-toolbar"><input id="profileRecipeSearch" placeholder="搜索食谱"><select id="profileRecipeFilter"><option value="all">全部食谱</option><option value="uncooked">仅未做过</option><option value="cooked">仅已做过</option></select></div><div class="profile-recipe-bulk"><input id="profileRecipeBulk" type="number" min="0" max="200" value="0" aria-label="批量食谱等级加成"><button id="profileRecipeBulkApply" type="button">全部应用</button></div><div class="profile-recipe-list" id="profileRecipeList"></div></section>
+      <section class="profile-settings-card"><h3>账号与盒子工具</h3><p>登录、录入、分盒、回收站和批量等级维护集中在这里。</p><div class="personal-settings-tools" id="personalSettingsTools"></div></section>
+      <p class="profile-settings-message" id="profileSettingsMessage" role="status" hidden></p>
+    </div>
+  </div>
+</dialog>
+<section class="cloud-sync-panel" id="cloudSyncPanel" aria-label="云端同步" data-settings-move hidden>
   <div class="cloud-sync-copy"><span>CLOUD SAVE</span><strong id="cloudIdentity">未登录 · 当前使用本机缓存</strong><span class="cloud-sync-status" id="cloudSyncStatus" role="status">登录后会自动同步并长期保持会话</span></div>
   <div class="cloud-sync-actions"><input id="cloudEmail" type="email" inputmode="email" autocomplete="email" placeholder="输入邮箱接收登录链接" aria-label="登录邮箱"><button id="cloudLogin" type="button">发送登录邮件</button><button class="secondary" id="cloudLogout" type="button" hidden>退出登录</button></div>
 </section>
 <section class="panel weekly-planner" id="weeklyPlanner" data-page="weekly" hidden aria-labelledby="weeklyPlannerTitle">
-  <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周作战台｜这周先做什么</h2><p>确定一道目标食谱，直接查看食材缺口、当前用队、换队条件与完成进度。</p></div><span class="guide-stamp">当前盒子 · 自动保存</span></div>
+  <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周作战台｜这周先做什么</h2><p>按当前岛屿、周类型与 800 格库存，滚动规划下一批真正放得下的食材。</p></div><span class="guide-stamp">当前盒子 · 自动保存</span></div>
   <div class="weekly-controls">
-    <div class="weekly-field"><label for="weeklyIsland">本周岛屿</label><select id="weeklyIsland"></select></div>
-    <div class="weekly-field"><label for="weeklyActivity">活动档案</label><select id="weeklyActivity"></select></div>
+    <div class="weekly-profile-summary" id="weeklyProfileSummary"><span>个人设置</span><strong>正在读取当前岛屿与本周类型</strong><button id="weeklySettingsOpen" type="button">调整</button></div><select id="weeklyIsland" hidden aria-hidden="true"></select><select id="weeklyActivity" hidden aria-hidden="true"></select>
     <div class="weekly-field"><label for="weeklyRecipeType">料理类别</label><select id="weeklyRecipeType"><option>咖喱／浓汤</option><option>沙拉</option><option>点心／饮料</option><option>全部</option></select></div>
     <div class="weekly-field weekly-target-field"><label for="weeklyTargetRecipe">本周目标食谱</label><select id="weeklyTargetRecipe"></select></div>
     <div class="weekly-field"><label for="weeklyMealGoal">目标餐数（1–21）</label><input id="weeklyMealGoal" type="number" min="1" max="21" inputmode="numeric" value="15"></div>
     <div class="weekly-berries" id="weeklyBerries" hidden></div>
   </div>
   <details class="weekly-settings"><summary>高级设置：锅容量与好露营券</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">基础锅容量</label><input id="weeklyPot" type="number" min="1" max="1000" inputmode="numeric" value="81"></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox" checked><span>使用好露营券</span></label></div></details>
-  <details class="weekly-inventory-wrap"><summary>更新现在的食材库存</summary><p class="weekly-inventory-help">只需更新目标食谱相关食材；其余食材可保持原值。库存会随账号同步。</p><div class="weekly-inventory" id="weeklyInventory"></div></details>
+  <div class="weekly-inventory" id="weeklyInventory" hidden></div>
   <div class="weekly-save-line"><span class="weekly-save-stamp" id="weeklySaveStamp">设置与进度会自动保存并同步云端</span></div>
   <div class="weekly-result" id="weeklyResult" aria-live="polite"></div>
-  <p class="weekly-method">口径：本页不再虚构未来 21 餐的具体菜单，只按目标食谱、剩余餐数、当前库存和盒子预计日产量计算行动建议。食材概率采用研究估算，技能触发、临时活动效果和实际收菜波动仍以游戏内结果为准。</p>
+  <p class="weekly-method">口径：仓库硬上限为 800，本页只为当前能容纳的下一批食材设阈值，用掉后再滚动规划；自动食谱会结合现有库存与料理能量选择。活动前储备周会优先提示保留本批目标食材。食材概率采用研究估算，技能触发、临时活动效果和实际收菜波动仍以游戏内结果为准。</p>
 </section>
 <section class="panel current-team-guide" aria-labelledby="currentTeamTitle" data-page="team" hidden>
   <div class="guide-head">
     <div><h2 id="currentTeamTitle">当前队伍｜纯能量、食材与收菜规划</h2><p>从盒子选择五只个体，按当前等级与队伍环境估算树果、直接能量技能及食材产出。</p></div>
-    <span class="guide-stamp" id="currentTeamCount">0／5</span>
-  </div>
-  <div class="current-team-controls">
-    <div class="current-team-control"><label for="currentTeamEnergy">活力速度模型</label><select id="currentTeamEnergy"><option value="average" selected>日间平均（2.0×）</option><option value="steady">回复稳定／活力81以上（2.22×）</option><option value="low">低活力／活力2–40（1.52×）</option><option value="empty">无活力加速／活力0–1（1.0×）</option></select></div>
-    <div class="current-team-control"><label for="currentTeamIsland">当前岛屿（喜爱树果）</label><select id="currentTeamIsland"><option value="none">未选择／萌绿或 EX 随机</option><option value="cyan">天青沙滩</option><option value="taupe">灰褐洞窟</option><option value="snowdrop">白花雪原</option><option value="lapis">宝蓝湖畔</option><option value="gold">黄金发电厂</option><option value="amber">琥珀溪谷</option><option value="all">自定义：当前队员全部命中</option></select></div>
-    <div class="current-team-control"><label for="currentTeamDuration">计算时长（小时）</label><input id="currentTeamDuration" type="number" min="0.5" max="168" step="0.5" inputmode="decimal" value="24"></div>
-    <div class="current-team-control"><label for="currentTeamIslandBonus">当前岛屿加成（%）</label><input id="currentTeamIslandBonus" type="number" min="0" max="200" step="1" inputmode="decimal" value="0"></div>
-    <label class="current-team-camp"><input id="currentTeamCamp" type="checkbox" checked>启用好露营券</label>
-    <button class="current-team-clear" id="currentTeamClear" type="button">清空队伍</button>
+    <div class="current-team-head-actions"><span class="guide-stamp" id="currentTeamCount">0／5</span><button id="currentTeamDrawerOpen" type="button">切换／编辑队伍</button></div>
   </div>
   <div class="current-team-picker" id="currentTeamPicker" aria-label="当前队伍五个位置"></div>
   <p class="current-team-warning" id="currentTeamWarning" hidden></p>
-  <section class="current-team-saves" aria-labelledby="currentTeamSavesTitle">
-    <div class="current-team-saves-head">
-      <div><span>队伍收藏</span><h3 id="currentTeamSavesTitle">已保存队伍 <small id="currentTeamSavedCount">0／10</small></h3><p>保存五只个体及当前活力、好露营券设置；登录后会随盒子一起同步。</p></div>
-      <button id="currentTeamSave" type="button">保存当前队伍</button>
-    </div>
-    <p class="current-team-save-message" id="currentTeamSaveMessage" role="status" hidden></p>
-    <div class="current-team-saved-list" id="currentTeamSavedList"></div>
-  </section>
   <div class="current-team-summary" id="currentTeamSummary" aria-live="polite"></div>
   <div class="current-team-section-title"><h3>预计收获食材</h3><p>“每次”按页面给出的建议收菜间隔；“24小时”是假设全天维持该频率的期望值。</p></div>
   <div class="current-team-ingredients" id="currentTeamIngredients"></div>
   <div class="current-team-section-title"><h3>成员明细</h3><p>树果手满仓后仍会偷偷吃树果，但不会继续抽选食材与主技能。</p></div>
   <div class="current-team-members" id="currentTeamMembers"></div>
-  <p class="current-team-method">纯能量口径：统计常规树果与能量填充、蓄力、噩梦、波导弹等可直接增加卡比兽能量的主技能，固定排除食材能量；岛屿喜爱树果按2倍处理，当前岛屿加成同时作用于树果与直接能量技能。假设按建议频率及时收菜并保留技能触发；治疗、额外帮忙、树果骤增、流星群、挥指和技能复制依赖完整队伍状态，暂不折算成伪精确能量。基础计算以盒子帮忙间隔和持有上限为基准；等级更新后，按每级速度变化及新解锁的速度／持有副技能重算，再计入“帮手奖励”、所选活力档位和好露营券，速度副技能与帮手奖励合计遵守35%上限。食材及技能概率采用 <a href="https://pks.raenonx.cc/en/stats/base-rates" target="_blank" rel="noreferrer">RaenonX 研究快照</a>，并计入已解锁概率副技能及性格；概率不是官方公开值。</p>
+  <p class="current-team-method">纯能量口径：统计常规树果与能量填充、蓄力、噩梦、波导弹等可直接增加卡比兽能量的主技能，固定排除食材能量；岛屿喜爱树果按2倍处理，岛屿与加成统一读取“个人设置”。假设按建议频率及时收菜并保留技能触发；治疗、额外帮忙、树果骤增、流星群、挥指和技能复制依赖完整队伍状态，暂不折算成伪精确能量。基础计算以盒子帮忙间隔和持有上限为基准；等级更新后，按每级速度变化及新解锁的速度／持有副技能重算，再计入“帮手奖励”、所选活力档位和好露营券，速度副技能与帮手奖励合计遵守35%上限。食材及技能概率采用 <a href="https://pks.raenonx.cc/en/stats/base-rates" target="_blank" rel="noreferrer">RaenonX 研究快照</a>，并计入已解锁概率副技能及性格；概率不是官方公开值。</p>
+  <dialog class="team-drawer" id="currentTeamDrawer" aria-labelledby="currentTeamDrawerTitle"><div class="team-drawer-shell"><header class="team-drawer-head"><div><span>TEAM SWITCHER</span><h2 id="currentTeamDrawerTitle">切换与编辑队伍</h2><p>点击位置后使用搜索、盒子与定位筛选器选择个体。</p></div><button class="drawer-close" id="currentTeamDrawerClose" type="button" aria-label="关闭队伍侧栏">×</button></header><div class="team-drawer-body">
+    <div class="current-team-drawer-slots" id="currentTeamDrawerSlots"></div>
+    <div class="current-team-controls"><div class="current-team-control"><label for="currentTeamEnergy">活力速度模型</label><select id="currentTeamEnergy"><option value="average" selected>日间平均（2.0×）</option><option value="steady">回复稳定／活力81以上（2.22×）</option><option value="low">低活力／活力2–40（1.52×）</option><option value="empty">无活力加速／活力0–1（1.0×）</option></select></div><div class="current-team-control"><label for="currentTeamDuration">计算时长（小时）</label><input id="currentTeamDuration" type="number" min="0.5" max="168" step="0.5" inputmode="decimal" value="24"></div><label class="current-team-camp"><input id="currentTeamCamp" type="checkbox" checked>启用好露营券</label><button class="current-team-clear" id="currentTeamClear" type="button">清空队伍</button></div>
+    <section class="current-team-saves" aria-labelledby="currentTeamSavesTitle"><div class="current-team-saves-head"><div><span>队伍收藏</span><h3 id="currentTeamSavesTitle">已保存队伍 <small id="currentTeamSavedCount">0／10</small></h3><p>保存五只个体及当前活力、好露营券设置；登录后会随盒子一起同步。</p></div><button id="currentTeamSave" type="button">保存当前队伍</button></div><p class="current-team-save-message" id="currentTeamSaveMessage" role="status" hidden></p><div class="current-team-saved-list" id="currentTeamSavedList"></div></section>
+  </div></div></dialog>
 </section>
 <section class="panel event-guide" aria-labelledby="eventGuideTitle" data-page="events" hidden>
   <div class="guide-head"><div><h2 id="eventGuideTitle">近期活动周｜盒子专属计划</h2><p>当前活动、下次倒计时、队伍与前中后准备会一起显示。</p></div><span class="guide-stamp">官方公告快照 · 2026-08-31</span></div>
@@ -185,13 +195,13 @@
   <div class="guide-sources">参考：<a href="https://hackmd.io/@raenonx-pokemon-sleep/BksDK5NeZe" target="_blank" rel="noreferrer">RaenonX 队伍构成说明</a>、<a href="https://pks.raenonx.cc/zh/team/analysis" target="_blank" rel="noreferrer">RaenonX 队伍分析</a>、<a href="https://game8.jp/pokemonsleep/546887" target="_blank" rel="noreferrer">新版 Game8 岛屿最强编成</a>、<a href="https://www.pokemonsleep.net/en/news/323932383138363132393037393333363937/" target="_blank" rel="noreferrer">官方 EX 主／副树果规则</a>及<a href="https://www.pokemonsleep.net/en/news/343031343531353932353834323635373331/" target="_blank" rel="noreferrer">拉帝双子编队例外</a>。网页指数只用于本盒子内方案排序；精确料理与技能期望请再用 RaenonX 队伍分析复核。</div>
 </section>
 <section class="panel recipe-guide" aria-labelledby="recipeGuideTitle" data-page="recipes" hidden>
-  <div class="guide-head"><div><h2 id="recipeGuideTitle">食谱查询｜当前能量、系数与食材</h2><p>输入游戏内显示的当前食谱等级加成，即可试算本次基础料理能量；额外填锅与大成功倍率仍不计。</p></div><span class="guide-stamp">81 项 · 数据快照 2026-08-23</span></div>
+  <div class="guide-head"><div><h2 id="recipeGuideTitle">食谱查询｜当前能量、系数与食材</h2><p>各食谱的等级加成与完成进度统一读取个人设置；额外填锅与大成功倍率仍不计。</p></div><button class="guide-stamp recipe-settings-open" id="recipeSettingsOpen" type="button">个人食谱设置</button></div>
   <div class="recipe-tabs" id="recipeTabs" role="tablist" aria-label="选择料理类别"></div>
   <div class="recipe-controls">
     <input id="recipeQ" placeholder="搜索食谱、食材、能量、系数或锅容量">
-    <select id="recipeIngredient" aria-label="按食材筛选"><option value="">全部食材</option></select>
+    <details class="recipe-ingredient-filter"><summary id="recipeIngredientSummary">食材：全部</summary><div class="recipe-ingredient-options" id="recipeIngredientOptions"></div></details><select id="recipeIngredient" multiple hidden aria-hidden="true"></select>
     <select id="recipeSort" aria-label="食谱排序"><option value="energy-desc">基础能量：高到低</option><option value="energy-asc">基础能量：低到高</option><option value="coefficient-desc">能量系数：高到低</option><option value="total-asc">锅容量：少到多</option><option value="total-desc">锅容量：多到少</option><option value="name">名称排序</option></select>
-    <div class="recipe-bonus-control"><label for="recipeLevelBonus">当前食谱等级加成（%）</label><input id="recipeLevelBonus" type="number" min="0" max="200" step="1" inputmode="decimal" value="0"></div>
+    <select id="recipeCookedFilter" aria-label="按完成状态筛选"><option value="all">全部完成状态</option><option value="uncooked">仅未做过／待解锁</option><option value="cooked">仅已做过</option></select>
     <button id="recipeReset" type="button">重置食谱筛选</button>
   </div>
   <section class="ingredient-recommendation" id="ingredientRecommendation" aria-live="polite" hidden>
@@ -205,29 +215,26 @@
   <div class="recipe-grid" id="recipeGrid" aria-live="polite"></div>
   <div class="guide-sources">食谱数据参考：<a href="https://pks.raenonx.cc/zh/meal" target="_blank" rel="noreferrer">RaenonX 食谱一览</a>，并参考 <a href="https://game8.jp/pokemonsleep/542649" target="_blank" rel="noreferrer">新版 Game8 食谱列表</a>交叉核对。网页使用本地数据文件，离线打开也能查询。</div>
 </section>
-<section class="panel box-page-head" data-page="box" aria-labelledby="boxPageTitle"><h2 id="boxPageTitle">宝可梦盒子</h2><p>搜索、筛选并比较当前盒子个体；点击表头可切换排序。</p></section>
-<section class="advisor-stage-panel" data-page="box" aria-labelledby="advisorStageTitle">
-  <div class="advisor-stage-copy"><strong id="advisorStageTitle">培养判断按账号阶段解释，不改综合评分</strong><span id="advisorStageDescription">已有成熟料理与队伍，优先长期上限、稀缺覆盖和明确的队伍增益。</span></div>
-  <div class="advisor-stage-control"><label for="accountStage">账号阶段</label><select id="accountStage"><option value="starter">新手起步</option><option value="forming">队伍成型</option><option value="mature">成熟补强</option></select></div>
-</section>
-<section class="panel pokemon-data-toolbar" data-page="box" aria-labelledby="pokemonDataToolbarTitle">
+<section class="panel box-page-head" data-page="box" aria-labelledby="boxPageTitle"><div><h2 id="boxPageTitle">宝可梦盒子</h2><p>搜索、筛选并比较当前盒子个体；点击表头可切换排序。</p></div><button id="pokemonComparisonOpen" type="button">双个体对比</button></section>
+<section class="panel pokemon-data-toolbar" aria-labelledby="pokemonDataToolbarTitle" data-settings-move hidden>
   <div class="pokemon-data-toolbar-copy"><span>个体资料</span><h3 id="pokemonDataToolbarTitle">快速录入、即时评分与放生管理</h3><p>选择种类后自动带出定位、主技能与合法食材；只需填写等级、食材栏、副技能和性格。</p></div>
   <div class="pokemon-data-toolbar-actions"><button class="primary" id="pokemonAddOpen" type="button">＋ 录入新个体</button><button id="investmentPlannerOpen" type="button">培养投资计算器</button><button class="recycle" id="pokemonRecycleOpen" type="button">回收站</button></div>
 </section>
-<section class="panel box-manager-toolbar" data-page="box" aria-labelledby="boxManagerToolbarTitle">
+<section class="panel box-manager-toolbar" aria-labelledby="boxManagerToolbarTitle" data-settings-move hidden>
   <div class="box-manager-toolbar-copy"><span>盒子管理</span><h3 id="boxManagerToolbarTitle">像正作盒子一样整理个体</h3><p>分盒、批量移动、标记仅收藏，并记录游戏中实际发生的副技能升级。</p></div>
   <div class="box-manager-toolbar-actions"><button id="boxManagerOpen" type="button">打开盒子管理</button><span class="box-manager-toolbar-status" id="boxManagerToolbarStatus" role="status">正在读取盒子记录</span></div>
 </section>
-<section class="panel pokemon-comparison" id="pokemonComparison" data-page="box" aria-labelledby="pokemonComparisonTitle">
-  <div class="pokemon-comparison-head">
+<dialog class="pokemon-comparison" id="pokemonComparison" aria-labelledby="pokemonComparisonTitle"><div class="pokemon-comparison-shell">
+  <div class="pokemon-comparison-head pokemon-comparison-drawer-head">
     <div><span class="pokemon-comparison-kicker">INDIVIDUAL COMPARISON</span><h3 id="pokemonComparisonTitle">双个体并排对比</h3><p>从当前盒子选择两只宝可梦，同时查看课程资格、三段评分、培养判断和五格副技能。</p></div>
-    <div class="pokemon-comparison-rule">同最终形态：课程资格 → 个体分 → 综合分。不同最终形态只展示资料差异，不直接判定替换或放生。</div>
+    <button class="drawer-close" id="pokemonComparisonClose" type="button" aria-label="关闭个体对比">×</button>
   </div>
+  <div class="pokemon-comparison-rule">同最终形态：课程资格 → 个体分 → 综合分。不同最终形态只展示资料差异，不直接判定替换或放生。</div>
   <div class="pokemon-comparison-controls">
-    <label class="pokemon-comparison-field" for="pokemonCompareLeft"><span>个体 A</span><select id="pokemonCompareLeft"></select></label>
+    <label class="pokemon-comparison-field"><span>个体 A</span><button class="pokemon-selection-button pokemon-comparison-picker" id="pokemonCompareLeftPicker" type="button">选择个体 A</button><select id="pokemonCompareLeft" hidden aria-hidden="true"></select></label>
     <button id="pokemonCompareSwap" type="button" aria-label="交换两只宝可梦">⇄ 交换</button>
     <button id="pokemonCompareMatch" type="button">找同最终形态</button>
-    <label class="pokemon-comparison-field" for="pokemonCompareRight"><span>个体 B</span><select id="pokemonCompareRight"></select></label>
+    <label class="pokemon-comparison-field"><span>个体 B</span><button class="pokemon-selection-button pokemon-comparison-picker" id="pokemonCompareRightPicker" type="button">选择个体 B</button><select id="pokemonCompareRight" hidden aria-hidden="true"></select></label>
   </div>
   <section class="pokemon-comparison-production" aria-labelledby="pokemonComparisonProductionTitle">
     <div class="pokemon-production-head"><div><span>FIELD OUTPUT</span><h4 id="pokemonComparisonProductionTitle">目标食材上场产出</h4><p>按当前等级与同一队伍条件估算，可直接比较童偶熊和花疗环环的萌绿玉米产量。</p></div><small>常规帮忙产出，不含主技能额外食材</small></div>
@@ -241,8 +248,8 @@
   </section>
   <div class="pokemon-comparison-verdict" id="pokemonComparisonVerdict" aria-live="polite"></div>
   <div class="pokemon-comparison-grid" id="pokemonComparisonGrid"></div>
-</section>
-<section class="panel box-level-tools" data-page="box" aria-labelledby="boxLevelToolsTitle">
+</div></dialog>
+<section class="panel box-level-tools" aria-labelledby="boxLevelToolsTitle" data-settings-move hidden>
   <div class="box-level-tools-copy"><span>等级维护</span><h3 id="boxLevelToolsTitle">快速更新当前等级</h3><p>批量修改后会同步当前队伍、食材解锁、帮忙间隔和收菜时间；Lv.70最终综合评分保持不变。</p></div>
   <div class="box-level-tools-actions"><button class="primary" id="levelManagerOpen" type="button">批量更新等级</button><button id="levelManagerUndo" type="button" disabled>撤销上次修改</button><span class="box-level-tools-status" id="levelManagerToolbarStatus" role="status">尚未使用本机等级记录</span></div>
 </section>
@@ -286,6 +293,8 @@
       <fieldset class="pokemon-editor-section"><legend>基础资料</legend><div class="pokemon-editor-grid">
         <div class="pokemon-editor-field wide"><label for="pokemonSpeciesSearch">搜索种类</label><input id="pokemonSpeciesSearch" autocomplete="off" placeholder="输入中文名、英文名或图鉴编号"></div>
         <div class="pokemon-editor-field wide"><label for="pokemonSpecies">宝可梦</label><select id="pokemonSpecies"></select></div>
+        <div class="pokemon-editor-field"><label for="pokemonNickname">自定义名字</label><input id="pokemonNickname" maxlength="24" placeholder="例如：玉米熊"></div>
+        <div class="pokemon-editor-field"><label for="pokemonCustomNumber">自定义编号</label><input id="pokemonCustomNumber" maxlength="16" placeholder="例如：A-07"></div>
         <div class="pokemon-editor-field" id="pokemonFinalWrap" hidden><label for="pokemonFinal">培养最终形态</label><select id="pokemonFinal"></select></div>
         <div class="pokemon-editor-field"><label for="pokemonLevel">当前等级</label><input id="pokemonLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="1"></div>
         <div class="pokemon-editor-field"><label for="pokemonNature">性格</label><select id="pokemonNature"></select></div>
@@ -336,6 +345,13 @@
     <div class="pokemon-recycle-list" id="pokemonRecycleList"></div>
   </div>
 </dialog>
+<dialog class="pokemon-picker-dialog" id="pokemonPickerDialog" aria-labelledby="pokemonPickerTitle">
+  <div class="pokemon-picker-shell">
+    <header class="pokemon-picker-head"><div><span>BOX PICKER</span><h2 id="pokemonPickerTitle">选择宝可梦</h2><p>可搜索名称、自定义名字、编号、食材或副技能。</p></div><button class="drawer-close" id="pokemonPickerClose" type="button" aria-label="关闭宝可梦选择器">×</button></header>
+    <div class="pokemon-picker-controls"><input id="pokemonPickerSearch" autocomplete="off" placeholder="搜索名字、#编号、自定义编号、食材或技能"><select id="pokemonPickerRole" aria-label="按定位筛选"></select><select id="pokemonPickerBox" aria-label="按盒子筛选"></select></div>
+    <div class="pokemon-picker-status" id="pokemonPickerStatus"></div><div class="pokemon-picker-grid" id="pokemonPickerGrid"></div>
+  </div>
+</dialog>
 </main>
 <script src="skills/pokemon-sleep-scoring/scripts/nature-scores.js"></script>
 <script src="skills/pokemon-sleep-scoring/scripts/scoring-core.js?v=20260901-2"></script>
@@ -353,6 +369,8 @@
 <script src="pokemon-data.js?v=20260831-1"></script>
 <script src="box-manager.js"></script>
 <script src="level-manager.js"></script>
+<script src="personal-settings.js?v=20260908-1"></script>
+<script src="pokemon-picker.js?v=20260908-1"></script>
 <script src="team-planner.js?v=20260908-1"></script>
 <script src="weekly-planner.js?v=20260901-2"></script>
 <script src="investment-planner.js?v=20260831-2"></script>
@@ -553,7 +571,7 @@ const unclassifiedSpecies=[...new Set(data.filter(mon=>mon.specialty==='unknown'
 let sortKey='id',dir=1;
 const sortableScoreKeys=new Set(['scoreTotal','scoreSpecies','scoreIndividual','cultivationRank']);
 const tbody=document.querySelector('tbody'),mobileBoxList=document.querySelector('#mobileBoxList'),mobileFilterToggle=document.querySelector('#mobileFilterToggle'),q=document.querySelector('#q'),bf=document.querySelector('#bf'),ef=document.querySelector('#ef'),sf=document.querySelector('#sf'),rf=document.querySelector('#rf'),pf=document.querySelector('#pf'),sortSelect=document.querySelector('#sortSelect'),accountStage=document.querySelector('#accountStage'),advisorStageDescription=document.querySelector('#advisorStageDescription');
-let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null;
+let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null,personalSettingsController=null,pokemonPickerController=null;
 const isBattleEligible=mon=>Boolean(mon&&mon.battleEligible!==false);
 function currentBoxList(){return boxManagerController?.getBoxes()||window.POKEMON_SLEEP_BOX_MANAGER.boxList(storedBoxState.state)}
 function refreshBoxFilterOptions(){
@@ -582,14 +600,12 @@ const recipeData=(window.POKEMON_SLEEP_RECIPES||[]).map(recipe=>{const bonus=Num
 const recipeAliases={
   '粗枝大葱':'大葱 葱','品鲜蘑菇':'蘑菇','特选蛋':'蛋','窝心洋芋':'马铃薯 土豆 洋芋','特选苹果':'苹果','火辣香草':'香草','豆制肉':'肉','哞哞鲜奶':'牛奶 鲜奶','甜甜蜜':'蜂蜜','纯粹油':'储存油 油','暖暖姜':'姜','好眠番茄':'番茄','放松可可':'可可','美味尾巴':'呆呆兽尾巴 尾巴','萌绿大豆':'大豆','萌绿玉米':'玉米','醒脑咖啡豆':'咖啡','沉甸甸南瓜':'南瓜','嫩亮酪梨':'牛油果 酪梨 青色果实'
 };
-const recipeTabs=document.querySelector('#recipeTabs'),recipeQ=document.querySelector('#recipeQ'),recipeIngredient=document.querySelector('#recipeIngredient'),recipeSort=document.querySelector('#recipeSort'),recipeLevelBonus=document.querySelector('#recipeLevelBonus'),recipeGrid=document.querySelector('#recipeGrid');
+const recipeTabs=document.querySelector('#recipeTabs'),recipeQ=document.querySelector('#recipeQ'),recipeIngredient=document.querySelector('#recipeIngredient'),recipeIngredientOptions=document.querySelector('#recipeIngredientOptions'),recipeIngredientSummary=document.querySelector('#recipeIngredientSummary'),recipeSort=document.querySelector('#recipeSort'),recipeCookedFilter=document.querySelector('#recipeCookedFilter'),recipeGrid=document.querySelector('#recipeGrid');
 const ingredientRecommendation=document.querySelector('#ingredientRecommendation'),ingredientRecommendationTitle=document.querySelector('#ingredientRecommendationTitle'),ingredientRecommendationHint=document.querySelector('#ingredientRecommendationHint'),ingredientRecommendationGrid=document.querySelector('#ingredientRecommendationGrid');
 const recipeTypes=['全部','咖喱／浓汤','沙拉','点心／饮料'];
-let activeRecipeType='全部';
-const recipeLevelBonusStorageKey='pokemon-sleep-recipe-level-bonus-v1';
-const normalizeRecipeLevelBonus=value=>Math.min(200,Math.max(0,Number(value)||0));
-let currentRecipeLevelBonus=(()=>{try{return normalizeRecipeLevelBonus(localStorage.getItem(recipeLevelBonusStorageKey))}catch(_error){return 0}})();recipeLevelBonus.value=String(currentRecipeLevelBonus);
-const currentRecipeEnergy=recipe=>window.POKEMON_SLEEP_SNORLAX_ENERGY.applyPercentageBonus(recipe.energy,currentRecipeLevelBonus);
+let activeRecipeType='全部',activeIngredientRecommendation='',selectedRecipeIngredients=new Set();
+const recipeBonusFor=recipe=>personalSettingsController?.recipeBonus(recipe.id)||0;
+const currentRecipeEnergy=recipe=>window.POKEMON_SLEEP_SNORLAX_ENERGY.applyPercentageBonus(recipe.energy,recipeBonusFor(recipe));
 const recipeEl=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el};
 const recipeClass=type=>type==='咖喱／浓汤'?'curry':type==='沙拉'?'salad':'dessert';
 const ingredientIcons=window.POKEMON_SLEEP_INGREDIENTS;
@@ -633,11 +649,23 @@ function renderIngredientRecommendations(ingredient){
 }
 const recipeSearchText=recipe=>[recipe.name,recipe.type,recipe.energy,recipe.total,recipe.bonus,recipe.coefficient.toFixed(2),...recipe.ingredients.flatMap(item=>[item.name,recipeAliases[item.name]||''])].join(' ').toLowerCase();
 recipeTypes.forEach(type=>{const button=recipeEl('button','recipe-tab',`${type} ${type==='全部'?recipeData.length:recipeData.filter(r=>r.type===type).length}`);button.type='button';button.role='tab';button.dataset.recipeType=type;recipeTabs.append(button)});
-[...new Set(recipeData.flatMap(r=>r.ingredients.map(item=>item.name)))].sort((a,b)=>a.localeCompare(b,'zh-CN')).forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;recipeIngredient.append(option)});
+const allRecipeIngredients=[...new Set(recipeData.flatMap(r=>r.ingredients.map(item=>item.name)))].sort((a,b)=>a.localeCompare(b,'zh-CN'));
+function syncRecipeIngredientControls(){
+  [...recipeIngredient.options].forEach(option=>{option.selected=selectedRecipeIngredients.has(option.value)});
+  recipeIngredientSummary.textContent=selectedRecipeIngredients.size?`食材：已选 ${selectedRecipeIngredients.size} 种（需同时包含）`:'食材：全部';
+  recipeIngredientOptions.querySelectorAll('[data-recipe-ingredient]').forEach(button=>{const selected=selectedRecipeIngredients.has(button.dataset.recipeIngredient);button.classList.toggle('active',selected);button.setAttribute('aria-pressed',selected?'true':'false')});
+}
+function toggleRecipeIngredient(name,force){
+  if(!name)return;const selected=force===undefined?!selectedRecipeIngredients.has(name):Boolean(force);selected?selectedRecipeIngredients.add(name):selectedRecipeIngredients.delete(name);activeIngredientRecommendation=selected?name:(selectedRecipeIngredients.values().next().value||'');syncRecipeIngredientControls();renderRecipes();
+}
+allRecipeIngredients.forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;recipeIngredient.append(option);const button=recipeEl('button','recipe-ingredient-option');button.type='button';button.dataset.recipeIngredient=name;button.setAttribute('aria-pressed','false');button.append(ingredientVisual(name));button.addEventListener('click',()=>toggleRecipeIngredient(name));recipeIngredientOptions.append(button)});syncRecipeIngredientControls();
 function renderRecipes(){
-  const query=recipeQ.value.trim().toLowerCase(),ingredient=recipeIngredient.value;
-  renderIngredientRecommendations(ingredient);
-  let rows=recipeData.filter(recipe=>(activeRecipeType==='全部'||recipe.type===activeRecipeType)&&(!ingredient||recipe.ingredients.some(item=>item.name===ingredient))&&(!query||recipeSearchText(recipe).includes(query)));
+  const query=recipeQ.value.trim().toLowerCase(),ingredients=[...selectedRecipeIngredients],cookedFilter=recipeCookedFilter.value;
+  renderIngredientRecommendations(activeIngredientRecommendation||ingredients[0]||'');
+  let rows=recipeData.filter(recipe=>{
+    const cooked=personalSettingsController?.isCooked(recipe.id)||false;
+    return (activeRecipeType==='全部'||recipe.type===activeRecipeType)&&ingredients.every(name=>recipe.ingredients.some(item=>item.name===name))&&(cookedFilter==='all'||(cookedFilter==='cooked'&&cooked)||(cookedFilter==='uncooked'&&!cooked))&&(!query||recipeSearchText(recipe).includes(query));
+  });
   const sorters={
     'energy-desc':(a,b)=>b.energy-a.energy||a.name.localeCompare(b.name,'zh-CN'),
     'energy-asc':(a,b)=>a.energy-b.energy||a.name.localeCompare(b.name,'zh-CN'),
@@ -649,29 +677,30 @@ function renderRecipes(){
   rows.sort(sorters[recipeSort.value]||sorters['energy-desc']);
   [...recipeTabs.children].forEach(button=>{const selected=button.dataset.recipeType===activeRecipeType;button.classList.toggle('active',selected);button.setAttribute('aria-selected',selected?'true':'false')});
   document.querySelector('#recipeShown').textContent=rows.length;
-  const maxEnergy=rows.reduce((max,r)=>Math.max(max,currentRecipeEnergy(r)),0);document.querySelector('#recipeTopEnergy').textContent=maxEnergy?`当前结果最高料理能量：${maxEnergy.toLocaleString('zh-CN')}（食谱等级 +${currentRecipeLevelBonus}%）`:'';
+  const maxRecipe=rows.reduce((best,row)=>!best||currentRecipeEnergy(row)>currentRecipeEnergy(best)?row:best,null);document.querySelector('#recipeTopEnergy').textContent=maxRecipe?`当前结果最高料理能量：${currentRecipeEnergy(maxRecipe).toLocaleString('zh-CN')}（${maxRecipe.name}，等级加成 +${recipeBonusFor(maxRecipe)}%）`:'';
   if(!rows.length){recipeGrid.replaceChildren(recipeEl('div','recipe-none','没有符合条件的食谱，请换一个名称、食材或类别。'));return}
   recipeGrid.replaceChildren(...rows.map(recipe=>{
-    const card=recipeEl('article',`recipe-card ${recipeClass(recipe.type)}`),head=recipeEl('div','recipe-card-head'),title=recipeEl('h3','',recipe.name),kind=recipeEl('span','recipe-kind',recipe.type);title.dataset.noIngredientIcons='';
-    head.append(title,kind);
+    const cooked=personalSettingsController?.isCooked(recipe.id)||false,levelBonus=recipeBonusFor(recipe),card=recipeEl('article',`recipe-card ${recipeClass(recipe.type)}${cooked?' is-cooked':' is-uncooked'}`),head=recipeEl('div','recipe-card-head'),title=recipeEl('h3','',recipe.name),badges=recipeEl('div','recipe-card-badges'),kind=recipeEl('span','recipe-kind',recipe.type),status=recipeEl('span',`recipe-status ${cooked?'cooked':'uncooked'}`,cooked?'已做过':'待解锁');title.dataset.noIngredientIcons='';
+    badges.append(kind,status);head.append(title,badges);
     const stats=recipeEl('div','recipe-stats'),energy=recipeEl('div','recipe-stat energy'),baseEnergy=recipeEl('div','recipe-stat'),coefficient=recipeEl('div','recipe-stat coefficient'),total=recipeEl('div','recipe-stat');
-    energy.append(recipeEl('span','',`当前料理能量（+${currentRecipeLevelBonus}%）`),recipeEl('b','',recipe.energy?currentRecipeEnergy(recipe).toLocaleString('zh-CN'):'—'));
+    energy.append(recipeEl('span','',`当前料理能量（+${levelBonus}%）`),recipeEl('b','',recipe.energy?currentRecipeEnergy(recipe).toLocaleString('zh-CN'):'—'));
     baseEnergy.append(recipeEl('span','',recipe.energy?'Lv.1 基础能量':'基础能量'),recipeEl('b','',recipe.energy?recipe.energy.toLocaleString('zh-CN'):'—'));
     coefficient.append(recipeEl('span','',`固有料理系数 +${recipe.bonus}%`),recipeEl('b','',`×${recipe.coefficient.toFixed(2)}`));
     total.append(recipeEl('span','','所需锅容量'),recipeEl('b','',recipe.total?String(recipe.total):'任意'));
     stats.append(energy,baseEnergy,coefficient,total);
     const list=recipeEl('div','ingredient-list');
     if(recipe.ingredients.length)recipe.ingredients.forEach(item=>{const chip=recipeEl('button','ingredient-chip');chip.type='button';chip.dataset.ingredient=item.name;chip.append(ingredientVisual(item.name,` ×${item.amount}`));list.append(chip)});else list.append(recipeEl('span','recipe-empty','任意食材；不会解锁固定食谱'));
-    const source=recipeEl('a','recipe-source','在 RaenonX 查看这道料理');source.href=`https://pks.raenonx.cc/zh/meal/${recipe.id}`;source.target='_blank';source.rel='noreferrer';
-    card.append(head,stats,list,source);return card
+    const actions=recipeEl('div','recipe-card-actions'),toggle=recipeEl('button','recipe-cooked-toggle',cooked?'标记为未做过':'标记为已做过'),source=recipeEl('a','recipe-source','在 RaenonX 查看');toggle.type='button';toggle.dataset.recipeCooked=String(recipe.id);source.href=`https://pks.raenonx.cc/zh/meal/${recipe.id}`;source.target='_blank';source.rel='noreferrer';actions.append(toggle,source);
+    card.append(head,stats,list,actions);return card
   }));
   decorateIngredients(recipeGrid);
 }
 recipeTabs.addEventListener('click',event=>{const button=event.target.closest('[data-recipe-type]');if(!button)return;activeRecipeType=button.dataset.recipeType;renderRecipes()});
-recipeQ.addEventListener('input',renderRecipes);recipeIngredient.addEventListener('change',renderRecipes);recipeSort.addEventListener('change',renderRecipes);recipeLevelBonus.addEventListener('input',()=>{currentRecipeLevelBonus=normalizeRecipeLevelBonus(recipeLevelBonus.value);try{localStorage.setItem(recipeLevelBonusStorageKey,String(currentRecipeLevelBonus))}catch(_error){}renderRecipes()});recipeLevelBonus.addEventListener('change',()=>{recipeLevelBonus.value=String(currentRecipeLevelBonus)});
-recipeGrid.addEventListener('click',event=>{const chip=event.target.closest('[data-ingredient]');if(!chip)return;recipeIngredient.value=chip.dataset.ingredient;renderRecipes();document.querySelector('#recipeGuideTitle').scrollIntoView({behavior:'smooth',block:'start'})});
-document.querySelector('#recipeReset').addEventListener('click',()=>{activeRecipeType='全部';recipeQ.value='';recipeIngredient.value='';recipeSort.value='energy-desc';renderRecipes()});
-document.querySelector('#ingredientRecommendationClear').addEventListener('click',()=>{recipeIngredient.value='';renderRecipes()});
+recipeQ.addEventListener('input',renderRecipes);recipeIngredient.addEventListener('change',()=>{selectedRecipeIngredients=new Set([...recipeIngredient.selectedOptions].map(option=>option.value));activeIngredientRecommendation=[...selectedRecipeIngredients][0]||'';syncRecipeIngredientControls();renderRecipes()});recipeSort.addEventListener('change',renderRecipes);recipeCookedFilter.addEventListener('change',renderRecipes);
+recipeGrid.addEventListener('click',event=>{const cookedButton=event.target.closest('[data-recipe-cooked]');if(cookedButton){const id=cookedButton.dataset.recipeCooked,state=personalSettingsController?.getState();if(state){const values=new Set(state.cookedRecipeIds);values.has(id)?values.delete(id):values.add(id);personalSettingsController.update({cookedRecipeIds:[...values]},'recipe-cooked')}return}const chip=event.target.closest('[data-ingredient]');if(!chip)return;toggleRecipeIngredient(chip.dataset.ingredient,true);document.querySelector('#recipeGuideTitle').scrollIntoView({behavior:'smooth',block:'start'})});
+document.querySelector('#recipeReset').addEventListener('click',()=>{activeRecipeType='全部';recipeQ.value='';selectedRecipeIngredients.clear();activeIngredientRecommendation='';recipeSort.value='energy-desc';recipeCookedFilter.value='all';syncRecipeIngredientControls();renderRecipes()});
+document.querySelector('#ingredientRecommendationClear').addEventListener('click',()=>{selectedRecipeIngredients.clear();activeIngredientRecommendation='';syncRecipeIngredientControls();renderRecipes()});
+document.querySelector('#recipeSettingsOpen').addEventListener('click',()=>personalSettingsController?.open());
 const islandData=[
   {name:'萌绿之岛',kind:'普通岛',berryMode:'normal-random',defaultBerries:['金枕果','苹野果','莓莓果'],types:'每周随机 3 种',berries:'随机树果',focus:'选择本周三种喜爱树果后，排序和队伍会按当前盒子自动重算；三种树果在普通岛上地位相同。',rank:[[71,'高等级高速，树果骤增与树果数量S兼顾'],[63,'高等级高速树果手，帮手奖励覆盖全队'],[4,'最高练度食材手，牛奶产量稳定'],[92,'Lv.6 全体治疗，全天队伍核心'],[78,'高等级树果数量S，泛用产能强'],[73,'第二套 Lv.6 全体治疗选择'],[1,'蜂蜜与番茄食材位，带帮手奖励'],[79,'帮手奖励树果位']],team:[[71,'主输出／树果骤增'],[63,'树果输出／全队加速'],[4,'牛奶食材核心'],[1,'蜂蜜与番茄食材'],[92,'全体活力治疗']],note:'三种喜爱树果会使对应树果能量翻倍；选择器用于比较当前盒子在本周组合下的主队。'},
   {name:'天青沙滩',kind:'普通岛',types:'水／飞行／妖精',berries:'橙橙果／椰木果／桃桃果',focus:'水箭龟承担主食材，仙子伊布保活；水君联动水系，蓝鳄负责对应树果，沼跃鱼提供料理成功率。',rank:[[4,'高等级水系食材核心，牛奶产量优秀'],[92,'妖精系治疗核心，帮手奖励＋速度M'],[68,'水系帮手加速，当前主技能等级更高'],[95,'妖精系玉米食材，当前等级较完整'],[47,'水系料理成功S，速度M＋帮手奖励'],[57,'飞行系技能手／树果骤增，新版评级优于波克基斯'],[32,'水系食材获取，补牛奶和可可'],[34,'水系树果手，建议优先进化大力鳄']],team:[[4,'牛奶食材核心'],[92,'全体活力治疗'],[68,'水系帮手加速'],[47,'料理成功率／帮手奖励'],[34,'对应树果输出']],note:'#34 蓝鳄目前等级偏低，但它是盒内天青最明确的树果位；未进化或产能不足时，先换成 #95 花疗环环或 #57 勇士雄鹰。#86 波克基斯仅作为需要挥指娱乐性时的备用。'},
@@ -883,7 +912,7 @@ function subskillList(mon){
   base.forEach((skill,index)=>{const row=document.createElement('div'),level=document.createElement('span'),name=document.createElement('span'),unlock=subskillUnlockLevels[index]||80,actual=effective[index]||skill;row.className='subskill-item';level.className='subskill-level';level.textContent='Lv.'+unlock;name.className='subskill-name';name.append(Object.assign(document.createElement('span'),{className:'actual-subskill',textContent:actual}));if(actual!==skill)name.append(Object.assign(document.createElement('small'),{className:'actual-subskill-note',textContent:'实际升级：'+skill+' → '+actual}));row.append(level,name);root.append(row)});
   return root;
 }
-function pokemonNameCell(mon){const root=cell('','nowrap pokemon-name-cell'),name=document.createElement('span'),edit=document.createElement('button'),manage=document.createElement('button'),pokemonEdit=document.createElement('button');name.textContent=mon.name;edit.type='button';edit.className='level-row-edit';edit.dataset.levelEdit=mon.id;edit.textContent='更新等级';edit.setAttribute('aria-label','更新'+mon.name+'当前等级，现为Lv.'+mon.lv);manage.type='button';manage.className='box-management-edit';manage.dataset.boxManage=mon.id;manage.textContent='盒子／副技能';manage.setAttribute('aria-label','管理'+mon.name+'的盒子与实际副技能');pokemonEdit.type='button';pokemonEdit.className='pokemon-row-edit';pokemonEdit.dataset.pokemonEdit=mon.id;pokemonEdit.textContent='编辑／放生';pokemonEdit.setAttribute('aria-label','编辑或放生'+mon.name);root.append(name,edit,manage,pokemonEdit);return root}
+function pokemonNameCell(mon){const root=cell('','nowrap pokemon-name-cell'),name=document.createElement('span'),edit=document.createElement('button'),manage=document.createElement('button'),pokemonEdit=document.createElement('button');name.textContent=mon.nickname||mon.name;if(mon.nickname)name.append(Object.assign(document.createElement('small'),{className:'pokemon-custom-identity',textContent:`${mon.name}${mon.customNumber?` · ${mon.customNumber}`:''}`}));else if(mon.customNumber)name.append(Object.assign(document.createElement('small'),{className:'pokemon-custom-identity',textContent:mon.customNumber}));edit.type='button';edit.className='level-row-edit';edit.dataset.levelEdit=mon.id;edit.textContent='更新等级';edit.setAttribute('aria-label','更新'+mon.name+'当前等级，现为Lv.'+mon.lv);manage.type='button';manage.className='box-management-edit';manage.dataset.boxManage=mon.id;manage.textContent='盒子／副技能';manage.setAttribute('aria-label','管理'+mon.name+'的盒子与实际副技能');pokemonEdit.type='button';pokemonEdit.className='pokemon-row-edit';pokemonEdit.dataset.pokemonEdit=mon.id;pokemonEdit.textContent='编辑／放生';pokemonEdit.setAttribute('aria-label','编辑或放生'+mon.name);root.append(name,edit,manage,pokemonEdit);return root}
 function managementCell(mon){
   const root=cell('','box-management-cell'),wrap=document.createElement('div'),box=document.createElement('span'),state=document.createElement('span'),definition=currentBoxList().find(item=>item.id===mon.boxId);
   wrap.className='box-management-badge';box.className='box-management-box';box.style.setProperty('--box-color',definition?.color||'#687588');box.textContent=mon.boxName;state.className='box-management-state '+(isBattleEligible(mon)?'battle':'collection');state.textContent=isBattleEligible(mon)?'参与实战':'仅收藏';wrap.append(box,state);root.append(wrap);return root;
@@ -902,7 +931,7 @@ function mobileDetailRow(label,value){
 }
 function mobilePokemonCard(mon){
   const card=document.createElement('article'),head=document.createElement('div'),titleRoot=document.createElement('div'),idLine=document.createElement('div'),title=document.createElement('div'),name=document.createElement('h3'),level=document.createElement('span'),score=document.createElement('div');
-  card.className='mobile-mon-card'+(isBattleEligible(mon)?'':' collection-only');head.className='mobile-mon-head';titleRoot.className='mobile-mon-title-root';idLine.className='mobile-mon-id';idLine.textContent='#'+mon.id;if(mon.shiny==='是')idLine.append(Object.assign(document.createElement('span'),{className:'shiny',textContent:'★ 闪光'}));title.className='mobile-mon-title';name.textContent=mon.name;level.className='mobile-mon-level';level.textContent='Lv.'+mon.lv;title.append(name,level);titleRoot.append(idLine,title);score.className='mobile-mon-score';score.append(scoreBadge(mon));head.append(titleRoot,score);
+  card.className='mobile-mon-card'+(isBattleEligible(mon)?'':' collection-only');head.className='mobile-mon-head';titleRoot.className='mobile-mon-title-root';idLine.className='mobile-mon-id';idLine.textContent='#'+mon.id+(mon.customNumber?' · '+mon.customNumber:'');if(mon.shiny==='是')idLine.append(Object.assign(document.createElement('span'),{className:'shiny',textContent:'★ 闪光'}));title.className='mobile-mon-title';name.textContent=mon.nickname||mon.name;if(mon.nickname)name.title=mon.name;level.className='mobile-mon-level';level.textContent='Lv.'+mon.lv;title.append(name,level);titleRoot.append(idLine,title);score.className='mobile-mon-score';score.append(scoreBadge(mon));head.append(titleRoot,score);
   const tags=document.createElement('div'),box=document.createElement('span'),eligibility=document.createElement('span');tags.className='mobile-mon-tags';box.className='mobile-mon-box';box.textContent=mon.boxName;eligibility.className='mobile-mon-eligibility'+(isBattleEligible(mon)?'':' collection');eligibility.textContent=isBattleEligible(mon)?'参与实战':'仅收藏';tags.append(cultivationBadge(mon),specialtyBadge(mon),box,eligibility);
   const food=document.createElement('div'),foodLabel=document.createElement('span'),foodValue=document.createElement('div');food.className='mobile-mon-food';foodLabel.textContent='食材路线 · Lv.1／30／60';foodValue.textContent=mon.ingredients;food.append(foodLabel,foodValue);
   const details=document.createElement('details'),summary=document.createElement('summary'),detailGrid=document.createElement('div'),skillDisplay=mainSkillDisplay(mon),skillValue=document.createElement('div');details.className='mobile-mon-details';summary.textContent='技能、性格与备注';detailGrid.className='mobile-mon-detail-grid';skillValue.textContent=skillDisplay.text;if(skillDisplay.note)skillValue.append(Object.assign(document.createElement('small'),{className:'actual-subskill-note',textContent:skillDisplay.note}));detailGrid.append(mobileDetailRow('主技能',skillValue),mobileDetailRow('副技能',subskillList(mon)),mobileDetailRow('性格',mon.nature),mobileDetailRow('培养依据',mon.cultivation?.reason||'—'),mobileDetailRow('备注',mon.note||'—'));
@@ -921,14 +950,31 @@ const boxSortOptions={
   'individual-desc':['scoreIndividual',-1]
 };
 accountStage.value=activeAccountStage;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;
-accountStage.addEventListener('change',()=>{activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(accountStage.value).id;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;window.POKEMON_SLEEP_DATA.writeJson(ADVISOR_PREFERENCES_KEY,{accountStage:activeAccountStage});window.POKEMON_SLEEP_DATA.emit('advisor-preferences',{accountStage:activeAccountStage});refreshCultivationAdvice();render();pokemonComparisonController?.render()});
 q.addEventListener('input',render);bf.addEventListener('change',render);ef.addEventListener('change',render);sf.addEventListener('change',render);rf.addEventListener('change',render);pf.addEventListener('change',render);sortSelect.addEventListener('change',()=>{[sortKey,dir]=boxSortOptions[sortSelect.value]||boxSortOptions['id-asc'];render()});mobileFilterToggle.addEventListener('click',()=>{const root=mobileFilterToggle.closest('.filters'),expanded=!root.classList.contains('mobile-expanded');root.classList.toggle('mobile-expanded',expanded);mobileFilterToggle.setAttribute('aria-expanded',expanded?'true':'false')});document.querySelector('#reset').addEventListener('click',()=>{q.value='';bf.value='';ef.value='';sf.value='';rf.value='';pf.value='';sortSelect.value='id-asc';sortKey='id';dir=1;const root=mobileFilterToggle.closest('.filters');root.classList.remove('mobile-expanded');mobileFilterToggle.setAttribute('aria-expanded','false');render()});document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k)dir*=-1;else{sortKey=k;dir=['scoreTotal','cultivationRank'].includes(k)?-1:1}sortSelect.value=k==='scoreTotal'?(dir<0?'score-desc':'score-asc'):k==='cultivationRank'&&dir<0?'cultivation-desc':(k==='id'&&dir===1?'id-asc':'custom');render()}));
 function handlePokemonEdit(event){const levelButton=event.target.closest('[data-level-edit]'),boxButton=event.target.closest('[data-box-manage]'),investButton=event.target.closest('[data-invest]'),pokemonButton=event.target.closest('[data-pokemon-edit]');if(levelButton)levelManagerController?.openFor(levelButton.dataset.levelEdit);if(boxButton)boxManagerController?.openFor(boxButton.dataset.boxManage);if(investButton)document.dispatchEvent(new CustomEvent('pokemon-sleep:invest-pokemon',{detail:{id:investButton.dataset.invest}}));if(pokemonButton)pokemonManagerController?.openFor(pokemonButton.dataset.pokemonEdit)}
 tbody.addEventListener('click',handlePokemonEdit);mobileBoxList.addEventListener('click',handlePokemonEdit);
-function refreshAfterLevelChange(changes){changes.forEach(change=>{const mon=monById(change.id);if(mon)updateCurrentLevelEvaluation(mon)});refreshCultivationAdvice();renderEventTeam();renderIsland(activeIslandIndex);if(recipeIngredient.value)renderIngredientRecommendations(recipeIngredient.value);render();teamPlannerController?.refresh();weeklyPlannerController?.render();boxManagerController?.render();pokemonComparisonController?.render();refreshBoxStats();window.POKEMON_SLEEP_DATA.emit('levels',{changes})}
+function refreshAfterLevelChange(changes){changes.forEach(change=>{const mon=monById(change.id);if(mon)updateCurrentLevelEvaluation(mon)});refreshCultivationAdvice();renderEventTeam();renderIsland(activeIslandIndex);if(activeIngredientRecommendation)renderIngredientRecommendations(activeIngredientRecommendation);render();teamPlannerController?.refresh();weeklyPlannerController?.render();boxManagerController?.render();pokemonComparisonController?.render();pokemonPickerController?.render();refreshBoxStats();window.POKEMON_SLEEP_DATA.emit('levels',{changes})}
 function refreshAfterBoxManagement(changes){
   changes.filter(change=>change.type==='subskill').forEach(change=>{const mon=monById(change.id);if(mon)window.POKEMON_SLEEP_LEVELS.applyLevel(mon,Number(mon.lv))});
-  refreshCultivationAdvice();refreshBoxFilterOptions();refreshBoxStats();renderEventTeam();renderIsland(activeIslandIndex);if(recipeIngredient.value)renderIngredientRecommendations(recipeIngredient.value);render();teamPlannerController?.refresh();weeklyPlannerController?.render();levelManagerController?.render();pokemonComparisonController?.render();window.POKEMON_SLEEP_DATA.emit('box-management',{changes});
+  refreshCultivationAdvice();refreshBoxFilterOptions();refreshBoxStats();renderEventTeam();renderIsland(activeIslandIndex);if(activeIngredientRecommendation)renderIngredientRecommendations(activeIngredientRecommendation);render();teamPlannerController?.refresh();weeklyPlannerController?.render();levelManagerController?.render();pokemonComparisonController?.render();pokemonPickerController?.render();window.POKEMON_SLEEP_DATA.emit('box-management',{changes});
 }
-const shiny=data.filter(r=>r.shiny==='是').length;document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;document.querySelector('.app-nav [data-page-target="box"] small').textContent=`${data.length} 只个体整理`;renderEventTeam();renderIsland(0);renderRecipes();render();levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialState:storedLevelState,onChange:refreshAfterLevelChange});teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,onChange:change=>window.POKEMON_SLEEP_DATA.emit('teams',change)});boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION});weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG});investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;refreshBoxFilterOptions();refreshBoxStats();render();decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});
+function handlePersonalSettingsChange(state,type){
+  if(type==='account-stage'){activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(state.accountStage).id;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;refreshCultivationAdvice();render();boxManagerController?.render();pokemonComparisonController?.render()}
+  renderRecipes();teamPlannerController?.refresh();weeklyPlannerController?.render();
+}
+const shiny=data.filter(r=>r.shiny==='是').length;
+document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;document.querySelector('.app-nav [data-page-target="box"] small').textContent=`${data.length} 只个体整理`;
+pokemonPickerController=window.POKEMON_SLEEP_POKEMON_PICKER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG});window.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER=pokemonPickerController;
+personalSettingsController=window.POKEMON_SLEEP_PERSONAL_SETTINGS.mount({ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),recipes:recipeData,islands:islandData,activityProfiles:window.POKEMON_SLEEP_WEEKLY_PLANNER.ACTIVITY_PROFILES,onChange:handlePersonalSettingsChange});window.POKEMON_SLEEP_PERSONAL_SETTINGS_CONTROLLER=personalSettingsController;
+if(personalSettingsController){activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(personalSettingsController.getState().accountStage).id;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;refreshCultivationAdvice()}
+renderEventTeam();renderIsland(0);renderRecipes();render();
+levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialState:storedLevelState,onChange:refreshAfterLevelChange});
+boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});
+pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});
+teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,onChange:change=>window.POKEMON_SLEEP_DATA.emit('teams',change)});
+pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
+weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController});
+investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});
+cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;
+refreshBoxFilterOptions();refreshBoxStats();render();decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});
 </script></body></html>

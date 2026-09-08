@@ -16,7 +16,7 @@
   const SAVED_TEAMS_KEY='pokemon-sleep-saved-teams-v1';
   const ADVISOR_PREFERENCES_KEY='pokemon-sleep-advisor-preferences-v1';
   const RECYCLE_DAYS=30;
-  const CANONICAL_FIELDS=Object.freeze(['id','recordId','speciesId','finalFormId','name','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note','createdAt','updatedAt']);
+  const CANONICAL_FIELDS=Object.freeze(['id','recordId','speciesId','finalFormId','name','nickname','customNumber','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note','createdAt','updatedAt']);
 
   function storage(){try{return root&&root.localStorage||null}catch(_error){return null}}
   function readJson(key,fallback,target=storage()){
@@ -40,6 +40,8 @@
       speciesId:normalizeId(source.speciesId),
       finalFormId:normalizeId(source.finalFormId),
       name:String(source.name||''),
+      nickname:String(source.nickname||'').trim().slice(0,24),
+      customNumber:String(source.customNumber||'').trim().slice(0,16),
       sp:String(source.sp||''),
       lv:String(source.lv||source.level||1),
       shiny:source.shiny==='是'||source.shiny===true?'是':'否',
