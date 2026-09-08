@@ -1,0 +1,6 @@
+.box-filter-summary{grid-column:1/-1;display:flex;align-items:center;gap:8px;min-height:34px;border-top:1px solid #e3e9ed;padding-top:9px;color:#53606d;font-size:12px}
+.box-filter-summary strong{color:#176b47}
+.box-filter-summary .box-filter-mode{display:inline-flex;border-radius:999px;background:#e6f6ed;color:#176b47;padding:3px 8px;font-weight:850}
+.box-filter-summary.is-unfiltered .box-filter-mode{background:#eef2f6;color:#667085}
+@media(max-width:800px){.box-filter-summary{align-items:flex-start;flex-wrap:wrap}.box-filter-summary .box-filter-mode{flex:0 0 auto}}
+@media print{.box-filter-summary{display:none}}

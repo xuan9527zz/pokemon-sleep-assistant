@@ -52,8 +52,9 @@
 ```text
 .
 ├─ index.html                         # GitHub Pages 与本地正式入口
-├─ team-planner.js                    # 当前队伍选择、食材与收菜模型
+├─ team-planner.js                    # 当前队伍选择、纯能量、食材与收菜模型
 ├─ team-planner.css                   # 当前队伍页面响应式样式
+├─ snorlax-energy.js                  # 树果与直接能量主技能的卡比兽能量规则
 ├─ team-production.generated.js       # 97只盒子个体的生产率映射快照
 ├─ weekly-planner.js/css              # 本周目标、食材预算、行动队伍与进度作战台
 ├─ investment-planner.js/css          # 等级、进化与技能种子投资计算器
@@ -77,6 +78,7 @@
 ├─ data/raenonx-species.json          # RaenonX 全图鉴种族基础数据快照
 ├─ scripts/build-team-production-data.js # 生成并校验队伍生产率映射
 ├─ scripts/team-planner.test.js       # 当前队伍模型自检
+├─ scripts/snorlax-energy.test.js     # 能量常量、等级和加成计算自检
 ├─ scripts/weekly-planner.test.js     # 周目标、预算、队伍切换与周进度自检
 ├─ scripts/investment-planner.test.js # EXP、进化与副技能种子模型自检
 ├─ scripts/retention-advisor.test.js  # 新个体去留建议边界自检

@@ -44,6 +44,7 @@
   ])].sort((a,b)=>b.length-a.length||a.localeCompare(b,'zh-CN')));
   const escapeRegExp=value=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   const TEXT_PATTERN=new RegExp(TEXT_NAMES.map(escapeRegExp).join('|'),'g');
+  const SKIP_DECORATION_SELECTOR='.ingredient-visual,[data-mon],.pokemon-name-cell,.pokemon-name-text,.current-team-saved-members,[data-no-ingredient-icons],h1,h2,h3,h4,h5,h6';
 
   function canonicalize(name){
     const clean=String(name||'').trim();
@@ -77,7 +78,7 @@
     const walker=owner.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){
       if(!node.nodeValue||!node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
       const parent=node.parentElement;
-      if(!parent||parent.closest('.ingredient-visual,[data-mon],.pokemon-name-cell,.pokemon-name-text,.current-team-saved-members')||parent.matches('script,style,option,select,textarea,input'))return NodeFilter.FILTER_REJECT;
+      if(!parent||parent.closest(SKIP_DECORATION_SELECTOR)||parent.matches('script,style,option,select,textarea,input'))return NodeFilter.FILTER_REJECT;
       TEXT_PATTERN.lastIndex=0;
       return TEXT_PATTERN.test(node.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
     }});
@@ -97,5 +98,5 @@
     return replacements;
   }
 
-  return {ICON_BASE,INGREDIENTS,ALIASES,TEXT_NAMES,canonicalize,iconPath,create,decorate};
+  return {ICON_BASE,INGREDIENTS,ALIASES,TEXT_NAMES,SKIP_DECORATION_SELECTOR,canonicalize,iconPath,create,decorate};
 });

@@ -1,10 +1,12 @@
 (function(root,factory){
   'use strict';
   const ingredients=typeof module==='object'&&module.exports?require('./ingredients.js'):root.POKEMON_SLEEP_INGREDIENTS;
-  const api=factory(ingredients);
+  const boxManager=typeof module==='object'&&module.exports?require('./box-manager.js'):root.POKEMON_SLEEP_BOX_MANAGER;
+  const energyMechanics=typeof module==='object'&&module.exports?require('./snorlax-energy.js'):root.POKEMON_SLEEP_SNORLAX_ENERGY;
+  const api=factory(ingredients,boxManager,energyMechanics);
   if(typeof module==='object'&&module.exports)module.exports=api;
   root.POKEMON_SLEEP_TEAM_PLANNER=api;
-})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog){
+})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog,boxManager,energyMechanics){
   'use strict';
 
   const SUBSKILL_LEVELS=[10,25,50,70,80];
@@ -17,6 +19,17 @@
     low:{factor:1/0.66,label:'低活力（活力2–40）'},
     empty:{factor:1,label:'无活力加速（活力0–1）'}
   };
+  const ISLAND_PROFILES=Object.freeze({
+    none:Object.freeze({label:'未选择／随机岛屿',berries:Object.freeze([])}),
+    cyan:Object.freeze({label:'天青沙滩',berries:Object.freeze(['橙橙果','椰木果','桃桃果'])}),
+    taupe:Object.freeze({label:'灰褐洞窟',berries:Object.freeze(['苹野果','勿花果','文柚果'])}),
+    snowdrop:Object.freeze({label:'白花雪原',berries:Object.freeze(['柿仔果','莓莓果','异奇果'])}),
+    lapis:Object.freeze({label:'宝蓝湖畔',berries:Object.freeze(['金枕果','芒芒果','樱子果'])}),
+    gold:Object.freeze({label:'黄金发电厂',berries:Object.freeze(['萄葡果','墨莓果','靛莓果'])}),
+    amber:Object.freeze({label:'琥珀溪谷',berries:Object.freeze(['零余果','木子果','番荔果'])}),
+    all:Object.freeze({label:'自定义：当前队员全部命中',all:true,berries:Object.freeze([])})
+  });
+  const DEFAULT_ENERGY_SETTINGS=Object.freeze({durationHours:24,islandBonusPct:0,islandProfile:'none'});
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
   const sum=values=>values.reduce((total,value)=>total+value,0);
@@ -54,6 +67,55 @@
     if(String(nature).includes('食材↑'))return 1.2;
     if(String(nature).includes('食材↓'))return .8;
     return 1;
+  }
+
+  function natureSkillMultiplier(nature){
+    if(String(nature).includes('技能↑'))return 1.2;
+    if(String(nature).includes('技能↓'))return .8;
+    return 1;
+  }
+
+  function skillProbability(mon){
+    const base=Number(mon&&mon.skillRatePct)/100;
+    if(!(base>0&&base<1))return {base:0,current:0,effective:0,provisional:true,pityCeiling:null};
+    const skills=unlockedSubskills(mon);
+    const subskillBonus=(skills.includes('技能概率M')?.36:0)+(skills.includes('技能概率S')?.18:0);
+    const natureMultiplier=natureSkillMultiplier(mon.nature);
+    const current=clamp(base*natureMultiplier*(1+subskillBonus),0,.95);
+    const sourceInterval=Number(mon.catalogHelpFrequencyBaseSec)||parseInterval(mon.interval);
+    const pityCeiling=['skill','all'].includes(mon.specialty)?Math.ceil(144000/sourceInterval):78;
+    const effective=current/(1-(1-current)**pityCeiling);
+    return {base,current,effective,natureMultiplier,subskillBonus,pityCeiling,provisional:false};
+  }
+
+  function normalizeEnergySettings(options={}){
+    return {
+      durationHours:clamp(Number(options.durationHours)||DEFAULT_ENERGY_SETTINGS.durationHours,.5,168),
+      islandBonusPct:clamp(Number(options.islandBonusPct)||0,0,200),
+      islandProfile:Object.hasOwn(ISLAND_PROFILES,options.islandProfile)?options.islandProfile:DEFAULT_ENERGY_SETTINGS.islandProfile
+    };
+  }
+
+  function calculateEnergyBreakdown(members,options={}){
+    const settings=normalizeEnergySettings(options),profile=ISLAND_PROFILES[settings.islandProfile],durationSeconds=settings.durationHours*3600;
+    const rows=(members||[]).map(member=>{
+      const mon=member.mon||{},helps=durationSeconds/member.effectiveIntervalSec;
+      const favorite=Boolean(profile.all||(mon.berry&&profile.berries.includes(mon.berry)));
+      const berryStrength=energyMechanics&&energyMechanics.berryStrengthAtLevel(mon.berryId,Number(mon.lv));
+      const berries=helps*(1-member.probability.current)*member.berryCount;
+      const berryBaseEnergy=berryStrength?berries*berryStrength*(favorite?2:1):0;
+      const berryEnergy=energyMechanics?energyMechanics.applyPercentageBonus(berryBaseEnergy,settings.islandBonusPct):Math.round(berryBaseEnergy);
+      const probability=skillProbability(mon),skillLevel=boxManager&&typeof boxManager.effectiveMainSkillLevel==='function'?boxManager.effectiveMainSkillLevel(mon):Number(String(mon.main||'').match(/Lv\.(\d+)/)?.[1]||1);
+      const skill=energyMechanics?energyMechanics.directEnergyPerUse(mon.main,mon.mainSkillId,skillLevel,settings.islandBonusPct):{supported:false,actualEnergy:0,baseEnergy:0};
+      const triggers=skill.supported?helps*probability.effective:0,directSkillEnergy=Math.round(triggers*skill.actualEnergy);
+      return {
+        id:mon.id,name:mon.name,berryName:mon.berry||'待核对',favorite,helps,berries,berryStrength,
+        berryBaseEnergy,berryEnergy,skillProbability:probability,skillLevel,skill,triggers,directSkillEnergy,
+        totalEnergy:berryEnergy+directSkillEnergy
+      };
+    });
+    const berryEnergy=sum(rows.map(row=>row.berryEnergy)),directSkillEnergy=sum(rows.map(row=>row.directSkillEnergy)),totalEnergy=berryEnergy+directSkillEnergy;
+    return {...settings,island:profile,berryEnergy,directSkillEnergy,totalEnergy,perHour:totalEnergy/settings.durationHours,members:rows,unsupportedSkillMembers:rows.filter(row=>!row.skill.supported&&/树果骤增|流星群|帮手加速|帮手支援|新月祈祷|治愈波动|挥指|模仿/.test(String((members.find(member=>member.mon.id===row.id)||{}).mon?.main||'')))};
   }
 
   function ingredientProbability(mon,production){
@@ -220,7 +282,9 @@
       ?clamp(requestedCollectionHours,.5,24)
       :recommendedCollectionHours([base]);
     const member=addCollectionModel(base,collectionHours);
-    return {valid:true,member,energyProfile,options:resolvedOptions,teammateHelpingBonusCount,ownHelpingBonus,helpingBonusCount,collectionHours};
+    const energy=calculateEnergyBreakdown([member],options);
+    const withEnergy={...member,snorlaxEnergy:energy.members[0]};
+    return {valid:true,member:withEnergy,energy,energyProfile,options:resolvedOptions,teammateHelpingBonusCount,ownHelpingBonus,helpingBonusCount,collectionHours};
   }
 
   function calculateTeam(team,productionByBoxId,options={}){
@@ -233,8 +297,10 @@
     const baseMembers=cleanTeam.map(mon=>baseMemberModel(mon,productionByBoxId&&productionByBoxId[mon.id],resolvedOptions,helpingBonusCount));
     const collectionHours=recommendedCollectionHours(baseMembers);
     const members=baseMembers.map(member=>addCollectionModel(member,collectionHours));
+    const energy=calculateEnergyBreakdown(members,options);
+    const membersWithEnergy=members.map((member,index)=>({...member,snorlaxEnergy:energy.members[index]}));
     const ingredientTotals=new Map();
-    members.forEach(member=>member.ingredients.forEach(slot=>{
+    membersWithEnergy.forEach(member=>member.ingredients.forEach(slot=>{
       const current=ingredientTotals.get(slot.name)||{name:slot.name,perCollection:0,perDay:0,contributors:[]};
       current.perCollection+=slot.perCollection;
       current.perDay+=slot.perDay;
@@ -255,7 +321,8 @@
       collectionHours,
       limitingMember,
       earliestBerry,
-      members,
+      members:membersWithEnergy,
+      energy,
       ingredients:[...ingredientTotals.values()].sort((a,b)=>b.perDay-a.perDay||a.name.localeCompare(b.name,'zh-CN')),
       overnightFull:baseMembers.filter(member=>member.fullHours<8).sort((a,b)=>a.fullHours-b.fullHours)
     };
@@ -300,6 +367,9 @@
     const countRoot=document.querySelector('#currentTeamCount');
     const campInput=document.querySelector('#currentTeamCamp');
     const energyInput=document.querySelector('#currentTeamEnergy');
+    const islandInput=document.querySelector('#currentTeamIsland');
+    const durationInput=document.querySelector('#currentTeamDuration');
+    const islandBonusInput=document.querySelector('#currentTeamIslandBonus');
     const clearButton=document.querySelector('#currentTeamClear');
     const saveTeamButton=document.querySelector('#currentTeamSave');
     const savedCountRoot=document.querySelector('#currentTeamSavedCount');
@@ -308,10 +378,35 @@
     const ingredientApi=typeof globalThis!=='undefined'?globalThis.POKEMON_SLEEP_INGREDIENTS:null;
     const storageKey='pokemon-sleep-current-team-v1';
     const savedStorageKey='pokemon-sleep-saved-teams-v1';
+    const energySettingsStorageKey='pokemon-sleep-team-energy-settings-v1';
     let sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));
     let selected=loadSelection();
     let savedTeams=loadSavedTeams(),deleteArmedId=null,saveMessageTimer=null;
     const selects=[];
+
+    function loadEnergySettings(){
+      try{return normalizeEnergySettings(JSON.parse(localStorage.getItem(energySettingsStorageKey)||'{}'))}catch(_error){return {...DEFAULT_ENERGY_SETTINGS}}
+    }
+
+    let energySettings=loadEnergySettings();
+    if(islandInput)islandInput.value=energySettings.islandProfile;
+    if(durationInput)durationInput.value=String(energySettings.durationHours);
+    if(islandBonusInput)islandBonusInput.value=String(energySettings.islandBonusPct);
+
+    function teamOptions(){
+      return {goodCamp:campInput.checked,energyProfile:energyInput.value,...energySettings};
+    }
+
+    function saveEnergySettings(){
+      energySettings=normalizeEnergySettings({
+        islandProfile:islandInput&&islandInput.value,
+        durationHours:durationInput&&durationInput.value,
+        islandBonusPct:islandBonusInput&&islandBonusInput.value
+      });
+      if(durationInput)durationInput.value=String(energySettings.durationHours);
+      if(islandBonusInput)islandBonusInput.value=String(energySettings.islandBonusPct);
+      try{localStorage.setItem(energySettingsStorageKey,JSON.stringify(energySettings))}catch(_error){}
+    }
 
     function notifyChange(type){
       if(typeof onChange==='function')onChange({type,currentTeam:[...selected.filter(Boolean)],savedTeams:savedTeams.map(team=>({...team,members:[...team.members]}))});
@@ -396,6 +491,9 @@
       const limiting=result.limitingMember;
       const totalPerDay=sum(result.ingredients.map(item=>item.perDay));
       const cards=[
+        [`${number(result.energy.durationHours,1)}小时纯能量`,`${Math.round(result.energy.totalEnergy).toLocaleString('zh-CN')}`,`每小时约 ${Math.round(result.energy.perHour).toLocaleString('zh-CN')}；不计食材能量`],
+        ['常规树果',Math.round(result.energy.berryEnergy).toLocaleString('zh-CN'),`${result.energy.island.label} · 岛屿加成 +${number(result.energy.islandBonusPct,0)}%`],
+        ['直接能量技能',Math.round(result.energy.directSkillEnergy).toLocaleString('zh-CN'),result.energy.directSkillEnergy?'按理论触发期望计算':'当前队员没有可直接折算的能量技能'],
         ['建议收菜',formatHours(result.collectionHours),limiting?`按${limiting.mon.name}预计${formatHours(limiting.fullHours)}满仓，预留约15%空间`:'等待完整队伍'],
         ['食材合计',`${number(totalPerDay,1)} 个／24h`,'按建议频率全天执行的常规帮忙期望'],
         ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`每名成员按自身速度补正逐只重算；队内叠加${result.helpingBonusCount*5}%，与速度副技能合计遵守35%上限`:'当前没有全队速度加成'],
@@ -417,14 +515,16 @@
         levelButton.type='button';levelButton.setAttribute('aria-label',`调整${mon.name}当前等级`);levelButton.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('pokemon-sleep:edit-level',{detail:{id:mon.id}})));
         levelLine.append(levelMeta,levelButton);title.append(element('span','current-team-position',`位置 ${index+1}`),element('h3','pokemon-name-text',mon.name),levelLine);
         const fullness=element('span',`current-team-fullness ${member.fullness>=.9?'danger':member.fullness>=.7?'warn':''}`,`收菜时约${Math.round(member.fullness*100)}%`);head.append(title,fullness);card.append(head);
-        const stats=element('div','current-team-member-stats');
-        [[formatInterval(member.effectiveIntervalSec),'有效帮忙间隔'],[`${number(member.probability.current*100)}%`,'当前食材概率'],[`${member.carry}`,'模型持有上限'],[formatHours(member.fullHours),'预计满仓']].forEach(([value,label])=>{const item=element('div','');item.append(element('strong','',value),element('span','',label));stats.append(item)});card.append(stats);
+        const stats=element('div','current-team-member-stats'),memberEnergy=member.snorlaxEnergy;
+        [[formatInterval(member.effectiveIntervalSec),'有效帮忙间隔'],[`${number(member.probability.current*100)}%`,'当前食材概率'],[`${member.carry}`,'模型持有上限'],[formatHours(member.fullHours),'预计满仓'],[Math.round(memberEnergy.totalEnergy).toLocaleString('zh-CN'),`${number(result.energy.durationHours,1)}小时纯能量`],[`${memberEnergy.berryName}${memberEnergy.favorite?' ×2':''}`,'当前树果']].forEach(([value,label])=>{const item=element('div','');item.append(element('strong','',value),element('span','',label));stats.append(item)});card.append(stats);
         const foods=element('div','current-team-member-foods');
         member.ingredients.forEach(slot=>{const row=element('div','');row.append(element('strong','',slot.name),element('span','',`每次约 ${number(slot.perCollection)} · 24h约 ${number(slot.perDay)}`));foods.append(row)});
         if(!member.ingredients.length)foods.append(element('span','current-team-muted','暂无可统计食材'));
         card.append(foods);
         const notes=[];
         if(/食材获取|食材精选|十项全能|料理辅助/.test(mon.main))notes.push('主技能还可能带来额外食材，未并入上面的常规帮忙数量');
+        if(memberEnergy.skill.supported)notes.push(`直接能量技能按 Lv.${memberEnergy.skillLevel}、约${number(memberEnergy.triggers,2)}次触发计入 ${Math.round(memberEnergy.directSkillEnergy).toLocaleString('zh-CN')} 能量`);
+        else if(/树果骤增|流星群|帮手加速|帮手支援|新月祈祷|治愈波动|挥指|模仿/.test(mon.main))notes.push('该主技能依赖完整队伍状态，本次纯能量暂未折算');
         if(mon.specialty==='berry'&&member.fullHours<result.collectionHours)notes.push('树果手满仓后仍会偷偷吃树果，但食材与主技能抽选会停止');
         if(member.probability.provisional)notes.push('缺少物种食材概率，当前使用20%暂定值');
         if(notes.length)card.append(element('p','current-team-member-note',notes.join('；')+'。'));
@@ -463,7 +563,7 @@
     }
 
     function saveCurrentTeam(){
-      const team=selected.filter(Boolean),result=calculateTeam(team.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value});
+      const team=selected.filter(Boolean),result=calculateTeam(team.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,teamOptions());
       if(result.selectedCount!==5){showSaveMessage('请先选满五只宝可梦。','warning');return}
       if(!result.valid){showSaveMessage(result.validation.message,'warning');return}
       const saved=upsertSavedTeam(savedTeams,team,{goodCamp:campInput.checked,energyProfile:energyInput.value});
@@ -487,7 +587,7 @@
     function render(){
       updatePickers();
       const team=selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean);
-      const result=calculateTeam(team,productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value});
+      const result=calculateTeam(team,productionByBoxId,teamOptions());
       countRoot.textContent=`${result.selectedCount}／5`;
       renderWarning(result);renderSummary(result);renderMembers(result);renderSavedTeams(result);ingredientApi?.decorate(page);
       return result;
@@ -495,12 +595,17 @@
 
     campInput.addEventListener('change',render);
     energyInput.addEventListener('change',render);
+    islandInput?.addEventListener('change',()=>{saveEnergySettings();render()});
+    durationInput?.addEventListener('input',()=>{saveEnergySettings();render()});
+    durationInput?.addEventListener('change',()=>{durationInput.value=String(normalizeEnergySettings({durationHours:durationInput.value}).durationHours)});
+    islandBonusInput?.addEventListener('input',()=>{saveEnergySettings();render()});
+    islandBonusInput?.addEventListener('change',()=>{islandBonusInput.value=String(normalizeEnergySettings({islandBonusPct:islandBonusInput.value}).islandBonusPct)});
     saveTeamButton?.addEventListener('click',saveCurrentTeam);
     clearButton.addEventListener('click',()=>{selected=[];deleteArmedId=null;saveSelection();selects.forEach(({select})=>{select.value=''});render()});
     buildPickers();render();
     function refresh(){sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));buildPickers();return render()}
-    return {render,refresh,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,{goodCamp:campInput.checked,energyProfile:energyInput.value})};
+    return {render,refresh,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,teamOptions())};
   }
 
-  return {ENERGY_PROFILES,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateMember,calculateTeam,formatHours,mount};
+  return {ENERGY_PROFILES,ISLAND_PROFILES,DEFAULT_ENERGY_SETTINGS,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,skillProbability,normalizeEnergySettings,calculateEnergyBreakdown,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateMember,calculateTeam,formatHours,mount};
 });

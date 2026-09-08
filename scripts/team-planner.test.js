@@ -71,7 +71,7 @@ assert.ok(camp.members[0].effectiveIntervalSec < noCamp.members[0].effectiveInte
 const stufful = {
   id:'94',name:'童偶熊',lv:'15',interval:'1:06:25',inv:'13',specialty:'ingredient',
   ingredients:'玉米×2／豆制肉×6／玉米×7',subs:'树果数量S；食材概率S；食材概率M；持有上限S；持有上限M',
-  nature:'浮躁',main:'能量填充S Lv.1'
+  nature:'浮躁',main:'能量填充S Lv.1',berryId:7,berry:'樱子果',skillRatePct:2.1,mainSkillId:1,catalogHelpFrequencyBaseSec:4100
 };
 const comfey = {
   id:'95',name:'花疗环环',lv:'35',interval:'38:50',inv:'27',specialty:'ingredient',
@@ -87,6 +87,18 @@ assert.ok(ingredientTotal(comfeyMember,'萌绿玉米')>ingredientTotal(stuffulMe
 const boostedComfey=planner.calculateMember(comfey,{ingredientRate:.167,baseBerryCount:1},{goodCamp:true,energyProfile:'average',teammateHelpingBonusCount:4});
 assert.ok(ingredientTotal(boostedComfey,'萌绿玉米')>ingredientTotal(comfeyMember,'萌绿玉米'),'其他队友的帮手奖励应提升目标个体产出');
 assert.ok(boostedComfey.member.combinedSpeedReduction<=.35,'单成员对比同样必须遵守35%速度缩减上限');
+
+const stuffulEnergy=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average',durationHours:12,islandProfile:'lapis',islandBonusPct:60});
+assert.strictEqual(stuffulEnergy.energy.durationHours,12);
+assert.strictEqual(stuffulEnergy.member.snorlaxEnergy.favorite,true,'宝蓝湖畔应让童偶熊的樱子果按喜爱树果计算');
+assert.ok(stuffulEnergy.energy.berryEnergy>0,'纯能量应包含常规树果');
+assert.ok(stuffulEnergy.energy.directSkillEnergy>0,'纯能量应包含能量填充S');
+const noIslandBonus=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average',durationHours:12,islandProfile:'lapis',islandBonusPct:0});
+assert.ok(stuffulEnergy.energy.totalEnergy>noIslandBonus.energy.totalEnergy,'岛屿加成应提升树果与直接技能能量');
+const nonFavorite=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average',durationHours:12,islandProfile:'cyan',islandBonusPct:0});
+assert.ok(noIslandBonus.energy.berryEnergy>nonFavorite.energy.berryEnergy*1.9,'喜爱树果应接近两倍常规树果能量');
+assert.strictEqual(planner.normalizeEnergySettings({durationHours:999,islandBonusPct:-3,islandProfile:'missing'}).durationHours,168);
+assert.strictEqual(planner.normalizeEnergySettings({durationHours:24,islandBonusPct:-3,islandProfile:'missing'}).islandProfile,'none');
 
 const beforeLevelUpdateInterval = noCamp.members[0].baseIntervalSec;
 levels.applyLevel(venusaur, 60);

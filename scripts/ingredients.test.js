@@ -13,6 +13,8 @@ assert.strictEqual(ingredients.canonicalize('蜂蜜'), '甜甜蜜');
 assert.strictEqual(ingredients.canonicalize('青色果实'), '嫩亮酪梨');
 assert.strictEqual(ingredients.canonicalize('不存在的食材'), null);
 assert.strictEqual(ingredients.iconPath('牛奶'), './assets/ingredients/milk.png');
+assert.ok(ingredients.SKIP_DECORATION_SELECTOR.includes('h3'), '标题中的食谱名不得被自动插入食材图标');
+assert.ok(ingredients.SKIP_DECORATION_SELECTOR.includes('[data-no-ingredient-icons]'));
 
 for (const [name, filename] of Object.entries(ingredients.INGREDIENTS)) {
   const assetPath = path.resolve(__dirname, '..', 'assets', 'ingredients', filename);

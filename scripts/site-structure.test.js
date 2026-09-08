@@ -20,5 +20,9 @@ assert.deepStrictEqual(missingRefs, [], `缺少本地资源：${missingRefs.join
 
 const inlineScripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(match => match[1]).filter(Boolean);
 inlineScripts.forEach((source, index) => new vm.Script(source, { filename: `index-inline-${index}.js` }));
+assert.ok(html.includes('id="currentTeamIslandBonus"'), '当前队伍页缺少岛屿加成输入');
+assert.ok(html.includes('id="currentTeamDuration"'), '当前队伍页缺少纯能量计算时长输入');
+assert.ok(html.includes('id="recipeLevelBonus"'), '食谱页缺少当前食谱等级加成输入');
+assert.ok(html.includes("title.dataset.noIngredientIcons=''"), '食谱名称必须显式禁止食材图标装饰');
 
 console.log(`site structure tests passed (${ids.length} ids, ${new Set(localRefs).size} local refs)`);
