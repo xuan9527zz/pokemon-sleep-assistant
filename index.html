@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="./cultivation-advisor.css?v=20260831-1">
 <link rel="stylesheet" href="./pokemon-comparison.css?v=20260901-1">
 <link rel="stylesheet" href="./box-filter.css?v=20260902-1">
-<link rel="stylesheet" href="./personal-settings.css?v=20260908-1">
+<link rel="stylesheet" href="./personal-settings.css?v=20260910-1">
 <link rel="stylesheet" href="./pokemon-picker.css?v=20260908-1">
 <title>Pokemon Sleep 助手</title>
 <style>
@@ -52,7 +52,7 @@
 .score-tooltip{width:min(390px,calc(100vw - 20px))}
 </style>
 <style>
-.recipe-controls{grid-template-columns:minmax(220px,1.6fr) minmax(190px,1fr) minmax(160px,1fr) minmax(180px,.9fr) auto}.recipe-controls .recipe-ingredient-filter{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;font:inherit}.recipe-ingredient-filter{position:relative}.recipe-ingredient-filter summary{display:flex;align-items:center;min-height:40px;padding:8px 11px;cursor:pointer;font-weight:750}.recipe-ingredient-options{position:absolute;z-index:12;top:calc(100% + 6px);left:0;display:grid;width:min(460px,85vw);grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:320px;overflow:auto;border:1px solid #d6dde7;border-radius:12px;background:#fff;padding:9px;box-shadow:0 14px 35px #10182824}.recipe-controls .recipe-ingredient-option{display:flex;align-items:center;justify-content:flex-start;gap:7px;min-height:38px;border-color:#e2e7ee;background:#fff;color:#354052;text-align:left}.recipe-controls .recipe-ingredient-option.active{border-color:#6850b4;background:#f1edff;color:#54349c}.recipe-card.is-uncooked{border-style:dashed}.recipe-card-badges{display:flex;align-items:flex-end;flex-direction:column;gap:5px}.recipe-status{display:inline-flex;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}.recipe-status.cooked{background:#e7f8ef;color:#147347}.recipe-status.uncooked{background:#fff3d8;color:#8b5b00}.recipe-card-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}.recipe-cooked-toggle{border:1px solid #d5dce5;border-radius:8px;background:#fff;color:#465467;padding:6px 9px;font:inherit;font-size:11px;font-weight:800;cursor:pointer}.recipe-card-actions .recipe-source{margin-top:0}@media(max-width:1050px){.recipe-controls{grid-template-columns:1fr 1fr}}@media(max-width:520px){.recipe-ingredient-options{position:fixed;inset:auto 10px 78px;width:auto;max-height:55dvh;grid-template-columns:1fr}}
+.recipe-controls{grid-template-columns:minmax(220px,1.6fr) minmax(190px,1fr) minmax(160px,1fr) minmax(180px,.9fr) auto}.recipe-controls .recipe-ingredient-filter{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;font:inherit}.recipe-ingredient-filter{position:relative}.recipe-ingredient-filter summary{display:flex;align-items:center;min-height:40px;padding:8px 11px;cursor:pointer;font-weight:750}.recipe-ingredient-options{position:absolute;z-index:12;top:calc(100% + 6px);left:0;display:grid;width:min(460px,85vw);grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:320px;overflow:auto;border:1px solid #d6dde7;border-radius:12px;background:#fff;padding:9px;box-shadow:0 14px 35px #10182824}.recipe-controls .recipe-ingredient-option{display:flex;align-items:center;justify-content:flex-start;gap:7px;min-height:38px;border-color:#e2e7ee;background:#fff;color:#354052;text-align:left}.recipe-controls .recipe-ingredient-option.active{border-color:#6850b4;background:#f1edff;color:#54349c}.recipe-card.is-uncooked{border-style:dashed}.recipe-card-badges{display:flex;align-items:flex-end;flex-direction:column;gap:5px}.recipe-status{display:inline-flex;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}.recipe-status.cooked{background:#e7f8ef;color:#147347}.recipe-status.uncooked{background:#fff3d8;color:#8b5b00}.recipe-card-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px}.recipe-card-actions .recipe-source{margin-top:0}@media(max-width:1050px){.recipe-controls{grid-template-columns:1fr 1fr}}@media(max-width:520px){.recipe-ingredient-options{position:fixed;inset:auto 10px 78px;width:auto;max-height:55dvh;grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="./mobile.css?v=20260908-1">
 </head>
@@ -77,7 +77,7 @@
       </div><div class="advisor-stage-panel" aria-labelledby="advisorStageTitle"><div class="advisor-stage-copy"><strong id="advisorStageTitle">培养判断按账号阶段解释，不改综合评分</strong><span id="advisorStageDescription">已有成熟料理与队伍，优先长期上限、稀缺覆盖和明确的队伍增益。</span></div><div class="advisor-stage-control"><label for="accountStage">账号阶段</label><select id="accountStage"><option value="starter">新手起步</option><option value="forming">队伍成型</option><option value="mature">成熟补强</option></select></div></div></section>
       <section class="profile-settings-card"><h3>各岛屿加成</h3><p>当前队伍会自动读取所选岛屿对应的加成，不再在页面里重复输入。</p><div class="profile-island-bonuses" id="profileIslandBonuses"></div></section>
       <section class="profile-settings-card"><div class="profile-stock-head"><div><h3>食材库存</h3><p>全站共用，硬上限 800 个。</p></div><span class="profile-stock-total" id="profileStockTotal">0 / 800</span></div><div class="profile-ingredient-stock" id="profileIngredientStock"></div></section>
-      <section class="profile-settings-card"><h3>全食谱进度与食谱等级</h3><p>逐道记录 Lv.1–70 与是否做过；网站按等级表换算加成，再叠加当前岛屿百分比。</p><div class="profile-recipe-toolbar"><input id="profileRecipeSearch" placeholder="搜索食谱"><select id="profileRecipeFilter"><option value="all">全部食谱</option><option value="uncooked">仅未做过</option><option value="cooked">仅已做过</option></select></div><div class="profile-recipe-bulk"><input id="profileRecipeBulk" type="number" min="1" max="70" value="1" aria-label="批量设置食谱等级"><button id="profileRecipeBulkApply" type="button">全部应用</button></div><div class="profile-recipe-list" id="profileRecipeList"></div></section>
+      <section class="profile-settings-card"><h3>全食谱进度与食谱等级</h3><p>0 级表示尚未做过，Lv.1–70 自动表示已经解锁；网站按等级表换算加成，再叠加当前岛屿百分比。</p><div class="profile-recipe-toolbar"><input id="profileRecipeSearch" placeholder="搜索食谱"><select id="profileRecipeFilter"><option value="all">全部食谱</option><option value="uncooked">仅未做过</option><option value="cooked">仅已做过</option></select></div><div class="profile-recipe-bulk"><input id="profileRecipeBulk" type="number" min="0" max="70" value="0" aria-label="批量设置食谱等级，0表示未做过"><button id="profileRecipeBulkApply" type="button">全部应用</button></div><div class="profile-recipe-list" id="profileRecipeList"></div></section>
       <section class="profile-settings-card"><h3>账号与盒子工具</h3><p>登录、录入、分盒、回收站和批量等级维护集中在这里。</p><div class="personal-settings-tools" id="personalSettingsTools"></div></section>
       <p class="profile-settings-message" id="profileSettingsMessage" role="status" hidden></p>
     </div>
@@ -371,7 +371,7 @@
 <script src="pokemon-data.js?v=20260831-1"></script>
 <script src="box-manager.js"></script>
 <script src="level-manager.js"></script>
-<script src="personal-settings.js?v=20260910-1"></script>
+<script src="personal-settings.js?v=20260910-2"></script>
 <script src="pokemon-picker.js?v=20260908-1"></script>
 <script src="team-planner.js?v=20260908-1"></script>
 <script src="weekly-planner.js?v=20260910-1"></script>
@@ -605,10 +605,11 @@ const recipeTabs=document.querySelector('#recipeTabs'),recipeQ=document.querySel
 const ingredientRecommendation=document.querySelector('#ingredientRecommendation'),ingredientRecommendationTitle=document.querySelector('#ingredientRecommendationTitle'),ingredientRecommendationHint=document.querySelector('#ingredientRecommendationHint'),ingredientRecommendationGrid=document.querySelector('#ingredientRecommendationGrid');
 const recipeTypes=['全部','咖喱／浓汤','沙拉','点心／饮料'];
 let activeRecipeType='全部',activeIngredientRecommendation='',selectedRecipeIngredients=new Set();
-const recipeLevelFor=recipe=>personalSettingsController?.recipeLevel(recipe.id)||1;
+const recipeLevelFor=recipe=>personalSettingsController?.recipeLevel(recipe.id)??0;
 const recipeLevelBonusFor=recipe=>window.POKEMON_SLEEP_SNORLAX_ENERGY.recipeLevelBonusPct(recipeLevelFor(recipe));
 const currentIslandBonusPct=()=>personalSettingsController?.islandBonus()||0;
 const currentRecipeEnergy=recipe=>window.POKEMON_SLEEP_SNORLAX_ENERGY.recipeFinalEnergy({baseEnergy:recipe.energy,level:recipeLevelFor(recipe),islandBonusPct:currentIslandBonusPct()});
+const plannedRecipeEnergy=recipe=>recipeLevelFor(recipe)>0?currentRecipeEnergy(recipe):0;
 const recipeEl=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el};
 const recipeClass=type=>type==='咖喱／浓汤'?'curry':type==='沙拉'?'salad':'dessert';
 const ingredientIcons=window.POKEMON_SLEEP_INGREDIENTS;
@@ -680,27 +681,27 @@ function renderRecipes(){
   rows.sort(sorters[recipeSort.value]||sorters['energy-desc']);
   [...recipeTabs.children].forEach(button=>{const selected=button.dataset.recipeType===activeRecipeType;button.classList.toggle('active',selected);button.setAttribute('aria-selected',selected?'true':'false')});
   document.querySelector('#recipeShown').textContent=rows.length;
-  const maxRecipe=rows.reduce((best,row)=>!best||currentRecipeEnergy(row)>currentRecipeEnergy(best)?row:best,null);document.querySelector('#recipeTopEnergy').textContent=maxRecipe?`当前结果最高料理能量：${currentRecipeEnergy(maxRecipe).toLocaleString('zh-CN')}（${maxRecipe.name} Lv.${recipeLevelFor(maxRecipe)}，等级 +${recipeLevelBonusFor(maxRecipe)}%，岛屿 +${currentIslandBonusPct()}%）`:'';
+  const maxRecipe=rows.reduce((best,row)=>!best||currentRecipeEnergy(row)>currentRecipeEnergy(best)?row:best,null);document.querySelector('#recipeTopEnergy').textContent=maxRecipe?`当前结果最高料理能量：${currentRecipeEnergy(maxRecipe).toLocaleString('zh-CN')}（${maxRecipe.name} ${recipeLevelFor(maxRecipe)>0?`Lv.${recipeLevelFor(maxRecipe)}`:'未做过，按 Lv.1 预估'}，等级 +${recipeLevelBonusFor(maxRecipe)}%，岛屿 +${currentIslandBonusPct()}%）`:'';
   if(!rows.length){recipeGrid.replaceChildren(recipeEl('div','recipe-none','没有符合条件的食谱，请换一个名称、食材或类别。'));return}
   recipeGrid.replaceChildren(...rows.map(recipe=>{
     const cooked=personalSettingsController?.isCooked(recipe.id)||false,recipeLevel=recipeLevelFor(recipe),levelBonus=recipeLevelBonusFor(recipe),islandBonus=currentIslandBonusPct(),card=recipeEl('article',`recipe-card ${recipeClass(recipe.type)}${cooked?' is-cooked':' is-uncooked'}`),head=recipeEl('div','recipe-card-head'),title=recipeEl('h3','',recipe.name),badges=recipeEl('div','recipe-card-badges'),kind=recipeEl('span','recipe-kind',recipe.type),status=recipeEl('span',`recipe-status ${cooked?'cooked':'uncooked'}`,cooked?'已做过':'待解锁');title.dataset.noIngredientIcons='';
     badges.append(kind,status);head.append(title,badges);
     const stats=recipeEl('div','recipe-stats'),energy=recipeEl('div','recipe-stat energy'),baseEnergy=recipeEl('div','recipe-stat'),coefficient=recipeEl('div','recipe-stat coefficient'),total=recipeEl('div','recipe-stat');
-    energy.append(recipeEl('span','',`当前能量（Lv.${recipeLevel} +${levelBonus}% · 岛屿 +${islandBonus}%）`),recipeEl('b','',recipe.energy?currentRecipeEnergy(recipe).toLocaleString('zh-CN'):'—'));
+    energy.append(recipeEl('span','',cooked?`当前能量（Lv.${recipeLevel} +${levelBonus}% · 岛屿 +${islandBonus}%）`:`解锁后预估（Lv.1 · 岛屿 +${islandBonus}%）`),recipeEl('b','',recipe.energy?currentRecipeEnergy(recipe).toLocaleString('zh-CN'):'—'));
     baseEnergy.append(recipeEl('span','',recipe.energy?'Lv.1 基础能量':'基础能量'),recipeEl('b','',recipe.energy?recipe.energy.toLocaleString('zh-CN'):'—'));
     coefficient.append(recipeEl('span','',`固有料理系数 +${recipe.bonus}%`),recipeEl('b','',`×${recipe.coefficient.toFixed(2)}`));
     total.append(recipeEl('span','','所需锅容量'),recipeEl('b','',recipe.total?String(recipe.total):'任意'));
     stats.append(energy,baseEnergy,coefficient,total);
     const list=recipeEl('div','ingredient-list');
     if(recipe.ingredients.length)recipe.ingredients.forEach(item=>{const chip=recipeEl('button','ingredient-chip');chip.type='button';chip.dataset.ingredient=item.name;chip.append(ingredientVisual(item.name,` ×${item.amount}`));list.append(chip)});else list.append(recipeEl('span','recipe-empty','任意食材；不会解锁固定食谱'));
-    const actions=recipeEl('div','recipe-card-actions'),toggle=recipeEl('button','recipe-cooked-toggle',cooked?'标记为未做过':'标记为已做过'),source=recipeEl('a','recipe-source','在 RaenonX 查看');toggle.type='button';toggle.dataset.recipeCooked=String(recipe.id);source.href=`https://pks.raenonx.cc/zh/meal/${recipe.id}`;source.target='_blank';source.rel='noreferrer';actions.append(toggle,source);
+    const actions=recipeEl('div','recipe-card-actions'),source=recipeEl('a','recipe-source','在 RaenonX 查看');source.href=`https://pks.raenonx.cc/zh/meal/${recipe.id}`;source.target='_blank';source.rel='noreferrer';actions.append(source);
     card.append(head,stats,list,actions);return card
   }));
   decorateIngredients(recipeGrid);
 }
 recipeTabs.addEventListener('click',event=>{const button=event.target.closest('[data-recipe-type]');if(!button)return;activeRecipeType=button.dataset.recipeType;renderRecipes()});
 recipeQ.addEventListener('input',renderRecipes);recipeIngredient.addEventListener('change',()=>{selectedRecipeIngredients=new Set([...recipeIngredient.selectedOptions].map(option=>option.value));activeIngredientRecommendation=[...selectedRecipeIngredients][0]||'';syncRecipeIngredientControls();renderRecipes()});recipeSort.addEventListener('change',renderRecipes);recipeCookedFilter.addEventListener('change',renderRecipes);
-recipeGrid.addEventListener('click',event=>{const cookedButton=event.target.closest('[data-recipe-cooked]');if(cookedButton){const id=cookedButton.dataset.recipeCooked,state=personalSettingsController?.getState();if(state){const values=new Set(state.cookedRecipeIds);values.has(id)?values.delete(id):values.add(id);personalSettingsController.update({cookedRecipeIds:[...values]},'recipe-cooked')}return}const chip=event.target.closest('[data-ingredient]');if(!chip)return;toggleRecipeIngredient(chip.dataset.ingredient,true);document.querySelector('#recipeGuideTitle').scrollIntoView({behavior:'smooth',block:'start'})});
+recipeGrid.addEventListener('click',event=>{const chip=event.target.closest('[data-ingredient]');if(!chip)return;toggleRecipeIngredient(chip.dataset.ingredient,true);document.querySelector('#recipeGuideTitle').scrollIntoView({behavior:'smooth',block:'start'})});
 document.querySelector('#recipeReset').addEventListener('click',()=>{activeRecipeType='全部';recipeQ.value='';selectedRecipeIngredients.clear();activeIngredientRecommendation='';recipeSort.value='energy-desc';recipeCookedFilter.value='all';syncRecipeIngredientControls();renderRecipes()});
 document.querySelector('#ingredientRecommendationClear').addEventListener('click',()=>{selectedRecipeIngredients.clear();activeIngredientRecommendation='';syncRecipeIngredientControls();renderRecipes()});
 document.querySelector('#recipeSettingsOpen').addEventListener('click',()=>personalSettingsController?.open());
@@ -976,7 +977,7 @@ boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initia
 pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});
 teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,onChange:change=>window.POKEMON_SLEEP_DATA.emit('teams',change)});
 pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
-weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,recipeEnergy:currentRecipeEnergy});
+weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,recipeEnergy:plannedRecipeEnergy});
 investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});
 cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;
 refreshBoxFilterOptions();refreshBoxStats();render();decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});

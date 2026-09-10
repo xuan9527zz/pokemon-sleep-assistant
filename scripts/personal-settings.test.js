@@ -16,13 +16,19 @@ const normalized=settings.normalizeState({schemaVersion:2,currentIsland:'cyan',w
 assert.strictEqual(normalized.currentIsland,'cyan');
 assert.strictEqual(settings.islandBonus(normalized),85);
 assert.strictEqual(settings.recipeLevel(normalized,1),60);
-assert.strictEqual(settings.recipeLevel(normalized,2),1);
-assert.strictEqual(normalized.schemaVersion,2);
+assert.strictEqual(settings.recipeLevel(normalized,2),0);
+assert.strictEqual(normalized.schemaVersion,3);
 assert.ok(settings.isCooked(normalized,1));
+assert.ok(!settings.isCooked(normalized,2));
 assert.strictEqual(settings.inventoryTotal(normalized.ingredientStock),800,'库存规范化必须遵守800硬上限');
 
 const upgraded=settings.normalizeState({schemaVersion:1,recipeBonuses:{1:60}},context);
 assert.strictEqual(settings.recipeLevel(upgraded,1),30,'旧版60%应迁移到最接近的Lv.30（+61%）');
+assert.ok(settings.isCooked(upgraded,1));
+const cookedMigration=settings.normalizeState({schemaVersion:2,recipeLevels:{2:20},cookedRecipeIds:[1,2]},context);
+assert.strictEqual(settings.recipeLevel(cookedMigration,1),1,'旧版仅勾选已做过的食谱应迁移为Lv.1');
+assert.strictEqual(settings.recipeLevel(cookedMigration,2),20);
+assert.ok(!Object.hasOwn(cookedMigration,'cookedRecipeIds'));
 
 const changed=settings.setIngredientStock(normalized,'特选苹果',500);
 assert.strictEqual(settings.inventoryTotal(changed.ingredientStock),800,'单项修改不得让总库存超过800');
