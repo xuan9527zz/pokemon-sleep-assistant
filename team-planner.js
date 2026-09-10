@@ -89,6 +89,24 @@
     return {base,current,effective,natureMultiplier,subskillBonus,pityCeiling,provisional:false};
   }
 
+  function applySkillTriggerMultiplier(probability,multiplier){
+    const factor=clamp(Number(multiplier)||1,.01,10);
+    if(factor===1)return probability;
+    const current=clamp(probability.current*factor,0,.95),pityCeiling=probability.pityCeiling;
+    const effective=pityCeiling?current/(1-(1-current)**pityCeiling):current;
+    return {...probability,current,effective,eventMultiplier:factor};
+  }
+
+  function memberModifier(options,mon){
+    const raw=typeof options.memberModifier==='function'?options.memberModifier(mon)||{}:options.memberModifier||{};
+    return {
+      ingredientHelpBonus:clamp(Number(raw.ingredientHelpBonus)||0,0,99),
+      skillTriggerMultiplier:clamp(Number(raw.skillTriggerMultiplier)||1,.01,10),
+      mainSkillLevelBonus:clamp(Number(raw.mainSkillLevelBonus)||0,0,20),
+      label:String(raw.label||'')
+    };
+  }
+
   function normalizeEnergySettings(options={}){
     return {
       durationHours:clamp(Number(options.durationHours)||DEFAULT_ENERGY_SETTINGS.durationHours,.5,168),
@@ -106,12 +124,12 @@
       const berries=helps*(1-member.probability.current)*member.berryCount;
       const berryBaseEnergy=berryStrength?berries*berryStrength*(favorite?2:1):0;
       const berryEnergy=energyMechanics?energyMechanics.applyPercentageBonus(berryBaseEnergy,settings.islandBonusPct):Math.round(berryBaseEnergy);
-      const probability=skillProbability(mon),skillLevel=boxManager&&typeof boxManager.effectiveMainSkillLevel==='function'?boxManager.effectiveMainSkillLevel(mon):Number(String(mon.main||'').match(/Lv\.(\d+)/)?.[1]||1);
+      const modifier=member.eventModifier||memberModifier(options,mon),probability=applySkillTriggerMultiplier(skillProbability(mon),modifier.skillTriggerMultiplier),baseSkillLevel=boxManager&&typeof boxManager.effectiveMainSkillLevel==='function'?boxManager.effectiveMainSkillLevel(mon):Number(String(mon.main||'').match(/Lv\.(\d+)/)?.[1]||1),skillCap=boxManager&&typeof boxManager.mainSkillLevelCap==='function'?boxManager.mainSkillLevelCap(mon.main):Math.max(6,baseSkillLevel),skillLevel=Math.min(skillCap,baseSkillLevel+modifier.mainSkillLevelBonus);
       const skill=energyMechanics?energyMechanics.directEnergyPerUse(mon.main,mon.mainSkillId,skillLevel,settings.islandBonusPct):{supported:false,actualEnergy:0,baseEnergy:0};
       const triggers=skill.supported?helps*probability.effective:0,directSkillEnergy=Math.round(triggers*skill.actualEnergy);
       return {
         id:mon.id,name:mon.name,berryName:mon.berry||'待核对',favorite,helps,berries,berryStrength,
-        berryBaseEnergy,berryEnergy,skillProbability:probability,skillLevel,skill,triggers,directSkillEnergy,
+        berryBaseEnergy,berryEnergy,skillProbability:probability,skillLevel,baseSkillLevel,eventModifier:modifier,skill,triggers,directSkillEnergy,
         totalEnergy:berryEnergy+directSkillEnergy
       };
     });
@@ -225,9 +243,10 @@
     const carryBase=Number(mon.inv)||0;
     const carry=options.goodCamp?Math.ceil(carryBase*1.2):carryBase;
     const ingredients=parseIngredientSlots(mon.ingredients,mon.lv);
+    const eventModifier=memberModifier(options,mon);
     const probability=ingredientProbability(mon,production);
     const unlockedCount=Math.max(ingredients.unlocked.length,1);
-    const averageIngredientQuantity=ingredients.unlocked.length?sum(ingredients.unlocked.map(slot=>slot.quantity))/unlockedCount:0;
+    const averageIngredientQuantity=ingredients.unlocked.length?sum(ingredients.unlocked.map(slot=>slot.quantity+eventModifier.ingredientHelpBonus))/unlockedCount:0;
     const berryFinding=unlockedSubskills(mon).includes('树果数量S')?1:0;
     const catalogBerryCount=production&&production.baseBerryCount!==undefined?production.baseBerryCount:mon&&mon.baseBerryCount;
     const baseBerryCount=Number(catalogBerryCount)||1;
@@ -237,11 +256,11 @@
     const fullHours=carry>0&&expectedItemsPerHelp>0?carry/expectedItemsPerHelp*effectiveIntervalSec/3600:Infinity;
     const ingredientPerHelp=ingredients.unlocked.map(slot=>({
       ...slot,
-      expected:probability.current*slot.quantity/unlockedCount
+      expected:probability.current*(slot.quantity+eventModifier.ingredientHelpBonus)/unlockedCount
     }));
     return {
       mon,production,ingredients,probability,baseIntervalSec,effectiveIntervalSec,carryBase,carry,
-      berryCount,berryFinding,expectedItemsPerHelp,helpsPerDay,fullHours,ingredientPerHelp,
+      berryCount,berryFinding,expectedItemsPerHelp,helpsPerDay,fullHours,ingredientPerHelp,eventModifier,
       helpingBonusCount,ownSpeedReduction,combinedSpeedReduction,teamSpeedReduction,helpingBonusOutputMultiplier:outputMultiplier
     };
   }
@@ -276,7 +295,7 @@
     const teammateHelpingBonusCount=clamp(Math.round(Number(options.teammateHelpingBonusCount)||0),0,4);
     const ownHelpingBonus=unlockedSubskills(mon).includes('帮手奖励')?1:0;
     const helpingBonusCount=teammateHelpingBonusCount+ownHelpingBonus;
-    const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average'};
+    const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average',memberModifier:options.memberModifier};
     const base=baseMemberModel(mon,production,resolvedOptions,helpingBonusCount);
     const requestedCollectionHours=Number(options.collectionHours);
     const collectionHours=Number.isFinite(requestedCollectionHours)
@@ -293,7 +312,7 @@
     const validation=validateBattleTeam(selectedTeam);
     const cleanTeam=selectedTeam.filter(mon=>mon.battleEligible!==false);
     const energyProfile=ENERGY_PROFILES[options.energyProfile]||ENERGY_PROFILES.average;
-    const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average'};
+    const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average',memberModifier:options.memberModifier};
     const helpingBonusCount=cleanTeam.filter(mon=>unlockedSubskills(mon).includes('帮手奖励')).length;
     const baseMembers=cleanTeam.map(mon=>baseMemberModel(mon,productionByBoxId&&productionByBoxId[mon.id],resolvedOptions,helpingBonusCount));
     const collectionHours=recommendedCollectionHours(baseMembers);

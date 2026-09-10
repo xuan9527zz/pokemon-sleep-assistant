@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="./box-manager.css">
 <link rel="stylesheet" href="./pokemon-manager.css?v=20260831-1">
 <link rel="stylesheet" href="./cloud-sync.css?v=20260831-1">
-<link rel="stylesheet" href="./weekly-planner.css?v=20260901-2">
+<link rel="stylesheet" href="./weekly-planner.css?v=20260911-1">
 <link rel="stylesheet" href="./investment-planner.css?v=20260831-2">
 <link rel="stylesheet" href="./retention-advisor.css?v=20260901-1">
 <link rel="stylesheet" href="./cultivation-advisor.css?v=20260831-1">
@@ -91,16 +91,17 @@
   <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周作战台｜这周先做什么</h2><p>按当前岛屿、周类型与 800 格库存，滚动规划下一批真正放得下的食材。</p></div><span class="guide-stamp">当前盒子 · 自动保存</span></div>
   <div class="weekly-controls">
     <div class="weekly-profile-summary" id="weeklyProfileSummary"><span>个人设置</span><strong>正在读取当前岛屿与本周类型</strong><button id="weeklySettingsOpen" type="button">调整</button></div><select id="weeklyIsland" hidden aria-hidden="true"></select><select id="weeklyActivity" hidden aria-hidden="true"></select>
+    <fieldset class="weekly-route-picker" id="weeklyPreparationRoutes" hidden><legend>活动周备料路线（可多选）</legend><label><input type="checkbox" value="咖喱／浓汤" checked><span>咖喱／浓汤</span></label><label><input type="checkbox" value="沙拉" checked><span>沙拉</span></label><label><input type="checkbox" value="点心／饮料"><span>点心／饮料</span></label><small>双路线按同一食材的较高需求合并，不重复囤积；活动首日确定料理后只走对应路线。</small></fieldset>
     <div class="weekly-field"><label for="weeklyRecipeType">料理类别</label><select id="weeklyRecipeType"><option>咖喱／浓汤</option><option>沙拉</option><option>点心／饮料</option><option>全部</option></select></div>
     <div class="weekly-field weekly-target-field"><label for="weeklyTargetRecipe">本周目标食谱</label><select id="weeklyTargetRecipe"></select></div>
     <div class="weekly-field"><label for="weeklyMealGoal">目标餐数（1–21）</label><input id="weeklyMealGoal" type="number" min="1" max="21" inputmode="numeric" value="15"></div>
     <div class="weekly-berries" id="weeklyBerries" hidden></div>
   </div>
-  <details class="weekly-settings"><summary>高级设置：锅容量与好露营券</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">基础锅容量</label><input id="weeklyPot" type="number" min="1" max="1000" inputmode="numeric" value="81"></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox" checked><span>使用好露营券</span></label></div></details>
+  <details class="weekly-settings"><summary>高级设置：锅容量与活动周道具</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">基础锅容量</label><input id="weeklyPot" type="number" min="1" max="1000" inputmode="numeric" value="81"></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox"><span>本周已启用好露营券（影响当前采集）</span></label><label class="weekly-check"><input id="weeklyEventGoodCamp" type="checkbox" checked><span>活动周计划启用好露营券（影响目标锅）</span></label><label class="weekly-check"><input id="weeklyTravelTicket" type="checkbox" checked><span>备有移动营地券（首日重抽料理）</span></label></div></details>
   <div class="weekly-inventory" id="weeklyInventory" hidden></div>
   <div class="weekly-save-line"><span class="weekly-save-stamp" id="weeklySaveStamp">设置与进度会自动保存并同步云端</span></div>
   <div class="weekly-result" id="weeklyResult" aria-live="polite"></div>
-  <p class="weekly-method">口径：仓库硬上限为 800，本页只为当前能容纳的下一批食材设阈值，用掉后再滚动规划；自动食谱会结合现有库存与料理能量选择。活动前储备周会优先提示保留本批目标食材。食材概率采用研究估算，技能触发、临时活动效果和实际收菜波动仍以游戏内结果为准。</p>
+  <p class="weekly-method">口径：仓库硬上限为 800，本页只为当前能容纳的下一批食材设阈值，用掉后再滚动规划；双路线储备对相同食材取较高需求、不同食材同时保留。好露营券的“本周”与“活动周计划”分开计算，移动营地券只给重抽策略，不作为产能倍率。超梦活动的超能力系食材＋1、技能触发率与主技能等级会进入活动周队伍计算；睡意之力倍率只用于睡眠研究，不会混入卡比兽能量。</p>
 </section>
 <section class="panel current-team-guide" aria-labelledby="currentTeamTitle" data-page="team" hidden>
   <div class="guide-head">
@@ -373,8 +374,8 @@
 <script src="level-manager.js"></script>
 <script src="personal-settings.js?v=20260910-2"></script>
 <script src="pokemon-picker.js?v=20260908-1"></script>
-<script src="team-planner.js?v=20260908-1"></script>
-<script src="weekly-planner.js?v=20260910-1"></script>
+<script src="team-planner.js?v=20260911-1"></script>
+<script src="weekly-planner.js?v=20260911-1"></script>
 <script src="investment-planner.js?v=20260831-2"></script>
 <script src="retention-advisor.js?v=20260901-2"></script>
 <script src="pokemon-manager.js?v=20260831-2"></script>

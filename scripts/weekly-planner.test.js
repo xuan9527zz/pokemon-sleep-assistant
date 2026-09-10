@@ -21,6 +21,9 @@ assert.equal(normalized.recipeType,'咖喱／浓汤');
 assert.equal(normalized.islandIndex,8);
 assert.equal(normalized.mealGoal,21);
 assert.deepEqual(normalized.completedMeals,['d0-m0']);
+assert.equal(normalized.goodCamp,false,'旧版单一好露营券开关迁移后不应误算为准备周当前采集增益');
+assert.equal(normalized.eventGoodCamp,true);
+assert.deepEqual(normalized.preparationRecipeTypes,['咖喱／浓汤','沙拉']);
 const nextWeek=weekly.normalizeState(normalized,['特选苹果'],9,new Date(2026,8,7,12,0,0));
 assert.deepEqual(nextWeek.completedMeals,[]);
 
@@ -36,6 +39,14 @@ assert.equal(weekly.ACTIVITY_PROFILES.snapshot.archived,true);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.psychicIngredientBonus,1);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.skillTriggerMultiplier,1.5);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo2.sleepDrowsyPowerMultiplier,1.3);
+assert.deepEqual(weekly.applyActivityContext({island:{name:'萌绿之岛'},berries:['金枕果','芒芒果','莓莓果']},weekly.ACTIVITY_PROFILES.mewtwo1).berries,['芒芒果','金枕果','莓莓果']);
+assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.mewtwo1,true)({berry:'芒芒果'}),{ingredientHelpBonus:1,skillTriggerMultiplier:1.5,mainSkillLevelBonus:2,label:'超梦登场活动·第1周'});
+assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.mewtwo1,false)({berry:'芒芒果'}),{});
+const mergedRoutes=weekly.mergeTargetRecipes([
+  {id:'salad',name:'沙拉A',type:'沙拉',ingredients:[{name:'特选苹果',amount:10},{name:'萌绿玉米',amount:5}]},
+  {id:'curry',name:'咖喱A',type:'咖喱／浓汤',ingredients:[{name:'特选苹果',amount:6},{name:'豆制肉',amount:8}]}
+]);
+assert.deepEqual(Object.fromEntries(mergedRoutes.ingredients.map(item=>[item.name,item.amount])),{'特选苹果':10,'萌绿玉米':5,'豆制肉':8},'双路线共同食材应取较高需求而不是相加');
 
 const budget=weekly.ingredientBudget(recipes[1],{'特选苹果':30},{'特选苹果':0},15,5,7);
 assert.equal(budget.remaining,10);
@@ -79,6 +90,11 @@ assert.ok(['prepare','adjust','output'].includes(realPlan.action.phase));
 assert.ok(Number(realPlan.action.collectionHours)>0);
 const preparationPlan=weekly.calculatePlan({...common,targetRecipeId:target.id,weekMode:'preparation'});
 assert.ok(preparationPlan.action.title.includes('活动前储备')||preparationPlan.action.phase==='adjust');
+const dualRoutePlan=weekly.calculatePlan({...common,goodCamp:false,eventGoodCamp:true,weekMode:'preparation',preparationRecipeTypes:['咖喱／浓汤','沙拉'],travelTicketPlanned:true});
+assert.equal(dualRoutePlan.pot,121,'准备周目标锅应读取活动周计划好露营券');
+assert.equal(dualRoutePlan.targetRecipes.length,2);
+assert.ok(dualRoutePlan.targetRecipe.name.includes('双路线储备'));
+assert.ok(dualRoutePlan.action.detail.includes('移动营地券'));
 const huntTargets=weekly.buildHuntTargets([{id:'x',name:'大竺葵',specialty:'berry',subs:'树果数量S；帮手奖励；帮忙速度M；研究EXP奖励；睡眠EXP奖励',nature:'固执：速度↑ 食材↓',scoreIndividual:88,scoreTotal:82,scoreBreakdown:{finalFormId:'154'}}],'宝蓝湖畔');
 assert.equal(huntTargets.find(row=>row.id==='154').status,'covered');
 assert.equal(huntTargets.find(row=>row.id==='254').status,'missing');
@@ -91,6 +107,7 @@ const wrongArea=weekly.calculatePlan({...common,activityKey:'mewtwo1'});
 assert.equal(wrongArea.preparationTeam.carryBonus,0);
 const eventArea=weekly.calculatePlan({...common,context:{...islandContext,island:{name:'萌绿之岛',kind:'普通岛'}},activityKey:'mewtwo1'});
 assert.equal(eventArea.preparationTeam.carryBonus,8);
+assert.equal(eventArea.context.berries[0],'芒芒果','超梦活动周必须固定芒芒果为喜爱树果');
 const completed=weekly.calculatePlan({...common,targetRecipeId:target.id,completedMeals:weekly.DAY_NAMES.flatMap((_day,day)=>weekly.MEAL_NAMES.map((_meal,meal)=>`d${day}-m${meal}`)).slice(0,15)});
 assert.equal(completed.action.phase,'complete');
 assert.equal(completed.budget.remaining,0);

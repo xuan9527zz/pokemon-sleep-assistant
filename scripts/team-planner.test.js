@@ -87,6 +87,13 @@ assert.ok(ingredientTotal(comfeyMember,'萌绿玉米')>ingredientTotal(stuffulMe
 const boostedComfey=planner.calculateMember(comfey,{ingredientRate:.167,baseBerryCount:1},{goodCamp:true,energyProfile:'average',teammateHelpingBonusCount:4});
 assert.ok(ingredientTotal(boostedComfey,'萌绿玉米')>ingredientTotal(comfeyMember,'萌绿玉米'),'其他队友的帮手奖励应提升目标个体产出');
 assert.ok(boostedComfey.member.combinedSpeedReduction<=.35,'单成员对比同样必须遵守35%速度缩减上限');
+const psychicStufful={...stufful,berry:'芒芒果'};
+const normalPsychic=planner.calculateMember(psychicStufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'average'});
+const eventPsychic=planner.calculateMember(psychicStufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'average',memberModifier:()=>({ingredientHelpBonus:1,skillTriggerMultiplier:1.5,mainSkillLevelBonus:2,label:'测试活动'})});
+assert.ok(ingredientTotal(eventPsychic,'萌绿玉米')>ingredientTotal(normalPsychic,'萌绿玉米'),'活动每次食材帮忙+1必须进入食材产量与满仓模型');
+assert.ok(Math.abs(eventPsychic.member.snorlaxEnergy.skillProbability.current-normalPsychic.member.snorlaxEnergy.skillProbability.current*1.5)<1e-9,'活动技能触发倍率必须进入主技能期望');
+assert.strictEqual(eventPsychic.member.snorlaxEnergy.skillLevel,3,'活动主技能等级加成必须进入直接能量技能计算');
+assert.strictEqual(eventPsychic.member.eventModifier.label,'测试活动');
 
 const stuffulEnergy=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average',durationHours:12,islandProfile:'lapis',islandBonusPct:60});
 assert.strictEqual(stuffulEnergy.energy.durationHours,12);

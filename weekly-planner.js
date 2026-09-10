@@ -20,6 +20,7 @@
   });
   const MEAL_NAMES=Object.freeze(['早','午','晚']);
   const DAY_NAMES=Object.freeze(['周一','周二','周三','周四','周五','周六','周日']);
+  const RECIPE_TYPES=Object.freeze(['咖喱／浓汤','沙拉','点心／饮料']);
   const VALID_MEAL_KEYS=new Set(DAY_NAMES.flatMap((_day,day)=>MEAL_NAMES.map((_meal,meal)=>`d${day}-m${meal}`)));
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number(value)||0));
   const round=(value,digits=1)=>{const scale=10**digits;return Math.round((Number(value)+Number.EPSILON)*scale)/scale};
@@ -47,10 +48,31 @@
       return {recipe,score:Number(energyFor(recipe))*(.45+.55*coverage)};
     }).sort((a,b)=>b.score-a.score||Number(energyFor(b.recipe))-Number(energyFor(a.recipe)))[0].recipe;
   }
+  function isEventArea(context){return /萌绿之岛/.test(String(context&&context.island&&context.island.name||''))}
+  function isPsychic(mon){return String(mon&&mon.berry||'')==='芒芒果'}
+  function activityMemberModifier(activity,eventArea){
+    return mon=>eventArea&&isPsychic(mon)?{
+      ingredientHelpBonus:Number(activity.psychicIngredientBonus)||0,
+      skillTriggerMultiplier:Number(activity.skillTriggerMultiplier)||1,
+      mainSkillLevelBonus:Number(activity.psychicSkillBonus)||0,
+      label:activity.label
+    }:{};
+  }
+  function plannerOptions(goodCamp,activity,eventArea){return {goodCamp,energyProfile:'average',memberModifier:activityMemberModifier(activity,eventArea)}}
+  function applyActivityContext(context,activity){
+    if(!context||!isEventArea(context)||!activity.favoriteBerry)return context;
+    const berries=[activity.favoriteBerry,...(context.berries||[]).filter(name=>name!==activity.favoriteBerry)].slice(0,3);
+    return {...context,berries};
+  }
+  function mergeTargetRecipes(recipes){
+    const rows=(recipes||[]).filter(Boolean);if(rows.length<=1)return rows[0]||null;
+    const amounts=new Map();rows.forEach(recipe=>(recipe.ingredients||[]).forEach(item=>amounts.set(item.name,Math.max(amounts.get(item.name)||0,Number(item.amount)||0))));
+    return {id:`routes:${rows.map(recipe=>recipe.id).join('+')}`,name:`${rows.map(recipe=>recipe.type).join('＋')}双路线储备`,type:'活动前储备',energy:0,total:[...amounts.values()].reduce((sum,value)=>sum+value,0),ingredients:[...amounts].map(([name,amount])=>({name,amount})),routes:rows};
+  }
   function withCarry(mon,carryBonus){return carryBonus?{...mon,inv:String((Number(mon.inv)||0)+carryBonus)}:mon}
   function mergeDaily(target,source){Object.entries(source||{}).forEach(([name,amount])=>{target[name]=(target[name]||0)+(Number(amount)||0)});return target}
-  function individualIngredientProduction(mon,planner,production,goodCamp,carryBonus){
-    const result=planner.calculateTeam([withCarry(mon,carryBonus)],production,{goodCamp,energyProfile:'average'}),member=result.members[0],daily={};
+  function individualIngredientProduction(mon,planner,production,goodCamp,carryBonus,activity=ACTIVITY_PROFILES.normal,eventArea=false){
+    const result=planner.calculateTeam([withCarry(mon,carryBonus)],production,plannerOptions(goodCamp,activity,eventArea)),member=result.members[0],daily={};
     if(member)member.ingredients.forEach(item=>{daily[item.name]=(daily[item.name]||0)+item.perDay});
     return {daily,member};
   }
@@ -64,11 +86,11 @@
   }
   function buildPreparationTeam(options){
     const {pokemon,context,individualProductionScore,isFullTeamHealer,planner,production,goodCamp,targetRecipe,remainingMeals,daysRemaining}=options,isSpecialPokemon=options.isSpecialPokemon||(()=>false),activity=options.activity||ACTIVITY_PROFILES.normal;
-    const eligible=(pokemon||[]).filter(mon=>mon.battleEligible!==false),eventArea=/萌绿之岛/.test(String(context.island&&context.island.name||'')),carryBonus=activity.psychicSkillBonus&&!eventArea?0:Number(activity.carryBonus)||0;
+    const eligible=(pokemon||[]).filter(mon=>mon.battleEligible!==false),eventArea=isEventArea(context),carryBonus=activity.psychicSkillBonus&&!eventArea?0:Number(activity.carryBonus)||0;
     const outputValue=mon=>Number(individualProductionScore(mon,context))||0,maxOutput=Math.max(1,...eligible.map(outputValue)),healers=eligible.filter(isFullTeamHealer).filter(mon=>!isSpecialPokemon(mon.id)).sort((a,b)=>outputValue(b)-outputValue(a)),healer=healers[0]||null;
-    const rows=eligible.filter(mon=>!isFullTeamHealer(mon)&&!isSpecialPokemon(mon.id)).map(mon=>({mon,ingredient:individualIngredientProduction(mon,planner,production,goodCamp,carryBonus),island:outputValue(mon)/maxOutput*100}));
+    const rows=eligible.filter(mon=>!isFullTeamHealer(mon)&&!isSpecialPokemon(mon.id)).map(mon=>({mon,ingredient:individualIngredientProduction(mon,planner,production,goodCamp,carryBonus,activity,eventArea),island:outputValue(mon)/maxOutput*100}));
     const selected=healer?[healer]:[],selectedRows=[],aggregate={};
-    if(healer)mergeDaily(aggregate,individualIngredientProduction(healer,planner,production,goodCamp,carryBonus).daily);
+    if(healer)mergeDaily(aggregate,individualIngredientProduction(healer,planner,production,goodCamp,carryBonus,activity,eventArea).daily);
     const required=requirementMap(targetRecipe,remainingMeals,daysRemaining),slots=5-selected.length;
     for(let slot=0;slot<slots&&rows.length;slot++){
       const before=normalizedDeficit(aggregate,required);
@@ -77,15 +99,15 @@
       const best=rows.shift();selected.push(best.mon);selectedRows.push(best);mergeDaily(aggregate,best.ingredient.daily);
     }
     while(selected.length<5){const fallback=eligible.filter(mon=>!isSpecialPokemon(mon.id)&&!selected.includes(mon)).sort((a,b)=>outputValue(b)-outputValue(a))[0];if(!fallback)break;selected.push(fallback)}
-    const result=planner.calculateTeam(selected.map(mon=>withCarry(mon,carryBonus)),production,{goodCamp,energyProfile:'average'}),daily=Object.fromEntries(result.ingredients.map(item=>[item.name,item.perDay]));
+    const result=planner.calculateTeam(selected.map(mon=>withCarry(mon,carryBonus)),production,plannerOptions(goodCamp,activity,eventArea)),daily=Object.fromEntries(result.ingredients.map(item=>[item.name,item.perDay]));
     return {members:selected,production:result,daily,candidateRows:selectedRows,eventArea,carryBonus,requiredDaily:required};
   }
   function buildOutputTeam(options){
-    const {pokemon,context,recommendTeams,planner,production,goodCamp}=options,isSpecialPokemon=options.isSpecialPokemon||(()=>false),carryBonus=Number(options.carryBonus)||0,eligible=(pokemon||[]).filter(mon=>mon.battleEligible!==false&&!isSpecialPokemon(mon.id)),byId=new Map(eligible.map(mon=>[String(mon.id),mon])),recommendation=recommendTeams&&recommendTeams(context),regular=recommendation&&recommendation.regular||{},members=[];
+    const {pokemon,context,recommendTeams,planner,production,goodCamp}=options,isSpecialPokemon=options.isSpecialPokemon||(()=>false),activity=options.activity||ACTIVITY_PROFILES.normal,eventArea=isEventArea(context),carryBonus=Number(options.carryBonus)||0,eligible=(pokemon||[]).filter(mon=>mon.battleEligible!==false&&!isSpecialPokemon(mon.id)),byId=new Map(eligible.map(mon=>[String(mon.id),mon])),recommendation=recommendTeams&&recommendTeams(context),regular=recommendation&&recommendation.regular||{},members=[];
     (regular.ids||[]).forEach(id=>{const mon=byId.get(String(id));if(mon&&!members.includes(mon)&&members.length<5)members.push(mon)});
     (options.fallbackMembers||[]).forEach(mon=>{if(mon&&byId.has(String(mon.id))&&!members.includes(mon)&&members.length<5)members.push(mon)});
     eligible.forEach(mon=>{if(!members.includes(mon)&&members.length<5)members.push(mon)});
-    const result=planner.calculateTeam(members.map(mon=>withCarry(mon,carryBonus)),production,{goodCamp,energyProfile:'average'}),daily=Object.fromEntries(result.ingredients.map(item=>[item.name,item.perDay]));
+    const result=planner.calculateTeam(members.map(mon=>withCarry(mon,carryBonus)),production,plannerOptions(goodCamp,activity,eventArea)),daily=Object.fromEntries(result.ingredients.map(item=>[item.name,item.perDay]));
     return {members,production:result,daily,label:regular.label||'岛屿输出队'};
   }
   function ingredientBudget(targetRecipe,daily,inventory,mealGoal,completedMeals,daysRemaining,inventoryLimit=INVENTORY_LIMIT){
@@ -97,17 +119,21 @@
   }
   function createActionPlan(budget,targetRecipe,preparationTeam,outputTeam,now,options={}){
     const collectionHours=Number((budget.allStocked?outputTeam:preparationTeam).production.collectionHours)||4,nextCollect=new Date(dateValue(now).getTime()+collectionHours*3600000),collectAt=new Intl.DateTimeFormat('zh-CN',{weekday:'short',hour:'2-digit',minute:'2-digit'}).format(nextCollect);
-    if(!targetRecipe)return {phase:'setup',title:'先选择可制作的目标食谱',detail:'当前锅容量与料理类别下没有可用食谱，请调整高级设置。',collectionHours,collectAt,thresholds:[]};
-    if(budget.remaining===0)return {phase:'complete',title:'本周目标已经完成',detail:'目标餐数已全部勾选；接下来可以直接使用岛屿输出队。',collectionHours,collectAt,thresholds:[]};
-    if(budget.batchMeals===0)return {phase:'adjust',title:'仓库已满，先清出可用空间',detail:`当前库存 ${Math.ceil(budget.inventoryTotal)} / ${budget.inventoryLimit}，没有空间容纳一餐目标料理。先消耗非储备食材，再按新库存重新规划。`,collectionHours,collectAt,thresholds:[]};
+    const strategyNotes=[];
+    if(options.weekMode==='preparation'&&options.targetGoodCamp)strategyNotes.push('活动周目标锅已按好露营券的 1.5 倍容量选食谱，本周产量仍只读取“本周已启用”开关。');
+    if(options.weekMode==='preparation'&&options.travelTicketPlanned&&options.targetRecipes&&options.targetRecipes.some(recipe=>recipe.type==='沙拉')&&options.targetRecipes.some(recipe=>recipe.type==='咖喱／浓汤'))strategyNotes.push('活动首日若抽到点心／饮料，可使用移动营地券重抽；命中沙拉或咖喱后，只消耗对应路线库存。');
+    const finish=plan=>({...plan,detail:`${plan.detail}${strategyNotes.length?` ${strategyNotes.join(' ')}`:''}`});
+    if(!targetRecipe)return finish({phase:'setup',title:'先选择可制作的目标食谱',detail:'当前锅容量与料理类别下没有可用食谱，请调整高级设置。',collectionHours,collectAt,thresholds:[]});
+    if(budget.remaining===0)return finish({phase:'complete',title:'本周目标已经完成',detail:'目标餐数已全部勾选；接下来可以直接使用岛屿输出队。',collectionHours,collectAt,thresholds:[]});
+    if(budget.batchMeals===0)return finish({phase:'adjust',title:'仓库已满，先清出可用空间',detail:`当前库存 ${Math.ceil(budget.inventoryTotal)} / ${budget.inventoryLimit}，没有空间容纳一餐目标料理。先消耗非储备食材，再按新库存重新规划。`,collectionHours,collectAt,thresholds:[]});
     const batchNote=budget.batchMeals<budget.remaining?`本次只规划仓库放得下的 ${budget.batchMeals} 餐；用掉后会自动计算下一批。`:`本批覆盖剩余 ${budget.batchMeals} 餐。`,preparing=options.weekMode==='preparation';
-    if(budget.allStocked)return {phase:'output',title:preparing?'活动前储备：本批目标已备齐':'本批库存已够，切换岛屿输出队',detail:`${batchNote}${preparing?' 当前以保存目标食材、避免误消耗为主。':' 不需要继续占用食材准备位。'}`,collectionHours,collectAt,thresholds:budget.rows.map(row=>`${row.name}保留 ${Math.ceil(row.need)}`)};
+    if(budget.allStocked)return finish({phase:'output',title:preparing?'活动前储备：本批目标已备齐':'本批库存已够，切换岛屿输出队',detail:`${batchNote}${preparing?' 当前以保存目标食材、避免误消耗为主。':' 不需要继续占用食材准备位。'}`,collectionHours,collectAt,thresholds:budget.rows.map(row=>`${row.name}保留 ${Math.ceil(row.need)}`)});
     if(budget.projectedShortages.length){
       const names=budget.projectedShortages.map(row=>`${row.name}约缺${Math.ceil(row.projectedGap)}`).join('、');
-      return {phase:'adjust',title:preparing?'活动前储备：先补本批食材':'先补食材，但本批目标可能需要下调',detail:`${batchNote}按当前盒子与剩余 ${budget.daysRemaining} 天估算，仍会${names}。可减少本批餐数或改选低需求食谱。`,collectionHours,collectAt,thresholds:budget.rows.filter(row=>row.gapNow>.05).map(row=>`${row.name}库存到 ${Math.ceil(row.need)}`)};
+      return finish({phase:'adjust',title:preparing?'活动前储备：先补本批食材':'先补食材，但本批目标可能需要下调',detail:`${batchNote}按当前盒子与剩余 ${budget.daysRemaining} 天估算，仍会${names}。可减少本批餐数或改选低需求食谱。`,collectionHours,collectAt,thresholds:budget.rows.filter(row=>row.gapNow>.05).map(row=>`${row.name}库存到 ${Math.ceil(row.need)}`)});
     }
     const days=Number.isFinite(budget.maxDaysToStock)?Math.max(.1,budget.maxDaysToStock):budget.daysRemaining;
-    return {phase:'prepare',title:preparing?'活动前储备：现在先用食材准备队':'现在先用食材准备队',detail:`预计约 ${round(days,1)} 天补齐。${batchNote}达到下列库存后切换岛屿输出队。`,collectionHours,collectAt,thresholds:budget.rows.filter(row=>row.gapNow>.05).map(row=>`${row.name}库存到 ${Math.ceil(row.need)}`)};
+    return finish({phase:'prepare',title:preparing?'活动前储备：现在先用食材准备队':'现在先用食材准备队',detail:`预计约 ${round(days,1)} 天补齐。${batchNote}达到下列库存后切换岛屿输出队。`,collectionHours,collectAt,thresholds:budget.rows.filter(row=>row.gapNow>.05).map(row=>`${row.name}库存到 ${Math.ceil(row.need)}`)});
   }
   function buildHuntTargets(pokemon,islandName,options={}){
     const strategyApi=options.strategy||strategy,catalogApi=options.catalog||catalog;
@@ -120,32 +146,33 @@
     }).sort((a,b)=>({missing:0,upgrade:1,covered:2}[a.status]-{missing:0,upgrade:1,covered:2}[b.status]));
   }
   function calculatePlan(options){
-    const activity=ACTIVITY_PROFILES[options.activityKey]||ACTIVITY_PROFILES.normal,recipeEnergy=typeof options.recipeEnergy==='function'?options.recipeEnergy:recipe=>Number(recipe.energy)||0,pot=effectivePot(options.basePot,options.goodCamp),now=dateValue(options.now),daysRemaining=daysRemainingInWeek(now),mealGoal=clamp(Math.round(options.mealGoal||activity.defaultMealGoal),1,21),completedMeals=Array.isArray(options.completedMeals)?options.completedMeals.length:Number(options.completedMeals)||0,candidates=recipeRows(options.recipes,options.recipeType,pot,recipeEnergy),targetRecipe=candidates.find(recipe=>String(recipe.id)===String(options.targetRecipeId))||chooseTargetRecipe(options.recipes,options.recipeType,pot,{},options.inventory,mealGoal,recipeEnergy),remainingMeals=Math.max(0,mealGoal-Math.min(mealGoal,completedMeals));
-    const capacityBudget=ingredientBudget(targetRecipe,{},options.inventory,mealGoal,completedMeals,daysRemaining,options.inventoryLimit||INVENTORY_LIMIT),preparationTeam=buildPreparationTeam({...options,activity,targetRecipe,remainingMeals:capacityBudget.batchMeals,daysRemaining}),outputTeam=buildOutputTeam({...options,carryBonus:preparationTeam.carryBonus,fallbackMembers:preparationTeam.members}),budget=ingredientBudget(targetRecipe,preparationTeam.daily,options.inventory,mealGoal,completedMeals,daysRemaining,options.inventoryLimit||INVENTORY_LIMIT),action=createActionPlan(budget,targetRecipe,preparationTeam,outputTeam,now,{weekMode:options.weekMode}),currentTeam=['output','complete'].includes(action.phase)?outputTeam:preparationTeam;
-    const huntTargets=buildHuntTargets(options.pokemon,options.context&&options.context.island&&options.context.island.name,{strategy:options.strategy,catalog:options.catalog});
-    return {activity,pot,targetRecipe,preparationTeam,outputTeam,currentTeam,budget,action,huntTargets,weekKey:weekKey(now)};
+    const activity=ACTIVITY_PROFILES[options.activityKey]||ACTIVITY_PROFILES.normal,recipeEnergy=typeof options.recipeEnergy==='function'?options.recipeEnergy:recipe=>Number(recipe.energy)||0,targetGoodCamp=options.weekMode==='preparation'?options.eventGoodCamp!==false:options.goodCamp!==false,pot=effectivePot(options.basePot,targetGoodCamp),now=dateValue(options.now),daysRemaining=daysRemainingInWeek(now),mealGoal=clamp(Math.round(options.mealGoal||activity.defaultMealGoal),1,21),completedMeals=Array.isArray(options.completedMeals)?options.completedMeals.length:Number(options.completedMeals)||0,context=applyActivityContext(options.context,activity),preparationTypes=[...new Set((options.preparationRecipeTypes||[]).filter(type=>RECIPE_TYPES.includes(type)))],multiRoute=options.weekMode==='preparation'&&preparationTypes.length>1;
+    const planningType=options.weekMode==='preparation'&&preparationTypes.length===1?preparationTypes[0]:options.recipeType,candidates=recipeRows(options.recipes,planningType,pot,recipeEnergy),singleTarget=candidates.find(recipe=>String(recipe.id)===String(options.targetRecipeId))||chooseTargetRecipe(options.recipes,planningType,pot,{},options.inventory,mealGoal,recipeEnergy),targetRecipes=multiRoute?preparationTypes.map(type=>chooseTargetRecipe(options.recipes,type,pot,{},options.inventory,mealGoal,recipeEnergy)).filter(Boolean):singleTarget?[singleTarget]:[],targetRecipe=multiRoute?mergeTargetRecipes(targetRecipes):singleTarget,remainingMeals=Math.max(0,mealGoal-Math.min(mealGoal,completedMeals));
+    const capacityBudget=ingredientBudget(targetRecipe,{},options.inventory,mealGoal,completedMeals,daysRemaining,options.inventoryLimit||INVENTORY_LIMIT),preparationTeam=buildPreparationTeam({...options,context,activity,targetRecipe,remainingMeals:capacityBudget.batchMeals,daysRemaining}),outputTeam=buildOutputTeam({...options,context,activity,carryBonus:preparationTeam.carryBonus,fallbackMembers:preparationTeam.members}),budget=ingredientBudget(targetRecipe,preparationTeam.daily,options.inventory,mealGoal,completedMeals,daysRemaining,options.inventoryLimit||INVENTORY_LIMIT),action=createActionPlan(budget,targetRecipe,preparationTeam,outputTeam,now,{weekMode:options.weekMode,targetGoodCamp,travelTicketPlanned:options.travelTicketPlanned,targetRecipes}),currentTeam=['output','complete'].includes(action.phase)?outputTeam:preparationTeam;
+    const huntTargets=buildHuntTargets(options.pokemon,context&&context.island&&context.island.name,{strategy:options.strategy,catalog:options.catalog});
+    return {activity,pot,targetGoodCamp,targetRecipe,targetRecipes,preparationTeam,outputTeam,currentTeam,budget,action,huntTargets,context,weekKey:weekKey(now)};
   }
   function defaults(ingredients,now){
-    return {schemaVersion:2,islandIndex:0,berries:[],recipeType:'咖喱／浓汤',activityKey:'normal',goodCamp:true,basePot:81,mealGoal:15,targetRecipeId:'',completedMeals:[],weekKey:weekKey(now),inventory:Object.fromEntries(ingredients.map(name=>[name,0]))};
+    return {schemaVersion:3,islandIndex:0,berries:[],recipeType:'咖喱／浓汤',preparationRecipeTypes:['咖喱／浓汤','沙拉'],activityKey:'normal',goodCamp:false,eventGoodCamp:true,travelTicketPlanned:true,basePot:81,mealGoal:15,targetRecipeId:'',completedMeals:[],weekKey:weekKey(now),inventory:Object.fromEntries(ingredients.map(name=>[name,0]))};
   }
   function normalizeState(value,ingredients,islandCount,now=new Date()){
-    const base=defaults(ingredients,now),source=value&&typeof value==='object'?value:{},recipeType=['咖喱／浓汤','沙拉','点心／饮料','全部'].includes(source.recipeType)?source.recipeType:base.recipeType,activityKey=Object.hasOwn(ACTIVITY_PROFILES,source.activityKey)?source.activityKey:base.activityKey,currentWeek=weekKey(now),completed=source.weekKey===currentWeek&&Array.isArray(source.completedMeals)?[...new Set(source.completedMeals.filter(key=>VALID_MEAL_KEYS.has(key)))]:[];
-    return {...base,...source,schemaVersion:2,recipeType,activityKey,goodCamp:source.goodCamp!==false,basePot:clamp(Math.round(source.basePot||base.basePot),1,1000),mealGoal:clamp(Math.round(source.mealGoal||base.mealGoal),1,21),targetRecipeId:String(source.targetRecipeId||''),islandIndex:clamp(Math.round(source.islandIndex),0,Math.max(0,islandCount-1)),completedMeals:completed,weekKey:currentWeek,inventory:{...base.inventory,...(source.inventory&&typeof source.inventory==='object'?source.inventory:{})}};
+    const base=defaults(ingredients,now),source=value&&typeof value==='object'?value:{},recipeType=[...RECIPE_TYPES,'全部'].includes(source.recipeType)?source.recipeType:base.recipeType,activityKey=Object.hasOwn(ACTIVITY_PROFILES,source.activityKey)?source.activityKey:base.activityKey,currentWeek=weekKey(now),completed=source.weekKey===currentWeek&&Array.isArray(source.completedMeals)?[...new Set(source.completedMeals.filter(key=>VALID_MEAL_KEYS.has(key)))]:[],preparationRecipeTypes=[...new Set((Array.isArray(source.preparationRecipeTypes)?source.preparationRecipeTypes:base.preparationRecipeTypes).filter(type=>RECIPE_TYPES.includes(type)))];
+    return {...base,...source,schemaVersion:3,recipeType,preparationRecipeTypes:preparationRecipeTypes.length?preparationRecipeTypes:base.preparationRecipeTypes,activityKey,goodCamp:source.schemaVersion>=3?source.goodCamp===true:false,eventGoodCamp:source.eventGoodCamp!==false,travelTicketPlanned:source.travelTicketPlanned!==false,basePot:clamp(Math.round(source.basePot||base.basePot),1,1000),mealGoal:clamp(Math.round(source.mealGoal||base.mealGoal),1,21),targetRecipeId:String(source.targetRecipeId||''),islandIndex:clamp(Math.round(source.islandIndex),0,Math.max(0,islandCount-1)),completedMeals:completed,weekKey:currentWeek,inventory:{...base.inventory,...(source.inventory&&typeof source.inventory==='object'?source.inventory:{})}};
   }
   function mount(options={}){
     if(typeof document==='undefined')return null;const rootNode=document.querySelector('#weeklyPlanner');if(!rootNode)return null;
     let browserStorage=null;try{browserStorage=window.localStorage}catch(_error){}
-    const pokemon=options.pokemon||[],islands=options.islands||[],recipes=options.recipes||[],ingredients=options.ingredients||[],storage=options.storage||browserStorage,teamPlanner=options.teamPlanner,production=options.production&&options.production.byBoxId||options.production||{},profile=options.profile||null,controls={island:document.querySelector('#weeklyIsland'),berries:document.querySelector('#weeklyBerries'),recipeType:document.querySelector('#weeklyRecipeType'),activity:document.querySelector('#weeklyActivity'),targetRecipe:document.querySelector('#weeklyTargetRecipe'),mealGoal:document.querySelector('#weeklyMealGoal'),camp:document.querySelector('#weeklyGoodCamp'),pot:document.querySelector('#weeklyPot'),inventory:document.querySelector('#weeklyInventory'),result:document.querySelector('#weeklyResult'),stamp:document.querySelector('#weeklySaveStamp'),profileSummary:document.querySelector('#weeklyProfileSummary'),settingsOpen:document.querySelector('#weeklySettingsOpen')};
+    const pokemon=options.pokemon||[],islands=options.islands||[],recipes=options.recipes||[],ingredients=options.ingredients||[],storage=options.storage||browserStorage,teamPlanner=options.teamPlanner,production=options.production&&options.production.byBoxId||options.production||{},profile=options.profile||null,controls={island:document.querySelector('#weeklyIsland'),berries:document.querySelector('#weeklyBerries'),recipeType:document.querySelector('#weeklyRecipeType'),activity:document.querySelector('#weeklyActivity'),targetRecipe:document.querySelector('#weeklyTargetRecipe'),preparationRoutes:document.querySelector('#weeklyPreparationRoutes'),mealGoal:document.querySelector('#weeklyMealGoal'),camp:document.querySelector('#weeklyGoodCamp'),eventCamp:document.querySelector('#weeklyEventGoodCamp'),travelTicket:document.querySelector('#weeklyTravelTicket'),pot:document.querySelector('#weeklyPot'),inventory:document.querySelector('#weeklyInventory'),result:document.querySelector('#weeklyResult'),stamp:document.querySelector('#weeklySaveStamp'),profileSummary:document.querySelector('#weeklyProfileSummary'),settingsOpen:document.querySelector('#weeklySettingsOpen')};
     let state=normalizeState(readJson(storage,STORAGE_KEY,{}),ingredients,islands.length),resetArmed=false,resetTimer=null;
     islands.forEach((island,index)=>{const item=document.createElement('option');item.value=String(index);item.textContent=island.name;controls.island.append(item)});
     Object.entries(ACTIVITY_PROFILES).forEach(([key,item])=>{const option=document.createElement('option');option.value=key;option.textContent=item.label;controls.activity.append(option)});
     function selectedBerries(){const island=islands[state.islandIndex],selects=[...controls.berries.querySelectorAll('select')];return selects.length?selects.map(select=>select.value):island.defaultBerries||String(island.berries||'').split('／')}
     function renderBerryControls(){
       const island=islands[state.islandIndex];controls.berries.replaceChildren();if(!island||!island.berryMode){controls.berries.hidden=true;return}controls.berries.hidden=false;
-      const current=Array.isArray(state.berries)&&state.berries.length===3?state.berries:[...(island.defaultBerries||[])],all=options.allBerries||[];
-      ['树果 1','树果 2','树果 3'].forEach((label,index)=>{const wrap=document.createElement('label');wrap.textContent=island.kind==='EX'&&index===0?'主树果':label;const select=document.createElement('select'),allowed=island.berryMode==='cyan-expert'&&index===0?['橙橙果','桃桃果','椰木果']:all;allowed.forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;select.append(option)});select.value=current[index]||allowed[index]||allowed[0];select.addEventListener('change',()=>{state.berries=selectedBerries();persist();render()});wrap.append(select);controls.berries.append(wrap)});state.berries=selectedBerries();
+      const activity=ACTIVITY_PROFILES[state.activityKey]||ACTIVITY_PROFILES.normal,forced=isEventArea({island})&&activity.favoriteBerry?activity.favoriteBerry:'',saved=Array.isArray(state.berries)&&state.berries.length===3?state.berries:[...(island.defaultBerries||[])],current=forced?[forced,...saved.filter(name=>name!==forced)].slice(0,3):saved,all=options.allBerries||[];
+      ['树果 1','树果 2','树果 3'].forEach((label,index)=>{const wrap=document.createElement('label');wrap.textContent=forced&&index===0?`${island.kind==='EX'?'主树果':'喜爱树果 1'}（活动固定）`:island.kind==='EX'&&index===0?'主树果':label;const select=document.createElement('select'),allowed=forced&&index===0?[forced]:island.berryMode==='cyan-expert'&&index===0?['橙橙果','桃桃果','椰木果']:all;allowed.forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;select.append(option)});select.value=current[index]||allowed[index]||allowed[0];select.disabled=Boolean(forced&&index===0);select.addEventListener('change',()=>{state.berries=selectedBerries();persist();render()});wrap.append(select);controls.berries.append(wrap)});state.berries=selectedBerries();
     }
-    function availableRecipes(){return recipeRows(recipes,state.recipeType,effectivePot(state.basePot,state.goodCamp),options.recipeEnergy)}
+    function availableRecipes(){const current=profileState(),targetCamp=current&&current.weekMode==='preparation'?state.eventGoodCamp:state.goodCamp;return recipeRows(recipes,state.recipeType,effectivePot(state.basePot,targetCamp),options.recipeEnergy)}
     function renderRecipeOptions(clearProgress=false){
       const rows=availableRecipes(),previous=state.targetRecipeId;controls.targetRecipe.replaceChildren();
       if(!rows.length){const option=document.createElement('option');option.value='';option.textContent='当前锅容量没有可用食谱';controls.targetRecipe.append(option);controls.targetRecipe.disabled=true;state.targetRecipeId='';return}
@@ -154,6 +181,10 @@
       if(clearProgress&&previous&&previous!==state.targetRecipeId)state.completedMeals=[];
     }
     function profileState(){return profile&&typeof profile.getState==='function'?profile.getState():null}
+    function renderPreparationControls(current=profileState()){
+      const preparing=Boolean(current&&current.weekMode==='preparation');if(controls.preparationRoutes){controls.preparationRoutes.hidden=!preparing;controls.preparationRoutes.querySelectorAll('input[type="checkbox"]').forEach(input=>{input.checked=state.preparationRecipeTypes.includes(input.value)})}
+      controls.recipeType.closest('.weekly-field')?.toggleAttribute('hidden',preparing);controls.targetRecipe.closest('.weekly-field')?.toggleAttribute('hidden',preparing);
+    }
     function syncProfile(){
       const current=profileState();if(!current)return null;state.islandIndex=typeof profile.islandIndex==='function'?profile.islandIndex(islands):state.islandIndex;state.inventory={...state.inventory,...current.ingredientStock};state.activityKey=current.weekMode==='event'&&Object.hasOwn(ACTIVITY_PROFILES,current.activityKey)?current.activityKey:'normal';
       if(controls.profileSummary){const island=profile.currentIsland?profile.currentIsland():null,mode={normal:'普通周',preparation:'活动前准备周',event:'活动周'}[current.weekMode]||'普通周',total=Object.values(current.ingredientStock||{}).reduce((sum,value)=>sum+Math.max(0,Number(value)||0),0),strong=controls.profileSummary.querySelector('strong');if(strong)strong.textContent=`${island&&island.label||islands[state.islandIndex]?.name||'当前岛屿'} · ${mode} · 库存 ${Math.round(total)} / ${current.inventoryLimit||INVENTORY_LIMIT}`}
@@ -163,7 +194,7 @@
       if(profile){controls.inventory.replaceChildren();return}
       controls.inventory.replaceChildren();ingredients.forEach(name=>{const label=document.createElement('label'),input=document.createElement('input');label.textContent=name;input.type='number';input.min='0';input.step='1';input.inputMode='numeric';input.value=String(Number(state.inventory[name])||0);input.dataset.ingredient=name;input.addEventListener('change',()=>{state.inventory[name]=Math.max(0,Number(input.value)||0);persist();render()});label.append(input);controls.inventory.append(label)});
     }
-    function syncControls(){syncProfile();controls.island.value=String(state.islandIndex);controls.recipeType.value=state.recipeType;controls.activity.value=state.activityKey;controls.camp.checked=Boolean(state.goodCamp);controls.pot.value=String(state.basePot);controls.mealGoal.value=String(state.mealGoal);renderBerryControls();renderRecipeOptions();renderInventory()}
+    function syncControls(){const current=syncProfile();controls.island.value=String(state.islandIndex);controls.recipeType.value=state.recipeType;controls.activity.value=state.activityKey;controls.camp.checked=Boolean(state.goodCamp);controls.eventCamp.checked=Boolean(state.eventGoodCamp);controls.travelTicket.checked=Boolean(state.travelTicketPlanned);controls.pot.value=String(state.basePot);controls.mealGoal.value=String(state.mealGoal);renderPreparationControls(current);renderBerryControls();renderRecipeOptions();renderInventory()}
     function persist(){state.weekKey=weekKey();writeJson(storage,STORAGE_KEY,state);controls.stamp.textContent=`已保存 · ${new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}`;window.dispatchEvent(new CustomEvent('pokemon-sleep:local-change',{detail:{type:'weekly-plan'}}))}
     function context(){const island=islands[state.islandIndex];return {island,index:state.islandIndex,berries:selectedBerries(),expert:island.kind==='EX'}}
     function icon(name){const api=window.POKEMON_SLEEP_INGREDIENTS;return api&&api.create?api.create(name,{label:name}):document.createTextNode(name)}
@@ -172,7 +203,8 @@
     }
     function overviewSection(report){
       const section=document.createElement('section');section.className='weekly-overview';const activityNote=report.activity.psychicSkillBonus&&!report.preparationTeam.eventArea?`${report.activity.note} 当前岛屿不在活动区域，因此不套用持有加成。`:report.activity.note;
-      section.innerHTML=`<div><span>WEEK TARGET</span><h3>${report.targetRecipe?report.targetRecipe.name:'尚无可用目标食谱'} × ${report.budget.goal}</h3><p>${islands[state.islandIndex].name}｜${activityNote}</p></div><div class="weekly-overview-stats"><span><small>目标进度</small><b>${report.budget.completed} / ${report.budget.goal}</b></span><span><small>本批规划</small><b>${report.budget.batchMeals} 餐</b></span><span><small>食材缺口</small><b>${report.budget.rows.filter(row=>row.gapNow>.05).length} 种</b></span><span><small>仓库占用</small><b>${Math.ceil(report.budget.inventoryTotal)} / ${report.budget.inventoryLimit}</b></span></div>`;return section;
+      const routes=report.targetRecipes&&report.targetRecipes.length>1?`<p>候选路线：${report.targetRecipes.map(recipe=>`${recipe.type}「${recipe.name}」`).join('；')}。活动周确定料理后只执行其中一条。</p>`:'';
+      section.innerHTML=`<div><span>WEEK TARGET</span><h3>${report.targetRecipe?report.targetRecipe.name:'尚无可用目标食谱'} × ${report.budget.goal}</h3><p>${islands[state.islandIndex].name}｜${activityNote}</p>${routes}</div><div class="weekly-overview-stats"><span><small>目标进度</small><b>${report.budget.completed} / ${report.budget.goal}</b></span><span><small>本批规划</small><b>${report.budget.batchMeals} 餐</b></span><span><small>食材缺口</small><b>${report.budget.rows.filter(row=>row.gapNow>.05).length} 种</b></span><span><small>仓库占用</small><b>${Math.ceil(report.budget.inventoryTotal)} / ${report.budget.inventoryLimit}</b></span></div>`;return section;
     }
     function actionSection(report){
       const section=document.createElement('section');section.className=`weekly-action phase-${report.action.phase}`;const top=document.createElement('div');top.className='weekly-action-head';top.innerHTML=`<div><span>NOW｜当前行动</span><h3>${report.action.title}</h3></div><b>${teamPlanner.formatHours(report.action.collectionHours)} 收菜</b>`;const detail=document.createElement('p');detail.textContent=report.action.detail;const thresholds=document.createElement('div');thresholds.className='weekly-action-thresholds';report.action.thresholds.forEach(text=>{const chip=document.createElement('span');chip.textContent=text;thresholds.append(chip)});const timing=document.createElement('small');timing.textContent=`建议下一次收菜：约 ${report.action.collectAt}`;section.append(top,detail);if(report.action.thresholds.length)section.append(thresholds);section.append(timing);return section;
@@ -201,18 +233,21 @@
     }
     function logisticsDetails(report){const details=document.createElement('details');details.className='weekly-logistics';const summary=document.createElement('summary');summary.innerHTML=`<span>食材预算与料理记录</span><small>${report.budget.rows.filter(row=>row.gapNow>.05).length} 种缺口 · 已完成 ${report.budget.completed}/${report.budget.goal} 餐</small>`;const body=document.createElement('div');body.className='weekly-logistics-body';body.append(budgetSection(report),progressSection(report));details.append(summary,body);return details}
     function render(){
-      if(!pokemon.length||!islands.length)return null;const previousIsland=state.islandIndex,currentProfile=syncProfile();if(previousIsland!==state.islandIndex)renderBerryControls();if(state.weekKey!==weekKey()){state.weekKey=weekKey();state.completedMeals=[];persist()}
-      const report=calculatePlan({pokemon,context:context(),recommendTeams:options.recommendTeams,individualProductionScore:options.individualProductionScore,isFullTeamHealer:options.isFullTeamHealer,isSpecialPokemon:options.isSpecialPokemon,planner:teamPlanner,production,goodCamp:state.goodCamp,activityKey:state.activityKey,weekMode:currentProfile&&currentProfile.weekMode||'normal',inventoryLimit:currentProfile&&currentProfile.inventoryLimit||INVENTORY_LIMIT,recipes,recipeEnergy:options.recipeEnergy,recipeType:state.recipeType,targetRecipeId:state.targetRecipeId,basePot:state.basePot,mealGoal:state.mealGoal,completedMeals:state.completedMeals,inventory:state.inventory,strategy:options.strategy,catalog:options.catalog});controls.result.replaceChildren(overviewSection(report),actionSection(report),huntSection(report),teamSection(report),logisticsDetails(report));return report;
+      if(!pokemon.length||!islands.length)return null;const previousIsland=state.islandIndex,previousActivity=state.activityKey,currentProfile=syncProfile();renderPreparationControls(currentProfile);if(previousIsland!==state.islandIndex||previousActivity!==state.activityKey)renderBerryControls();if(state.weekKey!==weekKey()){state.weekKey=weekKey();state.completedMeals=[];persist()}
+      const report=calculatePlan({pokemon,context:context(),recommendTeams:options.recommendTeams,individualProductionScore:options.individualProductionScore,isFullTeamHealer:options.isFullTeamHealer,isSpecialPokemon:options.isSpecialPokemon,planner:teamPlanner,production,goodCamp:state.goodCamp,eventGoodCamp:state.eventGoodCamp,travelTicketPlanned:state.travelTicketPlanned,preparationRecipeTypes:state.preparationRecipeTypes,activityKey:state.activityKey,weekMode:currentProfile&&currentProfile.weekMode||'normal',inventoryLimit:currentProfile&&currentProfile.inventoryLimit||INVENTORY_LIMIT,recipes,recipeEnergy:options.recipeEnergy,recipeType:state.recipeType,targetRecipeId:state.targetRecipeId,basePot:state.basePot,mealGoal:state.mealGoal,completedMeals:state.completedMeals,inventory:state.inventory,strategy:options.strategy,catalog:options.catalog});controls.result.replaceChildren(overviewSection(report),actionSection(report),huntSection(report),teamSection(report),logisticsDetails(report));return report;
     }
     controls.island.addEventListener('change',()=>{state.islandIndex=Number(controls.island.value);state.berries=[];renderBerryControls();persist();render()});
     controls.recipeType.addEventListener('change',()=>{state.recipeType=controls.recipeType.value;renderRecipeOptions(true);persist();render()});
     controls.activity.addEventListener('change',()=>{const previous=ACTIVITY_PROFILES[state.activityKey]||ACTIVITY_PROFILES.normal;state.activityKey=controls.activity.value;if(state.mealGoal===previous.defaultMealGoal){state.mealGoal=ACTIVITY_PROFILES[state.activityKey].defaultMealGoal;controls.mealGoal.value=String(state.mealGoal)}persist();render()});
     controls.targetRecipe.addEventListener('change',()=>{state.targetRecipeId=controls.targetRecipe.value;state.completedMeals=[];persist();render()});
+    controls.preparationRoutes?.querySelectorAll('input[type="checkbox"]').forEach(input=>input.addEventListener('change',()=>{const selected=[...controls.preparationRoutes.querySelectorAll('input[type="checkbox"]:checked')].map(item=>item.value);if(!selected.length){input.checked=true;return}state.preparationRecipeTypes=selected;state.completedMeals=[];persist();render()}));
     controls.mealGoal.addEventListener('change',()=>{state.mealGoal=clamp(Math.round(controls.mealGoal.value),1,21);controls.mealGoal.value=String(state.mealGoal);persist();render()});
     controls.camp.addEventListener('change',()=>{state.goodCamp=controls.camp.checked;renderRecipeOptions(true);persist();render()});
+    controls.eventCamp.addEventListener('change',()=>{state.eventGoodCamp=controls.eventCamp.checked;renderRecipeOptions(true);persist();render()});
+    controls.travelTicket.addEventListener('change',()=>{state.travelTicketPlanned=controls.travelTicket.checked;persist();render()});
     controls.pot.addEventListener('change',()=>{state.basePot=clamp(Math.round(controls.pot.value),1,1000);controls.pot.value=String(state.basePot);renderRecipeOptions(true);persist();render()});
     controls.settingsOpen?.addEventListener('click',()=>profile&&typeof profile.open==='function'&&profile.open());window.addEventListener('pokemon-sleep:personal-settings-change',render);
     syncControls();render();return {render,getState:()=>({...state}),calculatePlan};
   }
-  return Object.freeze({STORAGE_KEY,INVENTORY_LIMIT,ACTIVITY_PROFILES,MEAL_NAMES,DAY_NAMES,weekKey,daysRemainingInWeek,effectivePot,recipeRows,chooseTargetRecipe,individualIngredientProduction,buildPreparationTeam,buildOutputTeam,ingredientBudget,createActionPlan,buildHuntTargets,calculatePlan,normalizeState,mount});
+  return Object.freeze({STORAGE_KEY,INVENTORY_LIMIT,ACTIVITY_PROFILES,MEAL_NAMES,DAY_NAMES,weekKey,daysRemainingInWeek,effectivePot,recipeRows,chooseTargetRecipe,isEventArea,isPsychic,activityMemberModifier,applyActivityContext,mergeTargetRecipes,individualIngredientProduction,buildPreparationTeam,buildOutputTeam,ingredientBudget,createActionPlan,buildHuntTargets,calculatePlan,normalizeState,mount});
 });
