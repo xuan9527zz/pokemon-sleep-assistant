@@ -7,13 +7,23 @@
   'use strict';
   const ROLE_LABELS={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手',unknown:'待核对'};
   const SPRITE_BASE_IDS=Object.freeze({7006:37,7007:38,7054:194,8001:849,9001:25,9002:25,9004:133,9005:133,9006:363,9007:25});
+  const SPRITE_NAME_IDS=Object.freeze({
+    '皮卡丘（巫师帽）':25,
+    '皮卡丘（圣诞）':25,
+    '伊布（圣诞）':133,
+    '乌波（城都）':194,
+    '乌波（帕底亚）':10253,
+    '海豹球（节日）':363
+  });
   const normalize=value=>String(value||'').trim().toLowerCase();
   function recordFor(mon,catalog){
     const rows=catalog&&Array.isArray(catalog.pokemon)?catalog.pokemon:[];
     return rows.find(row=>String(row.id)===String(mon&&mon.speciesId||''))||rows.find(row=>row.name===mon.name)||rows.find(row=>String(row.id)===String(mon&&mon.finalFormId||''))||null;
   }
   function iconUrl(mon,catalog){
-    const record=recordFor(mon,catalog),rawId=Number(record&&record.pokedexId),id=SPRITE_BASE_IDS[rawId]||rawId;
+    const record=recordFor(mon,catalog),rawId=Number(record&&record.pokedexId);
+    const nameId=SPRITE_NAME_IDS[String(mon&&mon.name||'')];
+    const id=nameId||SPRITE_BASE_IDS[rawId]||rawId;
     return Number.isFinite(id)&&id>0?`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`:'';
   }
   function displayName(mon){return String(mon&&mon.nickname||'').trim()||String(mon&&mon.name||'未命名')}
@@ -44,5 +54,5 @@
     search.addEventListener('input',render);role.addEventListener('change',render);box.addEventListener('change',render);close.addEventListener('click',()=>dialog.close?dialog.close():dialog.removeAttribute('open'));dialog.addEventListener('click',event=>{if(event.target===dialog&&dialog.close)dialog.close()});
     return {open,close:()=>dialog.close&&dialog.close(),render,createIcon:(mon,config={})=>createIcon(mon,{catalog,document:doc,...config}),setButton:(button,mon,config={})=>setButton(button,mon,{catalog,document:doc,...config})};
   }
-  return Object.freeze({ROLE_LABELS,SPRITE_BASE_IDS,recordFor,iconUrl,displayName,searchableText,createIcon,setButton,mount});
+  return Object.freeze({ROLE_LABELS,SPRITE_BASE_IDS,SPRITE_NAME_IDS,recordFor,iconUrl,displayName,searchableText,createIcon,setButton,mount});
 });

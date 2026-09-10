@@ -4,10 +4,11 @@
   const boxManager=typeof module==='object'&&module.exports?require('./box-manager.js'):root.POKEMON_SLEEP_BOX_MANAGER;
   const energyMechanics=typeof module==='object'&&module.exports?require('./snorlax-energy.js'):root.POKEMON_SLEEP_SNORLAX_ENERGY;
   const personalSettings=typeof module==='object'&&module.exports?require('./personal-settings.js'):root.POKEMON_SLEEP_PERSONAL_SETTINGS;
-  const api=factory(ingredients,boxManager,energyMechanics,personalSettings);
+  const teamSkillEffects=typeof module==='object'&&module.exports?require('./main-skill-team-effects.js'):root.POKEMON_SLEEP_MAIN_SKILL_TEAM_EFFECTS;
+  const api=factory(ingredients,boxManager,energyMechanics,personalSettings,teamSkillEffects);
   if(typeof module==='object'&&module.exports)module.exports=api;
   root.POKEMON_SLEEP_TEAM_PLANNER=api;
-})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog,boxManager,energyMechanics,personalSettings){
+})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog,boxManager,energyMechanics,personalSettings,teamSkillEffects){
   'use strict';
 
   const SUBSKILL_LEVELS=[10,25,50,70,80];
@@ -126,15 +127,32 @@
       const berryEnergy=energyMechanics?energyMechanics.applyPercentageBonus(berryBaseEnergy,settings.islandBonusPct):Math.round(berryBaseEnergy);
       const modifier=member.eventModifier||memberModifier(options,mon),probability=applySkillTriggerMultiplier(skillProbability(mon),modifier.skillTriggerMultiplier),baseSkillLevel=boxManager&&typeof boxManager.effectiveMainSkillLevel==='function'?boxManager.effectiveMainSkillLevel(mon):Number(String(mon.main||'').match(/Lv\.(\d+)/)?.[1]||1),skillCap=boxManager&&typeof boxManager.mainSkillLevelCap==='function'?boxManager.mainSkillLevelCap(mon.main):Math.max(6,baseSkillLevel),skillLevel=Math.min(skillCap,baseSkillLevel+modifier.mainSkillLevelBonus);
       const skill=energyMechanics?energyMechanics.directEnergyPerUse(mon.main,mon.mainSkillId,skillLevel,settings.islandBonusPct):{supported:false,actualEnergy:0,baseEnergy:0};
-      const triggers=skill.supported?helps*probability.effective:0,directSkillEnergy=Math.round(triggers*skill.actualEnergy);
+      const triggers=helps*probability.effective,directSkillEnergy=skill.supported?Math.round(triggers*skill.actualEnergy):0;
+      const berryEnergyPerBerry=energyMechanics?energyMechanics.applyPercentageBonus((berryStrength||0)*(favorite?2:1),settings.islandBonusPct):(berryStrength||0)*(favorite?2:1);
       return {
         id:mon.id,name:mon.name,berryName:mon.berry||'待核对',favorite,helps,berries,berryStrength,
         berryBaseEnergy,berryEnergy,skillProbability:probability,skillLevel,baseSkillLevel,eventModifier:modifier,skill,triggers,directSkillEnergy,
-        totalEnergy:berryEnergy+directSkillEnergy
+        berryEnergyPerBerry,ordinaryBerryEnergyPerHelp:(1-member.probability.current)*member.berryCount*berryEnergyPerBerry,
+        complexSkill:null,complexSkillEnergy:0,teamRecovery:0,productiveRecovery:0,selfRecovery:0,
+        totalEnergy:berryEnergy+directSkillEnergy,mon
       };
     });
-    const berryEnergy=sum(rows.map(row=>row.berryEnergy)),directSkillEnergy=sum(rows.map(row=>row.directSkillEnergy)),totalEnergy=berryEnergy+directSkillEnergy;
-    return {...settings,island:profile,berryEnergy,directSkillEnergy,totalEnergy,perHour:totalEnergy/settings.durationHours,members:rows,unsupportedSkillMembers:rows.filter(row=>!row.skill.supported&&/树果骤增|流星群|帮手加速|帮手支援|新月祈祷|治愈波动|挥指|模仿/.test(String((members.find(member=>member.mon.id===row.id)||{}).mon?.main||'')))};
+    if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{
+      if(row.skill.supported)return;
+      const effect=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours});
+      if(!effect)return;
+      row.complexSkill=effect;
+      if(effect.supported){
+        row.complexSkillEnergy=Math.round(row.triggers*effect.energyPerUse);
+        row.teamRecovery=row.triggers*effect.teamRecoveryPerUse;
+        row.productiveRecovery=row.triggers*effect.productiveRecoveryPerUse;
+        row.selfRecovery=row.triggers*effect.selfRecoveryPerUse;
+        row.totalEnergy+=row.complexSkillEnergy;
+      }
+    });
+    rows.forEach(row=>{delete row.mon});
+    const berryEnergy=sum(rows.map(row=>row.berryEnergy)),directSkillEnergy=sum(rows.map(row=>row.directSkillEnergy)),complexSkillEnergy=sum(rows.map(row=>row.complexSkillEnergy)),totalSkillEnergy=directSkillEnergy+complexSkillEnergy,totalEnergy=berryEnergy+totalSkillEnergy,teamRecovery=sum(rows.map(row=>row.teamRecovery)),productiveRecovery=sum(rows.map(row=>row.productiveRecovery));
+    return {...settings,island:profile,berryEnergy,directSkillEnergy,complexSkillEnergy,totalSkillEnergy,teamRecovery,productiveRecovery,totalEnergy,perHour:totalEnergy/settings.durationHours,members:rows,unsupportedSkillMembers:rows.filter(row=>!row.skill.supported&&row.complexSkill&&!row.complexSkill.supported)};
   }
 
   function ingredientProbability(mon,production){
@@ -499,7 +517,8 @@
       const cards=[
         [`${number(result.energy.durationHours,1)}小时纯能量`,`${Math.round(result.energy.totalEnergy).toLocaleString('zh-CN')}`,`每小时约 ${Math.round(result.energy.perHour).toLocaleString('zh-CN')}；不计食材能量`],
         ['常规树果',Math.round(result.energy.berryEnergy).toLocaleString('zh-CN'),`${result.energy.island.label} · 岛屿加成 +${number(result.energy.islandBonusPct,0)}%`],
-        ['直接能量技能',Math.round(result.energy.directSkillEnergy).toLocaleString('zh-CN'),result.energy.directSkillEnergy?'按理论触发期望计算':'当前队员没有可直接折算的能量技能'],
+        ['主技能纯能量',Math.round(result.energy.totalSkillEnergy).toLocaleString('zh-CN'),result.energy.complexSkillEnergy?`直接能量 ${Math.round(result.energy.directSkillEnergy).toLocaleString('zh-CN')}＋队伍联动 ${Math.round(result.energy.complexSkillEnergy).toLocaleString('zh-CN')}`:result.energy.directSkillEnergy?'按理论触发期望计算':'当前队员没有可折算的纯能量主技能'],
+        ['队伍活力收益',number(result.energy.productiveRecovery,1),result.energy.teamRecovery?`主产能队员的回复期望；全队回复总量 ${number(result.energy.teamRecovery,1)}`:'当前队伍没有可统计的治疗技能'],
         ['建议收菜',formatHours(result.collectionHours),limiting?`按${limiting.mon.name}预计${formatHours(limiting.fullHours)}满仓，预留约15%空间`:'等待完整队伍'],
         ['食材合计',`${number(totalPerDay,1)} 个／24h`,'按建议频率全天执行的常规帮忙期望'],
         ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`每名成员按自身速度补正逐只重算；队内叠加${result.helpingBonusCount*5}%，与速度副技能合计遵守35%上限`:'当前没有全队速度加成'],
@@ -530,7 +549,13 @@
         const notes=[];
         if(/食材获取|食材精选|十项全能|料理辅助/.test(mon.main))notes.push('主技能还可能带来额外食材，未并入上面的常规帮忙数量');
         if(memberEnergy.skill.supported)notes.push(`直接能量技能按 Lv.${memberEnergy.skillLevel}、约${number(memberEnergy.triggers,2)}次触发计入 ${Math.round(memberEnergy.directSkillEnergy).toLocaleString('zh-CN')} 能量`);
-        else if(/树果骤增|流星群|帮手加速|帮手支援|新月祈祷|治愈波动|挥指|模仿/.test(mon.main))notes.push('该主技能依赖完整队伍状态，本次纯能量暂未折算');
+        else if(memberEnergy.complexSkill&&memberEnergy.complexSkill.supported){
+          const effect=memberEnergy.complexSkill,parts=[`${effect.label}按 Lv.${memberEnergy.skillLevel}、约${number(memberEnergy.triggers,2)}次触发`];
+          if(memberEnergy.complexSkillEnergy)parts.push(`计入 ${Math.round(memberEnergy.complexSkillEnergy).toLocaleString('zh-CN')} 纯能量`);
+          if(memberEnergy.teamRecovery)parts.push(`全队活力收益约 ${number(memberEnergy.teamRecovery,1)}`);
+          parts.push(effect.detail);notes.push(parts.join('，'));
+          if(effect.pendingComponents&&effect.pendingComponents.length)notes.push(effect.pendingComponents.join('；'));
+        }else if(memberEnergy.complexSkill)notes.push(`${memberEnergy.complexSkill.label}暂未计入：${memberEnergy.complexSkill.detail}`);
         if(mon.specialty==='berry'&&member.fullHours<result.collectionHours)notes.push('树果手满仓后仍会偷偷吃树果，但食材与主技能抽选会停止');
         if(member.probability.provisional)notes.push('缺少物种食材概率，当前使用20%暂定值');
         if(notes.length)card.append(element('p','current-team-member-note',notes.join('；')+'。'));
@@ -611,7 +636,7 @@
     globalThis.addEventListener?.('pokemon-sleep:personal-settings-change',event=>{if(['current-island','island-bonus'].includes(event.detail&&event.detail.type))render()});
     buildPickers();render();
     function refresh(){sortedMons=[...mons].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')||Number(b.lv)-Number(a.lv)||Number(a.id)-Number(b.id));buildPickers();return render()}
-    return {render,refresh,calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,teamOptions())};
+    return {render,refresh,getTeam:()=>selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,teamOptions())};
   }
 
   return {ENERGY_PROFILES,ISLAND_PROFILES,DEFAULT_ENERGY_SETTINGS,SPECIAL_NAMES,MAX_SAVED_TEAMS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,skillProbability,normalizeEnergySettings,calculateEnergyBreakdown,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateMember,calculateTeam,formatHours,mount};

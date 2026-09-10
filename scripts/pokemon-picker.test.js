@@ -10,5 +10,7 @@ assert.ok(picker.searchableText(mon).includes('a-07'));
 assert.ok(picker.searchableText(mon).includes('萌绿玉米'));
 assert.ok(picker.iconUrl(mon,catalog).endsWith('/759.png'));
 assert.ok(picker.iconUrl({speciesId:'9006',name:'海豹球（节日）'},{pokemon:[{id:'9006',name:'海豹球（佳节）',pokedexId:9006}]}).endsWith('/363.png'),'特殊活动形态应使用基础形态图标兜底');
+assert.ok(picker.iconUrl({name:'皮卡丘（巫师帽）'},{}).endsWith('/25.png'),'仅有名称时也应识别活动形态图标');
+assert.ok(picker.iconUrl({name:'乌波（帕底亚）'},{}).endsWith('/10253.png'),'地区形态应显示对应图标');
 
 console.log('pokemon picker tests passed');

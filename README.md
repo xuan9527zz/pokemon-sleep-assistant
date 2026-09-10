@@ -78,6 +78,7 @@
 ├─ data/raenonx-species.json          # RaenonX 全图鉴种族基础数据快照
 ├─ scripts/build-team-production-data.js # 生成并校验队伍生产率映射
 ├─ scripts/team-planner.test.js       # 当前队伍模型自检
+├─ scripts/main-skill-team-effects.test.js # 复杂主技能五人队收益自检
 ├─ scripts/snorlax-energy.test.js     # 能量常量、等级和加成计算自检
 ├─ scripts/weekly-planner.test.js     # 周目标、预算、队伍切换与周进度自检
 ├─ scripts/investment-planner.test.js # EXP、进化与副技能种子模型自检
