@@ -43,13 +43,13 @@
   }
   function defaults(ingredients=[]){
     return {
-      schemaVersion:1,
+      schemaVersion:2,
       accountStage:'mature',
       currentIsland:'green',
       weekMode:'preparation',
       activityKey:'normal',
       islandBonuses:Object.fromEntries(ISLANDS.map(island=>[island.key,0])),
-      recipeBonuses:{},
+      recipeLevels:{},
       cookedRecipeIds:[],
       ingredientStock:Object.fromEntries(ingredientNames(ingredients).map(name=>[name,0])),
       inventoryLimit:INVENTORY_LIMIT,
@@ -63,11 +63,15 @@
     const weekMode=Object.hasOwn(WEEK_MODES,source.weekMode)?source.weekMode:base.weekMode;
     const activityKey=Object.hasOwn(activityProfiles,source.activityKey)?source.activityKey:(Object.hasOwn(activityProfiles,'normal')?'normal':String(source.activityKey||base.activityKey));
     const islandBonuses={...base.islandBonuses};
-    Object.entries(source.islandBonuses&&typeof source.islandBonuses==='object'?source.islandBonuses:{}).forEach(([key,value])=>{if(Object.hasOwn(islandBonuses,key))islandBonuses[key]=clamp(value,0,200)});
-    const recipeBonuses={};
-    Object.entries(source.recipeBonuses&&typeof source.recipeBonuses==='object'?source.recipeBonuses:{}).forEach(([id,value])=>{if(!validRecipeIds.size||validRecipeIds.has(String(id)))recipeBonuses[String(id)]=clamp(value,0,200)});
+    Object.entries(source.islandBonuses&&typeof source.islandBonuses==='object'?source.islandBonuses:{}).forEach(([key,value])=>{if(Object.hasOwn(islandBonuses,key))islandBonuses[key]=clamp(value,0,85)});
+    const energy=root&&root.POKEMON_SLEEP_SNORLAX_ENERGY,recipeLevels={},storedLevels=source.recipeLevels&&typeof source.recipeLevels==='object'?source.recipeLevels:null,legacyBonuses=source.recipeBonuses&&typeof source.recipeBonuses==='object'?source.recipeBonuses:{};
+    Object.entries(storedLevels||legacyBonuses).forEach(([id,value])=>{
+      if(validRecipeIds.size&&!validRecipeIds.has(String(id)))return;
+      recipeLevels[String(id)]=storedLevels?clamp(Math.round(value),1,70):(energy&&energy.recipeLevelFromBonusPct?energy.recipeLevelFromBonusPct(value):clamp(Math.round(value),1,70));
+    });
     const cookedRecipeIds=[...new Set((Array.isArray(source.cookedRecipeIds)?source.cookedRecipeIds:[]).map(String).filter(id=>!validRecipeIds.size||validRecipeIds.has(id)))];
-    return {...base,...source,schemaVersion:1,accountStage,currentIsland,weekMode,activityKey,islandBonuses,recipeBonuses,cookedRecipeIds,ingredientStock:normalizeInventory(source.ingredientStock,ingredients),inventoryLimit:INVENTORY_LIMIT,updatedAt:String(source.updatedAt||'')};
+    const normalized={...base,...source,schemaVersion:2,accountStage,currentIsland,weekMode,activityKey,islandBonuses,recipeLevels,cookedRecipeIds,ingredientStock:normalizeInventory(source.ingredientStock,ingredients),inventoryLimit:INVENTORY_LIMIT,updatedAt:String(source.updatedAt||'')};
+    delete normalized.recipeBonuses;return normalized;
   }
   function migrate(storage,context={}){
     const stored=readJson(storage,STORAGE_KEY,null);
@@ -79,14 +83,14 @@
       const label=context.islands[Number(weekly.islandIndex)].name,match=ISLANDS.find(island=>island.label===label);if(match)base.currentIsland=match.key;
     }
     if(team.islandProfile&&ISLANDS.some(island=>island.teamProfile===team.islandProfile))base.currentIsland=ISLANDS.find(island=>island.teamProfile===team.islandProfile).key;
-    if(Number(team.islandBonusPct)>0)base.islandBonuses[base.currentIsland]=clamp(team.islandBonusPct,0,200);
-    if(oldRecipeBonus>0)recipeIds(context.recipes).forEach(id=>{base.recipeBonuses[id]=oldRecipeBonus});
+    if(Number(team.islandBonusPct)>0)base.islandBonuses[base.currentIsland]=clamp(team.islandBonusPct,0,85);
+    if(oldRecipeBonus>0){const energy=root&&root.POKEMON_SLEEP_SNORLAX_ENERGY,level=energy&&energy.recipeLevelFromBonusPct?energy.recipeLevelFromBonusPct(oldRecipeBonus):clamp(Math.round(oldRecipeBonus),1,70);recipeIds(context.recipes).forEach(id=>{base.recipeLevels[id]=level})}
     const normalized=normalizeState(base,context);writeJson(storage,STORAGE_KEY,normalized);return normalized;
   }
   function read(context={},storage=browserStorage()){return migrate(storage,context)}
   function island(state){return ISLANDS.find(item=>item.key===state.currentIsland)||ISLANDS[0]}
-  function islandBonus(state,key){return clamp(state&&state.islandBonuses&&state.islandBonuses[key||state.currentIsland],0,200)}
-  function recipeBonus(state,id){return clamp(state&&state.recipeBonuses&&state.recipeBonuses[String(id)],0,200)}
+  function islandBonus(state,key){return clamp(state&&state.islandBonuses&&state.islandBonuses[key||state.currentIsland],0,85)}
+  function recipeLevel(state,id){return clamp(Math.round(state&&state.recipeLevels&&state.recipeLevels[String(id)]||1),1,70)}
   function isCooked(state,id){return Boolean(state&&Array.isArray(state.cookedRecipeIds)&&state.cookedRecipeIds.includes(String(id)))}
   function setIngredientStock(state,name,value){
     const next=clone(state),current=Math.max(0,Math.round(Number(next.ingredientStock[name])||0)),requested=Math.max(0,Math.round(Number(value)||0)),other=inventoryTotal(next.ingredientStock)-current;
@@ -113,7 +117,7 @@
     }
     function renderIslandBonuses(){
       if(!islandRoot)return;islandRoot.replaceChildren();
-      ISLANDS.forEach(item=>{const label=document.createElement('label'),span=document.createElement('span'),input=document.createElement('input');span.textContent=item.label;input.type='number';input.min='0';input.max='200';input.step='1';input.inputMode='decimal';input.value=String(islandBonus(state,item.key));input.dataset.islandBonus=item.key;input.addEventListener('change',()=>{state.islandBonuses[item.key]=clamp(input.value,0,200);input.value=String(state.islandBonuses[item.key]);emit('island-bonus')});label.append(span,input);islandRoot.append(label)});
+      ISLANDS.forEach(item=>{const label=document.createElement('label'),span=document.createElement('span'),input=document.createElement('input');span.textContent=`${item.label}（%）`;input.type='number';input.min='0';input.max='85';input.step='1';input.inputMode='decimal';input.value=String(islandBonus(state,item.key));input.dataset.islandBonus=item.key;input.addEventListener('change',()=>{state.islandBonuses[item.key]=clamp(input.value,0,85);input.value=String(state.islandBonuses[item.key]);emit('island-bonus')});label.append(span,input);islandRoot.append(label)});
     }
     function renderStock(){
       if(!stockRoot)return;stockRoot.replaceChildren();
@@ -122,7 +126,7 @@
     function renderStockTotal(){if(stockTotal){const total=inventoryTotal(state.ingredientStock);stockTotal.textContent=`${total} / ${INVENTORY_LIMIT}`;stockTotal.dataset.full=total>=INVENTORY_LIMIT?'true':'false'}}
     function renderRecipes(){
       if(!recipeRoot)return;const query=recipeQuery.trim().toLowerCase(),rows=context.recipes.filter(recipe=>{const cooked=isCooked(state,recipe.id);return (!query||String(recipe.name).toLowerCase().includes(query)||String(recipe.id).includes(query))&&(recipeStatus==='all'||(recipeStatus==='cooked'&&cooked)||(recipeStatus==='uncooked'&&!cooked))});recipeRoot.replaceChildren();
-      rows.forEach(recipe=>{const row=document.createElement('div'),copy=document.createElement('div'),name=document.createElement('strong'),meta=document.createElement('small'),bonusLabel=document.createElement('label'),bonus=document.createElement('input'),cookedLabel=document.createElement('label'),cooked=document.createElement('input');row.className='profile-recipe-row';name.textContent=recipe.name;meta.textContent=`${recipe.type} · ${recipe.total||0} 格`;copy.append(name,meta);bonusLabel.className='profile-recipe-bonus';bonusLabel.append(document.createTextNode('等级加成'));bonus.type='number';bonus.min='0';bonus.max='200';bonus.step='1';bonus.inputMode='decimal';bonus.value=String(recipeBonus(state,recipe.id));bonus.addEventListener('change',()=>{state.recipeBonuses[String(recipe.id)]=clamp(bonus.value,0,200);bonus.value=String(state.recipeBonuses[String(recipe.id)]);emit('recipe-bonus')});bonusLabel.append(bonus,document.createTextNode('%'));cookedLabel.className='profile-recipe-cooked';cooked.type='checkbox';cooked.checked=isCooked(state,recipe.id);cooked.addEventListener('change',()=>{const values=new Set(state.cookedRecipeIds);cooked.checked?values.add(String(recipe.id)):values.delete(String(recipe.id));state.cookedRecipeIds=[...values];emit('recipe-cooked');if(recipeStatus!=='all')renderRecipes()});cookedLabel.append(cooked,document.createTextNode('已做过'));row.append(copy,bonusLabel,cookedLabel);recipeRoot.append(row)});
+      rows.forEach(recipe=>{const row=document.createElement('div'),copy=document.createElement('div'),name=document.createElement('strong'),meta=document.createElement('small'),bonusLabel=document.createElement('label'),bonus=document.createElement('input'),cookedLabel=document.createElement('label'),cooked=document.createElement('input');row.className='profile-recipe-row';name.textContent=recipe.name;meta.textContent=`${recipe.type} · ${recipe.total||0} 格`;copy.append(name,meta);bonusLabel.className='profile-recipe-bonus';bonusLabel.append(document.createTextNode('食谱等级'));bonus.type='number';bonus.min='1';bonus.max='70';bonus.step='1';bonus.inputMode='numeric';bonus.value=String(recipeLevel(state,recipe.id));bonus.addEventListener('change',()=>{state.recipeLevels[String(recipe.id)]=clamp(Math.round(bonus.value),1,70);bonus.value=String(state.recipeLevels[String(recipe.id)]);emit('recipe-level')});bonusLabel.append(bonus,document.createTextNode('级'));cookedLabel.className='profile-recipe-cooked';cooked.type='checkbox';cooked.checked=isCooked(state,recipe.id);cooked.addEventListener('change',()=>{const values=new Set(state.cookedRecipeIds);cooked.checked?values.add(String(recipe.id)):values.delete(String(recipe.id));state.cookedRecipeIds=[...values];emit('recipe-cooked');if(recipeStatus!=='all')renderRecipes()});cookedLabel.append(cooked,document.createTextNode('已做过'));row.append(copy,bonusLabel,cookedLabel);recipeRoot.append(row)});
       if(!rows.length){const empty=document.createElement('p');empty.className='profile-settings-empty';empty.textContent='没有符合条件的食谱。';recipeRoot.append(empty)}
     }
     function render(){
@@ -137,13 +141,13 @@
     accountStage?.addEventListener('change',()=>{state.accountStage=['starter','forming','mature'].includes(accountStage.value)?accountStage.value:'mature';emit('account-stage')});
     recipeSearch?.addEventListener('input',()=>{recipeQuery=recipeSearch.value;renderRecipes()});
     recipeFilter?.addEventListener('change',()=>{recipeStatus=recipeFilter.value;renderRecipes()});
-    bulkApply?.addEventListener('click',()=>{const value=clamp(bulkInput&&bulkInput.value,0,200);recipeIds(context.recipes).forEach(id=>{state.recipeBonuses[id]=value});renderRecipes();emit('recipe-bonus')});
+    bulkApply?.addEventListener('click',()=>{const value=clamp(Math.round(bulkInput&&bulkInput.value),1,70);recipeIds(context.recipes).forEach(id=>{state.recipeLevels[id]=value});renderRecipes();emit('recipe-level')});
     openButton?.addEventListener('click',()=>{render();dialog.showModal?dialog.showModal():dialog.setAttribute('open','')});
     closeButton?.addEventListener('click',()=>dialog.close?dialog.close():dialog.removeAttribute('open'));
     dialog.addEventListener('click',event=>{if(event.target===dialog&&dialog.close)dialog.close()});
     render();document.documentElement.classList.add('personal-settings-ready');
-    return {open:()=>openButton?.click(),close:()=>dialog.close&&dialog.close(),getState:()=>clone(state),update(patch,type='settings'){state=normalizeState({...state,...patch},context);render();emit(type);return clone(state)},setIngredient(name,value){state=setIngredientStock(state,name,value);renderStock();emit('ingredient-stock');return state.ingredientStock[name]},recipeBonus:id=>recipeBonus(state,id),isCooked:id=>isCooked(state,id),islandBonus:key=>islandBonus(state,key),currentIsland:()=>island(state),islandIndex:islands=>islandIndexFor(state,islands)};
+    return {open:()=>openButton?.click(),close:()=>dialog.close&&dialog.close(),getState:()=>clone(state),update(patch,type='settings'){state=normalizeState({...state,...patch},context);render();emit(type);return clone(state)},setIngredient(name,value){state=setIngredientStock(state,name,value);renderStock();emit('ingredient-stock');return state.ingredientStock[name]},recipeLevel:id=>recipeLevel(state,id),isCooked:id=>isCooked(state,id),islandBonus:key=>islandBonus(state,key),currentIsland:()=>island(state),islandIndex:islands=>islandIndexFor(state,islands)};
   }
 
-  return Object.freeze({STORAGE_KEY,INVENTORY_LIMIT,ISLANDS,WEEK_MODES,defaults,normalizeInventory,normalizeState,inventoryTotal,migrate,read,island,islandBonus,recipeBonus,isCooked,setIngredientStock,islandIndexFor,mount});
+  return Object.freeze({STORAGE_KEY,INVENTORY_LIMIT,ISLANDS,WEEK_MODES,defaults,normalizeInventory,normalizeState,inventoryTotal,migrate,read,island,islandBonus,recipeLevel,isCooked,setIngredientStock,islandIndexFor,mount});
 });

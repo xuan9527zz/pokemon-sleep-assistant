@@ -33,6 +33,13 @@
   });
   const NIGHTMARE=Object.freeze({1:2640,2:3753,3:5178,4:7149,5:9870,6:13638,7:18515});
   const AURA_SPHERE=Object.freeze({1:200,2:285,3:393,4:542,5:748,6:1033,7:1501,8:2042});
+  // Recipe level bonus percentages for Lv.1–70. The level bonus is rounded
+  // against the recipe's Lv.1 strength before the area bonus is applied.
+  const RECIPE_LEVEL_BONUS_PCT=Object.freeze([
+    0,0,2,4,6,8,9,11,13,16,18,19,21,23,24,26,28,30,31,33,35,37,40,42,45,47,50,52,55,58,61,64,67,70,74,77,
+    81,84,88,92,96,100,104,108,113,117,122,127,132,137,142,148,153,159,165,171,177,183,190,197,203,209,215,221,
+    227,234,239,243,248,252,258
+  ]);
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number(value)||0));
 
@@ -50,6 +57,30 @@
     if(rounding==='ceil')return Math.ceil(result);
     if(rounding==='floor')return Math.floor(result);
     return Math.round(result);
+  }
+
+  function normalizeRecipeLevel(level){return clamp(Math.round(Number(level)||1),1,70)}
+
+  function recipeLevelBonusPct(level){return RECIPE_LEVEL_BONUS_PCT[normalizeRecipeLevel(level)]}
+
+  function recipeLevelFromBonusPct(percent){
+    const target=clamp(percent,0,258);
+    let best=1,distance=Infinity;
+    for(let level=1;level<=70;level++){
+      const next=Math.abs(RECIPE_LEVEL_BONUS_PCT[level]-target);
+      if(next<distance){best=level;distance=next}
+    }
+    return best;
+  }
+
+  function recipeStrengthAtLevel(baseEnergy,level=1){
+    const base=Math.max(0,Number(baseEnergy)||0);
+    return base+Math.round(base*recipeLevelBonusPct(level)/100);
+  }
+
+  function recipeFinalEnergy({baseEnergy=0,level=1,islandBonusPct=0,extraIngredientEnergy=0,eventMultiplier=1}={}){
+    const recipeStrength=recipeStrengthAtLevel(baseEnergy,level),extras=Math.max(0,Number(extraIngredientEnergy)||0),event=Math.max(0,Number(eventMultiplier)||0);
+    return Math.floor((recipeStrength+extras)*percentageMultiplier(islandBonusPct)*event);
   }
 
   function expectedRandomEnergy(range,bonusPct){
@@ -103,7 +134,7 @@
   }
 
   return Object.freeze({
-    BERRY_BASE_STRENGTH,ENERGY_CHARGE_S_FIXED,ENERGY_CHARGE_S_RANDOM,ENERGY_CHARGE_M,STOCKPILE,NIGHTMARE,AURA_SPHERE,
-    berryStrengthAtLevel,percentageMultiplier,applyPercentageBonus,expectedRandomEnergy,expectedStockpileEnergy,directEnergyPerUse
+    BERRY_BASE_STRENGTH,ENERGY_CHARGE_S_FIXED,ENERGY_CHARGE_S_RANDOM,ENERGY_CHARGE_M,STOCKPILE,NIGHTMARE,AURA_SPHERE,RECIPE_LEVEL_BONUS_PCT,
+    berryStrengthAtLevel,percentageMultiplier,applyPercentageBonus,normalizeRecipeLevel,recipeLevelBonusPct,recipeLevelFromBonusPct,recipeStrengthAtLevel,recipeFinalEnergy,expectedRandomEnergy,expectedStockpileEnergy,directEnergyPerUse
   });
 });

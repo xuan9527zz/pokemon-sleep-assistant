@@ -31,6 +31,11 @@ const recipes = [
 ];
 assert.equal(weekly.chooseTargetRecipe(recipes,'沙拉',15,{},{}).id,1);
 assert.equal(weekly.chooseTargetRecipe(recipes,'沙拉',25,{'特选苹果':60},{'特选苹果':100}).id,2);
+assert.equal(weekly.recipeRows(recipes,'沙拉',25,recipe=>recipe.id===1?5000:3000)[0].id,1,'食谱等级换算后的能量应参与排序');
+assert.equal(weekly.ACTIVITY_PROFILES.snapshot.archived,true);
+assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.psychicIngredientBonus,1);
+assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.skillTriggerMultiplier,1.5);
+assert.equal(weekly.ACTIVITY_PROFILES.mewtwo2.sleepDrowsyPowerMultiplier,1.3);
 
 const budget=weekly.ingredientBudget(recipes[1],{'特选苹果':30},{'特选苹果':0},15,5,7);
 assert.equal(budget.remaining,10);

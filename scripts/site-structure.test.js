@@ -27,6 +27,10 @@ assert.ok(html.includes('id="personalSettingsDialog"'), '缺少统一个人设�
 assert.ok(html.includes('id="profileIslandBonuses"'), '个人设置缺少岛屿加成资料');
 assert.ok(html.includes('id="profileIngredientStock"'), '个人设置缺少共用食材库存');
 assert.ok(html.includes('id="profileRecipeList"'), '个人设置缺少逐食谱加成与完成状态');
+assert.ok(html.includes('id="profileRecipeBulk" type="number" min="1" max="70"'), '食谱等级输入必须限制为Lv.1–70');
+assert.ok(html.includes('官方公告快照 · 2026-09-10'), '活动页资料快照未更新');
+assert.ok(!html.includes('梦幻迷你拍照惊喜任务进行中'), '活动页仍把已经结束的梦幻拍照活动显示为进行中');
+assert.ok(html.includes('超能力系主技能触发率 ×1.5'), '活动页缺少超梦活动的技能触发率细节');
 assert.ok(html.includes('id="recipeIngredient" multiple'), '食谱页必须支持多食材交集筛选');
 assert.ok(html.includes('id="recipeCookedFilter"'), '食谱页缺少未做过筛选');
 assert.ok(html.includes('id="currentTeamDrawer"'), '当前队伍缺少切换侧栏');

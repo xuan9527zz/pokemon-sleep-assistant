@@ -14,6 +14,13 @@ assert.deepStrictEqual(energy.AURA_SPHERE, species.auraSphere.energyByLevel, '�
 
 assert.strictEqual(energy.berryStrengthAtLevel(15, 70), 192);
 assert.strictEqual(energy.applyPercentageBonus(1000, 60), 1600);
+assert.strictEqual(energy.RECIPE_LEVEL_BONUS_PCT.length,71);
+assert.strictEqual(energy.recipeLevelBonusPct(1),0);
+assert.strictEqual(energy.recipeLevelBonusPct(60),203);
+assert.strictEqual(energy.recipeLevelBonusPct(70),258);
+assert.strictEqual(energy.recipeLevelFromBonusPct(60),30);
+assert.strictEqual(energy.recipeStrengthAtLevel(1000,60),3030);
+assert.strictEqual(energy.recipeFinalEnergy({baseEnergy:1000,level:60,islandBonusPct:85}),5605);
 assert.strictEqual(energy.directEnergyPerUse('能量填充M Lv.7', 2, 7, 60).actualEnergy, 10973);
 assert.ok(Math.abs(energy.directEnergyPerUse('能量填充S（随机）Lv.7', 5, 7, 0).baseEnergy - 4015.5) < .1);
 assert.ok(Math.abs(energy.directEnergyPerUse('蓄力（能量填充S）Lv.7', 16, 7, 0).baseEnergy - 4948) < 1);
