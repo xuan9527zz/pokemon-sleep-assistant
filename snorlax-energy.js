@@ -1,11 +1,13 @@
 (function(root,factory){
   'use strict';
-  const api=factory();
+  const gameRules=typeof module==='object'&&module.exports?require('./game-rules.js'):root.POKEMON_SLEEP_GAME_RULES;
+  const api=factory(gameRules);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_SNORLAX_ENERGY=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(){
+})(typeof globalThis!=='undefined'?globalThis:this,function(gameRules){
   'use strict';
 
+  const LIMITS=gameRules&&gameRules.LIMITS||{helperLevel:70,recipeLevel:70,areaBonusPct:85};
   // Kept in sync with the executable mechanics in species-scores.js. The
   // cross-module test fails if either source changes without the other.
   const BERRY_BASE_STRENGTH=Object.freeze({
@@ -46,11 +48,11 @@
   function berryStrengthAtLevel(berryId,level=1){
     const base=BERRY_BASE_STRENGTH[Number(berryId)];
     if(!(base>0))return null;
-    const safe=clamp(Math.round(level),1,100);
+    const safe=clamp(Math.round(level),1,LIMITS.helperLevel);
     return Math.round(Math.max(base+safe-1,base*(1.025**(safe-1))));
   }
 
-  function percentageMultiplier(percent){return 1+clamp(percent,0,200)/100}
+  function percentageMultiplier(percent){return 1+clamp(percent,0,LIMITS.areaBonusPct)/100}
 
   function applyPercentageBonus(value,percent,rounding='round'){
     const result=Math.max(0,Number(value)||0)*percentageMultiplier(percent);
@@ -59,14 +61,14 @@
     return Math.round(result);
   }
 
-  function normalizeRecipeLevel(level){return clamp(Math.round(Number(level)||1),1,70)}
+  function normalizeRecipeLevel(level){return clamp(Math.round(Number(level)||1),1,LIMITS.recipeLevel)}
 
   function recipeLevelBonusPct(level){return RECIPE_LEVEL_BONUS_PCT[normalizeRecipeLevel(level)]}
 
   function recipeLevelFromBonusPct(percent){
     const target=clamp(percent,0,258);
     let best=1,distance=Infinity;
-    for(let level=1;level<=70;level++){
+    for(let level=1;level<=LIMITS.recipeLevel;level++){
       const next=Math.abs(RECIPE_LEVEL_BONUS_PCT[level]-target);
       if(next<distance){best=level;distance=next}
     }

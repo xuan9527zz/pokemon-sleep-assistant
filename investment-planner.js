@@ -1,11 +1,13 @@
 (function(root,factory){
   'use strict';
-  const api=factory();
+  const gameRules=typeof module==='object'&&module.exports?require('./game-rules.js'):root.POKEMON_SLEEP_GAME_RULES;
+  const api=factory(gameRules);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_INVESTMENT_PLANNER=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(){
+})(typeof globalThis!=='undefined'?globalThis:this,function(gameRules){
   'use strict';
 
+  const MAX_HELPER_LEVEL=gameRules&&gameRules.LIMITS?gameRules.LIMITS.helperLevel:70;
   const BASE_EXP=Object.freeze([0,0,54,71,108,128,164,202,244,274,315,345,376,407,419,429,440,454,469,483,497,515,537,558,579,600,622,643,665,686,708,729,748,766,785,803,821,839,857,875,893,910,928,945,963,980,997,1015,1032,1049,1066,1362,1562,1747,1946,2195,2279,2404,2533,2666,2806,2865,2922,2977,3029,3077,3095,3116,3144,3189,3255]);
   const SHARDS_PER_CANDY=Object.freeze([0,0,14,18,22,27,30,34,39,44,48,50,52,53,56,59,62,66,68,71,74,78,81,85,88,92,95,100,105,111,117,122,126,130,136,143,151,160,167,174,184,192,201,211,221,227,236,250,264,279,295,309,323,338,356,372,391,437,486,538,593,651,698,750,804,866,932,1004,1084,1173,1272]);
   const EXP_FACTORS=Object.freeze({1:1,2:1.5,3:1.8,4:2.2});
@@ -39,7 +41,7 @@
   const ROLE_LABELS=Object.freeze({berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手'});
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number(value)||0));
   const round=(value,digits=1)=>{const scale=10**digits;return Math.round((Number(value)+Number.EPSILON)*scale)/scale};
-  const parseLevel=value=>clamp(Math.round(Number(value)||1),1,70);
+  const parseLevel=value=>clamp(Math.round(Number(value)||1),1,MAX_HELPER_LEVEL);
   const parseSkills=mon=>{const result=String(mon&&mon.effectiveSubs||mon&&mon.subs||'').split('；').slice(0,5);while(result.length<5)result.push('—');return result};
   const natureName=value=>String(value||'').split(/[：:]/)[0].trim();
   function natureModifiers(value,natureApi){

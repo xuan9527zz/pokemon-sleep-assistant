@@ -33,6 +33,13 @@
     return segments.find(segment=>segment.rankOrder===rankOrder&&segment.sleepType===type)||segments.find(segment=>segment.rankOrder===rankOrder&&segment.sleepType==='balanced')||null;
   }
   function targetDefinition(targetId){return curves&&Array.isArray(curves.targetDefinitions)?curves.targetDefinitions.find(item=>String(item.id)===String(targetId))||null:null}
+  function targetDefinitions(areaValue){
+    const area=areaFor(areaValue);
+    return (curves&&Array.isArray(curves.targetDefinitions)?curves.targetDefinitions:[]).map(definition=>({
+      ...definition,
+      available:Boolean(area&&(area.targetSegments||[]).some(segment=>String(segment.targetId)===String(definition.id)))
+    })).sort((left,right)=>Number(right.available)-Number(left.available)||left.name.localeCompare(right.name,'zh-CN'));
+  }
   function targetSegmentFor(area,targetId,rankOrder,sleepType){
     const type=Object.hasOwn(SLEEP_TYPES,sleepType)?sleepType:'balanced',segments=area&&area.targetSegments||[];
     return segments.find(segment=>String(segment.targetId)===String(targetId)&&segment.rankOrder===rankOrder&&segment.sleepType===type)||segments.find(segment=>String(segment.targetId)===String(targetId)&&segment.rankOrder===rankOrder&&segment.sleepType==='balanced')||null;
@@ -145,5 +152,5 @@
   }
   function datasetInfo(){return curves?{datasetId:curves.datasetId,generatedAt:curves.generatedAt,algorithmVersion:curves.algorithmVersion,source:curves.source,sourcePage:curves.sourcePage}:null}
 
-  return Object.freeze({SLEEP_TYPES,OBJECTIVES,TARGET_OBJECTIVES,AREA_ALIASES,areaFor,rankFor,spawnCountFor,segmentFor,targetDefinition,targetSegmentFor,targetInfo,interpolate,calculateDrowsyPower,rawResearch,rawTarget,applyResearchDayRules,applyTargetDayRules,durationForScore,evaluatePlan,evaluateTargetPlan,compareSleepPlans,compareTargetSleepPlans,rewardAtEnergy,marginalReturn,slowdownReference,datasetInfo});
+  return Object.freeze({SLEEP_TYPES,OBJECTIVES,TARGET_OBJECTIVES,AREA_ALIASES,areaFor,rankFor,spawnCountFor,segmentFor,targetDefinition,targetDefinitions,targetSegmentFor,targetInfo,interpolate,calculateDrowsyPower,rawResearch,rawTarget,applyResearchDayRules,applyTargetDayRules,durationForScore,evaluatePlan,evaluateTargetPlan,compareSleepPlans,compareTargetSleepPlans,rewardAtEnergy,marginalReturn,slowdownReference,datasetInfo});
 });

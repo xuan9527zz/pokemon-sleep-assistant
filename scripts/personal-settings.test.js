@@ -17,7 +17,10 @@ assert.strictEqual(normalized.currentIsland,'cyan');
 assert.strictEqual(settings.islandBonus(normalized),85);
 assert.strictEqual(settings.recipeLevel(normalized,1),60);
 assert.strictEqual(settings.recipeLevel(normalized,2),0);
-assert.strictEqual(normalized.schemaVersion,3);
+assert.strictEqual(normalized.schemaVersion,4);
+assert.strictEqual(normalized.permanentPot,81);
+assert.strictEqual(normalized.sleepStyleCount,0);
+assert.strictEqual(normalized.sleepStyleGoal,510);
 assert.ok(settings.isCooked(normalized,1));
 assert.ok(!settings.isCooked(normalized,2));
 assert.strictEqual(settings.inventoryTotal(normalized.ingredientStock),800,'库存规范化必须遵守800硬上限');
@@ -29,6 +32,10 @@ const cookedMigration=settings.normalizeState({schemaVersion:2,recipeLevels:{2:2
 assert.strictEqual(settings.recipeLevel(cookedMigration,1),1,'旧版仅勾选已做过的食谱应迁移为Lv.1');
 assert.strictEqual(settings.recipeLevel(cookedMigration,2),20);
 assert.ok(!Object.hasOwn(cookedMigration,'cookedRecipeIds'));
+const progress=settings.normalizeState({permanentPot:999,sleepStyleCount:463,sleepStyleGoal:450},context);
+assert.strictEqual(progress.permanentPot,81,'永久锅容量不得超过当前81格上限');
+assert.strictEqual(progress.sleepStyleCount,463);
+assert.strictEqual(progress.sleepStyleGoal,450);
 
 const changed=settings.setIngredientStock(normalized,'特选苹果',500);
 assert.strictEqual(settings.inventoryTotal(changed.ingredientStock),800,'单项修改不得让总库存超过800');

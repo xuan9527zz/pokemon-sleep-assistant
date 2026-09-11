@@ -7,9 +7,11 @@ const vm = require('node:vm');
 const weekly = require('../weekly-planner.js');
 const teamPlanner = require('../team-planner.js');
 const scoring = require('../pokemon-scoring.js');
+const picker = require('../pokemon-picker.js');
+const catalog = require('../pokemon-catalog.generated.js');
 
 assert.equal(weekly.effectivePot(81, false), 81);
-assert.equal(weekly.effectivePot(81, true), 121);
+assert.equal(weekly.effectivePot(81, true), 122);
 const monday=new Date(2026,7,31,12,0,0),sunday=new Date(2026,8,6,12,0,0);
 assert.equal(weekly.weekKey(monday),'2026-08-31');
 assert.equal(weekly.weekKey(sunday),'2026-08-31');
@@ -90,7 +92,7 @@ const projectRoot = path.resolve(__dirname,'..');
 const html = fs.readFileSync(path.join(projectRoot,'index.html'),'utf8');
 assert.ok(html.includes('id="weeklyCurrentStrength"'));
 assert.ok(html.includes('id="weeklySleepTarget"'));
-assert.ok(html.includes('<option value="pokemon">严选目标出现</option>'));
+assert.ok(html.includes('<option value="pokemon">指定宝可梦出现</option>'));
 assert.ok(!html.includes('id="weeklyBedtimeStrength"'),'本周作战页面只应要求一个当前卡比兽能量');
 const raw = html.match(/const raw=`([\s\S]*?)`;/)[1].trim();
 const columns = ['id','name','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note'];
@@ -133,7 +135,7 @@ assert.ok(unavailableTarget.sleepPlan.reason.includes('不会在当前岛屿出�
 const preparationPlan=weekly.calculatePlan({...common,targetRecipeId:target.id,weekMode:'preparation'});
 assert.ok(preparationPlan.action.title.includes('活动前储备')||preparationPlan.action.phase==='adjust');
 const dualRoutePlan=weekly.calculatePlan({...common,goodCamp:false,eventGoodCamp:true,weekMode:'preparation',preparationRecipeTypes:['咖喱／浓汤','沙拉'],travelTicketPlanned:true});
-assert.equal(dualRoutePlan.pot,121,'准备周目标锅应读取活动周计划好露营券');
+assert.equal(dualRoutePlan.pot,122,'准备周目标锅应读取活动周计划好露营券，并按最终容量四舍五入');
 assert.equal(dualRoutePlan.targetRecipes.length,2);
 assert.ok(dualRoutePlan.targetRecipe.name.includes('双路线储备'));
 assert.ok(dualRoutePlan.action.detail.includes('移动营地券'));
@@ -144,6 +146,9 @@ assert.ok(huntTargets.find(row=>row.id==='154').minimum.includes('Lv.50'));
 assert.deepEqual(Object.fromEntries(huntTargets.map(row=>[row.id,row.name])),{
   '154':'大竺葵','254':'蜥蜴王','392':'烈焰猴','282':'沙奈朵'
 });
+const swampertTarget={id:'260',name:'巨沼怪',best:{speciesId:'259',name:'沼跃鱼'}};
+assert.deepEqual(weekly.huntTargetIconIdentity(swampertTarget),{speciesId:'260',name:'巨沼怪'},'严选目标图标应表示目标最终形态，而非盒内当前最好个体');
+assert.ok(picker.iconUrl(weekly.huntTargetIconIdentity(swampertTarget),catalog).endsWith('/260.png'));
 
 const wrongArea=weekly.calculatePlan({...common,activityKey:'mewtwo1'});
 assert.equal(wrongArea.preparationTeam.carryBonus,0);

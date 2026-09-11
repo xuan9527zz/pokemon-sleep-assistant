@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#116b42">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./team-planner.css?v=20260908-1">
+<link rel="stylesheet" href="./team-planner.css?v=20260912-1">
 <link rel="stylesheet" href="./ingredients.css?v=20260908-1">
 <link rel="stylesheet" href="./level-manager.css">
 <link rel="stylesheet" href="./box-manager.css">
@@ -75,9 +75,15 @@
         <label class="profile-field"><span>本周类型</span><select id="profileWeekMode"></select></label>
         <label class="profile-field"><span>活动效果</span><select id="profileActivity"></select></label>
       </div><div class="advisor-stage-panel" aria-labelledby="advisorStageTitle"><div class="advisor-stage-copy"><strong id="advisorStageTitle">培养判断按账号阶段解释，不改综合评分</strong><span id="advisorStageDescription">已有成熟料理与队伍，优先长期上限、稀缺覆盖和明确的队伍增益。</span></div><div class="advisor-stage-control"><label for="accountStage">账号阶段</label><select id="accountStage"><option value="starter">新手起步</option><option value="forming">队伍成型</option><option value="mature">成熟补强</option></select></div></div></section>
+      <section class="profile-settings-card"><h3>账号进度</h3><p>睡姿图鉴与永久锅容量属于个人资料，爆锅计算和后续睡姿补全都会从这里读取。</p><div class="profile-settings-grid">
+        <label class="profile-field"><span>已登记睡姿</span><input id="profileSleepStyleCount" type="number" min="0" max="9999" step="1" inputmode="numeric" value="0"></label>
+        <label class="profile-field"><span>当前图鉴目标</span><select id="profileSleepStyleGoal"></select></label>
+        <label class="profile-field"><span>永久锅容量</span><input id="profilePermanentPot" type="number" min="1" max="81" step="1" inputmode="numeric" value="81"></label>
+      </div></section>
       <section class="profile-settings-card"><h3>各岛屿加成</h3><p>当前队伍会自动读取所选岛屿对应的加成，不再在页面里重复输入。</p><div class="profile-island-bonuses" id="profileIslandBonuses"></div></section>
       <section class="profile-settings-card"><div class="profile-stock-head"><div><h3>食材库存</h3><p>全站共用，硬上限 800 个。</p></div><span class="profile-stock-total" id="profileStockTotal">0 / 800</span></div><div class="profile-ingredient-stock" id="profileIngredientStock"></div></section>
       <section class="profile-settings-card"><h3>全食谱进度与食谱等级</h3><p>0 级表示尚未做过，Lv.1–70 自动表示已经解锁；网站按等级表换算加成，再叠加当前岛屿百分比。</p><div class="profile-recipe-toolbar"><input id="profileRecipeSearch" placeholder="搜索食谱"><select id="profileRecipeFilter"><option value="all">全部食谱</option><option value="uncooked">仅未做过</option><option value="cooked">仅已做过</option></select></div><div class="profile-recipe-bulk"><input id="profileRecipeBulk" type="number" min="0" max="70" value="0" aria-label="批量设置食谱等级，0表示未做过"><button id="profileRecipeBulkApply" type="button">全部应用</button></div><div class="profile-recipe-list" id="profileRecipeList"></div></section>
+      <section class="profile-settings-card"><h3>规则与上限</h3><p>网页不会再用猜测的上限继续外推；快照过期后会明确提示复核。</p><div class="profile-rules-status" id="profileRulesStatus"></div><div class="profile-rules-links"><a href="https://www.pokemonsleep.net/en/news/343431333739343830363430393436313737/" target="_blank" rel="noreferrer">当前官方版本</a><a href="https://wiki.pokesleep.com/en/history" target="_blank" rel="noreferrer">长期上限记录</a><a href="https://wiki.pokesleep.com/en/pot" target="_blank" rel="noreferrer">锅容量规则</a></div></section>
       <section class="profile-settings-card"><h3>账号与盒子工具</h3><p>登录、录入、分盒、回收站和批量等级维护集中在这里。</p><div class="personal-settings-tools" id="personalSettingsTools"></div></section>
       <p class="profile-settings-message" id="profileSettingsMessage" role="status" hidden></p>
     </div>
@@ -97,8 +103,8 @@
     <div class="weekly-field"><label for="weeklyMealGoal">目标餐数（1–21）</label><input id="weeklyMealGoal" type="number" min="1" max="21" inputmode="numeric" value="15"></div>
     <div class="weekly-berries" id="weeklyBerries" hidden></div>
   </div>
-  <details class="weekly-settings"><summary>高级设置：锅容量与活动周道具</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">基础锅容量</label><input id="weeklyPot" type="number" min="1" max="1000" inputmode="numeric" value="81"></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox"><span>本周已启用好露营券（影响当前采集）</span></label><label class="weekly-check"><input id="weeklyEventGoodCamp" type="checkbox" checked><span>活动周计划启用好露营券（影响目标锅）</span></label><label class="weekly-check"><input id="weeklyTravelTicket" type="checkbox" checked><span>备有移动营地券（首日重抽料理）</span></label></div></details>
-  <details class="weekly-settings weekly-sleep-settings"><summary>睡眠方案优化器</summary><div class="weekly-sleep-settings-grid"><div class="weekly-field"><label for="weeklyCurrentStrength">当前卡比兽能量</label><input id="weeklyCurrentStrength" type="number" min="0" max="999999999" step="1000" inputmode="numeric" value="0"></div><div class="weekly-field"><label for="weeklySleepType">研究睡眠类型</label><select id="weeklySleepType"><option value="balanced">综合平均</option><option value="dozing">浅浅入梦</option><option value="snoozing">安然入睡</option><option value="slumbering">深深入眠</option></select></div><div class="weekly-field"><label for="weeklySleepObjective">优化目标</label><select id="weeklySleepObjective"><option value="combined">梦之碎片＋研究EXP</option><option value="spawns">遇见总数</option><option value="shards">梦之碎片</option><option value="researchExp">研究EXP</option><option value="pokemon">严选目标出现</option><option value="candy">目标进化系糖果</option></select></div><div class="weekly-field weekly-sleep-target-field" id="weeklySleepTargetField" hidden><span>本周严选目标</span><div id="weeklySleepTarget" class="weekly-sleep-targets" role="group" aria-label="本周严选目标"></div></div><p class="weekly-sleep-help">奖励目标会结合本岛收益减速线判断是否需要分睡；严选目标和糖果目标会直接比较一次睡满与 18＋82 到 99＋1 的全部方案，不受惩罚线限制。也可以在下方严选卡片直接带入目标。</p></div></details>
+  <details class="weekly-settings"><summary>高级设置：活动周道具</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">永久锅容量（同步个人设置）</label><input id="weeklyPot" type="number" min="1" max="81" inputmode="numeric" value="81" disabled></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox"><span>本周已启用好露营券（影响当前采集）</span></label><label class="weekly-check"><input id="weeklyEventGoodCamp" type="checkbox" checked><span>活动周计划启用好露营券（影响目标锅）</span></label><label class="weekly-check"><input id="weeklyTravelTicket" type="checkbox" checked><span>备有移动营地券（首日重抽料理）</span></label></div></details>
+  <details class="weekly-settings weekly-sleep-settings"><summary>睡眠方案优化器</summary><div class="weekly-sleep-settings-grid"><div class="weekly-field"><label for="weeklyCurrentStrength">当前卡比兽能量</label><input id="weeklyCurrentStrength" type="number" min="0" max="999999999" step="1000" inputmode="numeric" value="0"></div><div class="weekly-field"><label for="weeklySleepType">研究睡眠类型</label><select id="weeklySleepType"><option value="balanced">综合平均</option><option value="dozing">浅浅入梦</option><option value="snoozing">安然入睡</option><option value="slumbering">深深入眠</option></select></div><div class="weekly-field"><label for="weeklySleepObjective">优化目标</label><select id="weeklySleepObjective"><option value="combined">梦之碎片＋研究EXP</option><option value="spawns">遇见总数</option><option value="shards">梦之碎片</option><option value="researchExp">研究EXP</option><option value="pokemon">指定宝可梦出现</option><option value="candy">指定进化系糖果</option></select></div><div class="weekly-field weekly-sleep-target-field" id="weeklySleepTargetField" hidden><label for="weeklySleepTargetSelect">指定宝可梦</label><select id="weeklySleepTargetSelect"></select><span>本周严选快捷选择</span><div id="weeklySleepTarget" class="weekly-sleep-targets" role="group" aria-label="本周严选目标"></div></div><p class="weekly-sleep-help">奖励目标会结合本岛收益减速线判断是否需要分睡；指定宝可梦和糖果目标会直接比较一次睡满与 18＋82 到 99＋1 的全部方案，不受惩罚线限制。下方严选卡片仍可一键带入。</p></div></details>
   <div class="weekly-inventory" id="weeklyInventory" hidden></div>
   <div class="weekly-save-line"><span class="weekly-save-stamp" id="weeklySaveStamp">设置与进度会自动保存并同步云端</span></div>
   <div class="weekly-result" id="weeklyResult" aria-live="polite"></div>
@@ -112,6 +118,11 @@
   <div class="current-team-picker" id="currentTeamPicker" aria-label="当前队伍五个位置"></div>
   <p class="current-team-warning" id="currentTeamWarning" hidden></p>
   <div class="current-team-summary" id="currentTeamSummary" aria-live="polite"></div>
+  <details class="current-team-tools"><summary><span>队伍推演、自动建议与爆锅时间</span><small>需要时展开，不会修改盒子资料</small></summary><div class="current-team-tools-body">
+    <section class="team-tool-card"><div><span>SCENARIO</span><h3>队伍推演</h3><p>把当前五只临时推演到指定等级／最终形态，不写回盒子。</p></div><div class="team-tool-controls"><label><span>目标等级</span><select id="teamScenarioLevel"><option value="current">当前等级</option><option value="30">Lv.30</option><option value="50">Lv.50</option><option value="60">Lv.60</option><option value="70" selected>Lv.70</option></select></label><label><span>每只主技能种子</span><input id="teamScenarioMainSeeds" type="number" min="0" max="8" value="0"></label><label class="team-tool-check"><input id="teamScenarioEvolution" type="checkbox" checked>推演至可达到的最终形态</label><button id="teamScenarioRun" type="button">开始推演</button></div><div id="teamScenarioResult" class="team-tool-result"></div></section>
+    <section class="team-tool-card"><div><span>AUTO TEAM</span><h3>盒内自动建议</h3><p>分别给出当前岛屿纯能量最高与保留全体治疗的简洁建议。</p></div><button id="teamSuggestRun" type="button">生成两套建议</button><div id="teamSuggestResult" class="team-tool-result"></div></section>
+    <section class="team-tool-card"><div><span>POT PREP</span><h3>爆锅队要上多久</h3><p>按盒内最合适的料理强化队，估算为下一餐存满临时锅容量所需时间。</p></div><div class="team-tool-controls"><label><span>目标料理</span><select id="teamPotRecipe"></select></label><label><span>活动锅倍率</span><select id="teamPotEvent"><option value="1">无</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label><label class="team-tool-check"><input id="teamPotWeekend" type="checkbox">周日锅容量 2×</label><button id="teamPotRun" type="button">计算上场时长</button></div><div id="teamPotResult" class="team-tool-result"></div></section>
+  </div></details>
   <div class="current-team-section-title"><h3>预计收获食材</h3><p>“每次”按页面给出的建议收菜间隔；“24小时”是假设全天维持该频率的期望值。</p></div>
   <div class="current-team-ingredients" id="currentTeamIngredients"></div>
   <div class="current-team-section-title"><h3>成员明细</h3><p>树果手满仓后仍会偷偷吃树果，但不会继续抽选食材与主技能。</p></div>
@@ -366,7 +377,8 @@
 <script src="cultivation-advisor.js?v=20260831-1"></script>
 <script src="pokemon-comparison.js?v=20260901-1"></script>
 <script src="box-filter.js?v=20260902-1"></script>
-<script src="snorlax-energy.js?v=20260910-1"></script>
+<script src="game-rules.js?v=20260911-1"></script>
+<script src="snorlax-energy.js?v=20260912-1"></script>
 <script src="main-skill-team-effects.js?v=20260911-2"></script>
 <script src="ingredients.js?v=20260908-1"></script>
 <script src="recipes.js"></script>
@@ -374,15 +386,15 @@
 <script src="pokemon-data.js?v=20260831-1"></script>
 <script src="box-manager.js"></script>
 <script src="level-manager.js"></script>
-<script src="personal-settings.js?v=20260910-2"></script>
-<script src="pokemon-picker.js?v=20260911-2"></script>
-<script src="team-planner.js?v=20260911-2"></script>
+<script src="personal-settings.js?v=20260911-1"></script>
+<script src="pokemon-picker.js?v=20260911-3"></script>
+<script src="team-planner.js?v=20260911-3"></script>
 <script src="sleep-reward-curves.generated.js?v=20260911-2"></script>
-<script src="sleep-research-planner.js?v=20260911-2"></script>
-<script src="weekly-planner.js?v=20260911-6"></script>
-<script src="investment-planner.js?v=20260831-2"></script>
+<script src="sleep-research-planner.js?v=20260911-3"></script>
+<script src="weekly-planner.js?v=20260911-8"></script>
+<script src="investment-planner.js?v=20260912-1"></script>
 <script src="retention-advisor.js?v=20260901-2"></script>
-<script src="pokemon-manager.js?v=20260831-2"></script>
+<script src="pokemon-manager.js?v=20260912-1"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.js"></script>
 <script src="supabase-config.js?v=20260831-1"></script>
 <script src="cloud-sync.js?v=20260831-2"></script>
@@ -981,7 +993,7 @@ renderEventTeam();renderIsland(0);renderRecipes();render();
 levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialState:storedLevelState,onChange:refreshAfterLevelChange});
 boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});
 pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});
-teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);weeklyPlannerController?.render()}});
+teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,recipes:recipeData,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING,investmentPlanner:window.POKEMON_SLEEP_INVESTMENT_PLANNER,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);weeklyPlannerController?.render()}});
 pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
 weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy});
 investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});

@@ -10,6 +10,10 @@ assert.equal(curves.targetDefinitions.length,23);
 assert.equal(planner.areaFor('黄金发电厂').id,'old-gold');
 assert.equal(planner.areaFor('琥珀溪谷').id,'amber-canyon');
 assert.equal(planner.areaFor('萌绿之岛 EX').id,'greengrass-expert');
+const lapisTargets=planner.targetDefinitions('宝蓝湖畔');
+assert.equal(lapisTargets.length,23);
+assert.equal(lapisTargets[0].available,true);
+assert.ok(lapisTargets.some(target=>target.id==='392'&&!target.available));
 
 const low=planner.rawResearch({area:'萌绿之岛',energy:500000,score:100,sleepType:'balanced'});
 const high=planner.rawResearch({area:'萌绿之岛',energy:2500000,score:100,sleepType:'balanced'});

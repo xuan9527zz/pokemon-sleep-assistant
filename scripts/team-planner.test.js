@@ -144,4 +144,19 @@ assert.strictEqual(planner.upsertSavedTeam([], ['1', '2']).reason, 'incomplete')
 assert.strictEqual(planner.sameLineup(['1', '2'], ['1', '2']), true);
 assert.strictEqual(planner.sameLineup(['1', '2'], ['2', '1']), false);
 
+const potMons=Array.from({length:5},(_item,index)=>({
+  id:`pot-${index}`,name:`爆锅手${index+1}`,lv:'50',interval:'35:00',inv:'30',specialty:'skill',
+  ingredients:'储存油×1／储存油×2／储存油×4',subs:index===0?'帮手奖励；技能概率M；帮忙速度M；持有上限L；技能概率S':'技能概率M；帮忙速度M；持有上限L；技能概率S；持有上限M',
+  nature:'慎重：技能↑ 食材↓',main:'料理强化S Lv.7',mainSkillId:11,skillRatePct:4,berryId:10,berry:'莓莓果',battleEligible:true
+}));
+assert.strictEqual(planner.potSlotsPerTrigger(potMons[0],7),31);
+const potPlan=planner.calculatePotDeployment(potMons,Object.fromEntries(potMons.map(mon=>[mon.id,{ingredientRate:.15,baseBerryCount:1}])),{baseCapacity:81,targetCapacity:100,goodCamp:false,energyProfile:'average'});
+assert.strictEqual(potPlan.requiredSkill,19);
+assert.ok(potPlan.rate>0);
+assert.ok(potPlan.expectedHours>0&&potPlan.safeHours>=potPlan.expectedHours);
+assert.strictEqual(potPlan.potTeam.team.length,5);
+
+const suggested=planner.suggestEnergyTeams([...potMons,{...stufful,id:'suggest-extra'}],{}, {goodCamp:false,energyProfile:'average',islandProfile:'lapis'});
+assert.strictEqual(suggested.burst.team.length,5);
+
 console.log('team-planner tests passed');

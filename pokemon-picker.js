@@ -6,14 +6,34 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(root){
   'use strict';
   const ROLE_LABELS={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手',unknown:'待核对'};
-  const SPRITE_BASE_IDS=Object.freeze({7006:37,7007:38,7054:194,8001:849,9001:25,9002:25,9004:133,9005:133,9006:363,9007:25});
+  // The generated catalogue keeps Pokémon Sleep's internal IDs.  Most of them
+  // equal the National Pokédex number, but regional forms and size variants do
+  // not.  Resolve those by catalogue species ID before falling back to a base
+  // species for costumes that PokeAPI does not provide.
+  const SPRITE_SPECIES_IDS=Object.freeze({
+    '7006':10103,'7007':10104,'7054':10253,'8001':10184,
+    '710-1':710,'710-2':10027,'710-3':10028,'710-4':10029,
+    '711-1':711,'711-2':10030,'711-3':10031,'711-4':10032,
+    '9001-1':25,'9001-2':25,'9002':25,'9004':133,'9005':133,'9006':363,'9007':25
+  });
+  const SPRITE_BASE_IDS=Object.freeze({9001:25,9002:25,9004:133,9005:133,9006:363,9007:25});
   const SPRITE_NAME_IDS=Object.freeze({
     '皮卡丘（巫师帽）':25,
+    '皮卡丘（万圣节）':25,
     '皮卡丘（圣诞）':25,
+    '皮卡丘（佳节）':25,
+    '皮卡丘（船长）':25,
     '伊布（圣诞）':133,
+    '伊布（佳节）':133,
+    '伊布（万圣节）':133,
     '乌波（城都）':194,
     '乌波（帕底亚）':10253,
-    '海豹球（节日）':363
+    '乌波（帕底亚的样子）':10253,
+    '六尾（阿罗拉的样子）':10103,
+    '九尾（阿罗拉的样子）':10104,
+    '颤弦蝾螈（低调的样子）':10184,
+    '海豹球（节日）':363,
+    '海豹球（佳节）':363
   });
   const normalize=value=>String(value||'').trim().toLowerCase();
   function recordFor(mon,catalog){
@@ -22,8 +42,9 @@
   }
   function iconUrl(mon,catalog){
     const record=recordFor(mon,catalog),rawId=Number(record&&record.pokedexId);
+    const speciesId=String(record&&record.id||mon&&mon.speciesId||'');
     const nameId=SPRITE_NAME_IDS[String(mon&&mon.name||'')];
-    const id=nameId||SPRITE_BASE_IDS[rawId]||rawId;
+    const id=SPRITE_SPECIES_IDS[speciesId]||nameId||SPRITE_BASE_IDS[rawId]||rawId;
     return Number.isFinite(id)&&id>0?`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`:'';
   }
   function displayName(mon){return String(mon&&mon.nickname||'').trim()||String(mon&&mon.name||'未命名')}
@@ -54,5 +75,5 @@
     search.addEventListener('input',render);role.addEventListener('change',render);box.addEventListener('change',render);close.addEventListener('click',()=>dialog.close?dialog.close():dialog.removeAttribute('open'));dialog.addEventListener('click',event=>{if(event.target===dialog&&dialog.close)dialog.close()});
     return {open,close:()=>dialog.close&&dialog.close(),render,createIcon:(mon,config={})=>createIcon(mon,{catalog,document:doc,...config}),setButton:(button,mon,config={})=>setButton(button,mon,{catalog,document:doc,...config})};
   }
-  return Object.freeze({ROLE_LABELS,SPRITE_BASE_IDS,SPRITE_NAME_IDS,recordFor,iconUrl,displayName,searchableText,createIcon,setButton,mount});
+  return Object.freeze({ROLE_LABELS,SPRITE_SPECIES_IDS,SPRITE_BASE_IDS,SPRITE_NAME_IDS,recordFor,iconUrl,displayName,searchableText,createIcon,setButton,mount});
 });

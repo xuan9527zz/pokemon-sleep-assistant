@@ -1,11 +1,13 @@
 (function(root,factory){
   'use strict';
-  const api=factory(root);
+  const gameRules=typeof module==='object'&&module.exports?require('./game-rules.js'):root.POKEMON_SLEEP_GAME_RULES;
+  const api=factory(root,gameRules);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_POKEMON_MANAGER=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(root){
+})(typeof globalThis!=='undefined'?globalThis:this,function(root,gameRules){
   'use strict';
 
+  const MAX_HELPER_LEVEL=gameRules&&gameRules.LIMITS?gameRules.LIMITS.helperLevel:70;
   const SUBSKILLS=Object.freeze(['树果数量S','帮手奖励','帮忙速度M','帮忙速度S','食材概率M','食材概率S','技能概率M','技能概率S','技能等级M','技能等级S','持有上限L','持有上限M','持有上限S','睡眠EXP奖励','活力恢复奖励','梦之碎片奖励','研究EXP奖励','—']);
   const SUBSKILL_LEVELS=Object.freeze([10,25,50,70,80]);
   const PRIORITIES=Object.freeze(['重点培养','未来可期','即时战力','继续使用','按需求保留','备用','闪光收藏']);
@@ -32,7 +34,7 @@
   }
   function activeSubskills(skills,level){return skills.filter((skill,index)=>skill!=='—'&&(SUBSKILL_LEVELS[index]||80)<=level)}
   function computedStats(species,level,nature,skills,natureApi){
-    const safeLevel=clamp(Math.round(number(level)||1),1,70),modifiers=natureModifiers(nature,natureApi),unlocked=activeSubskills(skills,safeLevel),speed=clamp(unlocked.reduce((sum,skill)=>sum+(SPEED_REDUCTION[skill]||0),0),0,.35),base=number(species.helpFrequencyBaseSec),interval=base*(501-safeLevel)/500*modifiers.interval*(1-speed),carry=number(species.carryLimitRaisedFromFirstStage||species.carryLimitBase)+unlocked.reduce((sum,skill)=>sum+(INVENTORY_BONUS[skill]||0),0);
+    const safeLevel=clamp(Math.round(number(level)||1),1,MAX_HELPER_LEVEL),modifiers=natureModifiers(nature,natureApi),unlocked=activeSubskills(skills,safeLevel),speed=clamp(unlocked.reduce((sum,skill)=>sum+(SPEED_REDUCTION[skill]||0),0),0,.35),base=number(species.helpFrequencyBaseSec),interval=base*(501-safeLevel)/500*modifiers.interval*(1-speed),carry=number(species.carryLimitRaisedFromFirstStage||species.carryLimitBase)+unlocked.reduce((sum,skill)=>sum+(INVENTORY_BONUS[skill]||0),0);
     return {level:safeLevel,interval:formatInterval(interval),carry:Math.max(1,Math.round(carry)),speedReduction:speed};
   }
   function selectedIngredient(select,species,level){
