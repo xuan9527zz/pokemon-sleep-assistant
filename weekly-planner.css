@@ -21,7 +21,7 @@
 .weekly-settings,.weekly-inventory-wrap{margin-top:11px;border:1px solid #dde4eb;border-radius:12px;background:#fafbfd;padding:0 12px}
 .weekly-settings summary,.weekly-inventory-wrap summary{min-height:42px;padding:11px 0;color:#405164;font-weight:850;cursor:pointer}
 .weekly-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(210px,1fr));gap:9px;max-width:900px;padding-bottom:12px}
-.weekly-sleep-settings-grid{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:9px;padding-bottom:12px}
+.weekly-sleep-settings-grid{display:grid;grid-template-columns:repeat(3,minmax(160px,1fr));gap:9px;padding-bottom:12px}
 .weekly-sleep-help{grid-column:1/-1;margin:0;border-radius:9px;background:#f2f7fb;padding:8px 10px;color:#657487;font-size:9px;line-height:1.5}
 .weekly-inventory-help{margin:0 0 9px;color:#687689;font-size:10px}
 .weekly-inventory{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding-bottom:12px}
@@ -53,9 +53,9 @@
 .weekly-action>small{display:block;margin-top:9px;color:#5f6f80;font-size:10px}
 .weekly-sleep-plan{background:linear-gradient(145deg,#f8f7ff,#fff)}
 .weekly-sleep-explainer,.weekly-sleep-note,.weekly-sleep-source{margin:8px 0 0;color:#617085;font-size:10px;line-height:1.55}.weekly-sleep-source{color:#7a8495;font-size:9px}.weekly-sleep-source a{color:#286a9b;font-weight:800}
-.weekly-sleep-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:10px}.weekly-sleep-stats span{border:1px solid #e1e5ef;border-radius:9px;background:#fff;padding:8px}.weekly-sleep-stats small,.weekly-sleep-stats b{display:block}.weekly-sleep-stats small{color:#768195;font-size:8px}.weekly-sleep-stats b{margin-top:3px;font-size:12px;overflow-wrap:anywhere}
-.weekly-sleep-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}.weekly-sleep-option{min-width:0;border:1px solid #dfe4ec;border-radius:12px;background:#fff;padding:10px}.weekly-sleep-option.recommended{border-color:#54ae80;box-shadow:0 0 0 2px rgba(38,139,91,.08)}.weekly-sleep-option-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.weekly-sleep-option-head span,.weekly-sleep-option-head b{display:block}.weekly-sleep-option-head span{color:#16754b;font-size:8px;font-weight:900;letter-spacing:.06em}.weekly-sleep-option-head b{margin-top:2px;font-size:12px}.weekly-sleep-option-head>strong{color:#284d69;font-size:10px;text-align:right}.weekly-sleep-option.recommended .weekly-sleep-option-head>strong{color:#137147}
-.weekly-sleep-sessions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.weekly-sleep-sessions article{position:relative;min-width:0;border:1px solid #dce8e1;border-radius:9px;background:#fbfffd;padding:9px}.weekly-sleep-sessions article:only-child{grid-column:1/-1}.weekly-sleep-sessions span,.weekly-sleep-sessions b,.weekly-sleep-sessions small,.weekly-sleep-sessions strong{display:block}.weekly-sleep-sessions span{color:#237552;font-size:8px;font-weight:900;letter-spacing:.07em}.weekly-sleep-sessions b{margin-top:3px;font-size:11px}.weekly-sleep-sessions small{margin-top:4px;color:#738095;font-size:8px}.weekly-sleep-sessions strong{margin-top:6px;font-size:9px}.weekly-sleep-sessions em{display:block;margin-top:6px;color:#5e7c6b;font-size:8px;font-style:normal;font-weight:800}
+.weekly-sleep-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}.weekly-sleep-stats span{border:1px solid #e1e5ef;border-radius:9px;background:#fff;padding:8px}.weekly-sleep-stats small,.weekly-sleep-stats b{display:block}.weekly-sleep-stats small{color:#768195;font-size:8px}.weekly-sleep-stats b{margin-top:3px;font-size:12px;overflow-wrap:anywhere}
+.weekly-sleep-status{margin-top:10px;border:1px solid #d8e0e9;border-radius:12px;background:#f8fafc;padding:12px}.weekly-sleep-status span,.weekly-sleep-status b{display:block}.weekly-sleep-status span{color:#657589;font-size:9px;font-weight:900;letter-spacing:.06em}.weekly-sleep-status b{margin-top:4px;color:#33475b;font-size:17px}.weekly-sleep-status p{margin:5px 0 0;color:#657386;font-size:10px;line-height:1.5}.weekly-sleep-status.below{border-color:#bdd9c9;background:#f3fbf7}.weekly-sleep-status.below span,.weekly-sleep-status.below b{color:#16754b}.weekly-sleep-status.reached{border-color:#e1b75e;background:linear-gradient(135deg,#fff8e7,#fffdf8)}.weekly-sleep-status.reached span{color:#956200}.weekly-sleep-status.reached b{color:#6d4400;font-size:22px}
+.weekly-sleep-sessions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.weekly-sleep-sessions article{position:relative;min-width:0;border:1px solid #dce8e1;border-radius:9px;background:#fbfffd;padding:9px}.weekly-sleep-sessions article.primary{border-color:#e1b75e;background:#fffaf0}.weekly-sleep-sessions article:only-child{grid-column:1/-1}.weekly-sleep-sessions span,.weekly-sleep-sessions b,.weekly-sleep-sessions small,.weekly-sleep-sessions strong{display:block}.weekly-sleep-sessions span{color:#237552;font-size:8px;font-weight:900;letter-spacing:.07em}.weekly-sleep-sessions article.primary span{color:#956200}.weekly-sleep-sessions b{margin-top:3px;font-size:11px}.weekly-sleep-sessions small{margin-top:4px;color:#738095;font-size:8px}.weekly-sleep-sessions strong{margin-top:6px;font-size:9px}.weekly-sleep-sessions em{display:block;margin-top:6px;color:#5e7c6b;font-size:8px;font-style:normal;font-weight:800}
 .weekly-section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .weekly-section-head>div{min-width:0}
 .weekly-section-head>small{max-width:52%;color:#718095;font-size:10px;line-height:1.5;text-align:right}
@@ -153,7 +153,7 @@
   .weekly-progress-head{align-items:stretch}
   .weekly-reset{width:100%}
   .weekly-settings-grid{grid-template-columns:minmax(0,1fr)}
-  .weekly-sleep-settings-grid,.weekly-sleep-stats,.weekly-sleep-comparison,.weekly-sleep-sessions{grid-template-columns:minmax(0,1fr)}
+  .weekly-sleep-settings-grid,.weekly-sleep-stats,.weekly-sleep-sessions{grid-template-columns:minmax(0,1fr)}
 }
 
 @media(max-width:370px){
