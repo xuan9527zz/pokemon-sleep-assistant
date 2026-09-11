@@ -8,7 +8,8 @@
   'use strict';
 
   const SLEEP_TYPES=Object.freeze({balanced:'综合平均',dozing:'浅浅入梦',snoozing:'安然入睡',slumbering:'深深入眠'});
-  const OBJECTIVES=Object.freeze({combined:'梦之碎片＋研究EXP',shards:'梦之碎片',researchExp:'研究EXP'});
+  const OBJECTIVES=Object.freeze({combined:'梦之碎片＋研究EXP',shards:'梦之碎片',researchExp:'研究EXP',spawns:'遇见总数',pokemon:'严选目标出现',candy:'目标进化系糖果'});
+  const TARGET_OBJECTIVES=new Set(['pokemon','candy']);
   const AREA_ALIASES=Object.freeze({
     '黄金发电厂':'old-gold','黄金旧发电厂':'old-gold','琥珀溪谷':'amber-canyon','琥褐溪谷':'amber-canyon',
     '萌绿之岛 EX':'greengrass-expert','萌绿之岛EX':'greengrass-expert','天青沙滩 EX':'cyan-expert','天青沙滩EX':'cyan-expert'
@@ -30,6 +31,15 @@
   function segmentFor(area,rankOrder,sleepType){
     const type=Object.hasOwn(SLEEP_TYPES,sleepType)?sleepType:'balanced',segments=area&&area.segments||[];
     return segments.find(segment=>segment.rankOrder===rankOrder&&segment.sleepType===type)||segments.find(segment=>segment.rankOrder===rankOrder&&segment.sleepType==='balanced')||null;
+  }
+  function targetDefinition(targetId){return curves&&Array.isArray(curves.targetDefinitions)?curves.targetDefinitions.find(item=>String(item.id)===String(targetId))||null:null}
+  function targetSegmentFor(area,targetId,rankOrder,sleepType){
+    const type=Object.hasOwn(SLEEP_TYPES,sleepType)?sleepType:'balanced',segments=area&&area.targetSegments||[];
+    return segments.find(segment=>String(segment.targetId)===String(targetId)&&segment.rankOrder===rankOrder&&segment.sleepType===type)||segments.find(segment=>String(segment.targetId)===String(targetId)&&segment.rankOrder===rankOrder&&segment.sleepType==='balanced')||null;
+  }
+  function targetInfo(targetId,areaValue){
+    const definition=targetDefinition(targetId),area=areaFor(areaValue),segment=area&&area.targetSegments&&area.targetSegments.find(item=>String(item.targetId)===String(targetId)),availableAreas=(definition&&definition.areas||[]).map(id=>areaFor(id)).filter(Boolean).map(item=>({id:item.id,name:item.name}));
+    return {definition,area,available:Boolean(definition&&area&&segment),pokemonId:segment&&segment.pokemonId||null,pokemonName:segment&&segment.pokemonName||null,availableAreas};
   }
   function interpolate(segment,key,drowsyPower){
     const powers=segment&&segment.powers||[],values=segment&&segment[key]||[];
@@ -68,16 +78,49 @@
     const scores=Array.isArray(options.scores)?options.scores.map(value=>clamp(Math.round(value),1,100)):[],strengths=Array.isArray(options.strengths)?options.strengths:[];
     const raw=scores.map((score,index)=>rawResearch({area:options.area,energy:strengths[index]||strengths[strengths.length-1],score,multiplier:options.multiplier,sleepType:options.sleepType}));
     const adjusted=applyResearchDayRules(raw,{goodCamp:options.goodCamp,alreadyResearched:options.alreadyResearched});
-    return {...adjusted,mode:scores.length>1?'split':'single',scores,objective:options.objective||'combined',objectiveValue:adjusted[Object.hasOwn(OBJECTIVES,options.objective)?options.objective:'combined'],available:raw.every(item=>item.available),dataCapped:raw.some(item=>item.dataCapped),sessions:adjusted.sessions.map((session,index)=>({...session,minutes:durationForScore(scores[index],index)}))};
+    const objective=Object.hasOwn(OBJECTIVES,options.objective)&&!TARGET_OBJECTIVES.has(options.objective)?options.objective:'combined';
+    return {...adjusted,mode:scores.length>1?'split':'single',scores,objective,objectiveValue:objective==='spawns'?adjusted.totalSpawns:adjusted[objective],available:raw.every(item=>item.available),dataCapped:raw.some(item=>item.dataCapped),sessions:adjusted.sessions.map((session,index)=>({...session,minutes:durationForScore(scores[index],index)}))};
   }
   function compareSleepPlans(options={}){
-    const area=areaFor(options.area),enteredStrength=Math.max(0,Math.round(Number(options.currentStrength)||Number(options.bedtimeStrength)||0)),currentStrength=enteredStrength,bedtimeStrength=Math.max(0,Math.round(Number(options.bedtimeStrength)||enteredStrength)),sleepType=Object.hasOwn(SLEEP_TYPES,options.sleepType)?options.sleepType:'balanced',objective=Object.hasOwn(OBJECTIVES,options.objective)?options.objective:'combined',multiplier=Math.max(0,Number(options.multiplier)||1),goodCamp=options.goodCamp===true;
+    const area=areaFor(options.area),enteredStrength=Math.max(0,Math.round(Number(options.currentStrength)||Number(options.bedtimeStrength)||0)),currentStrength=enteredStrength,bedtimeStrength=Math.max(0,Math.round(Number(options.bedtimeStrength)||enteredStrength)),sleepType=Object.hasOwn(SLEEP_TYPES,options.sleepType)?options.sleepType:'balanced',objective=Object.hasOwn(OBJECTIVES,options.objective)&&!TARGET_OBJECTIVES.has(options.objective)?options.objective:'combined',multiplier=Math.max(0,Number(options.multiplier)||1),goodCamp=options.goodCamp===true;
     if(!area||!currentStrength)return {available:false,reason:!area?'当前岛屿暂无研究收益曲线。':'填写当前卡比兽能量后，系统才会判断是否达到惩罚线。',area,currentStrength,bedtimeStrength,sleepType,objective,multiplier,goodCamp};
     const base={area:area.id,sleepType,objective,multiplier,goodCamp},single=evaluatePlan({...base,scores:[100],strengths:[bedtimeStrength]}),splits=[];
     for(let firstScore=18;firstScore<100;firstScore+=1)splits.push(evaluatePlan({...base,scores:[firstScore,100-firstScore],strengths:[currentStrength,bedtimeStrength]}));
     splits.sort((left,right)=>right.objectiveValue-left.objectiveValue||Math.abs(left.scores[0]-50)-Math.abs(right.scores[0]-50));
     const bestSplit=splits[0],gain=bestSplit&&single.objectiveValue>0?(bestSplit.objectiveValue/single.objectiveValue-1)*100:0,recommendSplit=gain>=1;
     return {available:true,area,currentStrength,bedtimeStrength,sleepType,objective,multiplier,goodCamp,single,bestSplit,gainPercent:gain,recommendation:recommendSplit?'split':'single',reason:recommendSplit?`按${OBJECTIVES[objective]}估算，最佳分段比完整睡眠高 ${gain.toFixed(1)}%。`:`分段优势不足 1%（${gain.toFixed(1)}%），不值得为此打断一次完整睡眠。`};
+  }
+  function rawTarget(options={}){
+    const area=areaFor(options.area),energy=Math.max(0,Math.round(Number(options.energy)||0)),score=clamp(options.score,0,100),multiplier=Math.max(0,Number(options.multiplier)||1),sleepType=Object.hasOwn(SLEEP_TYPES,options.sleepType)?options.sleepType:'balanced',targetId=String(options.targetId||''),info=targetInfo(targetId,area&&area.id);
+    if(!area||!energy||!score||!info.available)return {available:false,area,energy,score,sleepType,targetId,target:info,drowsyPower:0,spawnCount:0,pokemonAppearances:0,familyAppearances:0,candy:0,dataCapped:false};
+    const rank=rankFor(area,energy),segment=rank&&targetSegmentFor(area,targetId,rank.order,sleepType),calculatedPower=calculateDrowsyPower(energy,score,multiplier),datasetCap=Number(curves&&curves.drowsyPowerMax)||Infinity,drowsyPower=Math.min(calculatedPower,datasetCap);
+    if(!segment)return {available:false,area,rank,energy,score,sleepType,targetId,target:info,drowsyPower,spawnCount:spawnCountFor(area,drowsyPower),pokemonAppearances:0,familyAppearances:0,candy:0,dataCapped:calculatedPower>datasetCap};
+    return {available:true,area,rank,energy,score,sleepType,targetId,target:{...info,pokemonId:segment.pokemonId,pokemonName:segment.pokemonName},drowsyPower,calculatedPower,spawnCount:spawnCountFor(area,drowsyPower),pokemonAppearances:interpolate(segment,'pokemonAppearances',drowsyPower),familyAppearances:interpolate(segment,'familyAppearances',drowsyPower),candy:interpolate(segment,'candy',drowsyPower),dataCapped:calculatedPower>datasetCap};
+  }
+  function applyTargetDayRules(rawSessions,options={}){
+    let researched=Math.max(0,Math.round(Number(options.alreadyResearched)||0));
+    const sessions=(rawSessions||[]).map((raw,index)=>{
+      const natural=Math.max(0,Math.round(Number(raw.spawnCount)||0)),campExtra=options.goodCamp&&index===0&&natural?1:0,totalSpawns=natural+campExtra,fullRewardSpawns=Math.min(totalSpawns,Math.max(0,10-researched)),reducedRewardSpawns=Math.max(0,totalSpawns-fullRewardSpawns),campFactor=natural?totalSpawns/natural:1,fullFraction=totalSpawns?fullRewardSpawns/totalSpawns:1,reducedFraction=totalSpawns?reducedRewardSpawns/totalSpawns:0,pokemonAppearances=raw.pokemonAppearances*campFactor,familyAppearances=raw.familyAppearances*campFactor,candy=raw.candy*campFactor*fullFraction+familyAppearances*reducedFraction;
+      researched+=totalSpawns;
+      return {...raw,index:index+1,naturalSpawns:natural,campExtra,totalSpawns,fullRewardSpawns,reducedRewardSpawns,pokemonAppearances,familyAppearances,candy};
+    });
+    return {sessions,pokemonAppearances:sessions.reduce((sum,item)=>sum+item.pokemonAppearances,0),familyAppearances:sessions.reduce((sum,item)=>sum+item.familyAppearances,0),candy:sessions.reduce((sum,item)=>sum+item.candy,0),totalSpawns:sessions.reduce((sum,item)=>sum+item.totalSpawns,0)};
+  }
+  function evaluateTargetPlan(options={}){
+    const objective=TARGET_OBJECTIVES.has(options.objective)?options.objective:'pokemon',scores=Array.isArray(options.scores)?options.scores.map(value=>clamp(Math.round(value),1,100)):[],strengths=Array.isArray(options.strengths)?options.strengths:[],raw=scores.map((score,index)=>rawTarget({area:options.area,targetId:options.targetId,energy:strengths[index]||strengths[strengths.length-1],score,multiplier:options.multiplier,sleepType:options.sleepType})),adjusted=applyTargetDayRules(raw,{goodCamp:options.goodCamp,alreadyResearched:options.alreadyResearched}),target=raw[0]&&raw[0].target||targetInfo(options.targetId,options.area);
+    return {...adjusted,mode:scores.length>1?'split':'single',scores,objective,target,objectiveValue:objective==='candy'?adjusted.candy:adjusted.pokemonAppearances,available:raw.every(item=>item.available),dataCapped:raw.some(item=>item.dataCapped),sessions:adjusted.sessions.map((session,index)=>({...session,minutes:durationForScore(scores[index],index)}))};
+  }
+  function compareTargetSleepPlans(options={}){
+    const area=areaFor(options.area),currentStrength=Math.max(0,Math.round(Number(options.currentStrength)||Number(options.bedtimeStrength)||0)),bedtimeStrength=Math.max(0,Math.round(Number(options.bedtimeStrength)||currentStrength)),sleepType=Object.hasOwn(SLEEP_TYPES,options.sleepType)?options.sleepType:'balanced',objective=TARGET_OBJECTIVES.has(options.objective)?options.objective:'pokemon',targetId=String(options.targetId||''),multiplier=Math.max(0,Number(options.multiplier)||1),goodCamp=options.goodCamp===true,info=targetInfo(targetId,area&&area.id);
+    if(!area||!currentStrength||!targetId||!info.available){
+      const reason=!area?'当前岛屿暂无研究曲线。':!currentStrength?'请先填写当前卡比兽能量。':!targetId?'请先选择严选目标。':`${info.definition&&info.definition.name||'该目标'}不会在当前岛屿出现。`;
+      return {available:false,reason,area,currentStrength,bedtimeStrength,sleepType,objective,targetId,target:info,multiplier,goodCamp};
+    }
+    const base={area:area.id,targetId,sleepType,objective,multiplier,goodCamp},single=evaluateTargetPlan({...base,scores:[100],strengths:[bedtimeStrength]}),splits=[];
+    for(let firstScore=18;firstScore<100;firstScore+=1)splits.push(evaluateTargetPlan({...base,scores:[firstScore,100-firstScore],strengths:[currentStrength,bedtimeStrength]}));
+    splits.sort((left,right)=>right.objectiveValue-left.objectiveValue||Math.abs(left.scores[0]-50)-Math.abs(right.scores[0]-50));
+    const bestSplit=splits[0],difference=(bestSplit&&bestSplit.objectiveValue||0)-single.objectiveValue,gain=single.objectiveValue>0?difference/single.objectiveValue*100:difference>0?Infinity:0,recommendation=Math.abs(difference)<=1e-9?'either':difference>0?'split':'single',label=objective==='candy'?`${info.pokemonName||info.definition.name}进化系糖果`:`${info.pokemonName||info.definition.name}出现次数`;
+    return {available:true,area,currentStrength,bedtimeStrength,sleepType,objective,targetId,target:single.target||info,multiplier,goodCamp,single,bestSplit,gainPercent:gain,recommendation,reason:recommendation==='split'?`按${label}期望估算，分两段更高。`:recommendation==='single'?`按${label}期望估算，一次睡满更高。`:'两种方案的目标期望相同。'};
   }
   function rewardAtEnergy(options={}){
     return evaluatePlan({area:options.area,sleepType:options.sleepType,objective:options.objective,multiplier:options.multiplier,goodCamp:false,scores:[100],strengths:[options.energy]});
@@ -102,5 +145,5 @@
   }
   function datasetInfo(){return curves?{datasetId:curves.datasetId,generatedAt:curves.generatedAt,algorithmVersion:curves.algorithmVersion,source:curves.source,sourcePage:curves.sourcePage}:null}
 
-  return Object.freeze({SLEEP_TYPES,OBJECTIVES,AREA_ALIASES,areaFor,rankFor,spawnCountFor,segmentFor,interpolate,calculateDrowsyPower,rawResearch,applyResearchDayRules,durationForScore,evaluatePlan,compareSleepPlans,rewardAtEnergy,marginalReturn,slowdownReference,datasetInfo});
+  return Object.freeze({SLEEP_TYPES,OBJECTIVES,TARGET_OBJECTIVES,AREA_ALIASES,areaFor,rankFor,spawnCountFor,segmentFor,targetDefinition,targetSegmentFor,targetInfo,interpolate,calculateDrowsyPower,rawResearch,rawTarget,applyResearchDayRules,applyTargetDayRules,durationForScore,evaluatePlan,evaluateTargetPlan,compareSleepPlans,compareTargetSleepPlans,rewardAtEnergy,marginalReturn,slowdownReference,datasetInfo});
 });
