@@ -6,6 +6,7 @@ import { dirname, resolve } from 'node:path';
 const BASE_URL = 'https://pks.raenonx.cc';
 const MAIN_SKILL_VERIFICATION_URL = 'https://wikiwiki.jp/poke_sleep/?cmd=source&page=%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3%E3%81%AE%E4%B8%80%E8%A6%A7';
 const MAIN_SKILL_REFERENCE_URL = 'https://wikiwiki.jp/poke_sleep/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3%E3%81%AE%E4%B8%80%E8%A6%A7/%E3%83%A1%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%AD%E3%83%AB%E5%88%A5';
+const MEWTWO_OFFICIAL_URL = 'https://www.pokemonsleep.net/en/news/343333373536323134383333313834373731/';
 const DEFAULT_OUTPUT = resolve('data/raenonx-species.json');
 const USER_AGENT = 'pokemon-sleep-assistant-data-sync/1.0 (+local personal project; source credited)';
 const MAIN_SKILL_DEFINITIONS = Object.freeze({
@@ -45,6 +46,19 @@ const MAIN_SKILL_DEFINITIONS = Object.freeze({
   34: { nameEn: 'Heal Pulse (Energizing Cheer S)', nameZh: '治愈波动（活力疗愈S）' },
   35: { nameEn: 'Draco Meteor (Berry Burst)', nameZh: '流星群（树果骤增）' },
   36: { nameEn: 'Aura Sphere (Dream Shard Magnet S)', nameZh: '波导弹（梦之碎片获取S）' },
+  40: { nameEn: 'Psystrike (Berry Zone)', nameZh: '精神击破（树果领域）' },
+});
+
+// RaenonX may publish preview records before the Japanese verification table
+// and measured production rates are available. Only accept such records when
+// an official announcement already confirms the Pokémon and main-skill pair;
+// this does not make unsettled production rates safe for calculations.
+const OFFICIAL_MAIN_SKILL_OVERRIDES = Object.freeze({
+  150: Object.freeze({
+    mainSkillId: 40,
+    skillName: 'Psystrike (Berry Zone)',
+    source: MEWTWO_OFFICIAL_URL,
+  }),
 });
 
 const NORMALIZED_WIKI_SKILL_TO_ID = Object.freeze({
@@ -164,34 +178,45 @@ function canonicalSkillIdFromWiki(rawSkill) {
   return skillId;
 }
 
-async function loadMainSkillVerificationRows() {
-  const html = await fetchText(MAIN_SKILL_VERIFICATION_URL);
-  const sourceMatch = html.match(/<pre id="source"[^>]*><code>([\s\S]*?)<\/code><\/pre>/);
-  if (!sourceMatch) throw new Error('Wiki source block for the Pokémon list is missing');
-  const source = decodeHtmlEntities(sourceMatch[1]);
-  const rows = [];
+async function loadMainSkillVerificationRows(attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const html = await fetchText(MAIN_SKILL_VERIFICATION_URL);
+      const sourceMatch = html.match(/<pre id="source"[^>]*><code>([\s\S]*?)<\/code><\/pre>/);
+      if (!sourceMatch) throw new Error('Wiki source block for the Pokémon list is missing');
+      const source = decodeHtmlEntities(sourceMatch[1]);
+      const rows = [];
 
-  for (const rawLine of source.split(/\r?\n/)) {
-    if (!rawLine.startsWith('|')) continue;
-    const cells = rawLine.slice(1).split('|');
-    if (cells.at(-1) === '') cells.pop();
-    if (cells.length !== 12) continue;
-    const pokedexText = stripWikiCell(cells[1]);
-    if (!/^\d{4}$/.test(pokedexText)) continue;
+      for (const rawLine of source.split(/\r?\n/)) {
+        if (!rawLine.startsWith('|')) continue;
+        const cells = rawLine.slice(1).split('|');
+        if (cells.at(-1) === '') cells.pop();
+        // The verification wiki occasionally appends display-only columns
+        // (for example base helping frequency) after the fields we use.
+        if (cells.length < 12) continue;
+        const pokedexText = stripWikiCell(cells[1]);
+        if (!/^\d{1,4}$/.test(pokedexText)) continue;
 
-    const rawName = stripWikiCell(cells[2]);
-    const rawSkill = stripWikiCell(cells[9]);
-    rows.push({
-      basePokedexId: Number(pokedexText),
-      nameJa: rawName.replace(/&br;/gi, ' '),
-      normalizedNameJa: normalizeJapanesePokemonName(rawName),
-      skillNameJa: rawSkill.replace(/&br;/gi, ' '),
-      mainSkillId: canonicalSkillIdFromWiki(rawSkill),
-    });
+        const rawName = stripWikiCell(cells[2]);
+        const rawSkill = stripWikiCell(cells[9]);
+        rows.push({
+          basePokedexId: Number(pokedexText),
+          nameJa: rawName.replace(/&br;/gi, ' '),
+          normalizedNameJa: normalizeJapanesePokemonName(rawName),
+          skillNameJa: rawSkill.replace(/&br;/gi, ' '),
+          mainSkillId: canonicalSkillIdFromWiki(rawSkill),
+        });
+      }
+
+      if (!rows.length) throw new Error('No Pokémon rows found in the Wiki verification source');
+      return rows;
+    } catch (error) {
+      lastError = error;
+      if (attempt < attempts) await wait(800 * attempt);
+    }
   }
-
-  if (!rows.length) throw new Error('No Pokémon rows found in the Wiki verification source');
-  return rows;
+  throw new Error(`Failed to load the Wiki verification table: ${lastError?.message || lastError}`);
 }
 
 function buildMainSkillAudit(catalogEn, catalogJa, verificationRows) {
@@ -206,6 +231,7 @@ function buildMainSkillAudit(catalogEn, catalogJa, verificationRows) {
   const resolutions = new Map();
   const unmatched = [];
   const corrections = [];
+  const officialOverrides = [];
 
   for (const pokemon of catalogEn.pokemon) {
     const jaPokemon = jaById.get(pokemon.id);
@@ -223,6 +249,27 @@ function buildMainSkillAudit(catalogEn, catalogJa, verificationRows) {
 
     const uniqueSkillIds = [...new Set(matchedRows.map(row => row.mainSkillId))];
     if (!matchedRows.length || uniqueSkillIds.length !== 1) {
+      const official = OFFICIAL_MAIN_SKILL_OVERRIDES[basePokedexId];
+      const serverMainSkillId = Number(pokemon.serverSideData.mainSkillId);
+      if (official && serverMainSkillId === official.mainSkillId) {
+        const definition = MAIN_SKILL_DEFINITIONS[official.mainSkillId];
+        resolutions.set(pokemon.id, {
+          id: official.mainSkillId,
+          ...definition,
+          nameJa: official.skillName,
+          source: 'officialPreview',
+          serverMainSkillId,
+        });
+        officialOverrides.push({
+          pokemonId: pokemon.id,
+          pokedexId: pokemon.pokedexId,
+          nameEn: localizedName(catalogEn.pokemonNames, pokemon),
+          mainSkillId: official.mainSkillId,
+          mainSkillNameEn: definition.nameEn,
+          source: official.source,
+        });
+        continue;
+      }
       unmatched.push({
         pokemonId: pokemon.id,
         basePokedexId,
@@ -272,7 +319,7 @@ function buildMainSkillAudit(catalogEn, catalogJa, verificationRows) {
     throw new Error(`Verified ${resolutions.size}/${catalogEn.pokemon.length} Pokémon main skills`);
   }
 
-  return { resolutions, corrections };
+  return { resolutions, corrections, officialOverrides };
 }
 
 function decodeNextFlight(html) {
@@ -390,6 +437,7 @@ async function runSelfTest() {
     wikiRowCount: verificationRows.length,
     verifiedMainSkillCount: mainSkillAudit.resolutions.size,
     mainSkillCorrectionCount: mainSkillAudit.corrections.length,
+    officialMainSkillOverrideCount: mainSkillAudit.officialOverrides.length,
     name: localizedName(catalog.pokemonNames, gardevoir),
     frequency: gardevoir.serverSideData.helpFrequencyBaseSec,
     baseCarry: gardevoir.stats.maxCarry,
@@ -403,6 +451,8 @@ async function runSelfTest() {
     cresseliaMainSkillName: mainSkillAudit.resolutions.get('488')?.nameEn,
     darkraiMainSkillId: skillId('491'),
     darkraiMainSkillName: mainSkillAudit.resolutions.get('491')?.nameEn,
+    mewtwoMainSkillId: mainSkillAudit.resolutions.get('150')?.id,
+    mewtwoMainSkillSource: mainSkillAudit.resolutions.get('150')?.source,
     latiasMainSkillId: skillId('380'),
     latiosMainSkillId: skillId('381'),
     hawluchaMainSkillId: skillId('701'),
@@ -413,7 +463,8 @@ async function runSelfTest() {
   if (checks.frequency !== 2400) throw new Error(`Unexpected frequency: ${checks.frequency}`);
   if (Math.abs(checks.ingredientRate - 0.144) > 1e-9) throw new Error('Unexpected ingredient rate');
   if (Math.abs(checks.skillRatePct - 4.2) > 1e-9) throw new Error('Unexpected skill rate');
-  if (checks.wikiRowCount !== checks.catalogCount || checks.verifiedMainSkillCount !== checks.catalogCount) {
+  if (checks.wikiRowCount + checks.officialMainSkillOverrideCount !== checks.catalogCount
+      || checks.verifiedMainSkillCount !== checks.catalogCount) {
     throw new Error('Full-Pokédex main-skill verification is incomplete');
   }
   if (checks.raikouMainSkillId !== 15) throw new Error('Raikou main-skill correction missing');
@@ -426,6 +477,9 @@ async function runSelfTest() {
   if (checks.darkraiMainSkillId !== 23) throw new Error('Darkrai main-skill id correction missing');
   if (checks.darkraiMainSkillName !== 'Nightmare (Charge Strength M)') {
     throw new Error('Darkrai main-skill name correction missing');
+  }
+  if (checks.mewtwoMainSkillId !== 40 || checks.mewtwoMainSkillSource !== 'officialPreview') {
+    throw new Error('Mewtwo official preview main-skill verification missing');
   }
   if (checks.latiasMainSkillId !== 34) throw new Error('Latias main-skill correction missing');
   if (checks.latiosMainSkillId !== 35) throw new Error('Latios main-skill correction missing');
@@ -522,6 +576,16 @@ async function sync() {
   });
 
   records.sort((a, b) => a.pokedexId - b.pokedexId || a.id.localeCompare(b.id));
+  const isCalculationReady = record => (
+    Number.isFinite(record.helpFrequencyBaseSec)
+    && Number.isFinite(record.baseBerryCount)
+    && Boolean(record.specialty)
+    && Number.isFinite(record.ingredientRate)
+    && Number.isFinite(record.skillRatePct)
+    && record.rateSettled === true
+  );
+  const calculationReadyRecords = records.filter(isCalculationReady);
+  const previewRecords = records.filter(record => !isCalculationReady(record));
 
   const output = {
     schemaVersion: 1,
@@ -531,8 +595,9 @@ async function sync() {
       pokedexUrl: `${BASE_URL}/en/pokedex`,
       ratesUrl: `${BASE_URL}/en/stats/base-rates`,
       mainSkillVerificationUrl: MAIN_SKILL_REFERENCE_URL,
-      note: 'Ingredient and skill rates are RaenonX research estimates, not official in-game disclosures. Every main skill is cross-checked against the current Japanese verification list before export.',
+      note: 'Ingredient and skill rates are RaenonX research estimates, not official in-game disclosures. Main skills are cross-checked against the current Japanese verification list; explicitly listed preview records may instead use an official announcement and retain null/unsettled production rates.',
       corrections: mainSkillAudit.corrections,
+      officialPreviewOverrides: mainSkillAudit.officialOverrides,
     },
     comparisonPolicy: {
       targetLevel: 70,
@@ -542,13 +607,17 @@ async function sync() {
     },
     counts: {
       all: records.length,
-      finalEvolutions: records.filter(record => record.isFinalEvolution).length,
-      missingRates: records.filter(record => record.ingredientRate == null || record.skillRatePct == null).length,
+      calculationReady: calculationReadyRecords.length,
+      previews: previewRecords.length,
+      finalEvolutions: calculationReadyRecords.filter(record => record.isFinalEvolution).length,
+      missingRates: previewRecords.length,
       verifiedMainSkills: mainSkillAudit.resolutions.size,
       mainSkillCorrections: mainSkillAudit.corrections.length,
+      officialMainSkillOverrides: mainSkillAudit.officialOverrides.length,
     },
     failures,
-    pokemon: records,
+    previews: previewRecords,
+    pokemon: calculationReadyRecords,
   };
 
   await mkdir(dirname(outputPath), { recursive: true });
@@ -557,6 +626,9 @@ async function sync() {
   if (failures.length) {
     process.stderr.write(`Completed with ${failures.length} failed rate pages; snapshot is incomplete.\n`);
     process.exitCode = 1;
+  }
+  if (previewRecords.length) {
+    process.stderr.write(`Excluded ${previewRecords.length} preview/unsettled record(s) from calculation data.\n`);
   }
 }
 

@@ -112,10 +112,12 @@
   }
 
   function normalizeEnergySettings(options={}){
+    const favoriteBerries=[...new Set((Array.isArray(options.favoriteBerries)?options.favoriteBerries:[]).map(String).filter(Boolean))];
     return {
       durationHours:clamp(Number(options.durationHours)||DEFAULT_ENERGY_SETTINGS.durationHours,.5,168),
       islandBonusPct:clamp(Number(options.islandBonusPct)||0,0,gameRules&&gameRules.LIMITS?gameRules.LIMITS.areaBonusPct:85),
-      islandProfile:Object.hasOwn(ISLAND_PROFILES,options.islandProfile)?options.islandProfile:DEFAULT_ENERGY_SETTINGS.islandProfile
+      islandProfile:Object.hasOwn(ISLAND_PROFILES,options.islandProfile)?options.islandProfile:DEFAULT_ENERGY_SETTINGS.islandProfile,
+      favoriteBerries
     };
   }
 
@@ -123,7 +125,7 @@
     const settings=normalizeEnergySettings(options),profile=ISLAND_PROFILES[settings.islandProfile],durationSeconds=settings.durationHours*3600;
     const rows=(members||[]).map(member=>{
       const mon=member.mon||{},helps=durationSeconds/member.effectiveIntervalSec;
-      const favorite=Boolean(profile.all||(mon.berry&&profile.berries.includes(mon.berry)));
+      const favorite=Boolean(profile.all||(mon.berry&&(settings.favoriteBerries.length?settings.favoriteBerries.includes(mon.berry):profile.berries.includes(mon.berry))));
       const berryStrength=energyMechanics&&energyMechanics.berryStrengthAtLevel(mon.berryId,Number(mon.lv));
       const berries=helps*(1-member.probability.current)*member.berryCount;
       const berryBaseEnergy=berryStrength?berries*berryStrength*(favorite?2:1):0;

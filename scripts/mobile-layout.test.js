@@ -7,6 +7,7 @@ const path = require('path');
 const projectRoot = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(projectRoot, 'mobile.css'), 'utf8');
+const weeklyCss = fs.readFileSync(path.join(projectRoot, 'weekly-planner.css'), 'utf8');
 
 assert.ok(html.includes('href="./mobile.css'), '首页应加载移动端样式');
 assert.ok(html.includes('viewport-fit=cover'), 'iPhone安全区域适配缺失');
@@ -50,5 +51,7 @@ assert.ok(css.includes('.weekly-berries[hidden]{display:none!important}'), '固�
 assert.ok(css.includes('.weekly-team-pair{grid-template-columns:minmax(0,1fr)!important}'), '作战台的准备队与输出队在手机端应纵向排列');
 assert.ok(css.includes('.weekly-budget-row{grid-template-columns:minmax(0,1fr)!important}'), '作战台食材预算不得撑宽手机页面');
 assert.ok(css.includes('.weekly-progress{grid-template-columns:repeat(2,minmax(0,1fr))!important}'), '目标料理勾选应使用手机两列布局');
+assert.ok(weeklyCss.includes('.weekly-action-thresholds>span{'), '行动食材阈值只能给外层标签加胶囊样式，不能套到内部图标组件');
+assert.ok(!weeklyCss.includes('.weekly-action-thresholds span{'), '行动食材阈值不得让内部食材组件重复套用胶囊样式');
 
 console.log('mobile layout tests passed');

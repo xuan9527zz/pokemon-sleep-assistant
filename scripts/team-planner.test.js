@@ -104,6 +104,9 @@ const noIslandBonus=planner.calculateMember(stufful,{ingredientRate:.225,baseBer
 assert.ok(stuffulEnergy.energy.totalEnergy>noIslandBonus.energy.totalEnergy,'岛屿加成应提升树果与直接技能能量');
 const nonFavorite=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average',durationHours:12,islandProfile:'cyan',islandBonusPct:0});
 assert.ok(noIslandBonus.energy.berryEnergy>nonFavorite.energy.berryEnergy*1.9,'喜爱树果应接近两倍常规树果能量');
+const randomIslandFavorite=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average',durationHours:12,islandProfile:'none',favoriteBerries:['樱子果','莓莓果'],islandBonusPct:0});
+assert.strictEqual(randomIslandFavorite.member.snorlaxEnergy.favorite,true,'萌绿等随机岛屿应能按本周实际选择的喜爱树果计算');
+assert.ok(randomIslandFavorite.energy.berryEnergy>nonFavorite.energy.berryEnergy*1.9);
 assert.strictEqual(planner.normalizeEnergySettings({durationHours:999,islandBonusPct:-3,islandProfile:'missing'}).durationHours,168);
 assert.strictEqual(planner.normalizeEnergySettings({durationHours:24,islandBonusPct:-3,islandProfile:'missing'}).islandProfile,'none');
 
