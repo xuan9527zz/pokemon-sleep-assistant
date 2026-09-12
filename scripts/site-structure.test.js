@@ -37,6 +37,9 @@ assert.ok(html.includes('id="recipeIngredient" multiple'), '食谱页必须支�
 assert.ok(html.includes('id="recipeCookedFilter"'), '食谱页缺少未做过筛选');
 assert.ok(html.includes('id="currentTeamDrawer"'), '当前队伍缺少切换侧栏');
 assert.ok(html.includes('id="pokemonPickerDialog"'), '缺少可搜索的宝可梦图标选择器');
+assert.ok(html.includes('id="selectionOddsTool"'), '盒子页缺少友情徽章与严选概率小工具');
+assert.ok(html.includes('id="selectionLockedGold"'), '严选概率工具缺少实际锁金格数');
+assert.ok(html.includes('id="selectionGraduationRole"'), '严选概率工具缺少本站毕业定位选择');
 assert.ok(html.includes("title.dataset.noIngredientIcons=''"), '食谱名称必须显式禁止食材图标装饰');
 
 console.log(`site structure tests passed (${ids.length} ids, ${new Set(localRefs).size} local refs)`);

@@ -8,10 +8,11 @@
   const gameRules=typeof module==='object'&&module.exports?require('./game-rules.js'):root.POKEMON_SLEEP_GAME_RULES;
   const investmentPlanner=typeof module==='object'&&module.exports?require('./investment-planner.js'):root.POKEMON_SLEEP_INVESTMENT_PLANNER;
   const cookingSuccess=typeof module==='object'&&module.exports?require('./cooking-success.js'):root.POKEMON_SLEEP_COOKING_SUCCESS;
-  const api=factory(ingredients,boxManager,energyMechanics,personalSettings,teamSkillEffects,gameRules,investmentPlanner,cookingSuccess);
+  const productionTimeline=typeof module==='object'&&module.exports?require('./production-timeline.js'):root.POKEMON_SLEEP_PRODUCTION_TIMELINE;
+  const api=factory(ingredients,boxManager,energyMechanics,personalSettings,teamSkillEffects,gameRules,investmentPlanner,cookingSuccess,productionTimeline);
   if(typeof module==='object'&&module.exports)module.exports=api;
   root.POKEMON_SLEEP_TEAM_PLANNER=api;
-})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog,boxManager,energyMechanics,personalSettings,teamSkillEffects,gameRules,investmentPlanner,cookingSuccess){
+})(typeof window!=='undefined'?window:globalThis,function(ingredientCatalog,boxManager,energyMechanics,personalSettings,teamSkillEffects,gameRules,investmentPlanner,cookingSuccess,productionTimeline){
   'use strict';
 
   const SUBSKILL_LEVELS=[10,25,50,70,80];
@@ -19,6 +20,7 @@
   const SPECIAL_NAMES=new Set(['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊']);
   const ROLE_LABELS={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手',unknown:'待核对'};
   const ENERGY_PROFILES={
+    timeline:{factor:2,label:'五档活力时间轴（推荐）'},
     steady:{factor:1/0.45,label:'回复稳定（活力81以上）'},
     average:{factor:2,label:'日间平均（评分统一口径）'},
     low:{factor:1/0.66,label:'低活力（活力2–40）'},
@@ -32,9 +34,13 @@
     lapis:Object.freeze({label:'宝蓝湖畔',berries:Object.freeze(['金枕果','芒芒果','樱子果'])}),
     gold:Object.freeze({label:'黄金发电厂',berries:Object.freeze(['萄葡果','墨莓果','靛莓果'])}),
     amber:Object.freeze({label:'琥珀溪谷',berries:Object.freeze(['零余果','木子果','番荔果'])}),
+    'greengrass-expert':Object.freeze({label:'萌绿之岛 EX',expert:true,berries:Object.freeze([]),mainSpeedMultiplier:.9,unmatchedSpeedMultiplier:1.15,mainSkillLevelBonus:1}),
+    'cyan-expert':Object.freeze({label:'天青沙滩 EX',expert:true,berries:Object.freeze([]),mainSpeedMultiplier:.8,unmatchedSpeedMultiplier:1.35,mainCarryBonus:5}),
     all:Object.freeze({label:'自定义：当前队员全部命中',all:true,berries:Object.freeze([])})
   });
-  const DEFAULT_ENERGY_SETTINGS=Object.freeze({durationHours:24,islandBonusPct:0,islandProfile:'none'});
+  const EX_WEEKLY_EFFECTS=Object.freeze({none:'本周效果未选择',berry:'树果能量强化',ingredient:'食材帮忙＋1',skill:'主技能触发率×1.25'});
+  const BERRY_NAMES=Object.freeze(['柿仔果','苹野果','橙橙果','萄葡果','金枕果','莓莓果','樱子果','零余果','勿花果','椰木果','芒芒果','木子果','文柚果','墨莓果','番荔果','异奇果','靛莓果','桃桃果']);
+  const DEFAULT_ENERGY_SETTINGS=Object.freeze({durationHours:24,islandBonusPct:0,islandProfile:'none',startEnergy:100,sleepScore:100,skillCollectionHours:4,teamSwapCount:0,collectBeforeSwap:true,exWeeklyEffect:'none'});
   const POT_SKILL_SLOTS=Object.freeze({11:Object.freeze([7,10,12,17,22,27,31]),27:Object.freeze([5,7,9,12,16,20,24])});
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
@@ -89,7 +95,7 @@
     const natureMultiplier=natureSkillMultiplier(mon.nature);
     const current=clamp(base*natureMultiplier*(1+subskillBonus),0,.95);
     const sourceInterval=Number(mon.catalogHelpFrequencyBaseSec)||parseInterval(mon.interval);
-    const pityCeiling=['skill','all'].includes(mon.specialty)?Math.ceil(144000/sourceInterval):78;
+    const pityCeiling=['skill','all'].includes(mon.specialty)?Math.max(1,Math.floor(144000/sourceInterval)):78;
     const effective=current/(1-(1-current)**pityCeiling);
     return {base,current,effective,natureMultiplier,subskillBonus,pityCeiling,provisional:false};
   }
@@ -112,53 +118,84 @@
     };
   }
 
+  function exMemberRule(settings,mon){
+    const profile=ISLAND_PROFILES[settings.islandProfile]||ISLAND_PROFILES.none;
+    if(!profile.expert)return {match:'normal',favorite:null,intervalMultiplier:1,carryBonus:0,mainSkillLevelBonus:0,ingredientHelpBonus:0,skillTriggerMultiplier:1,berryFavoriteMultiplier:2,label:''};
+    const index=settings.favoriteBerries.indexOf(String(mon&&mon.berry||'')),match=index===0?'main':index>0?'sub':'unmatched',favorite=index>=0,weekly=favorite?settings.exWeeklyEffect:'none';
+    return {
+      match,favorite,
+      intervalMultiplier:match==='main'?(profile.mainSpeedMultiplier||1):match==='unmatched'?(profile.unmatchedSpeedMultiplier||1):1,
+      carryBonus:match==='main'?(profile.mainCarryBonus||0):0,
+      mainSkillLevelBonus:match==='main'?(profile.mainSkillLevelBonus||0):0,
+      ingredientHelpBonus:weekly==='ingredient'?(mon&&mon.specialty==='ingredient'?1.5:1):0,
+      skillTriggerMultiplier:weekly==='skill'?1.25:1,
+      berryFavoriteMultiplier:weekly==='berry'?2.4:2,
+      label:`EX ${match==='main'?'主树果':match==='sub'?'副树果':'未命中'}${weekly!=='none'?`／${EX_WEEKLY_EFFECTS[weekly]}`:''}`
+    };
+  }
+
   function normalizeEnergySettings(options={}){
     const favoriteBerries=[...new Set((Array.isArray(options.favoriteBerries)?options.favoriteBerries:[]).map(String).filter(Boolean))];
     return {
       durationHours:clamp(Number(options.durationHours)||DEFAULT_ENERGY_SETTINGS.durationHours,.5,168),
       islandBonusPct:clamp(Number(options.islandBonusPct)||0,0,gameRules&&gameRules.LIMITS?gameRules.LIMITS.areaBonusPct:85),
       islandProfile:Object.hasOwn(ISLAND_PROFILES,options.islandProfile)?options.islandProfile:DEFAULT_ENERGY_SETTINGS.islandProfile,
-      favoriteBerries
+      favoriteBerries,
+      startEnergy:clamp(options.startEnergy===undefined?DEFAULT_ENERGY_SETTINGS.startEnergy:Number(options.startEnergy),0,150),
+      sleepScore:clamp(options.sleepScore===undefined?DEFAULT_ENERGY_SETTINGS.sleepScore:Number(options.sleepScore),0,100),
+      skillCollectionHours:clamp(Number(options.skillCollectionHours)||DEFAULT_ENERGY_SETTINGS.skillCollectionHours,.5,24),
+      teamSwapCount:clamp(Math.round(Number(options.teamSwapCount)||0),0,20),
+      collectBeforeSwap:options.collectBeforeSwap!==false,
+      exWeeklyEffect:Object.hasOwn(EX_WEEKLY_EFFECTS,options.exWeeklyEffect)?options.exWeeklyEffect:'none'
     };
   }
 
   function calculateEnergyBreakdown(members,options={}){
-    const settings=normalizeEnergySettings(options),profile=ISLAND_PROFILES[settings.islandProfile],durationSeconds=settings.durationHours*3600;
+    const settings=normalizeEnergySettings(options),profile=ISLAND_PROFILES[settings.islandProfile],durationSeconds=settings.durationHours*3600,useTimeline=options.energyProfile==='timeline'&&productionTimeline&&typeof productionTimeline.simulate==='function';
     const rows=(members||[]).map(member=>{
-      const mon=member.mon||{},helps=durationSeconds/member.effectiveIntervalSec;
-      const favorite=Boolean(profile.all||(mon.berry&&(settings.favoriteBerries.length?settings.favoriteBerries.includes(mon.berry):profile.berries.includes(mon.berry))));
+      const mon=member.mon||{},helps=useTimeline?0:durationSeconds/member.effectiveIntervalSec,exRule=member.exRule||exMemberRule(settings,mon),favorite=profile.expert?Boolean(exRule.favorite):Boolean(profile.all||(mon.berry&&(settings.favoriteBerries.length?settings.favoriteBerries.includes(mon.berry):profile.berries.includes(mon.berry))));
+      let normalHelps=helps,sneakyHelps=0;
+      if(!useTimeline){
+        const helpsPerCollection=Number(member.helpsAvailable),collectiblePerCollection=Number(member.collectibleHelps);
+        if(helpsPerCollection>0&&Number.isFinite(collectiblePerCollection)){
+          const collectible=clamp(collectiblePerCollection,0,helpsPerCollection),completeCollections=Math.floor(helps/helpsPerCollection),remainingHelps=Math.max(0,helps-completeCollections*helpsPerCollection);
+          normalHelps=Math.min(helps,completeCollections*collectible+Math.min(remainingHelps,collectible));
+        }
+        sneakyHelps=Math.max(0,helps-normalHelps);
+      }
       const berryStrength=energyMechanics&&energyMechanics.berryStrengthAtLevel(mon.berryId,Number(mon.lv));
-      const berries=helps*(1-member.probability.current)*member.berryCount;
-      const berryBaseEnergy=berryStrength?berries*berryStrength*(favorite?2:1):0;
-      const berryEnergy=energyMechanics?energyMechanics.applyPercentageBonus(berryBaseEnergy,settings.islandBonusPct):Math.round(berryBaseEnergy);
       const modifier=member.eventModifier||memberModifier(options,mon),probability=applySkillTriggerMultiplier(skillProbability(mon),modifier.skillTriggerMultiplier),baseSkillLevel=boxManager&&typeof boxManager.effectiveMainSkillLevel==='function'?boxManager.effectiveMainSkillLevel(mon):Number(String(mon.main||'').match(/Lv\.(\d+)/)?.[1]||1),skillCap=boxManager&&typeof boxManager.mainSkillLevelCap==='function'?boxManager.mainSkillLevelCap(mon.main):Math.max(6,baseSkillLevel),skillLevel=Math.min(skillCap,baseSkillLevel+modifier.mainSkillLevelBonus);
       const skill=energyMechanics?energyMechanics.directEnergyPerUse(mon.main,mon.mainSkillId,skillLevel,settings.islandBonusPct):{supported:false,actualEnergy:0,baseEnergy:0};
-      const triggers=helps*probability.effective,directSkillEnergy=skill.supported?Math.round(triggers*skill.actualEnergy):0;
-      const berryEnergyPerBerry=energyMechanics?energyMechanics.applyPercentageBonus((berryStrength||0)*(favorite?2:1),settings.islandBonusPct):(berryStrength||0)*(favorite?2:1);
+      const favoriteMultiplier=favorite?(profile.expert?exRule.berryFavoriteMultiplier:2):1,berryEnergyPerBerry=energyMechanics?energyMechanics.applyPercentageBonus((berryStrength||0)*favoriteMultiplier,settings.islandBonusPct):(berryStrength||0)*favoriteMultiplier;
       return {
-        id:mon.id,name:mon.name,berryName:mon.berry||'待核对',favorite,helps,berries,berryStrength,
-        berryBaseEnergy,berryEnergy,skillProbability:probability,skillLevel,baseSkillLevel,eventModifier:modifier,skill,triggers,directSkillEnergy,
+        id:mon.id,name:mon.name,berryName:mon.berry||'待核对',favorite,favoriteMultiplier,exRule,helps,normalHelps,sneakyHelps,berries:0,berryStrength,
+        berryBaseEnergy:0,berryEnergy:0,skillProbability:probability,skillLevel,baseSkillLevel,eventModifier:modifier,skill,triggers:useTimeline?0:normalHelps*probability.effective,lostTriggers:0,directSkillEnergy:0,
         berryEnergyPerBerry,ordinaryBerryEnergyPerHelp:(1-member.probability.current)*member.berryCount*berryEnergyPerBerry,
         complexSkill:null,complexSkillEnergy:0,teamRecovery:0,productiveRecovery:0,selfRecovery:0,
-        totalEnergy:berryEnergy+directSkillEnergy,mon
+        totalEnergy:0,mon
       };
     });
-    if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{
-      if(row.skill.supported)return;
-      const effect=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours});
-      if(!effect)return;
-      row.complexSkill=effect;
-      if(effect.supported){
-        row.complexSkillEnergy=Math.round(row.triggers*effect.energyPerUse);
-        row.teamRecovery=row.triggers*effect.teamRecoveryPerUse;
-        row.productiveRecovery=row.triggers*effect.productiveRecoveryPerUse;
-        row.selfRecovery=row.triggers*effect.selfRecoveryPerUse;
-        row.totalEnergy+=row.complexSkillEnergy;
-      }
+    if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{if(!row.skill.supported)row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
+    let timeline=null;
+    if(useTimeline){
+      const swapHours=Array.isArray(options.swapHours)?options.swapHours:Array.from({length:settings.teamSwapCount},(_value,index)=>settings.durationHours*(index+1)/(settings.teamSwapCount+1));
+      const simulationMembers=members.map((member,index)=>({...member,skillProbability:rows[index].skillProbability,skillEffect:rows[index].complexSkill}));
+      timeline=productionTimeline.simulate(simulationMembers,{durationHours:settings.durationHours,collectionHours:settings.skillCollectionHours||members[0]?.collectionHours||4,startEnergy:settings.startEnergy,sleepScore:settings.sleepScore,swapHours,collectBeforeSwap:settings.collectBeforeSwap});
+      rows.forEach((row,index)=>{const simulated=timeline.members[index];row.helps=simulated.helps;row.normalHelps=simulated.normalHelps;row.sneakyHelps=simulated.sneakyHelps;row.triggers=simulated.triggers;row.lostTriggers=simulated.lostTriggers;row.energyStages=simulated.stageMinutes;row.endingEnergy=simulated.endingEnergy;row.averageHelpFactor=simulated.averageHelpFactor});
+      if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{if(!row.skill.supported)row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
+    }
+    rows.forEach((row,index)=>{
+      const member=members[index],ingredientRate=Number(member&&member.probability&&member.probability.current)||0;
+      row.berries=(row.normalHelps*(1-ingredientRate)+row.sneakyHelps)*(member&&member.berryCount||1);
+      row.berryBaseEnergy=(row.berryStrength||0)*row.berries*row.favoriteMultiplier;
+      row.berryEnergy=energyMechanics?energyMechanics.applyPercentageBonus(row.berryBaseEnergy,settings.islandBonusPct):Math.round(row.berryBaseEnergy);
+      row.directSkillEnergy=row.skill.supported?Math.round(row.triggers*row.skill.actualEnergy):0;
+      if(row.complexSkill&&row.complexSkill.supported){row.complexSkillEnergy=Math.round(row.triggers*row.complexSkill.energyPerUse);row.teamRecovery=row.triggers*row.complexSkill.teamRecoveryPerUse;row.productiveRecovery=row.triggers*row.complexSkill.productiveRecoveryPerUse;row.selfRecovery=row.triggers*row.complexSkill.selfRecoveryPerUse}
+      row.totalEnergy=row.berryEnergy+row.directSkillEnergy+row.complexSkillEnergy;
     });
     rows.forEach(row=>{delete row.mon});
     const berryEnergy=sum(rows.map(row=>row.berryEnergy)),directSkillEnergy=sum(rows.map(row=>row.directSkillEnergy)),complexSkillEnergy=sum(rows.map(row=>row.complexSkillEnergy)),totalSkillEnergy=directSkillEnergy+complexSkillEnergy,totalEnergy=berryEnergy+totalSkillEnergy,teamRecovery=sum(rows.map(row=>row.teamRecovery)),productiveRecovery=sum(rows.map(row=>row.productiveRecovery));
-    return {...settings,island:profile,berryEnergy,directSkillEnergy,complexSkillEnergy,totalSkillEnergy,teamRecovery,productiveRecovery,totalEnergy,perHour:totalEnergy/settings.durationHours,members:rows,unsupportedSkillMembers:rows.filter(row=>!row.skill.supported&&row.complexSkill&&!row.complexSkill.supported)};
+    return {...settings,island:profile,timeline,berryEnergy,directSkillEnergy,complexSkillEnergy,totalSkillEnergy,teamRecovery,productiveRecovery,totalEnergy,perHour:totalEnergy/settings.durationHours,members:rows,unsupportedSkillMembers:rows.filter(row=>!row.skill.supported&&row.complexSkill&&!row.complexSkill.supported)};
   }
 
   function ingredientProbability(mon,production){
@@ -258,16 +295,23 @@
     const baseIntervalSec=parseInterval(mon.interval);
     const energyFactor=Number(options.energyFactor)||2;
     const campSpeed=options.goodCamp?1.2:1;
+    const settings=normalizeEnergySettings(options),exRule=exMemberRule(settings,mon);
     const ownSpeedReduction=helpingSpeedReduction(mon);
     const outputMultiplier=helpingBonusOutputMultiplier(mon,helpingBonusCount);
     const combinedSpeedReduction=clamp(ownSpeedReduction+helpingBonusCount*.05,0,.35);
     const teamSpeedFactor=1/outputMultiplier;
     const teamSpeedReduction=1-teamSpeedFactor;
-    const effectiveIntervalSec=baseIntervalSec*teamSpeedFactor/(campSpeed*energyFactor);
+    const neutralIntervalSec=baseIntervalSec*teamSpeedFactor*exRule.intervalMultiplier/campSpeed;
+    const effectiveIntervalSec=neutralIntervalSec/energyFactor;
     const carryBase=Number(mon.inv)||0;
-    const carry=options.goodCamp?Math.ceil(carryBase*1.2):carryBase;
+    const carry=(options.goodCamp?Math.ceil(carryBase*1.2):carryBase)+exRule.carryBonus;
     const ingredients=parseIngredientSlots(mon.ingredients,mon.lv);
-    const eventModifier=memberModifier(options,mon);
+    const sourceModifier=memberModifier(options,mon),eventModifier={
+      ingredientHelpBonus:sourceModifier.ingredientHelpBonus+exRule.ingredientHelpBonus,
+      skillTriggerMultiplier:sourceModifier.skillTriggerMultiplier*exRule.skillTriggerMultiplier,
+      mainSkillLevelBonus:sourceModifier.mainSkillLevelBonus+exRule.mainSkillLevelBonus,
+      label:[sourceModifier.label,exRule.label].filter(Boolean).join('／')
+    };
     const probability=ingredientProbability(mon,production);
     const unlockedCount=Math.max(ingredients.unlocked.length,1);
     const averageIngredientQuantity=ingredients.unlocked.length?sum(ingredients.unlocked.map(slot=>slot.quantity+eventModifier.ingredientHelpBonus))/unlockedCount:0;
@@ -283,9 +327,9 @@
       expected:probability.current*(slot.quantity+eventModifier.ingredientHelpBonus)/unlockedCount
     }));
     return {
-      mon,production,ingredients,probability,baseIntervalSec,effectiveIntervalSec,carryBase,carry,
+      mon,production,ingredients,probability,baseIntervalSec,neutralIntervalSec,effectiveIntervalSec,carryBase,carry,
       berryCount,berryFinding,expectedItemsPerHelp,helpsPerDay,fullHours,ingredientPerHelp,eventModifier,
-      helpingBonusCount,ownSpeedReduction,combinedSpeedReduction,teamSpeedReduction,helpingBonusOutputMultiplier:outputMultiplier
+      helpingBonusCount,ownSpeedReduction,combinedSpeedReduction,teamSpeedReduction,helpingBonusOutputMultiplier:outputMultiplier,exRule
     };
   }
 
@@ -315,19 +359,19 @@
   function calculateMember(mon,production,options={}){
     if(!mon)return {valid:false,member:null,message:'没有可计算的宝可梦。'};
     if(mon.battleEligible===false)return {valid:false,member:null,message:`${mon.name||'这个体'}已设为“仅收藏”，不参与上场产出计算。`};
-    const energyProfile=ENERGY_PROFILES[options.energyProfile]||ENERGY_PROFILES.average;
+    const energyProfile=ENERGY_PROFILES[options.energyProfile]||ENERGY_PROFILES.timeline;
     const teammateHelpingBonusCount=clamp(Math.round(Number(options.teammateHelpingBonusCount)||0),0,4);
     const ownHelpingBonus=unlockedSubskills(mon).includes('帮手奖励')?1:0;
     const helpingBonusCount=teammateHelpingBonusCount+ownHelpingBonus;
-    const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average',memberModifier:options.memberModifier};
+    const resolvedOptions={...normalizeEnergySettings(options),goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'timeline',memberModifier:options.memberModifier};
     const base=baseMemberModel(mon,production,resolvedOptions,helpingBonusCount);
     const requestedCollectionHours=Number(options.collectionHours);
     const collectionHours=Number.isFinite(requestedCollectionHours)
       ?clamp(requestedCollectionHours,.5,24)
       :recommendedCollectionHours([base]);
     const member=addCollectionModel(base,collectionHours);
-    const energy=calculateEnergyBreakdown([member],options);
-    const withEnergy={...member,snorlaxEnergy:energy.members[0]};
+    const energy=calculateEnergyBreakdown([member],{...options,skillCollectionHours:options.skillCollectionHours||collectionHours}),energyRow=energy.members[0],dailyScale=24/energy.durationHours;
+    const withEnergy={...member,effectiveIntervalSec:energyRow&&energyRow.helps>0?energy.durationHours*3600/energyRow.helps:member.effectiveIntervalSec,ingredients:member.ingredientPerHelp.map(slot=>({...slot,perCollection:slot.expected*(energyRow&&energyRow.normalHelps||0)*collectionHours/energy.durationHours,perDay:slot.expected*(energyRow&&energyRow.normalHelps||0)*dailyScale})),snorlaxEnergy:energyRow};
     return {valid:true,member:withEnergy,energy,energyProfile,options:resolvedOptions,teammateHelpingBonusCount,ownHelpingBonus,helpingBonusCount,collectionHours};
   }
 
@@ -335,14 +379,14 @@
     const selectedTeam=team.filter(Boolean);
     const validation=validateBattleTeam(selectedTeam);
     const cleanTeam=selectedTeam.filter(mon=>mon.battleEligible!==false);
-    const energyProfile=ENERGY_PROFILES[options.energyProfile]||ENERGY_PROFILES.average;
-    const resolvedOptions={goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'average',memberModifier:options.memberModifier};
+    const energyProfile=ENERGY_PROFILES[options.energyProfile]||ENERGY_PROFILES.timeline;
+    const resolvedOptions={...normalizeEnergySettings(options),goodCamp:options.goodCamp!==false,energyFactor:energyProfile.factor,energyProfile:options.energyProfile||'timeline',memberModifier:options.memberModifier};
     const helpingBonusCount=cleanTeam.filter(mon=>unlockedSubskills(mon).includes('帮手奖励')).length;
     const baseMembers=cleanTeam.map(mon=>baseMemberModel(mon,productionByBoxId&&productionByBoxId[mon.id],resolvedOptions,helpingBonusCount));
-    const collectionHours=recommendedCollectionHours(baseMembers);
+    const requestedCollectionHours=Number(options.skillCollectionHours),collectionHours=Number.isFinite(requestedCollectionHours)?clamp(requestedCollectionHours,.5,24):recommendedCollectionHours(baseMembers);
     const members=baseMembers.map(member=>addCollectionModel(member,collectionHours));
-    const energy=calculateEnergyBreakdown(members,options);
-    const membersWithEnergy=members.map((member,index)=>({...member,snorlaxEnergy:energy.members[index]}));
+    const energy=calculateEnergyBreakdown(members,{...options,skillCollectionHours:collectionHours});
+    const membersWithEnergy=members.map((member,index)=>{const energyRow=energy.members[index],dailyScale=24/energy.durationHours;return {...member,effectiveIntervalSec:energyRow&&energyRow.helps>0?energy.durationHours*3600/energyRow.helps:member.effectiveIntervalSec,ingredients:member.ingredientPerHelp.map(slot=>({...slot,perCollection:slot.expected*(energyRow&&energyRow.normalHelps||0)*collectionHours/energy.durationHours,perDay:slot.expected*(energyRow&&energyRow.normalHelps||0)*dailyScale})),snorlaxEnergy:energyRow}});
     const ingredientTotals=new Map();
     membersWithEnergy.forEach(member=>member.ingredients.forEach(slot=>{
       const current=ingredientTotals.get(slot.name)||{name:slot.name,perCollection:0,perDay:0,contributors:[]};
@@ -516,6 +560,16 @@
     const campInput=document.querySelector('#currentTeamCamp');
     const energyInput=document.querySelector('#currentTeamEnergy');
     const durationInput=document.querySelector('#currentTeamDuration');
+    const startEnergyInput=document.querySelector('#currentTeamStartEnergy');
+    const sleepScoreInput=document.querySelector('#currentTeamSleepScore');
+    const skillCollectionInput=document.querySelector('#currentTeamSkillCollection');
+    const swapCountInput=document.querySelector('#currentTeamSwapCount');
+    const collectBeforeSwapInput=document.querySelector('#currentTeamCollectBeforeSwap');
+    const exControls=document.querySelector('#currentTeamExControls');
+    const exMainBerry=document.querySelector('#currentTeamExMainBerry');
+    const exSubBerry1=document.querySelector('#currentTeamExSubBerry1');
+    const exSubBerry2=document.querySelector('#currentTeamExSubBerry2');
+    const exEffect=document.querySelector('#currentTeamExEffect');
     const clearButton=document.querySelector('#currentTeamClear');
     const saveTeamButton=document.querySelector('#currentTeamSave');
     const savedCountRoot=document.querySelector('#currentTeamSavedCount');
@@ -552,18 +606,44 @@
 
     let energySettings=loadEnergySettings();
     if(durationInput)durationInput.value=String(energySettings.durationHours);
+    if(startEnergyInput)startEnergyInput.value=String(energySettings.startEnergy);
+    if(sleepScoreInput)sleepScoreInput.value=String(energySettings.sleepScore);
+    if(skillCollectionInput)skillCollectionInput.value=String(energySettings.skillCollectionHours);
+    if(swapCountInput)swapCountInput.value=String(energySettings.teamSwapCount);
+    if(collectBeforeSwapInput)collectBeforeSwapInput.checked=energySettings.collectBeforeSwap;
+    if(exEffect)exEffect.value=energySettings.exWeeklyEffect;
+
+    function fillBerrySelect(select,values,current){
+      if(!select)return;select.replaceChildren(...values.map(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;return option}));select.value=values.includes(current)?current:values[0];
+    }
+
+    function syncExControls(selectedIsland){
+      const profileKey=selectedIsland&&selectedIsland.teamProfile||energySettings.islandProfile,expert=['greengrass-expert','cyan-expert'].includes(profileKey);
+      if(exControls)exControls.hidden=!expert;
+      if(!expert)return;
+      const mainAllowed=profileKey==='cyan-expert'?['橙橙果','桃桃果','椰木果']:BERRY_NAMES,current=energySettings.favoriteBerries||[],main=current[0]||mainAllowed[0],remaining=BERRY_NAMES.filter(name=>name!==main);
+      fillBerrySelect(exMainBerry,mainAllowed,main);fillBerrySelect(exSubBerry1,remaining,current[1]||remaining[0]);fillBerrySelect(exSubBerry2,remaining.filter(name=>name!==exSubBerry1.value),current[2]||remaining.find(name=>name!==exSubBerry1.value));
+    }
 
     function teamOptions(){
       const personal=profile&&typeof profile.getState==='function'?profile.getState():personalSettings&&personalSettings.read?personalSettings.read():null;
       const selectedIsland=personal&&personalSettings&&personalSettings.island?personalSettings.island(personal):null;
-      return {goodCamp:campInput.checked,energyProfile:energyInput.value,...energySettings,islandProfile:selectedIsland&&selectedIsland.teamProfile||energySettings.islandProfile||'none',islandBonusPct:personal&&personalSettings?personalSettings.islandBonus(personal):energySettings.islandBonusPct||0};
+      const islandProfile=selectedIsland&&selectedIsland.teamProfile||energySettings.islandProfile||'none',expert=['greengrass-expert','cyan-expert'].includes(islandProfile),favoriteBerries=expert?[exMainBerry&&exMainBerry.value,exSubBerry1&&exSubBerry1.value,exSubBerry2&&exSubBerry2.value].filter(Boolean):energySettings.favoriteBerries;
+      return {goodCamp:campInput.checked,energyProfile:energyInput.value,...energySettings,islandProfile,islandBonusPct:personal&&personalSettings?personalSettings.islandBonus(personal):energySettings.islandBonusPct||0,favoriteBerries,exWeeklyEffect:expert&&exEffect?exEffect.value:'none'};
     }
 
     function saveEnergySettings(){
       energySettings=normalizeEnergySettings({
         durationHours:durationInput&&durationInput.value,
         islandProfile:energySettings.islandProfile,
-        islandBonusPct:energySettings.islandBonusPct
+        islandBonusPct:energySettings.islandBonusPct,
+        favoriteBerries:[exMainBerry&&exMainBerry.value,exSubBerry1&&exSubBerry1.value,exSubBerry2&&exSubBerry2.value].filter(Boolean),
+        startEnergy:startEnergyInput&&startEnergyInput.value,
+        sleepScore:sleepScoreInput&&sleepScoreInput.value,
+        skillCollectionHours:skillCollectionInput&&skillCollectionInput.value,
+        teamSwapCount:swapCountInput&&swapCountInput.value,
+        collectBeforeSwap:collectBeforeSwapInput&&collectBeforeSwapInput.checked,
+        exWeeklyEffect:exEffect&&exEffect.value
       });
       if(durationInput)durationInput.value=String(energySettings.durationHours);
       try{localStorage.setItem(energySettingsStorageKey,JSON.stringify(energySettings))}catch(_error){}
@@ -636,15 +716,16 @@
       }
       const limiting=result.limitingMember;
       const totalPerDay=sum(result.ingredients.map(item=>item.perDay));
+      const timeline=result.energy.timeline,stageSummary=timeline&&productionTimeline?productionTimeline.ENERGY_STAGES.map(stage=>{const minutes=sum(timeline.members.map(member=>member.stageMinutes[stage.key]||0))/Math.max(1,timeline.members.length);return `${stage.label} ${number(minutes/60,1)}h`}).filter(text=>!text.endsWith(' 0.0h')).join('／'):'';
       const cards=[
         [`${number(result.energy.durationHours,1)}小时纯能量`,`${Math.round(result.energy.totalEnergy).toLocaleString('zh-CN')}`,`每小时约 ${Math.round(result.energy.perHour).toLocaleString('zh-CN')}；不计食材能量`],
         ['常规树果',Math.round(result.energy.berryEnergy).toLocaleString('zh-CN'),`${result.energy.island.label} · 岛屿加成 +${number(result.energy.islandBonusPct,0)}%`],
         ['主技能纯能量',Math.round(result.energy.totalSkillEnergy).toLocaleString('zh-CN'),result.energy.complexSkillEnergy?`直接能量 ${Math.round(result.energy.directSkillEnergy).toLocaleString('zh-CN')}＋队伍联动 ${Math.round(result.energy.complexSkillEnergy).toLocaleString('zh-CN')}`:result.energy.directSkillEnergy?'按理论触发期望计算':'当前队员没有可折算的纯能量主技能'],
-        ['队伍活力收益',number(result.energy.productiveRecovery,1),result.energy.teamRecovery?`主产能队员的回复期望；全队回复总量 ${number(result.energy.teamRecovery,1)}`:'当前队伍没有可统计的治疗技能'],
-        ['建议收菜',formatHours(result.collectionHours),limiting?`按${limiting.mon.name}预计${formatHours(limiting.fullHours)}满仓，预留约15%空间`:'等待完整队伍'],
+        ['队伍活力收益',number(result.energy.productiveRecovery,1),result.energy.teamRecovery?`治疗已回填时间轴；全队回复总量 ${number(result.energy.teamRecovery,1)}`:'当前队伍没有可统计的治疗技能'],
+        [timeline?'点击收取':'建议收菜',formatHours(result.collectionHours),timeline?`技能实际收取 ${number(timeline.totals.triggers,2)} 次；换队清空损失 ${number(timeline.totals.lostTriggers,2)} 次`:limiting?`按${limiting.mon.name}预计${formatHours(limiting.fullHours)}满仓，预留约15%空间`:'等待完整队伍'],
         ['食材合计',`${number(totalPerDay,1)} 个／24h`,'按建议频率全天执行的常规帮忙期望'],
         ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`每名成员按自身速度补正逐只重算；队内叠加${result.helpingBonusCount*5}%，与速度副技能合计遵守35%上限`:'当前没有全队速度加成'],
-        ['计算状态',`${result.selectedCount}／5 人`,result.energyProfile.label+(result.options.goodCamp?'＋好露营券':'＋无露营券')]
+        [timeline?'五档活力':'计算状态',timeline?`${number(result.energy.startEnergy,0)} → ${number(sum(timeline.members.map(member=>member.endingEnergy))/Math.max(1,timeline.members.length),0)}`:`${result.selectedCount}／5 人`,timeline?stageSummary:result.energyProfile.label+(result.options.goodCamp?'＋好露营券':'＋无露营券')]
       ];
       cards.forEach(([label,value,note])=>{const card=element('article','current-team-stat');card.append(element('span','',label),element('strong','',value),element('small','',note));summary.append(card)});
       ingredientRoot.replaceChildren();
@@ -663,7 +744,7 @@
         levelLine.append(levelMeta,levelButton);title.append(element('span','current-team-position',`位置 ${index+1}`),element('h3','pokemon-name-text',mon.name),levelLine);
         const fullness=element('span',`current-team-fullness ${member.fullness>=.9?'danger':member.fullness>=.7?'warn':''}`,`收菜时约${Math.round(member.fullness*100)}%`);head.append(title,fullness);card.append(head);
         const stats=element('div','current-team-member-stats'),memberEnergy=member.snorlaxEnergy;
-        [[formatInterval(member.effectiveIntervalSec),'有效帮忙间隔'],[`${number(member.probability.current*100)}%`,'当前食材概率'],[`${member.carry}`,'模型持有上限'],[formatHours(member.fullHours),'预计满仓'],[Math.round(memberEnergy.totalEnergy).toLocaleString('zh-CN'),`${number(result.energy.durationHours,1)}小时纯能量`],[`${memberEnergy.berryName}${memberEnergy.favorite?' ×2':''}`,'当前树果']].forEach(([value,label])=>{const item=element('div','');item.append(element('strong','',value),element('span','',label));stats.append(item)});card.append(stats);
+        [[formatInterval(member.effectiveIntervalSec),'时间轴平均间隔'],[`${number(member.probability.current*100)}%`,'当前食材概率'],[`${member.carry}`,'模型持有上限'],[formatHours(member.fullHours),'预计满仓'],[Math.round(memberEnergy.totalEnergy).toLocaleString('zh-CN'),`${number(result.energy.durationHours,1)}小时纯能量`],[`${memberEnergy.berryName}${memberEnergy.favorite?` ×${number(memberEnergy.favoriteMultiplier,1)}`:''}`,'当前树果']].forEach(([value,label])=>{const item=element('div','');item.append(element('strong','',value),element('span','',label));stats.append(item)});card.append(stats);
         const foods=element('div','current-team-member-foods');
         member.ingredients.forEach(slot=>{const row=element('div','');row.append(element('strong','',slot.name),element('span','',`每次约 ${number(slot.perCollection)} · 24h约 ${number(slot.perDay)}`));foods.append(row)});
         if(!member.ingredients.length)foods.append(element('span','current-team-muted','暂无可统计食材'));
@@ -678,6 +759,8 @@
           parts.push(effect.detail);notes.push(parts.join('，'));
           if(effect.pendingComponents&&effect.pendingComponents.length)notes.push(effect.pendingComponents.join('；'));
         }else if(memberEnergy.complexSkill)notes.push(`${memberEnergy.complexSkill.label}暂未计入：${memberEnergy.complexSkill.detail}`);
+        if(memberEnergy.lostTriggers>.005)notes.push(`因未在换队前收取，期望损失 ${number(memberEnergy.lostTriggers,2)} 次已储存技能`);
+        if(memberEnergy.exRule&&memberEnergy.exRule.label)notes.push(`${memberEnergy.exRule.label}规则已计入`);
         if(mon.specialty==='berry'&&member.fullHours<result.collectionHours)notes.push('树果手满仓后仍会偷偷吃树果，但食材与主技能抽选会停止');
         if(member.probability.provisional)notes.push('缺少物种食材概率，当前使用20%暂定值');
         if(notes.length)card.append(element('p','current-team-member-note',notes.join('；')+'。'));
@@ -769,6 +852,7 @@
     }
 
     function render(){
+      const personal=profile&&typeof profile.getState==='function'?profile.getState():null,selectedIsland=personal&&personalSettings&&personalSettings.island?personalSettings.island(personal):null;syncExControls(selectedIsland);
       updatePickers();
       const team=selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean);
       const result=calculateTeam(team,productionByBoxId,teamOptions());
@@ -781,6 +865,8 @@
     energyInput.addEventListener('change',render);
     durationInput?.addEventListener('input',()=>{saveEnergySettings();render()});
     durationInput?.addEventListener('change',()=>{durationInput.value=String(normalizeEnergySettings({durationHours:durationInput.value}).durationHours)});
+    [startEnergyInput,sleepScoreInput,skillCollectionInput,swapCountInput,collectBeforeSwapInput,exEffect].filter(Boolean).forEach(input=>input.addEventListener('change',()=>{saveEnergySettings();render()}));
+    [exMainBerry,exSubBerry1,exSubBerry2].filter(Boolean).forEach(input=>input.addEventListener('change',()=>{saveEnergySettings();render()}));
     saveTeamButton?.addEventListener('click',saveCurrentTeam);
     scenarioRun?.addEventListener('click',renderScenario);
     suggestRun?.addEventListener('click',renderSuggestions);

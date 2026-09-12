@@ -82,11 +82,20 @@ const stuffulMember=planner.calculateMember(stufful,{ingredientRate:.225,baseBer
 const comfeyMember=planner.calculateMember(comfey,{ingredientRate:.167,baseBerryCount:1},{goodCamp:true,energyProfile:'average',teammateHelpingBonusCount:0});
 const ingredientTotal=(result,name)=>result.member.ingredients.filter(item=>item.name===name).reduce((total,item)=>total+item.perDay,0);
 assert.strictEqual(stuffulMember.valid,true);
+const skillSpecialtyPity=planner.calculateMember({...stufful,specialty:'skill'},{ingredientRate:.225,baseBerryCount:1},{goodCamp:true,energyProfile:'average'});
+assert.strictEqual(skillSpecialtyPity.member.snorlaxEnergy.skillProbability.pityCeiling,35,'技能／全能专长的40小时保底次数必须向下取整');
+assert.strictEqual(stuffulMember.member.snorlaxEnergy.skillProbability.pityCeiling,78,'食材专长仍应使用第78次帮忙保底');
 assert.strictEqual(comfeyMember.valid,true);
 assert.ok(ingredientTotal(comfeyMember,'萌绿玉米')>ingredientTotal(stuffulMember,'萌绿玉米'),'当前盒子的花疗环环每天玉米产量应高于童偶熊');
 const boostedComfey=planner.calculateMember(comfey,{ingredientRate:.167,baseBerryCount:1},{goodCamp:true,energyProfile:'average',teammateHelpingBonusCount:4});
 assert.ok(ingredientTotal(boostedComfey,'萌绿玉米')>ingredientTotal(comfeyMember,'萌绿玉米'),'其他队友的帮手奖励应提升目标个体产出');
 assert.ok(boostedComfey.member.combinedSpeedReduction<=.35,'单成员对比同样必须遵守35%速度缩减上限');
+const fullBagStufful=planner.calculateMember({...stufful,inv:'1'},{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'average',collectionHours:24,durationHours:24});
+assert.ok(fullBagStufful.member.snorlaxEnergy.sneakyHelps>0,'超过持有上限后的剩余周期应进入偷偷帮忙');
+assert.ok(fullBagStufful.member.snorlaxEnergy.normalHelps<fullBagStufful.member.snorlaxEnergy.helps,'满持有后应停止普通食材与技能抽取');
+assert.ok(fullBagStufful.member.snorlaxEnergy.triggers<fullBagStufful.member.snorlaxEnergy.helps*fullBagStufful.member.snorlaxEnergy.skillProbability.effective,'满持有后的偷偷帮忙不得继续累计主技能期望');
+const partialCycleStufful=planner.calculateMember({...stufful,inv:'1'},{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'average',collectionHours:24,durationHours:.5});
+assert.ok(Math.abs(partialCycleStufful.member.snorlaxEnergy.normalHelps-Math.min(partialCycleStufful.member.snorlaxEnergy.helps,partialCycleStufful.member.collectibleHelps))<1e-9,'不足一个收菜周期时应按本次实际经过时长判断是否满仓');
 const psychicStufful={...stufful,berry:'芒芒果'};
 const normalPsychic=planner.calculateMember(psychicStufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'average'});
 const eventPsychic=planner.calculateMember(psychicStufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'average',memberModifier:()=>({ingredientHelpBonus:1,skillTriggerMultiplier:1.5,mainSkillLevelBonus:2,label:'测试活动'})});
@@ -109,6 +118,24 @@ assert.strictEqual(randomIslandFavorite.member.snorlaxEnergy.favorite,true,'萌�
 assert.ok(randomIslandFavorite.energy.berryEnergy>nonFavorite.energy.berryEnergy*1.9);
 assert.strictEqual(planner.normalizeEnergySettings({durationHours:999,islandBonusPct:-3,islandProfile:'missing'}).durationHours,168);
 assert.strictEqual(planner.normalizeEnergySettings({durationHours:24,islandBonusPct:-3,islandProfile:'missing'}).islandProfile,'none');
+
+const timelineStufful=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'timeline',durationHours:24,startEnergy:100,sleepScore:100,skillCollectionHours:8,teamSwapCount:1,collectBeforeSwap:false});
+assert.ok(timelineStufful.energy.timeline,'时间轴模式应返回五档活力与点击过程');
+assert.ok(timelineStufful.member.snorlaxEnergy.lostTriggers>0,'换队前不点击应损失已储存技能');
+const collectedBeforeSwap=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'timeline',durationHours:24,startEnergy:100,sleepScore:100,skillCollectionHours:8,teamSwapCount:1,collectBeforeSwap:true});
+assert.strictEqual(collectedBeforeSwap.member.snorlaxEnergy.lostTriggers,0);
+assert.ok(collectedBeforeSwap.member.snorlaxEnergy.triggers>timelineStufful.member.snorlaxEnergy.triggers);
+
+const greenMain=planner.calculateMember({...stufful,berry:'樱子果'},{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'timeline',durationHours:24,islandProfile:'greengrass-expert',favoriteBerries:['樱子果','莓莓果','桃桃果'],exWeeklyEffect:'none'});
+const greenSub=planner.calculateMember({...stufful,berry:'莓莓果'},{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'timeline',durationHours:24,islandProfile:'greengrass-expert',favoriteBerries:['樱子果','莓莓果','桃桃果'],exWeeklyEffect:'none'});
+const greenOff=planner.calculateMember({...stufful,berry:'橙橙果'},{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'timeline',durationHours:24,islandProfile:'greengrass-expert',favoriteBerries:['樱子果','莓莓果','桃桃果'],exWeeklyEffect:'none'});
+assert.ok(greenMain.member.snorlaxEnergy.helps>greenSub.member.snorlaxEnergy.helps,'萌绿EX主树果应获得10%间隔缩短');
+assert.ok(greenSub.member.snorlaxEnergy.helps>greenOff.member.snorlaxEnergy.helps,'萌绿EX未命中应受到15%间隔延长');
+assert.equal(greenMain.member.snorlaxEnergy.skillLevel,2,'萌绿EX主树果应获得主技能等级+1');
+const cyanMain=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'timeline',durationHours:24,islandProfile:'cyan-expert',favoriteBerries:['樱子果','莓莓果','桃桃果'],exWeeklyEffect:'none'});
+assert.equal(cyanMain.member.carry,Number(stufful.inv)+5,'天青EX主树果应获得持有上限+5');
+const exBerryWeek=planner.calculateMember(stufful,{ingredientRate:.225,baseBerryCount:1},{goodCamp:false,energyProfile:'timeline',durationHours:24,islandProfile:'cyan-expert',favoriteBerries:['樱子果','莓莓果','桃桃果'],exWeeklyEffect:'berry'});
+assert.ok(exBerryWeek.energy.berryEnergy>cyanMain.energy.berryEnergy,'EX树果周应把喜爱树果倍率从2提升到2.4');
 
 const beforeLevelUpdateInterval = noCamp.members[0].baseIntervalSec;
 levels.applyLevel(venusaur, 60);

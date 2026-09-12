@@ -19,8 +19,8 @@
     {key:'lapis',label:'宝蓝湖畔',teamProfile:'lapis'},
     {key:'gold',label:'黄金发电厂',teamProfile:'gold'},
     {key:'amber',label:'琥珀溪谷',teamProfile:'amber'},
-    {key:'green-ex',label:'萌绿之岛 EX',teamProfile:'none'},
-    {key:'cyan-ex',label:'天青沙滩 EX',teamProfile:'cyan'}
+    {key:'green-ex',label:'萌绿之岛 EX',teamProfile:'greengrass-expert'},
+    {key:'cyan-ex',label:'天青沙滩 EX',teamProfile:'cyan-expert'}
   ]);
   const WEEK_MODES=Object.freeze({
     normal:{label:'普通周',hint:'按本周三餐目标安排食材与岛屿输出。'},
