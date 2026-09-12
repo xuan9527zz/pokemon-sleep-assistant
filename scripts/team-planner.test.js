@@ -148,7 +148,7 @@ assert.strictEqual(planner.sameLineup(['1', '2'], ['1', '2']), true);
 assert.strictEqual(planner.sameLineup(['1', '2'], ['2', '1']), false);
 
 const potMons=Array.from({length:5},(_item,index)=>({
-  id:`pot-${index}`,name:`爆锅手${index+1}`,lv:'50',interval:'35:00',inv:'30',specialty:'skill',
+  id:`pot-${index}`,name:`扩锅手${index+1}`,lv:'50',interval:'35:00',inv:'30',specialty:'skill',
   ingredients:'储存油×1／储存油×2／储存油×4',subs:index===0?'帮手奖励；技能概率M；帮忙速度M；持有上限L；技能概率S':'技能概率M；帮忙速度M；持有上限L；技能概率S；持有上限M',
   nature:'慎重：技能↑ 食材↓',main:'料理强化S Lv.7',mainSkillId:11,skillRatePct:4,berryId:10,berry:'莓莓果',battleEligible:true
 }));
@@ -158,6 +158,22 @@ assert.strictEqual(potPlan.requiredSkill,19);
 assert.ok(potPlan.rate>0);
 assert.ok(potPlan.expectedHours>0&&potPlan.safeHours>=potPlan.expectedHours);
 assert.strictEqual(potPlan.potTeam.team.length,5);
+
+const tastyMons=Array.from({length:5},(_item,index)=>(
+  {
+    id:`tasty-${index}`,name:index===0?'咚咚鼠':`料理成功手${index+1}`,lv:'50',interval:'35:00',inv:'30',specialty:'skill',
+    ingredients:'特选苹果×1／醒脑咖啡豆×2／萌绿玉米×4',subs:index===0?'帮手奖励；技能概率M；帮忙速度M；持有上限L；技能概率S':'技能概率M；帮忙速度M；持有上限L；技能概率S；持有上限M',
+    nature:'慎重：技能↑ 食材↓',main:'料理成功S Lv.2',mainSkillId:14,skillRatePct:4,berryId:10,berry:'萄葡果',battleEligible:true
+  }
+));
+assert.strictEqual(planner.tastyBonusPerTrigger(tastyMons[0],2),5);
+assert.strictEqual(planner.tastyBonusPerTrigger(potMons[0],7),0,'料理强化 S 不能进入爆锅队');
+const tastyPlan=planner.calculateTastyDeployment(tastyMons,Object.fromEntries(tastyMons.map(mon=>[mon.id,{ingredientRate:.15,baseBerryCount:1}])),{currentBonusPct:0,targetBonusPct:70,energyProfile:'average'});
+assert.strictEqual(tastyPlan.tastyTeam.team.length,5);
+assert.ok(tastyPlan.rate>0);
+assert.ok(tastyPlan.estimate.safeHours>tastyPlan.estimate.medianHours);
+assert.ok(tastyPlan.estimate.probabilityAtTarget>=.8-.000001);
+assert.ok(Math.abs(tastyPlan.outcome.critProbability-.8)<1e-12);
 
 const suggested=planner.suggestEnergyTeams([...potMons,{...stufful,id:'suggest-extra'}],{}, {goodCamp:false,energyProfile:'average',islandProfile:'lapis'});
 assert.strictEqual(suggested.burst.team.length,5);
