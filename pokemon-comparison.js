@@ -254,33 +254,36 @@
 
   function renderProductionCard(doc,view,side,isLeader,teamPlanner){
     const card=element(doc,'article',`pokemon-production-card${isLeader?' is-leader':''}`),head=element(doc,'div','pokemon-production-card-head');
-    head.append(element(doc,'span','',`${side==='left'?'个体 A':'个体 B'} · #${view.id}`),element(doc,'strong','',view.name));
-    if(isLeader)head.append(element(doc,'b','','目标食材领先'));card.append(head);
+    const slotLabel=side==='left'?'个体 A':side==='right'?'个体 B':String(side||'对比个体');
+    head.append(element(doc,'span','',`${slotLabel} · #${view.id}`),element(doc,'strong','',view.name));
+    if(isLeader)head.append(element(doc,'b','','当前领先'));card.append(head);
     if(!view.valid){card.append(element(doc,'p','pokemon-production-error',view.message));return card}
-    const amount=element(doc,'div','pokemon-production-amount');amount.append(element(doc,'strong','',view.perDay.toFixed(1)),element(doc,'span','',`个 ${view.targetIngredient}／24h`));card.append(amount);
+    const ingredient=view.ingredient||{mean:view.perDay,low:view.perDay,high:view.perDay},energy=view.energy||null,formatRange=value=>`${value.low.toFixed(1)}~${value.high.toFixed(1)}`;
+    const amount=element(doc,'div','pokemon-production-amount');amount.append(element(doc,'strong','',formatRange(ingredient)),element(doc,'span','',`个 ${view.targetIngredient}／24h（期望 ${ingredient.mean.toFixed(1)}）`));card.append(amount);
     const metrics=element(doc,'div','pokemon-production-metrics');
-    [[`${view.perCollection.toFixed(1)} 个`,`每次建议收菜`],[`${(view.ingredientProbability*100).toFixed(1)}%`,'当前食材概率'],[formatHours(view.collectionHours,teamPlanner),'建议收菜间隔'],[formatHours(view.fullHours,teamPlanner),'预计满仓']].forEach(([value,label])=>{const item=element(doc,'div','');item.append(element(doc,'strong','',value),element(doc,'span','',label));metrics.append(item)});card.append(metrics);
+    [[energy?`${Math.round(energy.low).toLocaleString('zh-CN')}~${Math.round(energy.high).toLocaleString('zh-CN')}`:'—','纯能量／24h'],[`${(view.ingredientProbability*100).toFixed(1)}%`,'当前食材概率'],[formatHours(view.collectionHours,teamPlanner),'点击收取间隔'],[formatHours(view.fullHours,teamPlanner),'预计满仓']].forEach(([value,label])=>{const item=element(doc,'div','');item.append(element(doc,'strong','',value),element(doc,'span','',label));metrics.append(item)});card.append(metrics);
     const slots=element(doc,'p','pokemon-production-slots');
     const unlocked=view.unlockedSlots.length?view.unlockedSlots.map(item=>`Lv.${item.unlockLevel}×${item.quantity}`).join('、'):'当前等级没有已解锁栏位';
     const locked=view.lockedSlots.length?`；待解锁 ${view.lockedSlots.map(item=>`Lv.${item.unlockLevel}×${item.quantity}`).join('、')}`:'';
     slots.textContent=`目标食材栏：${unlocked}${locked}`;card.append(slots);
+    if(view.audit){const resources=view.resources||{},resourceRange=(value,digits=1)=>Array.isArray(value)?(Math.abs((Number(value[1])||0)-(Number(value[0])||0))<10**(-digits)?(Number(value[0])||0).toFixed(digits):`${(Number(value[0])||0).toFixed(digits)}~${(Number(value[1])||0).toFixed(digits)}`):'',resourceText=[resources.ingredientRange?`技能食材 ${resourceRange(resources.ingredientRange)}`:resources.ingredients?`技能食材 ${resources.ingredients.toFixed(1)}`:'',resources.potSlots?`扩锅 ${resources.potSlots.toFixed(1)}`:'',resources.tastyBonusPct?`大成功 +${resources.tastyBonusPct.toFixed(1)}%`:'',resources.dreamShardRange?`碎片 ${resourceRange(resources.dreamShardRange,0)}`:resources.dreamShards?`碎片 ${Math.round(resources.dreamShards)}`:'',resources.candy?`糖果 ${resources.candy.toFixed(1)}`:'',resources.berryJuice?`树果汁 ${resources.berryJuice.toFixed(2)} 瓶`:'',resources.recovery?`活力 ${resources.recovery.toFixed(1)}`:''].filter(Boolean).join(' · ');card.append(element(doc,'small','pokemon-production-note',`期望能量 ${Math.round(energy.mean).toLocaleString('zh-CN')} · 技能 ${view.triggers.toFixed(2)} 次／日 · 岛屿 +${view.audit.islandBonusPct}% · ${view.fullTeam?'实际五人联动':'单体估算'}${resourceText?` · ${resourceText}`:''}`))}
     if(view.rateProvisional)card.append(element(doc,'small','pokemon-production-note','该物种缺少已验证食材概率，当前使用暂定值。'));
     return card;
   }
 
   function readSelection(root){
-    try{const value=JSON.parse(root.localStorage.getItem(STORAGE_KEY)||'{}');return {left:String(value.left||''),right:String(value.right||''),ingredient:String(value.ingredient||''),energyProfile:String(value.energyProfile||'average'),teammateHelpingBonusCount:Math.max(0,Math.min(4,Number(value.teammateHelpingBonusCount)||0)),goodCamp:value.goodCamp!==false}}catch(_error){return {left:'',right:'',ingredient:'',energyProfile:'average',teammateHelpingBonusCount:0,goodCamp:true}}
+    try{const value=JSON.parse(root.localStorage.getItem(STORAGE_KEY)||'{}');return {left:String(value.left||''),right:String(value.right||''),extras:Array.isArray(value.extras)?value.extras.map(String).slice(0,3):[],ingredient:String(value.ingredient||''),energyProfile:String(value.energyProfile||'timeline'),teammateHelpingBonusCount:Math.max(0,Math.min(4,Number(value.teammateHelpingBonusCount)||0)),goodCamp:value.goodCamp!==false}}catch(_error){return {left:'',right:'',extras:[],ingredient:'',energyProfile:'timeline',teammateHelpingBonusCount:0,goodCamp:true}}
   }
   function writeSelection(root,value){try{root.localStorage.setItem(STORAGE_KEY,JSON.stringify(value))}catch(_error){}}
   function mount(options={}){
-    const root=options.root||globalThis,doc=root.document,mons=Array.isArray(options.pokemon)?options.pokemon:[],strategy=options.strategy||root.POKEMON_SLEEP_STRATEGY,teamPlanner=options.teamPlanner||root.POKEMON_SLEEP_TEAM_PLANNER,production=options.production||root.POKEMON_SLEEP_TEAM_PRODUCTION;
+    const root=options.root||globalThis,doc=root.document,mons=Array.isArray(options.pokemon)?options.pokemon:[],strategy=options.strategy||root.POKEMON_SLEEP_STRATEGY,teamPlanner=options.teamPlanner||root.POKEMON_SLEEP_TEAM_PLANNER,production=options.production||root.POKEMON_SLEEP_TEAM_PRODUCTION,calculator=options.calculator||root.POKEMON_SLEEP_PRODUCTION_CALCULATOR,profile=options.profile||null;
     if(!doc)return {render(){},select(){},comparison(){return comparePokemon(null,null,{strategy})}};
     const panel=doc.querySelector(options.panelSelector||'#pokemonComparison'),openButton=doc.querySelector(options.openSelector||'#pokemonComparisonOpen'),closeButton=doc.querySelector(options.closeSelector||'#pokemonComparisonClose'),leftPickerButton=doc.querySelector(options.leftPickerSelector||'#pokemonCompareLeftPicker'),rightPickerButton=doc.querySelector(options.rightPickerSelector||'#pokemonCompareRightPicker'),leftSelect=doc.querySelector(options.leftSelector||'#pokemonCompareLeft'),rightSelect=doc.querySelector(options.rightSelector||'#pokemonCompareRight'),swapButton=doc.querySelector(options.swapSelector||'#pokemonCompareSwap'),matchButton=doc.querySelector(options.matchSelector||'#pokemonCompareMatch'),verdict=doc.querySelector(options.verdictSelector||'#pokemonComparisonVerdict'),grid=doc.querySelector(options.gridSelector||'#pokemonComparisonGrid');
     if(!panel||!leftSelect||!rightSelect||!verdict||!grid)return {render(){},select(){},comparison(){return comparePokemon(null,null,{strategy})}};
-    const ingredientSelect=doc.querySelector(options.ingredientSelector||'#pokemonCompareIngredient'),energySelect=doc.querySelector(options.energySelector||'#pokemonCompareEnergy'),helpingBonusSelect=doc.querySelector(options.helpingBonusSelector||'#pokemonCompareHelpingBonus'),campInput=doc.querySelector(options.campSelector||'#pokemonCompareCamp'),productionResult=doc.querySelector(options.productionResultSelector||'#pokemonComparisonProductionResult'),picker=options.picker||root.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER;
+    const ingredientSelect=doc.querySelector(options.ingredientSelector||'#pokemonCompareIngredient'),energySelect=doc.querySelector(options.energySelector||'#pokemonCompareEnergy'),helpingBonusSelect=doc.querySelector(options.helpingBonusSelector||'#pokemonCompareHelpingBonus'),campInput=doc.querySelector(options.campSelector||'#pokemonCompareCamp'),addCandidateButton=doc.querySelector('#pokemonCompareAddCandidate'),extraCandidatesRoot=doc.querySelector('#pokemonCompareExtraCandidates'),productionResult=doc.querySelector(options.productionResultSelector||'#pokemonComparisonProductionResult'),picker=options.picker||root.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER;
     const saved=readSelection(root),defaults=chooseDefaults(mons,strategy);
-    let leftId=mons.some(mon=>String(mon.id)===saved.left)?saved.left:String(defaults.left&&defaults.left.id||''),rightId=mons.some(mon=>String(mon.id)===saved.right&&String(mon.id)!==leftId)?saved.right:String(defaults.right&&defaults.right.id||'');
-    let targetIngredient=saved.ingredient,energyProfile=teamPlanner&&teamPlanner.ENERGY_PROFILES&&teamPlanner.ENERGY_PROFILES[saved.energyProfile]?saved.energyProfile:'average',teammateHelpingBonusCount=saved.teammateHelpingBonusCount,goodCamp=saved.goodCamp;
+    let leftId=mons.some(mon=>String(mon.id)===saved.left)?saved.left:String(defaults.left&&defaults.left.id||''),rightId=mons.some(mon=>String(mon.id)===saved.right&&String(mon.id)!==leftId)?saved.right:String(defaults.right&&defaults.right.id||''),extraIds=saved.extras.filter(id=>mons.some(mon=>String(mon.id)===id)&&id!==leftId&&id!==rightId);
+    let targetIngredient=saved.ingredient,energyProfile=teamPlanner&&teamPlanner.ENERGY_PROFILES&&teamPlanner.ENERGY_PROFILES[saved.energyProfile]?saved.energyProfile:'timeline',teammateHelpingBonusCount=saved.teammateHelpingBonusCount,goodCamp=saved.goodCamp;
     const byId=id=>mons.find(mon=>String(mon.id)===String(id))||null;
     function optionLabel(mon){const view=viewModel(mon,{strategy});return `#${view.id} ${view.name} · Lv.${view.level} · ${view.specialtyLabel} · 个体 ${formatScore(view.individualScore)}`}
     function renderOptions(){
@@ -290,21 +293,28 @@
     }
     function currentComparison(){return comparePokemon(byId(leftId),byId(rightId),{strategy})}
     function availableIngredients(){
-      const left=ingredientNames(byId(leftId),teamPlanner),right=ingredientNames(byId(rightId),teamPlanner),rightSet=new Set(right),common=left.filter(name=>rightSet.has(name));
-      return {common,all:[...common,...left.filter(name=>!rightSet.has(name)),...right.filter(name=>!left.includes(name))]};
+      const groups=[leftId,rightId,...extraIds].map(byId).filter(Boolean).map(mon=>ingredientNames(mon,teamPlanner)),first=groups[0]||[],common=first.filter(name=>groups.every(group=>group.includes(name))),all=[...new Set(groups.flat())];
+      return {common,all:[...common,...all.filter(name=>!common.includes(name))]};
     }
-    function currentProductionComparison(){return compareProduction(byId(leftId),byId(rightId),targetIngredient,{teamPlanner,production,goodCamp,energyProfile,teammateHelpingBonusCount})}
-    function persist(){writeSelection(root,{left:leftId,right:rightId,ingredient:targetIngredient,energyProfile,teammateHelpingBonusCount,goodCamp})}
+    function productionOptions(){const island=profile&&typeof profile.currentIsland==='function'?profile.currentIsland():null,current=typeof options.currentTeam==='function'?options.currentTeam():[];return {teamPlanner,production,goodCamp,energyProfile,teammateHelpingBonusCount,islandBonusPct:profile&&typeof profile.islandBonus==='function'?profile.islandBonus(island&&island.key):0,islandProfile:island&&island.teamProfile||'none',favoriteBerries:island&&island.berries||[],skillCollectionHours:4,baselineTeam:[...current,...mons]}}
+    function currentProductionComparison(){const candidates=[leftId,rightId,...extraIds].map(byId).filter(Boolean);return calculator&&typeof calculator.compareMany==='function'?calculator.compareMany(candidates,targetIngredient,productionOptions()):compareProduction(byId(leftId),byId(rightId),targetIngredient,{teamPlanner,production,goodCamp,energyProfile,teammateHelpingBonusCount})}
+    function persist(){writeSelection(root,{left:leftId,right:rightId,extras:extraIds,ingredient:targetIngredient,energyProfile,teammateHelpingBonusCount,goodCamp})}
     function renderProduction(){
       if(!ingredientSelect||!productionResult)return;
       const available=availableIngredients();
       if(!available.all.includes(targetIngredient))targetIngredient=available.common[0]||available.all[0]||'';
       ingredientSelect.replaceChildren();available.all.forEach(name=>{const item=element(doc,'option','',`${name}${available.common.includes(name)?'（两只都有）':''}`);item.value=name;ingredientSelect.append(item)});ingredientSelect.value=targetIngredient;
       if(energySelect)energySelect.value=energyProfile;if(helpingBonusSelect)helpingBonusSelect.value=String(teammateHelpingBonusCount);if(campInput)campInput.checked=goodCamp;
-      const result=currentProductionComparison();productionResult.className=`pokemon-production-result ${result.leader}`;productionResult.replaceChildren();
-      const verdictBox=element(doc,'div','pokemon-production-verdict');verdictBox.append(element(doc,'span','',`${targetIngredient||'目标食材'} · 同条件对比`),element(doc,'h5','',result.title),element(doc,'p','',result.detail));productionResult.append(verdictBox);
-      const cards=element(doc,'div','pokemon-production-grid');if(result.left)cards.append(renderProductionCard(doc,result.left,'left',result.leader==='left',teamPlanner));if(result.right)cards.append(renderProductionCard(doc,result.right,'right',result.leader==='right',teamPlanner));productionResult.append(cards);
-      productionResult.append(element(doc,'p','pokemon-production-disclosure','24小时按各自建议频率收菜的常规帮忙期望；食材概率为研究估算。主技能带来的额外食材未计入。'));
+      if(extraCandidatesRoot){extraCandidatesRoot.replaceChildren();extraIds.forEach(id=>{const mon=byId(id),chip=element(doc,'span','pokemon-production-extra-chip',`#${id} ${mon&&mon.nickname||mon&&mon.name||''}`),remove=element(doc,'button','','×');remove.type='button';remove.title='移出生产对比';remove.addEventListener('click',()=>{extraIds=extraIds.filter(value=>value!==id);render()});chip.append(remove);extraCandidatesRoot.append(chip)})}
+      if(addCandidateButton)addCandidateButton.disabled=extraIds.length>=3||mons.length<=2;
+      const result=currentProductionComparison(),modern=Array.isArray(result.rows),leaderId=modern&&result.leader?String(result.leader.id):null;productionResult.className=`pokemon-production-result ${leaderId?'left':result.leader}`;productionResult.replaceChildren();
+      const rows=modern?result.rows:[result.left,result.right].filter(Boolean),winner=modern&&result.leader,runner=modern?rows.filter(row=>row.valid&&String(row.id)!==leaderId).sort((a,b)=>b.ingredient.mean-a.ingredient.mean)[0]:null,difference=winner&&runner?winner.ingredient.mean-runner.ingredient.mean:0,title=winner?`${winner.name}的${targetIngredient}期望产出最高`:result.title,detail=winner?`24小时期望 ${winner.ingredient.mean.toFixed(1)} 个，常见波动约 ${winner.ingredient.low.toFixed(1)}~${winner.ingredient.high.toFixed(1)} 个${runner?`；比第二名期望多 ${difference.toFixed(1)} 个`:''}。`:result.detail;
+      const verdictBox=element(doc,'div','pokemon-production-verdict');verdictBox.append(element(doc,'span','',`${targetIngredient||'目标食材'} · 同条件对比`),element(doc,'h5','',title),element(doc,'p','',detail));productionResult.append(verdictBox);
+      const cards=element(doc,'div','pokemon-production-grid');rows.forEach((view,index)=>cards.append(renderProductionCard(doc,view,index===0?'left':index===1?'right':`个体 ${String.fromCharCode(65+index)}`,modern?String(view.id)===leaderId:result.leader===(index?'right':'left'),teamPlanner)));productionResult.append(cards);
+      const mew=rows.find(view=>view.valid&&/梦幻|夢幻/.test(view.speciesName||view.name||''));if(mew&&calculator&&typeof calculator.mewSkillScenarios==='function'){
+        const original=byId(mew.id),scenarios=calculator.mewSkillScenarios(original,targetIngredient,productionOptions()).filter(row=>row.valid),energyRows=scenarios.filter(row=>['energy','help'].includes(row.skill.resource)),best=energyRows[0],advice=element(doc,'div','pokemon-production-skill-advice');advice.append(element(doc,'b','',`梦幻技能建议：纯卡比兽能量优先 ${best&&best.skill.label||'按队伍重算'}`),element(doc,'p','',`当前五人背景下，${best?`${best.skill.label}约 ${Math.round(best.energy.mean).toLocaleString('zh-CN')} 纯能量／日；`:''}树果骤增依赖队友树果价值，通常是纯能量强项，但全体治疗、食材、扩锅和大成功率属于不同资源，不能只按一个能量数值宣称绝对最优。`));productionResult.append(advice)
+      }
+      productionResult.append(element(doc,'p','pokemon-production-disclosure','范围为模型的10%~90%常见波动近似；期望值用于长期比较。完整五人背景会计算树果骤增、额外帮忙、治疗等联动；食材获取、扩锅和大成功率单列为资源，不伪装成固定卡比兽能量。'));
     }
     function render(){
       if(!mons.length){panel.hidden=false;verdict.className='pokemon-comparison-verdict empty';verdict.replaceChildren(element(doc,'strong','','盒子里还没有可比较的个体'),element(doc,'p','','先录入至少两只宝可梦，再回来进行并排比较。'));grid.replaceChildren();return}
@@ -323,11 +333,13 @@
       render();return true;
     }
     function openPicker(side){if(!picker||typeof picker.open!=='function')return;picker.open({title:`选择个体 ${side==='left'?'A':'B'}`,pokemon:mons,allowCollection:true,selectedIds:[leftId,rightId].filter(Boolean),disabledIds:[side==='left'?rightId:leftId].filter(Boolean),onSelect:id=>select(side,id)})}
+    function addProductionCandidate(){if(!picker||typeof picker.open!=='function'||extraIds.length>=3)return;const selected=[leftId,rightId,...extraIds].filter(Boolean);picker.open({title:'加入生产对比',pokemon:mons,allowCollection:true,selectedIds:selected,disabledIds:selected,onSelect:id=>{const value=String(id||'');if(byId(value)&&!selected.includes(value)){extraIds=[...extraIds,value].slice(0,3);render()}}})}
     leftSelect.addEventListener('change',()=>select('left',leftSelect.value));rightSelect.addEventListener('change',()=>select('right',rightSelect.value));
     if(ingredientSelect)ingredientSelect.addEventListener('change',()=>{targetIngredient=ingredientSelect.value;render()});
-    if(energySelect)energySelect.addEventListener('change',()=>{energyProfile=teamPlanner&&teamPlanner.ENERGY_PROFILES&&teamPlanner.ENERGY_PROFILES[energySelect.value]?energySelect.value:'average';render()});
+    if(energySelect)energySelect.addEventListener('change',()=>{energyProfile=teamPlanner&&teamPlanner.ENERGY_PROFILES&&teamPlanner.ENERGY_PROFILES[energySelect.value]?energySelect.value:'timeline';render()});
     if(helpingBonusSelect)helpingBonusSelect.addEventListener('change',()=>{teammateHelpingBonusCount=Math.max(0,Math.min(4,Number(helpingBonusSelect.value)||0));render()});
     if(campInput)campInput.addEventListener('change',()=>{goodCamp=campInput.checked;render()});
+    addCandidateButton?.addEventListener('click',addProductionCandidate);
     leftPickerButton?.addEventListener('click',()=>openPicker('left'));rightPickerButton?.addEventListener('click',()=>openPicker('right'));
     openButton?.addEventListener('click',()=>{render();panel.showModal?panel.showModal():panel.setAttribute('open','')});closeButton?.addEventListener('click',()=>panel.close?panel.close():panel.removeAttribute('open'));panel.addEventListener('click',event=>{if(event.target===panel&&panel.close)panel.close()});
     if(swapButton)swapButton.addEventListener('click',()=>{const previous=leftId;leftId=rightId;rightId=previous;render()});

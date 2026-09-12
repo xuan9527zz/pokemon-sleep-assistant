@@ -35,6 +35,7 @@
   function recoveryVector(effect,userIndex,count){
     const values=Array.from({length:count},()=>0);
     if(!effect||!effect.supported||count<1)return values;
+    if(Array.isArray(effect.recoveryByIndex)&&effect.recoveryByIndex.length===count)return effect.recoveryByIndex.map(Number);
     const total=Math.max(0,Number(effect.teamRecoveryPerUse)||0),self=Math.min(total,Math.max(0,Number(effect.selfRecoveryPerUse)||0));
     values[userIndex]=self;
     const remaining=Math.max(0,total-self),others=Math.max(1,count-1);

@@ -268,7 +268,7 @@
 </section>
 <dialog class="pokemon-comparison" id="pokemonComparison" aria-labelledby="pokemonComparisonTitle"><div class="pokemon-comparison-shell">
   <div class="pokemon-comparison-head pokemon-comparison-drawer-head">
-    <div><span class="pokemon-comparison-kicker">INDIVIDUAL COMPARISON</span><h3 id="pokemonComparisonTitle">双个体并排对比</h3><p>从当前盒子选择两只宝可梦，同时查看课程资格、三段评分、培养判断和五格副技能。</p></div>
+    <div><span class="pokemon-comparison-kicker">INDIVIDUAL COMPARISON</span><h3 id="pokemonComparisonTitle">个体并排对比</h3><p>培养判断保留 A／B 精读；生产计算最多可加入五只个体，用同一队伍条件比较。</p></div>
     <button class="drawer-close" id="pokemonComparisonClose" type="button" aria-label="关闭个体对比">×</button>
   </div>
   <div class="pokemon-comparison-rule">同最终形态：课程资格 → 个体分 → 综合分。不同最终形态只展示资料差异，不直接判定替换或放生。</div>
@@ -279,13 +279,14 @@
     <label class="pokemon-comparison-field"><span>个体 B</span><button class="pokemon-selection-button pokemon-comparison-picker" id="pokemonCompareRightPicker" type="button">选择个体 B</button><select id="pokemonCompareRight" hidden aria-hidden="true"></select></label>
   </div>
   <section class="pokemon-comparison-production" aria-labelledby="pokemonComparisonProductionTitle">
-    <div class="pokemon-production-head"><div><span>FIELD OUTPUT</span><h4 id="pokemonComparisonProductionTitle">目标食材上场产出</h4><p>按当前等级与同一队伍条件估算，可直接比较童偶熊和花疗环环的萌绿玉米产量。</p></div><small>常规帮忙产出，不含主技能额外食材</small></div>
+    <div class="pokemon-production-head"><div><span>PRODUCTION CALCULATOR</span><h4 id="pokemonComparisonProductionTitle">目标食材与纯能量产出</h4><p>按当前等级、活力、露营券、岛屿加成和同一组队背景估算；结果同时给出期望与常见波动范围。</p></div><small>生产模型统一口径 · 最多五只</small></div>
     <div class="pokemon-production-controls">
       <label for="pokemonCompareIngredient"><span>目标食材</span><select id="pokemonCompareIngredient"></select></label>
-      <label for="pokemonCompareEnergy"><span>活力速度</span><select id="pokemonCompareEnergy"><option value="average">日间平均（2.0×）</option><option value="steady">回复稳定／活力81以上（2.22×）</option><option value="low">低活力／活力2–40（1.52×）</option><option value="empty">无活力加速／活力0–1（1.0×）</option></select></label>
-      <label for="pokemonCompareHelpingBonus"><span>其他队友的帮手奖励</span><select id="pokemonCompareHelpingBonus"><option value="0">0 个</option><option value="1">1 个</option><option value="2">2 个</option><option value="3">3 个</option><option value="4">4 个</option></select></label>
+      <label for="pokemonCompareEnergy"><span>活力速度</span><select id="pokemonCompareEnergy"><option value="timeline">五档活力时间轴（推荐）</option><option value="average">日间平均（2.0×）</option><option value="steady">回复稳定／活力81以上（2.22×）</option><option value="low">低活力／活力2–40（1.52×）</option><option value="empty">无活力加速／活力0–1（1.0×）</option></select></label>
+      <div class="pokemon-production-context"><span>共同队伍背景</span><strong>优先当前队伍，不足时从盒子补齐四名普通队友</strong></div>
       <label class="pokemon-production-check" for="pokemonCompareCamp"><input id="pokemonCompareCamp" type="checkbox" checked><span>启用好露营券</span></label>
     </div>
+    <div class="pokemon-production-extra"><button id="pokemonCompareAddCandidate" type="button">＋ 加入对比个体</button><div id="pokemonCompareExtraCandidates" class="pokemon-production-extra-list"></div></div>
     <div id="pokemonComparisonProductionResult" class="pokemon-production-result" aria-live="polite"></div>
   </section>
   <div class="pokemon-comparison-verdict" id="pokemonComparisonVerdict" aria-live="polite"></div>
@@ -341,6 +342,7 @@
         <div class="pokemon-editor-field"><label for="pokemonLevel">当前等级</label><input id="pokemonLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="1"></div>
         <div class="pokemon-editor-field"><label for="pokemonNature">性格</label><select id="pokemonNature"></select></div>
         <div class="pokemon-editor-field"><label for="pokemonMainLevel">当前主技能等级</label><select id="pokemonMainLevel"></select></div>
+        <div class="pokemon-editor-field wide" id="pokemonAllMightyWrap" hidden><label for="pokemonAllMighty">梦幻当前选用技能</label><select id="pokemonAllMighty"></select><small>用梦幻种子学会后可切换；这里记录当前实际选项，生产、队伍与活动推演会立即采用。</small></div>
         <div class="pokemon-editor-field"><label>闪光状态</label><label class="pokemon-editor-check"><input id="pokemonShiny" type="checkbox">★ 闪光</label></div>
         <div class="pokemon-editor-field"><label for="pokemonPriority">培养建议</label><select id="pokemonPriority"></select></div>
         <div class="pokemon-editor-field"><label for="pokemonBox">放入盒子</label><select id="pokemonBox"></select></div>
@@ -403,7 +405,9 @@
 <script src="pokemon-catalog.generated.js?v=20260901-2"></script>
 <script src="pokemon-scoring.js?v=20260901-2"></script>
 <script src="cultivation-advisor.js?v=20260831-1"></script>
-<script src="pokemon-comparison.js?v=20260901-1"></script>
+<script src="all-rounder-rules.js?v=20260913-1"></script>
+<script src="production-calculator.js?v=20260913-1"></script>
+<script src="pokemon-comparison.js?v=20260913-1"></script>
 <script src="box-filter.js?v=20260902-1"></script>
 <script src="game-rules.js?v=20260911-1"></script>
 <script src="snorlax-energy.js?v=20260912-1"></script>
@@ -580,12 +584,15 @@ function addSpecialty(mon){
     mon.baseBerryCount=Number(catalogSpecies.baseBerryCount)||1;
     mon.berryId=Number(catalogSpecies.berryId)||null;
     mon.typeId=Number(catalogSpecies.typeId)||null;
-    mon.skillRatePct=Number(catalogSpecies.skillRatePct)||0;
-    mon.mainSkillId=Number(catalogSpecies.mainSkill?.id)||null;
+    mon.skillRatePct=Number(mon.skillRatePct)||Number(catalogSpecies.skillRatePct)||0;
+    mon.mainSkillId=Number(mon.mainSkillId)||Number(catalogSpecies.mainSkill?.id)||null;
     mon.catalogHelpFrequencyBaseSec=Number(catalogSpecies.helpFrequencyBaseSec)||null;
   }
+  if(window.POKEMON_SLEEP_ALL_ROUNDER_RULES?.isMew(mon)&&String(mon.main||'').includes('十项全能'))Object.assign(mon,window.POKEMON_SLEEP_ALL_ROUNDER_RULES.apply(mon,window.POKEMON_SLEEP_ALL_ROUNDER_RULES.selectedId(mon)));
   mon.specialtyLabel=specialtyLabels[mon.specialty]||'待核对';
-  mon.specialtyDetail=mon.specialty==='ingredient'?firstIngredient(mon.ingredients):mon.specialty==='skill'?mainSkillEffect(mon.main):mon.specialty==='all'?'树果＋食材＋技能':'';
+  const allRounderAssessment=mon.specialty==='all'&&window.POKEMON_SLEEP_ALL_ROUNDER_RULES?.assess(mon);
+  mon.allRounderAssessment=allRounderAssessment||null;
+  mon.specialtyDetail=mon.specialty==='ingredient'?firstIngredient(mon.ingredients):mon.specialty==='skill'?mainSkillEffect(mon.main):mon.specialty==='all'?allRounderAssessment?.role||'树果＋食材＋技能':'';
   mon.specialtyText=[mon.specialtyLabel,mon.specialtyDetail].filter(Boolean).join(' ');
 }
 function specialtyBadge(mon,compact=false){
@@ -945,7 +952,7 @@ function actualUpgradeSummary(mon){
 function scoreBreakdownText(mon){
   const s=mon.scoreBreakdown,signed=value=>`${value>0?'+':''}${Number(value).toFixed(1)}`;
   const actualUpgrade=actualUpgradeSummary(mon),actualUpgradeLine=actualUpgrade?`\n实际升级记录　${actualUpgrade}（影响当前产出，不改潜力评分）`:'';
-  if(!Number.isFinite(s.finalScore))return `#${mon.id} ${mon.name}｜综合评分待定\n最终形态：${s.finalFormNameZh||mon.name}\n梦幻与达克莱伊属于全能型；其种族分、持有价值和主技能权重尚未确认，因此不使用虚构的临时分数。${actualUpgradeLine}`;
+  if(!Number.isFinite(s.finalScore)){const dynamic=window.POKEMON_SLEEP_ALL_ROUNDER_RULES?.assess(mon);return `#${mon.id} ${mon.name}｜综合评分待定\n最终形态：${s.finalFormNameZh||mon.name}${dynamic?`\n动态定位：${dynamic.role}\n适合队伍：${dynamic.team}\n当前构筑：${dynamic.build}\n提醒：${dynamic.warning}`:''}\n全能型百分制权重尚未确认，因此不使用虚构的临时分数；生产、活力和队伍联动仍按当前实际资料计算。${actualUpgradeLine}`}
   const i=s.individual;
   const slotLines=i.slots.map(slot=>{const skillLabel=slot.seedUpgraded?`${slot.skill}→${slot.scoredSkill}`:slot.skill,provisional=slot.fitStatus.startsWith('provisional')?'（暂定）':'',interaction=slot.interactionScore?`，组合${signed(slot.interactionScore)}`:'',note=slot.seedNote?`；${slot.seedNote}`:'';return `  Lv.${slot.level} ${skillLabel}：${signed(slot.fitScore)}${provisional}${interaction} × ${Math.round(slot.weight*100)}% = ${signed(slot.contribution)}${note}`}).join('\n');
   const subskillScore=Number.isFinite(i.subskillScore)?i.subskillScore:i.subskillRaw;
@@ -1033,7 +1040,7 @@ levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialSt
 boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});
 pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});
 teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,recipes:recipeData,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING,investmentPlanner:window.POKEMON_SLEEP_INVESTMENT_PLANNER,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);weeklyPlannerController?.render()}});
-pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
+pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,calculator:window.POKEMON_SLEEP_PRODUCTION_CALCULATOR,profile:personalSettingsController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
 weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy});
 investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});
 cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;

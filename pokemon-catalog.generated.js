@@ -7,7 +7,7 @@
   'use strict';
   return Object.freeze({
   "meta": {
-    "generatedAt": "2026-09-01T01:05:08.518Z",
+    "generatedAt": "2026-09-12T16:59:32.145Z",
     "sourceUpdatedAt": "2026-08-23T20:32:34.939Z",
     "count": 247,
     "speciesScoreCount": 127,
@@ -6474,9 +6474,166 @@
         "nameEn": "Versatile"
       },
       "ingredients": {
-        "1": [],
-        "30": [],
-        "60": []
+        "1": [
+          {
+            "id": 1,
+            "code": "?",
+            "quantity": 2,
+            "name": "粗枝大葱",
+            "nameEn": "Large Leek"
+          },
+          {
+            "id": 3,
+            "code": "?",
+            "quantity": 2,
+            "name": "特选蛋",
+            "nameEn": "Fancy Egg"
+          },
+          {
+            "id": 6,
+            "code": "?",
+            "quantity": 2,
+            "name": "火辣香草",
+            "nameEn": "Fiery Herb"
+          },
+          {
+            "id": 7,
+            "code": "?",
+            "quantity": 2,
+            "name": "豆制肉",
+            "nameEn": "Bean Sausage"
+          },
+          {
+            "id": 10,
+            "code": "?",
+            "quantity": 2,
+            "name": "纯粹油",
+            "nameEn": "Pure Oil"
+          },
+          {
+            "id": 15,
+            "code": "?",
+            "quantity": 2,
+            "name": "萌绿大豆",
+            "nameEn": "Greengrass Soybeans"
+          },
+          {
+            "id": 19,
+            "code": "?",
+            "quantity": 2,
+            "name": "嫩亮酪梨",
+            "nameEn": "Plump Avocado"
+          }
+        ],
+        "30": [
+          {
+            "id": 1,
+            "code": "?",
+            "quantity": 3,
+            "name": "粗枝大葱",
+            "nameEn": "Large Leek"
+          },
+          {
+            "id": 3,
+            "code": "?",
+            "quantity": 4,
+            "name": "特选蛋",
+            "nameEn": "Fancy Egg"
+          },
+          {
+            "id": 6,
+            "code": "?",
+            "quantity": 4,
+            "name": "火辣香草",
+            "nameEn": "Fiery Herb"
+          },
+          {
+            "id": 7,
+            "code": "?",
+            "quantity": 4,
+            "name": "豆制肉",
+            "nameEn": "Bean Sausage"
+          },
+          {
+            "id": 10,
+            "code": "?",
+            "quantity": 4,
+            "name": "纯粹油",
+            "nameEn": "Pure Oil"
+          },
+          {
+            "id": 15,
+            "code": "?",
+            "quantity": 5,
+            "name": "萌绿大豆",
+            "nameEn": "Greengrass Soybeans"
+          },
+          {
+            "id": 19,
+            "code": "?",
+            "quantity": 3,
+            "name": "嫩亮酪梨",
+            "nameEn": "Plump Avocado"
+          }
+        ],
+        "60": [
+          {
+            "id": 1,
+            "code": "?",
+            "quantity": 4,
+            "name": "粗枝大葱",
+            "nameEn": "Large Leek"
+          },
+          {
+            "id": 3,
+            "code": "?",
+            "quantity": 6,
+            "name": "特选蛋",
+            "nameEn": "Fancy Egg"
+          },
+          {
+            "id": 6,
+            "code": "?",
+            "quantity": 5,
+            "name": "火辣香草",
+            "nameEn": "Fiery Herb"
+          },
+          {
+            "id": 7,
+            "code": "?",
+            "quantity": 7,
+            "name": "豆制肉",
+            "nameEn": "Bean Sausage"
+          },
+          {
+            "id": 10,
+            "code": "?",
+            "quantity": 6,
+            "name": "纯粹油",
+            "nameEn": "Pure Oil"
+          },
+          {
+            "id": 15,
+            "code": "?",
+            "quantity": 7,
+            "name": "萌绿大豆",
+            "nameEn": "Greengrass Soybeans"
+          },
+          {
+            "id": 19,
+            "code": "?",
+            "quantity": 4,
+            "name": "嫩亮酪梨",
+            "nameEn": "Plump Avocado"
+          },
+          {
+            "id": 14,
+            "code": "?",
+            "quantity": 2,
+            "name": "美味尾巴",
+            "nameEn": "Slowpoke Tail"
+          }
+        ]
       }
     },
     {

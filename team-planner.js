@@ -45,6 +45,11 @@
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
   const sum=values=>values.reduce((total,value)=>total+value,0);
+  const sumResourceRange=(rows,rangeKey,scalarKey)=>{
+    let hasValue=false,low=0,high=0;
+    rows.forEach(row=>{const range=Array.isArray(row[rangeKey])?row[rangeKey]:null,scalar=Number(row[scalarKey])||0;if(range){hasValue=true;low+=Number(range[0])||0;high+=Number(range[1])||0}else{if(scalar)hasValue=true;low+=scalar;high+=scalar}});
+    return hasValue?[low,high]:null;
+  };
 
   function parseInterval(value){
     const parts=String(value||'').trim().split(':').map(Number);
@@ -171,18 +176,18 @@
         id:mon.id,name:mon.name,berryName:mon.berry||'待核对',favorite,favoriteMultiplier,exRule,helps,normalHelps,sneakyHelps,berries:0,berryStrength,
         berryBaseEnergy:0,berryEnergy:0,skillProbability:probability,skillLevel,baseSkillLevel,eventModifier:modifier,skill,triggers:useTimeline?0:normalHelps*probability.effective,lostTriggers:0,directSkillEnergy:0,
         berryEnergyPerBerry,ordinaryBerryEnergyPerHelp:(1-member.probability.current)*member.berryCount*berryEnergyPerBerry,
-        complexSkill:null,complexSkillEnergy:0,teamRecovery:0,productiveRecovery:0,selfRecovery:0,
+        complexSkill:null,complexSkillEnergy:0,teamRecovery:0,productiveRecovery:0,selfRecovery:0,skillIngredients:0,skillIngredientRange:null,potSlots:0,tastyBonusPct:0,dreamShards:0,dreamShardRange:null,candy:0,berryJuice:0,
         totalEnergy:0,mon
       };
     });
-    if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{if(!row.skill.supported)row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
+    if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
     let timeline=null;
     if(useTimeline){
       const swapHours=Array.isArray(options.swapHours)?options.swapHours:Array.from({length:settings.teamSwapCount},(_value,index)=>settings.durationHours*(index+1)/(settings.teamSwapCount+1));
       const simulationMembers=members.map((member,index)=>({...member,skillProbability:rows[index].skillProbability,skillEffect:rows[index].complexSkill}));
       timeline=productionTimeline.simulate(simulationMembers,{durationHours:settings.durationHours,collectionHours:settings.skillCollectionHours||members[0]?.collectionHours||4,startEnergy:settings.startEnergy,sleepScore:settings.sleepScore,swapHours,collectBeforeSwap:settings.collectBeforeSwap});
       rows.forEach((row,index)=>{const simulated=timeline.members[index];row.helps=simulated.helps;row.normalHelps=simulated.normalHelps;row.sneakyHelps=simulated.sneakyHelps;row.triggers=simulated.triggers;row.lostTriggers=simulated.lostTriggers;row.energyStages=simulated.stageMinutes;row.endingEnergy=simulated.endingEnergy;row.averageHelpFactor=simulated.averageHelpFactor});
-      if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{if(!row.skill.supported)row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
+      if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
     }
     rows.forEach((row,index)=>{
       const member=members[index],ingredientRate=Number(member&&member.probability&&member.probability.current)||0;
@@ -190,12 +195,12 @@
       row.berryBaseEnergy=(row.berryStrength||0)*row.berries*row.favoriteMultiplier;
       row.berryEnergy=energyMechanics?energyMechanics.applyPercentageBonus(row.berryBaseEnergy,settings.islandBonusPct):Math.round(row.berryBaseEnergy);
       row.directSkillEnergy=row.skill.supported?Math.round(row.triggers*row.skill.actualEnergy):0;
-      if(row.complexSkill&&row.complexSkill.supported){row.complexSkillEnergy=Math.round(row.triggers*row.complexSkill.energyPerUse);row.teamRecovery=row.triggers*row.complexSkill.teamRecoveryPerUse;row.productiveRecovery=row.triggers*row.complexSkill.productiveRecoveryPerUse;row.selfRecovery=row.triggers*row.complexSkill.selfRecoveryPerUse}
+      if(row.complexSkill&&row.complexSkill.supported){row.complexSkillEnergy=Math.round(row.triggers*row.complexSkill.energyPerUse);row.teamRecovery=row.triggers*row.complexSkill.teamRecoveryPerUse;row.productiveRecovery=row.triggers*row.complexSkill.productiveRecoveryPerUse;row.selfRecovery=row.triggers*row.complexSkill.selfRecoveryPerUse;row.skillIngredients=row.triggers*row.complexSkill.ingredientsPerUse;row.skillIngredientRange=Array.isArray(row.complexSkill.ingredientRangePerUse)?row.complexSkill.ingredientRangePerUse.map(value=>row.triggers*value):null;row.potSlots=row.triggers*row.complexSkill.potSlotsPerUse;row.tastyBonusPct=row.triggers*row.complexSkill.tastyBonusPctPerUse;row.dreamShards=row.triggers*row.complexSkill.dreamShardsPerUse;row.dreamShardRange=Array.isArray(row.complexSkill.dreamShardRangePerUse)?row.complexSkill.dreamShardRangePerUse.map(value=>row.triggers*value):null;row.candy=row.triggers*row.complexSkill.candyPerUse;row.berryJuice=row.triggers*row.complexSkill.berryJuicePerUse}
       row.totalEnergy=row.berryEnergy+row.directSkillEnergy+row.complexSkillEnergy;
     });
     rows.forEach(row=>{delete row.mon});
-    const berryEnergy=sum(rows.map(row=>row.berryEnergy)),directSkillEnergy=sum(rows.map(row=>row.directSkillEnergy)),complexSkillEnergy=sum(rows.map(row=>row.complexSkillEnergy)),totalSkillEnergy=directSkillEnergy+complexSkillEnergy,totalEnergy=berryEnergy+totalSkillEnergy,teamRecovery=sum(rows.map(row=>row.teamRecovery)),productiveRecovery=sum(rows.map(row=>row.productiveRecovery));
-    return {...settings,island:profile,timeline,berryEnergy,directSkillEnergy,complexSkillEnergy,totalSkillEnergy,teamRecovery,productiveRecovery,totalEnergy,perHour:totalEnergy/settings.durationHours,members:rows,unsupportedSkillMembers:rows.filter(row=>!row.skill.supported&&row.complexSkill&&!row.complexSkill.supported)};
+    const berryEnergy=sum(rows.map(row=>row.berryEnergy)),directSkillEnergy=sum(rows.map(row=>row.directSkillEnergy)),complexSkillEnergy=sum(rows.map(row=>row.complexSkillEnergy)),totalSkillEnergy=directSkillEnergy+complexSkillEnergy,totalEnergy=berryEnergy+totalSkillEnergy,teamRecovery=sum(rows.map(row=>row.teamRecovery)),productiveRecovery=sum(rows.map(row=>row.productiveRecovery)),skillIngredients=sum(rows.map(row=>row.skillIngredients)),skillIngredientRange=sumResourceRange(rows,'skillIngredientRange','skillIngredients'),potSlots=sum(rows.map(row=>row.potSlots)),tastyBonusPct=sum(rows.map(row=>row.tastyBonusPct)),dreamShards=sum(rows.map(row=>row.dreamShards)),dreamShardRange=sumResourceRange(rows,'dreamShardRange','dreamShards'),candy=sum(rows.map(row=>row.candy)),berryJuice=sum(rows.map(row=>row.berryJuice));
+    return {...settings,island:profile,timeline,berryEnergy,directSkillEnergy,complexSkillEnergy,totalSkillEnergy,teamRecovery,productiveRecovery,skillIngredients,skillIngredientRange,potSlots,tastyBonusPct,dreamShards,dreamShardRange,candy,berryJuice,totalEnergy,perHour:totalEnergy/settings.durationHours,members:rows,unsupportedSkillMembers:rows.filter(row=>row.complexSkill&&!row.complexSkill.supported)};
   }
 
   function ingredientProbability(mon,production){
@@ -541,6 +546,11 @@
   }
 
   function number(value,digits=1){return Number(value).toFixed(digits)}
+  function formatResourceRange(range,digits=1){
+    if(!Array.isArray(range))return number(0,digits);
+    const low=Number(range[0])||0,high=Number(range[1])||0;
+    return Math.abs(high-low)<10**(-digits)?number(low,digits):`${number(low,digits)}~${number(high,digits)}`;
+  }
 
   function mount({pokemon,production,onChange,profile,picker:pokemonPicker,catalog,recipes,scoring,natureApi,investmentPlanner:investmentApi}={}){
     if(typeof document==='undefined')return null;
@@ -717,11 +727,15 @@
       const limiting=result.limitingMember;
       const totalPerDay=sum(result.ingredients.map(item=>item.perDay));
       const timeline=result.energy.timeline,stageSummary=timeline&&productionTimeline?productionTimeline.ENERGY_STAGES.map(stage=>{const minutes=sum(timeline.members.map(member=>member.stageMinutes[stage.key]||0))/Math.max(1,timeline.members.length);return `${stage.label} ${number(minutes/60,1)}h`}).filter(text=>!text.endsWith(' 0.0h')).join('／'):'';
+      const skillIngredientText=result.energy.skillIngredientRange?`食材 ${formatResourceRange(result.energy.skillIngredientRange,1)} 个`:'',dreamShardText=result.energy.dreamShardRange?`碎片 ${formatResourceRange(result.energy.dreamShardRange,0)}`:'',berryJuiceText=result.energy.berryJuice?`树果汁 ${number(result.energy.berryJuice,2)} 瓶`:'';
+      const resourceHeadline=skillIngredientText||result.energy.potSlots?skillIngredientText||`扩锅 ${number(result.energy.potSlots,1)} 格`:result.energy.tastyBonusPct?`大成功 +${number(result.energy.tastyBonusPct,1)}%`:dreamShardText||result.energy.candy?dreamShardText||`糖果 ${number(result.energy.candy,1)}`:berryJuiceText||'无';
+      const resourceDetail=[skillIngredientText,result.energy.potSlots?`扩锅 ${number(result.energy.potSlots,1)} 格`:'',result.energy.tastyBonusPct?`大成功 +${number(result.energy.tastyBonusPct,1)}%`:'',dreamShardText,result.energy.candy?`糖果 ${number(result.energy.candy,1)}`:'',berryJuiceText].filter(Boolean).join(' · ')||'无额外技能资源';
       const cards=[
         [`${number(result.energy.durationHours,1)}小时纯能量`,`${Math.round(result.energy.totalEnergy).toLocaleString('zh-CN')}`,`每小时约 ${Math.round(result.energy.perHour).toLocaleString('zh-CN')}；不计食材能量`],
         ['常规树果',Math.round(result.energy.berryEnergy).toLocaleString('zh-CN'),`${result.energy.island.label} · 岛屿加成 +${number(result.energy.islandBonusPct,0)}%`],
         ['主技能纯能量',Math.round(result.energy.totalSkillEnergy).toLocaleString('zh-CN'),result.energy.complexSkillEnergy?`直接能量 ${Math.round(result.energy.directSkillEnergy).toLocaleString('zh-CN')}＋队伍联动 ${Math.round(result.energy.complexSkillEnergy).toLocaleString('zh-CN')}`:result.energy.directSkillEnergy?'按理论触发期望计算':'当前队员没有可折算的纯能量主技能'],
         ['队伍活力收益',number(result.energy.productiveRecovery,1),result.energy.teamRecovery?`治疗已回填时间轴；全队回复总量 ${number(result.energy.teamRecovery,1)}`:'当前队伍没有可统计的治疗技能'],
+        ['技能资源',resourceHeadline,`独立于卡比兽能量：${resourceDetail}`],
         [timeline?'点击收取':'建议收菜',formatHours(result.collectionHours),timeline?`技能实际收取 ${number(timeline.totals.triggers,2)} 次；换队清空损失 ${number(timeline.totals.lostTriggers,2)} 次`:limiting?`按${limiting.mon.name}预计${formatHours(limiting.fullHours)}满仓，预留约15%空间`:'等待完整队伍'],
         ['食材合计',`${number(totalPerDay,1)} 个／24h`,'按建议频率全天执行的常规帮忙期望'],
         ['帮手奖励',`${result.helpingBonusCount} 个已解锁`,result.helpingBonusCount?`每名成员按自身速度补正逐只重算；队内叠加${result.helpingBonusCount*5}%，与速度副技能合计遵守35%上限`:'当前没有全队速度加成'],
@@ -750,12 +764,18 @@
         if(!member.ingredients.length)foods.append(element('span','current-team-muted','暂无可统计食材'));
         card.append(foods);
         const notes=[];
-        if(/食材获取|食材精选|十项全能|料理辅助/.test(mon.main))notes.push('主技能还可能带来额外食材，未并入上面的常规帮忙数量');
+        if(/食材获取|食材精选|十项全能|料理辅助/.test(mon.main))notes.push('主技能食材单独列示，不并入上面的常规帮忙食材数量');
         if(memberEnergy.skill.supported)notes.push(`直接能量技能按 Lv.${memberEnergy.skillLevel}、约${number(memberEnergy.triggers,2)}次触发计入 ${Math.round(memberEnergy.directSkillEnergy).toLocaleString('zh-CN')} 能量`);
-        else if(memberEnergy.complexSkill&&memberEnergy.complexSkill.supported){
+        if(memberEnergy.complexSkill&&memberEnergy.complexSkill.supported){
           const effect=memberEnergy.complexSkill,parts=[`${effect.label}按 Lv.${memberEnergy.skillLevel}、约${number(memberEnergy.triggers,2)}次触发`];
           if(memberEnergy.complexSkillEnergy)parts.push(`计入 ${Math.round(memberEnergy.complexSkillEnergy).toLocaleString('zh-CN')} 纯能量`);
           if(memberEnergy.teamRecovery)parts.push(`全队活力收益约 ${number(memberEnergy.teamRecovery,1)}`);
+          if(memberEnergy.skillIngredientRange)parts.push(`技能食材 ${formatResourceRange(memberEnergy.skillIngredientRange,1)} 个`);
+          if(memberEnergy.potSlots)parts.push(`扩锅约 ${number(memberEnergy.potSlots,1)} 格`);
+          if(memberEnergy.tastyBonusPct)parts.push(`大成功率累计约 +${number(memberEnergy.tastyBonusPct,1)}%`);
+          if(memberEnergy.dreamShardRange)parts.push(`梦之碎片 ${formatResourceRange(memberEnergy.dreamShardRange,0)}`);
+          if(memberEnergy.candy)parts.push(`队友糖果约 ${number(memberEnergy.candy,1)} 个`);
+          if(memberEnergy.berryJuice)parts.push(`树果汁约 ${number(memberEnergy.berryJuice,2)} 瓶`);
           parts.push(effect.detail);notes.push(parts.join('，'));
           if(effect.pendingComponents&&effect.pendingComponents.length)notes.push(effect.pendingComponents.join('；'));
         }else if(memberEnergy.complexSkill)notes.push(`${memberEnergy.complexSkill.label}暂未计入：${memberEnergy.complexSkill.detail}`);

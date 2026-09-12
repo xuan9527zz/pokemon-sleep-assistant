@@ -7787,9 +7787,34 @@
         "raenonxMainSkillId": 34
       },
       "ingredients": {
-        "1": [],
-        "30": [],
-        "60": []
+        "1": [
+          {"id": 1, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Large Leek", "nameZh": "粗枝大蔥"},
+          {"id": 3, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Fancy Egg", "nameZh": "特選蛋"},
+          {"id": 6, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Fiery Herb", "nameZh": "火辣香草"},
+          {"id": 7, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Bean Sausage", "nameZh": "豆製肉"},
+          {"id": 10, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Pure Oil", "nameZh": "純粹油"},
+          {"id": 15, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Greengrass Soybeans", "nameZh": "萌綠大豆"},
+          {"id": 19, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Plump Avocado", "nameZh": "嫩亮酪梨"}
+        ],
+        "30": [
+          {"id": 1, "code": "?", "quantity": 3, "combinationProbability": "$NaN", "nameEn": "Large Leek", "nameZh": "粗枝大蔥"},
+          {"id": 3, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Fancy Egg", "nameZh": "特選蛋"},
+          {"id": 6, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Fiery Herb", "nameZh": "火辣香草"},
+          {"id": 7, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Bean Sausage", "nameZh": "豆製肉"},
+          {"id": 10, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Pure Oil", "nameZh": "純粹油"},
+          {"id": 15, "code": "?", "quantity": 5, "combinationProbability": "$NaN", "nameEn": "Greengrass Soybeans", "nameZh": "萌綠大豆"},
+          {"id": 19, "code": "?", "quantity": 3, "combinationProbability": "$NaN", "nameEn": "Plump Avocado", "nameZh": "嫩亮酪梨"}
+        ],
+        "60": [
+          {"id": 1, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Large Leek", "nameZh": "粗枝大蔥"},
+          {"id": 3, "code": "?", "quantity": 6, "combinationProbability": "$NaN", "nameEn": "Fancy Egg", "nameZh": "特選蛋"},
+          {"id": 6, "code": "?", "quantity": 5, "combinationProbability": "$NaN", "nameEn": "Fiery Herb", "nameZh": "火辣香草"},
+          {"id": 7, "code": "?", "quantity": 7, "combinationProbability": "$NaN", "nameEn": "Bean Sausage", "nameZh": "豆製肉"},
+          {"id": 10, "code": "?", "quantity": 6, "combinationProbability": "$NaN", "nameEn": "Pure Oil", "nameZh": "純粹油"},
+          {"id": 15, "code": "?", "quantity": 7, "combinationProbability": "$NaN", "nameEn": "Greengrass Soybeans", "nameZh": "萌綠大豆"},
+          {"id": 19, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Plump Avocado", "nameZh": "嫩亮酪梨"},
+          {"id": 14, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Slowpoke Tail", "nameZh": "美味尾巴"}
+        ]
       },
       "ingredientRate": 0.2,
       "skillRatePct": 4,
