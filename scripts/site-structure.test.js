@@ -42,6 +42,8 @@ const weeklyMarkup=html.slice(html.indexOf('id="weeklyPlanner"'),html.indexOf('d
 assert.ok(weeklyMarkup.includes('id="selectionOddsTool"'), '友情徽章与严选概率应放在本周作战，而不是宝可梦盒子');
 assert.ok(!html.includes('id="selectionOddsTool" data-page="box"'), '友情徽章与严选概率不应继续归属盒子页');
 assert.ok(html.includes('id="weeklyActivityTools"'), '本周作战缺少按周模式显隐的活动设置容器');
+assert.ok(html.includes('高级设置：道具与锅容量'), '本周作战道具设置不应被误写成活动周专用');
+assert.ok(!html.includes('高级设置：活动周道具'), '本周作战仍保留了活动周专属的错误道具标题');
 assert.ok(html.includes('id="selectionLockedGold"'), '严选概率工具缺少实际锁金格数');
 assert.ok(html.includes('id="selectionGraduationRole"'), '严选概率工具缺少本站毕业定位选择');
 assert.ok(html.includes('id="pokemonCompareRole"'), '个体生产对比缺少定位选择');
