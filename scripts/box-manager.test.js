@@ -21,9 +21,12 @@ const mythical = {
 
 assert.strictEqual(manager.defaultBoxId(shinyCollection),'shiny');
 assert.strictEqual(manager.defaultBattleEligible(shinyCollection,'shiny'),false);
+assert.strictEqual(manager.defaultCollectionIntent(shinyCollection,'shiny'),true);
 assert.strictEqual(manager.defaultBoxId(shinyUsable),'main');
 assert.strictEqual(manager.defaultBattleEligible(shinyUsable,'main'),true);
 assert.strictEqual(manager.defaultBoxId(mythical),'special');
+assert.deepStrictEqual(manager.usageInfo({battleEligible:true,collectionIntent:true}),{status:'both',label:'收藏＋实战',battleEligible:true,collectionIntent:true});
+assert.strictEqual(manager.usageStatus({battleEligible:false,collectionIntent:false}),'inactive');
 
 const speedOnly = {
   id:'1',name:'测试速度',lv:'25',priority:'继续使用',main:'能量填充M Lv.3',
@@ -93,10 +96,31 @@ const customState = manager.normalizeState({
   }
 },[shinyCollection,shinyUsable]);
 assert.strictEqual(customState.boxes.main.name,'一队主力');
+assert.strictEqual(customState.version,2);
 manager.applyState([shinyCollection,shinyUsable],customState);
 assert.strictEqual(shinyCollection.boxName,'闪光收藏');
 assert.strictEqual(shinyCollection.battleEligible,false);
+assert.strictEqual(shinyCollection.collectionIntent,true);
 assert.strictEqual(shinyUsable.boxName,'一队主力');
+
+const recalculated=[
+  {...shinyUsable,id:'20',pokedexId:26,specialty:'berry',cultivation:{tier:'core'}},
+  {...shinyCollection,id:'21',pokedexId:20,specialty:'berry',cultivation:{tier:'avoid'}},
+  {id:'22',pokedexId:462,name:'自爆磁怪',shiny:'否',specialty:'skill',cultivation:{tier:'avoid'},subs:'技能概率S；技能等级S；帮忙速度S；持有上限S；研究EXP奖励'},
+  {...mythical,id:'23',pokedexId:151,specialty:'all',cultivation:{tier:'manual'}}
+];
+const migrated=manager.recalculateUsageState(recalculated,{},{});
+assert.strictEqual(migrated.changed,true);
+assert.strictEqual(migrated.state.usageModelVersion,manager.USAGE_MODEL_VERSION);
+assert.deepStrictEqual(manager.usageInfo(migrated.state.pokemon['20']),{status:'both',label:'收藏＋实战',battleEligible:true,collectionIntent:true});
+assert.strictEqual(migrated.state.pokemon['20'].boxId,'main');
+assert.strictEqual(manager.usageStatus(migrated.state.pokemon['21']),'collection-only');
+assert.strictEqual(migrated.state.pokemon['21'].boxId,'shiny');
+assert.strictEqual(manager.usageStatus(migrated.state.pokemon['22']),'inactive');
+assert.strictEqual(migrated.state.pokemon['22'].boxId,'pending');
+assert.strictEqual(manager.usageStatus(migrated.state.pokemon['23']),'battle-only');
+assert.strictEqual(migrated.state.pokemon['23'].boxId,'special');
+assert.strictEqual(manager.recalculateUsageState(recalculated,migrated.state).changed,false,'同一版口径不得每次加载覆盖用户后续手工调整');
 
 const fakeStorage={
   value:null,

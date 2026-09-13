@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="./team-planner.css?v=20260912-1">
 <link rel="stylesheet" href="./ingredients.css?v=20260908-1">
 <link rel="stylesheet" href="./level-manager.css">
-<link rel="stylesheet" href="./box-manager.css">
+<link rel="stylesheet" href="./box-manager.css?v=20260913-1">
 <link rel="stylesheet" href="./pokemon-manager.css?v=20260831-1">
 <link rel="stylesheet" href="./cloud-sync.css?v=20260831-1">
 <link rel="stylesheet" href="./weekly-planner.css?v=20260913-4">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="./retention-advisor.css?v=20260901-1">
 <link rel="stylesheet" href="./cultivation-advisor.css?v=20260831-1">
 <link rel="stylesheet" href="./pokemon-comparison.css?v=20260913-2">
-<link rel="stylesheet" href="./box-filter.css?v=20260902-1">
+<link rel="stylesheet" href="./box-filter.css?v=20260913-1">
 <link rel="stylesheet" href="./personal-settings.css?v=20260910-1">
 <link rel="stylesheet" href="./pokemon-picker.css?v=20260911-2">
 <link rel="stylesheet" href="./selection-odds.css?v=20260912-1">
@@ -49,13 +49,13 @@
 </style>
 <style>
 .box-page-table table{min-width:1180px}.box-page-table th:nth-child(1){width:36px}.box-page-table th:nth-child(2){width:80px}.box-page-table th:nth-child(3){width:92px}.box-page-table th:nth-child(4){width:92px}.box-page-table th:nth-child(5){width:68px}.box-page-table th:nth-child(6){width:150px}.box-page-table th:nth-child(7){width:115px}.box-page-table th:nth-child(8){width:185px}.box-page-table th:nth-child(9){width:115px}.box-page-table th:nth-child(10){width:94px}
-.filters{grid-template-columns:minmax(210px,1.7fr) repeat(4,minmax(125px,1fr)) auto}@media(max-width:800px){.filters{grid-template-columns:1fr}}
+.filters{grid-template-columns:minmax(210px,1.7fr) repeat(5,minmax(125px,1fr)) minmax(150px,1fr) auto}@media(max-width:800px){.filters{grid-template-columns:1fr}}
 .score-tooltip{width:min(390px,calc(100vw - 20px))}
 </style>
 <style>
 .recipe-controls{grid-template-columns:minmax(220px,1.6fr) minmax(190px,1fr) minmax(160px,1fr) minmax(180px,.9fr) auto}.recipe-controls .recipe-ingredient-filter{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;font:inherit}.recipe-ingredient-filter{position:relative}.recipe-ingredient-filter summary{display:flex;align-items:center;min-height:40px;padding:8px 11px;cursor:pointer;font-weight:750}.recipe-ingredient-options{position:absolute;z-index:12;top:calc(100% + 6px);left:0;display:grid;width:min(460px,85vw);grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:320px;overflow:auto;border:1px solid #d6dde7;border-radius:12px;background:#fff;padding:9px;box-shadow:0 14px 35px #10182824}.recipe-controls .recipe-ingredient-option{display:flex;align-items:center;justify-content:flex-start;gap:7px;min-height:38px;border-color:#e2e7ee;background:#fff;color:#354052;text-align:left}.recipe-controls .recipe-ingredient-option.active{border-color:#6850b4;background:#f1edff;color:#54349c}.recipe-card.is-uncooked{border-style:dashed}.recipe-card-badges{display:flex;align-items:flex-end;flex-direction:column;gap:5px}.recipe-status{display:inline-flex;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}.recipe-status.cooked{background:#e7f8ef;color:#147347}.recipe-status.uncooked{background:#fff3d8;color:#8b5b00}.recipe-card-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px}.recipe-card-actions .recipe-source{margin-top:0}@media(max-width:1050px){.recipe-controls{grid-template-columns:1fr 1fr}}@media(max-width:520px){.recipe-ingredient-options{position:fixed;inset:auto 10px 78px;width:auto;max-height:55dvh;grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="./mobile.css?v=20260911-2">
+<link rel="stylesheet" href="./mobile.css?v=20260913-1">
 </head>
 <body><main class="wrap">
 <section class="hero"><h1>Pokemon Sleep｜宝可梦助手</h1><p>盒子、队伍、本周计划、岛屿、料理与活动资料集中管理；登录后可在不同设备继续使用同一份数据。</p><button class="settings-launch" id="personalSettingsOpen" type="button" aria-label="打开个人设置" title="个人设置">⚙</button></section>
@@ -298,20 +298,20 @@
   <div class="box-level-tools-actions"><button class="primary" id="levelManagerOpen" type="button">批量更新等级</button><button id="levelManagerUndo" type="button" disabled>撤销上次修改</button><span class="box-level-tools-status" id="levelManagerToolbarStatus" role="status">尚未使用本机等级记录</span></div>
 </section>
 <section class="stats" data-page="box"><div class="stat"><b id="total">0</b><span>总个体</span></div><div class="stat"><b id="shinyCount">0</b><span>闪光个体</span></div><div class="stat"><b id="normalCount">0</b><span>非闪光</span></div><div class="stat"><b id="battleCount">0</b><span>参与实战</span></div><div class="stat"><b id="shown">0</b><span>当前显示</span></div></section>
-<section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、盒子、定位、食材、技能、培养判断、备注或输入 #编号"><button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-expanded="false">筛选与排序</button><select id="bf" aria-label="按盒子筛选"><option value="">全部盒子</option></select><select id="ef" aria-label="按实战资格筛选"><option value="">全部实战状态</option><option value="battle">仅参与实战</option><option value="collection">仅收藏</option></select><select id="sf" aria-label="按闪光状态筛选"><option value="">全部闪光状态</option><option value="是">仅闪光</option><option value="否">仅非闪光</option></select><select id="rf" aria-label="按定位筛选"><option value="">全部定位</option><option value="berry">树果手</option><option value="ingredient">食材手</option><option value="skill">技能手</option><option value="all">全能手</option></select><select id="pf" aria-label="按培养判断筛选"><option value="">全部培养判断</option><option value="core">核心培养</option><option value="stage">阶段性培养</option><option value="transition">过渡使用</option><option value="niche">限定用途</option><option value="avoid">暂不建议</option><option value="collection">收藏用途</option><option value="manual">人工判断</option></select><select id="sortSelect" aria-label="盒子排序"><option value="id-asc">编号顺序</option><option value="cultivation-desc">培养优先级：高到低</option><option value="score-desc">综合评分：高到低</option><option value="species-desc">种族分：高到低</option><option value="individual-desc">个体分：高到低</option><option value="score-asc">综合评分：低到高</option><option value="custom" hidden>表头排序</option></select><button id="reset">重置筛选</button><div class="box-filter-summary is-unfiltered" id="boxFilterSummary" role="status" aria-live="polite"><span class="box-filter-mode">尚未筛选</span><span>显示全部 97 只</span></div></section>
-<div class="meta" data-page="box">综合评分采用已确认的个人规则：种族分 75%＋个体分 25%；个体分由副技能合法满分百分分 70%＋性格理论百分分 30%组成，食材手再乘 AAA 1.00／ABB 0.85／ABA 0.80／AAB、AAC 0.70／ABC 0.50 的组合系数。副技能按同定位最佳合法五栏组合换算为 100 分，当前原始上限为树果手 66.7、食材手 70.0、技能手 70.0；五栏仍按 Lv.10／25／50／70／80 分别占 25%／25%／25%／15%／10%，合法种子升级和 S＋M 乘算收益均计入。培养判断是独立建议层，会考虑账号阶段、直接上位、队伍条件和投入门槛，不会反向修改分数。梦幻与达克莱伊因全能型公式尚未确认而显示“待定”。</div>
+<section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、图鉴号、个体编号、盒子、定位、食材、技能或培养判断"><button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-expanded="false">筛选与排序</button><details class="box-multi-filter" id="bf" data-placeholder="全部盒子"><summary>全部盒子</summary><div class="box-multi-options"></div></details><details class="box-multi-filter" id="ef" data-placeholder="全部用途状态"><summary>全部用途状态</summary><div class="box-multi-options"><label><input type="checkbox" value="both"><span>收藏＋实战</span><small data-count></small></label><label><input type="checkbox" value="battle-only"><span>仅实战</span><small data-count></small></label><label><input type="checkbox" value="collection-only"><span>仅收藏</span><small data-count></small></label><label><input type="checkbox" value="inactive"><span>暂不实战</span><small data-count></small></label></div></details><details class="box-multi-filter" id="sf" data-placeholder="全部闪光状态"><summary>全部闪光状态</summary><div class="box-multi-options"><label><input type="checkbox" value="是"><span>闪光</span><small data-count></small></label><label><input type="checkbox" value="否"><span>非闪光</span><small data-count></small></label></div></details><details class="box-multi-filter" id="rf" data-placeholder="全部定位"><summary>全部定位</summary><div class="box-multi-options"><label><input type="checkbox" value="berry"><span>树果手</span><small data-count></small></label><label><input type="checkbox" value="ingredient"><span>食材手</span><small data-count></small></label><label><input type="checkbox" value="skill"><span>技能手</span><small data-count></small></label><label><input type="checkbox" value="all"><span>全能手</span><small data-count></small></label></div></details><details class="box-multi-filter" id="pf" data-placeholder="全部培养判断"><summary>全部培养判断</summary><div class="box-multi-options"><label><input type="checkbox" value="core"><span>核心培养</span><small data-count></small></label><label><input type="checkbox" value="stage"><span>阶段性培养</span><small data-count></small></label><label><input type="checkbox" value="transition"><span>过渡使用</span><small data-count></small></label><label><input type="checkbox" value="niche"><span>限定用途</span><small data-count></small></label><label><input type="checkbox" value="avoid"><span>暂不建议</span><small data-count></small></label><label><input type="checkbox" value="manual"><span>人工判断</span><small data-count></small></label></div></details><select id="sortSelect" aria-label="盒子排序"><option value="pokedex-asc">图鉴编号顺序</option><option value="cultivation-desc">培养优先级：高到低</option><option value="score-desc">综合评分：高到低</option><option value="species-desc">种族分：高到低</option><option value="individual-desc">个体分：高到低</option><option value="score-asc">综合评分：低到高</option><option value="custom" hidden>表头排序</option></select><button id="reset">重置筛选</button><div class="box-filter-summary is-unfiltered" id="boxFilterSummary" role="status" aria-live="polite"><span class="box-filter-mode">尚未筛选</span><span>显示全部 97 只</span></div></section>
+<div class="meta" data-page="box">综合评分采用已确认的个人规则：种族分 75%＋个体分 25%；个体分由副技能合法满分百分分 70%＋性格理论百分分 30%组成，食材手再乘 AAA 1.00／ABB 0.85／ABA 0.80／AAB、AAC 0.70／ABC 0.50 的组合系数。副技能按同定位最佳合法五栏组合换算为 100 分，当前原始上限为树果手 66.7、食材手 70.0、技能手 70.0；五栏仍按 Lv.10／25／50／70／80 分别占 25%／25%／25%／15%／10%，合法种子升级和 S＋M 乘算收益均计入。培养判断是独立建议层，会考虑账号阶段、直接上位、队伍条件和投入门槛，不会反向修改分数。收藏与实战也是两个独立维度：闪光自动标记收藏，达到培养门槛时仍可同时参与实战。梦幻与达克莱伊因全能型公式尚未确认而显示“待定”。</div>
 <details class="mobile-score-note panel" data-page="box"><summary>查看评分口径</summary><p>综合评分为种族分75%＋个体分25%；个体分由副技能70%＋性格30%组成，食材手再乘食材组合系数。实际副技能升级只影响当前产出，不改Lv.70潜力评分。</p></details>
-<div class="tablebox box-page-table" data-page="box"><table id="tbl"><thead><tr><th data-k="id">#</th><th data-k="name">宝可梦</th><th data-k="boxId">盒子状态</th><th data-k="specialty">定位</th><th data-k="scoreTotal">综合评分<span class="score-draft-note">个人规则</span></th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>主技能</th><th>副技能</th><th>性格</th><th data-k="cultivationRank">培养判断</th><th>备注</th></tr></thead><tbody></tbody></table></div>
+<div class="tablebox box-page-table" data-page="box"><table id="tbl"><thead><tr><th data-k="pokedexId">图鉴</th><th data-k="name">宝可梦</th><th data-k="boxId">盒子与用途</th><th data-k="specialty">定位</th><th data-k="scoreTotal">综合评分<span class="score-draft-note">个人规则</span></th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>主技能</th><th>副技能</th><th>性格</th><th data-k="cultivationRank">培养判断</th></tr></thead><tbody></tbody></table></div>
 <div class="mobile-box-list" id="mobileBoxList" data-page="box" aria-live="polite"></div>
 <div class="advice-sources" data-page="box">种族基础与概率数据采用 <a href="https://pks.raenonx.cc/zh/pokedex" target="_blank" rel="noreferrer">RaenonX 图鉴</a>快照，Game8与攻略图用于培养定位、上位替代和异常结果的定性复核；副技能种子规则参考 <a href="https://app-psl.pokemon-support.com/hc/en-us/articles/25819530448665-I-can-t-use-my-Sub-Skill-Seed" target="_blank" rel="noreferrer">Pokémon Sleep 官方支持</a>。鼠标移到分数可查看完整评分；树果手还会显示正常收菜与满包偷偷吃树果的 Lv.70 种族基准。鼠标移到培养判断可查看账号阶段、直接上位、标准队系数和例外用途。</div>
 <footer data-page="box">说明：离线打开时继续使用本机缓存；在 GitHub Pages 登录后，盒子、等级、分类、队伍、培养阶段与回收站会自动保存到个人云端。评级与培养模型更新于 2026-08-31，当前等级上限按 Lv.70 计算。</footer>
 <dialog class="box-manager-dialog" id="boxManagerDialog" aria-labelledby="boxManagerDialogTitle">
   <div class="box-manager-shell">
-    <div class="box-manager-head"><div><span>BOX MANAGEMENT</span><h2 id="boxManagerDialogTitle">宝可梦盒子管理</h2><p>点击卡片可多选；收藏个体保留评分与资料，但不会进入自动实战计算。</p></div><button class="box-manager-close" id="boxManagerClose" type="button" aria-label="关闭盒子管理">×</button></div>
+    <div class="box-manager-head"><div><span>BOX MANAGEMENT</span><h2 id="boxManagerDialogTitle">宝可梦盒子管理</h2><p>点击卡片可多选；“收藏”和“参与实战”是两个独立状态，可以同时开启。</p></div><button class="box-manager-close" id="boxManagerClose" type="button" aria-label="关闭盒子管理">×</button></div>
     <div class="box-manager-tabs" id="boxManagerTabs" role="tablist" aria-label="宝可梦盒子分类"></div>
     <div class="box-manager-workspace">
       <section class="box-manager-browser" aria-label="当前盒子宝可梦">
-        <div class="box-manager-controls"><input id="boxManagerSearch" placeholder="搜索名字、#编号或Lv.10副技能" aria-label="搜索当前盒子"><select id="boxManagerEligibility" aria-label="筛选实战资格"><option value="all">全部状态</option><option value="battle">仅参与实战</option><option value="collection">仅收藏</option></select><button id="boxManagerSelectVisible" type="button">选择当前结果</button><div class="box-manager-counts"><span id="boxManagerShown">显示 0 只</span><span id="boxManagerSelected">已选 0 只</span></div></div>
+        <div class="box-manager-controls"><input id="boxManagerSearch" placeholder="搜索名字、图鉴号、个体号或Lv.10副技能" aria-label="搜索当前盒子"><select id="boxManagerEligibility" aria-label="筛选用途状态"><option value="all">全部用途状态</option><option value="both">收藏＋实战</option><option value="battle-only">仅实战</option><option value="collection-only">仅收藏</option><option value="inactive">暂不实战</option></select><button id="boxManagerSelectVisible" type="button">选择当前结果</button><div class="box-manager-counts"><span id="boxManagerShown">显示 0 只</span><span id="boxManagerSelected">已选 0 只</span></div></div>
         <div class="box-manager-grid" id="boxManagerGrid"></div>
       </section>
       <aside class="box-manager-side" aria-label="盒子与副技能编辑">
@@ -319,7 +319,7 @@
         <div class="box-manager-inspector" id="boxManagerInspector"></div>
       </aside>
     </div>
-    <div class="box-manager-foot"><span class="box-manager-foot-label">移动所选到</span><select id="boxManagerDestination" aria-label="目标盒子"></select><button class="primary" id="boxManagerMove" type="button" disabled>移动</button><button id="boxManagerEnable" type="button" disabled>参与实战</button><button class="collection" id="boxManagerDisable" type="button" disabled>设为仅收藏</button><button id="boxManagerClearSelection" type="button" disabled>清除选择</button><span class="box-manager-message" id="boxManagerMessage" role="status" hidden></span></div>
+    <div class="box-manager-foot"><span class="box-manager-foot-label">移动所选到</span><select id="boxManagerDestination" aria-label="目标盒子"></select><button class="primary" id="boxManagerMove" type="button" disabled>移动</button><button id="boxManagerEnable" type="button" disabled>启用实战</button><button id="boxManagerDisable" type="button" disabled>暂停实战</button><button class="collection" id="boxManagerCollect" type="button" disabled>加入收藏</button><button id="boxManagerUncollect" type="button" disabled>取消收藏</button><button id="boxManagerClearSelection" type="button" disabled>清除选择</button><span class="box-manager-message" id="boxManagerMessage" role="status" hidden></span></div>
   </div>
 </dialog>
 <dialog class="level-manager-dialog" id="levelManagerDialog" aria-labelledby="levelManagerDialogTitle">
@@ -345,9 +345,9 @@
         <div class="pokemon-editor-field"><label for="pokemonMainLevel">当前主技能等级</label><select id="pokemonMainLevel"></select></div>
         <div class="pokemon-editor-field wide" id="pokemonAllMightyWrap" hidden><label for="pokemonAllMighty">梦幻当前选用技能</label><select id="pokemonAllMighty"></select><small>用梦幻种子学会后可切换；这里记录当前实际选项，生产、队伍与活动推演会立即采用。</small></div>
         <div class="pokemon-editor-field"><label>闪光状态</label><label class="pokemon-editor-check"><input id="pokemonShiny" type="checkbox">★ 闪光</label></div>
-        <div class="pokemon-editor-field"><label for="pokemonPriority">培养建议</label><select id="pokemonPriority"></select></div>
         <div class="pokemon-editor-field"><label for="pokemonBox">放入盒子</label><select id="pokemonBox"></select></div>
         <div class="pokemon-editor-field"><label>实战资格</label><label class="pokemon-editor-check"><input id="pokemonBattleEligible" type="checkbox" checked>参与组队与推荐</label></div>
+        <div class="pokemon-editor-field"><label>收藏状态</label><label class="pokemon-editor-check"><input id="pokemonCollectionIntent" type="checkbox">作为收藏保留</label></div>
       </div></fieldset>
       <fieldset class="pokemon-editor-section"><legend>食材路线</legend><div class="pokemon-editor-grid">
         <div class="pokemon-editor-field"><label for="pokemonIngredient1">Lv.1 食材</label><select id="pokemonIngredient1"></select></div>
@@ -361,7 +361,6 @@
         <div class="pokemon-subskill-field"><label for="pokemonSubskill70">Lv.70 · 15%</label><select id="pokemonSubskill70"></select></div>
         <div class="pokemon-subskill-field"><label for="pokemonSubskill80">Lv.80 · 10%</label><select id="pokemonSubskill80"></select></div>
       </div></fieldset>
-      <div class="pokemon-editor-field full"><label for="pokemonNote">备注（可选）</label><textarea id="pokemonNote" placeholder="例如：截图日期、培养用途或需要补种子"></textarea></div>
       <section class="pokemon-editor-preview" aria-live="polite"><div class="pokemon-identity-preview" id="pokemonIdentityPreview"></div><div class="pokemon-score-preview" id="pokemonScorePreview"></div><div id="pokemonRetentionPreview"></div><p class="pokemon-editor-message" id="pokemonEditorMessage" role="status" hidden></p></section>
     </div>
     <div class="pokemon-editor-foot"><button class="danger" id="pokemonEditorRelease" type="button" hidden>放生到回收站</button><button id="pokemonEditorDuplicate" type="button" hidden>复制同种个体</button><button id="pokemonEditorCancel" type="button">取消</button><button class="primary" id="pokemonEditorSave" type="button">保存个体</button></div>
@@ -405,19 +404,19 @@
 <script src="box-scores.generated.js?v=20260901-2"></script>
 <script src="pokemon-catalog.generated.js?v=20260901-2"></script>
 <script src="pokemon-scoring.js?v=20260901-2"></script>
-<script src="cultivation-advisor.js?v=20260831-1"></script>
+<script src="cultivation-advisor.js?v=20260913-1"></script>
 <script src="all-rounder-rules.js?v=20260913-1"></script>
 <script src="production-calculator.js?v=20260913-4"></script>
 <script src="pokemon-comparison.js?v=20260913-5"></script>
-<script src="box-filter.js?v=20260902-1"></script>
+<script src="box-filter.js?v=20260913-1"></script>
 <script src="game-rules.js?v=20260911-1"></script>
 <script src="snorlax-energy.js?v=20260912-1"></script>
 <script src="main-skill-team-effects.js?v=20260911-2"></script>
 <script src="ingredients.js?v=20260908-1"></script>
 <script src="recipes.js"></script>
 <script src="team-production.generated.js"></script>
-<script src="pokemon-data.js?v=20260831-1"></script>
-<script src="box-manager.js"></script>
+<script src="pokemon-data.js?v=20260913-1"></script>
+<script src="box-manager.js?v=20260913-1"></script>
 <script src="level-manager.js"></script>
 <script src="personal-settings.js?v=20260911-1"></script>
 <script src="pokemon-picker.js?v=20260913-4"></script>
@@ -429,7 +428,7 @@
 <script src="weekly-planner.js?v=20260913-6"></script>
 <script src="investment-planner.js?v=20260912-1"></script>
 <script src="retention-advisor.js?v=20260901-2"></script>
-<script src="pokemon-manager.js?v=20260912-1"></script>
+<script src="pokemon-manager.js?v=20260913-1"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.js"></script>
 <script src="supabase-config.js?v=20260831-1"></script>
 <script src="cloud-sync.js?v=20260831-2"></script>
@@ -581,6 +580,7 @@ function addSpecialty(mon){
   const catalogSpecies=window.POKEMON_SLEEP_DYNAMIC_SCORING.recordForPokemon(mon);
   mon.specialty=catalogSpecies?.specialty||'unknown';
   if(catalogSpecies){
+    mon.pokedexId=Number(catalogSpecies.pokedexId)||Number(catalogSpecies.id)||null;
     mon.ingredientRate=Number(catalogSpecies.ingredientRate);
     mon.baseBerryCount=Number(catalogSpecies.baseBerryCount)||1;
     mon.berryId=Number(catalogSpecies.berryId)||null;
@@ -623,20 +623,34 @@ function updateCurrentLevelEvaluation(mon){
 data.forEach(mon=>{addSpecialty(mon);updateCurrentLevelEvaluation(mon)});
 function refreshCultivationAdvice(){data.forEach(mon=>{mon.cultivation=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.assess(mon,data,{accountStage:activeAccountStage});mon.cultivationRank=mon.cultivation.sort})}
 refreshCultivationAdvice();
+const usageMigration=window.POKEMON_SLEEP_BOX_MANAGER.recalculateUsageState(data,storedBoxState.state);
+if(usageMigration.changed){storedBoxState.state=usageMigration.state;window.POKEMON_SLEEP_BOX_MANAGER.applyState(data,storedBoxState.state);window.POKEMON_SLEEP_BOX_MANAGER.saveState(storedBoxState.state);refreshCultivationAdvice()}
 const unclassifiedSpecies=[...new Set(data.filter(mon=>mon.specialty==='unknown').map(mon=>mon.name))];if(unclassifiedSpecies.length)console.warn('尚未分类的宝可梦定位：',unclassifiedSpecies);
-let sortKey='id',dir=1;
+let sortKey='pokedexId',dir=1;
 const sortableScoreKeys=new Set(['scoreTotal','scoreSpecies','scoreIndividual','cultivationRank']);
 const tbody=document.querySelector('tbody'),mobileBoxList=document.querySelector('#mobileBoxList'),mobileFilterToggle=document.querySelector('#mobileFilterToggle'),q=document.querySelector('#q'),bf=document.querySelector('#bf'),ef=document.querySelector('#ef'),sf=document.querySelector('#sf'),rf=document.querySelector('#rf'),pf=document.querySelector('#pf'),sortSelect=document.querySelector('#sortSelect'),accountStage=document.querySelector('#accountStage'),advisorStageDescription=document.querySelector('#advisorStageDescription');
 let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null,personalSettingsController=null,pokemonPickerController=null,selectionOddsController=null;
 const isBattleEligible=mon=>Boolean(mon&&mon.battleEligible!==false);
+const usageStatus=mon=>window.POKEMON_SLEEP_BOX_MANAGER.usageStatus(mon);
+function selectedFilterValues(root){return [...root.querySelectorAll('input[type="checkbox"]:checked')].map(input=>input.value)}
+function syncMultiFilterSummary(root){
+  const selected=[...root.querySelectorAll('input[type="checkbox"]:checked')],summary=root.querySelector('summary'),placeholder=root.dataset.placeholder||'全部';
+  const labels=selected.map(input=>input.closest('label')?.querySelector('span')?.textContent||input.value);
+  summary.textContent=!labels.length?placeholder:labels.length<=2?labels.join('＋'):`已选 ${labels.length} 项`;
+  root.classList.toggle('active',labels.length>0);
+}
+function createFilterOption(value,label,selected=false){
+  const row=document.createElement('label'),input=document.createElement('input'),text=document.createElement('span'),count=document.createElement('small');input.type='checkbox';input.value=value;input.checked=selected;text.textContent=label;count.dataset.count='';row.append(input,text,count);return row;
+}
+function resetMultiFilter(root){root.querySelectorAll('input[type="checkbox"]').forEach(input=>{input.checked=false});root.open=false;syncMultiFilterSummary(root)}
 function currentBoxList(){return boxManagerController?.getBoxes()||window.POKEMON_SLEEP_BOX_MANAGER.boxList(storedBoxState.state)}
 function refreshBoxFilterOptions(){
-  const selected=bf.value;bf.replaceChildren();
-  const all=document.createElement('option');all.value='';all.textContent='全部盒子';bf.append(all);
-  currentBoxList().forEach(box=>{const option=document.createElement('option');option.value=box.id;option.textContent=box.name;bf.append(option)});
-  bf.value=[...bf.options].some(option=>option.value===selected)?selected:'';
+  const selected=new Set(selectedFilterValues(bf)),options=bf.querySelector('.box-multi-options');options.replaceChildren();
+  currentBoxList().forEach(box=>options.append(createFilterOption(box.id,box.name,selected.has(box.id))));
+  syncMultiFilterSummary(bf);
 }
 function refreshBoxStats(){document.querySelector('#battleCount').textContent=data.filter(isBattleEligible).length}
+[ef,sf,rf,pf].forEach(syncMultiFilterSummary);
 refreshBoxFilterOptions();refreshBoxStats();
 const pageNames={box:'盒子',team:'当前队伍',weekly:'本周计划',islands:'岛屿推荐',recipes:'料理食谱',events:'活动资讯'};
 const pageFromHash=()=>Object.hasOwn(pageNames,location.hash.slice(1))?location.hash.slice(1):'box';
@@ -923,27 +937,29 @@ document.querySelector('.island-guide').addEventListener('click',e=>{const b=e.t
 document.querySelector('.event-guide').addEventListener('click',e=>{const b=e.target.closest('[data-mon]');if(b)focusMon(b.dataset.mon)});
 const tagClass=p=>p==='重点培养'?'high':p==='未来可期'?'future':p==='即时战力'?'immediate':p==='继续使用'?'use':p==='闪光收藏'?'collect':p==='备用'?'backup':'keep';
 function filtered(){
-  return window.POKEMON_SLEEP_BOX_FILTER.filter(data,currentFilterState(),{isBattleEligible}).sort((a,b)=>{let x=a[sortKey],y=b[sortKey];if(sortableScoreKeys.has(sortKey)){if(x===null&&y===null)return Number(a.id)-Number(b.id);if(x===null)return 1;if(y===null)return -1;x=Number(x);y=Number(y)}else if(sortKey==='id'){x=Number(x);y=Number(y)}else if(sortKey==='specialty'){const order={berry:0,ingredient:1,skill:2,all:3,unknown:4};x=order[x];y=order[y]}else if(sortKey==='boxId'){x=a.boxName;y=b.boxName}return((x>y?1:x<y?-1:0)*dir)||Number(a.id)-Number(b.id)});
+  const api=window.POKEMON_SLEEP_BOX_FILTER;
+  return api.filter(data,currentFilterState(),{isBattleEligible,usageStatus}).sort((a,b)=>{let x=a[sortKey],y=b[sortKey];if(sortableScoreKeys.has(sortKey)){if(x===null&&y===null)return api.comparePokedex(a,b);if(x===null)return 1;if(y===null)return -1;x=Number(x);y=Number(y)}else if(sortKey==='id'||sortKey==='pokedexId'){x=Number(x)||Number.MAX_SAFE_INTEGER;y=Number(y)||Number.MAX_SAFE_INTEGER}else if(sortKey==='specialty'){const order={berry:0,ingredient:1,skill:2,all:3,unknown:4};x=order[x];y=order[y]}else if(sortKey==='boxId'){x=a.boxName;y=b.boxName}return((x>y?1:x<y?-1:0)*dir)||api.comparePokedex(a,b)});
 }
-function currentFilterState(overrides={}){return {query:q.value,boxId:bf.value,eligibility:ef.value,shiny:sf.value,specialty:rf.value,cultivationTier:pf.value,...overrides}}
-const filterBindings=[{input:bf,key:'boxId'},{input:ef,key:'eligibility'},{input:sf,key:'shiny'},{input:rf,key:'specialty'},{input:pf,key:'cultivationTier'}];
+function currentFilterState(overrides={}){return {query:q.value,boxId:selectedFilterValues(bf),eligibility:selectedFilterValues(ef),shiny:selectedFilterValues(sf),specialty:selectedFilterValues(rf),cultivationTier:selectedFilterValues(pf),...overrides}}
+const filterBindings=[{root:bf,key:'boxId'},{root:ef,key:'eligibility'},{root:sf,key:'shiny'},{root:rf,key:'specialty'},{root:pf,key:'cultivationTier'}];
 function refreshFilterOptionCounts(){
-  const api=window.POKEMON_SLEEP_BOX_FILTER,state=currentFilterState(),context={isBattleEligible};
-  filterBindings.forEach(({input,key})=>{
-    const options=[...input.options];options.forEach(option=>{if(!option.dataset.baseLabel)option.dataset.baseLabel=option.textContent});
-    const counts=api.optionCounts(data,{...state,[key]:''},key,options.map(option=>option.value),context);
-    options.forEach(option=>{option.textContent=`${option.dataset.baseLabel} · ${counts[option.value]??0}`});
+  const api=window.POKEMON_SLEEP_BOX_FILTER,state=currentFilterState(),context={isBattleEligible,usageStatus};
+  filterBindings.forEach(({root,key})=>{
+    const inputs=[...root.querySelectorAll('input[type="checkbox"]')],counts=api.optionCounts(data,{...state,[key]:[]},key,inputs.map(input=>input.value),context);
+    inputs.forEach(input=>{const count=input.closest('label')?.querySelector('[data-count]');if(count)count.textContent=counts[input.value]??0});
   });
 }
 function syncFilterFeedback(rows){
-  const api=window.POKEMON_SLEEP_BOX_FILTER,count=api.activeCount(currentFilterState()),sorted=sortSelect.value!=='id-asc',summary=document.querySelector('#boxFilterSummary');
-  mobileFilterToggle.textContent=`筛选与排序${count?` · ${count}项交集`:''}${sorted?' · 已排序':''}`;
+  const api=window.POKEMON_SLEEP_BOX_FILTER,count=api.activeCount(currentFilterState()),groups=api.activeGroupCount(currentFilterState()),sorted=sortSelect.value!=='pokedex-asc',summary=document.querySelector('#boxFilterSummary');
+  mobileFilterToggle.textContent=`筛选与排序${groups?` · ${groups}组${count>groups?`/${count}项`:''}`:''}${sorted?' · 已排序':''}`;
   summary.classList.toggle('is-unfiltered',count===0);summary.replaceChildren();
-  const mode=document.createElement('span');mode.className='box-filter-mode';mode.textContent=count?`同时满足 ${count} 项`:'尚未筛选';
-  const detail=document.createElement('span'),shown=document.createElement('strong');shown.textContent=rows.length;detail.append('显示 ',shown,` / ${data.length} 只${count>1?'（所有条件取交集）':''}`);summary.append(mode,detail);
+  const mode=document.createElement('span');mode.className='box-filter-mode';mode.textContent=groups?`同时满足 ${groups} 组条件`:'尚未筛选';
+  const detail=document.createElement('span'),shown=document.createElement('strong');shown.textContent=rows.length;detail.append('显示 ',shown,` / ${data.length} 只${count>groups?'（同组任一、跨组交集）':groups>1?'（跨组取交集）':''}`);summary.append(mode,detail);
   refreshFilterOptionCounts();
 }
 function cell(v,cls=''){const td=document.createElement('td');td.textContent=v;td.className=cls;return td}
+function formatPokedex(mon){const value=Number(mon?.pokedexId);return Number.isFinite(value)&&value>0?`#${String(value).padStart(3,'0')}`:'—'}
+function pokedexCell(mon){const root=cell('','nowrap pokedex-cell'),number=document.createElement('strong'),record=document.createElement('small');number.textContent=formatPokedex(mon);record.textContent=`个体 #${mon.id}`;root.append(number,record);return root}
 const scoreTooltip=document.createElement('div');scoreTooltip.id='scoreTooltip';scoreTooltip.className='score-tooltip';scoreTooltip.role='tooltip';scoreTooltip.hidden=true;document.body.append(scoreTooltip);
 function actualUpgradeSummary(mon){
   const base=String(mon.subs||'').split('；'),effective=String(mon.effectiveSubs||mon.subs||'').split('；'),changes=[];
@@ -982,8 +998,8 @@ function subskillList(mon){
 function pokemonSprite(mon,size='small'){return window.POKEMON_SLEEP_POKEMON_PICKER?.createIcon(mon,{catalog:window.POKEMON_SLEEP_CATALOG,document,size})||document.createTextNode('')}
 function pokemonNameCell(mon){const root=cell('','nowrap pokemon-name-cell'),identity=document.createElement('span'),name=document.createElement('span'),edit=document.createElement('button'),manage=document.createElement('button'),pokemonEdit=document.createElement('button');identity.className='box-mon-identity';identity.append(pokemonSprite(mon,'small'));name.textContent=mon.nickname||mon.name;if(mon.nickname)name.append(Object.assign(document.createElement('small'),{className:'pokemon-custom-identity',textContent:`${mon.name}${mon.customNumber?` · ${mon.customNumber}`:''}`}));else if(mon.customNumber)name.append(Object.assign(document.createElement('small'),{className:'pokemon-custom-identity',textContent:mon.customNumber}));identity.append(name);edit.type='button';edit.className='level-row-edit';edit.dataset.levelEdit=mon.id;edit.textContent='更新等级';edit.setAttribute('aria-label','更新'+mon.name+'当前等级，现为Lv.'+mon.lv);manage.type='button';manage.className='box-management-edit';manage.dataset.boxManage=mon.id;manage.textContent='盒子／副技能';manage.setAttribute('aria-label','管理'+mon.name+'的盒子与实际副技能');pokemonEdit.type='button';pokemonEdit.className='pokemon-row-edit';pokemonEdit.dataset.pokemonEdit=mon.id;pokemonEdit.textContent='编辑／放生';pokemonEdit.setAttribute('aria-label','编辑或放生'+mon.name);root.append(identity,edit,manage,pokemonEdit);return root}
 function managementCell(mon){
-  const root=cell('','box-management-cell'),wrap=document.createElement('div'),box=document.createElement('span'),state=document.createElement('span'),definition=currentBoxList().find(item=>item.id===mon.boxId);
-  wrap.className='box-management-badge';box.className='box-management-box';box.style.setProperty('--box-color',definition?.color||'#687588');box.textContent=mon.boxName;state.className='box-management-state '+(isBattleEligible(mon)?'battle':'collection');state.textContent=isBattleEligible(mon)?'参与实战':'仅收藏';wrap.append(box,state);root.append(wrap);return root;
+  const root=cell('','box-management-cell'),wrap=document.createElement('div'),box=document.createElement('span'),state=document.createElement('span'),definition=currentBoxList().find(item=>item.id===mon.boxId),usage=window.POKEMON_SLEEP_BOX_MANAGER.usageInfo(mon);
+  wrap.className='box-management-badge';box.className='box-management-box';box.style.setProperty('--box-color',definition?.color||'#687588');box.textContent=mon.boxName;state.className='box-management-state '+usage.status;state.textContent=usage.label;wrap.append(box,state);root.append(wrap);return root;
 }
 function mainSkillDisplay(mon){
   const raw=String(mon.main||''),match=raw.match(/Lv\.(\d+)/),original=Number(match?.[1]||1),actual=mainSkillLevel(mon);
@@ -999,18 +1015,18 @@ function mobileDetailRow(label,value){
 }
 function mobilePokemonCard(mon){
   const card=document.createElement('article'),head=document.createElement('div'),titleRoot=document.createElement('div'),idLine=document.createElement('div'),title=document.createElement('div'),name=document.createElement('h3'),level=document.createElement('span'),score=document.createElement('div');
-  card.className='mobile-mon-card'+(isBattleEligible(mon)?'':' collection-only');head.className='mobile-mon-head';titleRoot.className='mobile-mon-title-root';idLine.className='mobile-mon-id';idLine.textContent='#'+mon.id+(mon.customNumber?' · '+mon.customNumber:'');if(mon.shiny==='是')idLine.append(Object.assign(document.createElement('span'),{className:'shiny',textContent:'★ 闪光'}));title.className='mobile-mon-title';name.textContent=mon.nickname||mon.name;if(mon.nickname)name.title=mon.name;level.className='mobile-mon-level';level.textContent='Lv.'+mon.lv;title.append(name,level);titleRoot.append(idLine,title);score.className='mobile-mon-score';score.append(scoreBadge(mon));head.append(pokemonSprite(mon,'medium'),titleRoot,score);
-  const tags=document.createElement('div'),box=document.createElement('span'),eligibility=document.createElement('span');tags.className='mobile-mon-tags';box.className='mobile-mon-box';box.textContent=mon.boxName;eligibility.className='mobile-mon-eligibility'+(isBattleEligible(mon)?'':' collection');eligibility.textContent=isBattleEligible(mon)?'参与实战':'仅收藏';tags.append(cultivationBadge(mon),specialtyBadge(mon),box,eligibility);
+  const usage=window.POKEMON_SLEEP_BOX_MANAGER.usageInfo(mon);card.className='mobile-mon-card '+usage.status;head.className='mobile-mon-head';titleRoot.className='mobile-mon-title-root';idLine.className='mobile-mon-id';idLine.textContent=`图鉴 ${formatPokedex(mon)} · 个体 #${mon.id}${mon.customNumber?' · '+mon.customNumber:''}`;if(mon.shiny==='是')idLine.append(Object.assign(document.createElement('span'),{className:'shiny',textContent:'★ 闪光'}));title.className='mobile-mon-title';name.textContent=mon.nickname||mon.name;if(mon.nickname)name.title=mon.name;level.className='mobile-mon-level';level.textContent='Lv.'+mon.lv;title.append(name,level);titleRoot.append(idLine,title);score.className='mobile-mon-score';score.append(scoreBadge(mon));head.append(pokemonSprite(mon,'medium'),titleRoot,score);
+  const tags=document.createElement('div'),box=document.createElement('span'),eligibility=document.createElement('span');tags.className='mobile-mon-tags';box.className='mobile-mon-box';box.textContent=mon.boxName;eligibility.className='mobile-mon-eligibility '+usage.status;eligibility.textContent=usage.label;tags.append(cultivationBadge(mon),specialtyBadge(mon),box,eligibility);
   const food=document.createElement('div'),foodLabel=document.createElement('span'),foodValue=document.createElement('div');food.className='mobile-mon-food';foodLabel.textContent='食材路线 · Lv.1／30／60';foodValue.textContent=mon.ingredients;food.append(foodLabel,foodValue);
-  const details=document.createElement('details'),summary=document.createElement('summary'),detailGrid=document.createElement('div'),skillDisplay=mainSkillDisplay(mon),skillValue=document.createElement('div');details.className='mobile-mon-details';summary.textContent='技能、性格与备注';detailGrid.className='mobile-mon-detail-grid';skillValue.textContent=skillDisplay.text;if(skillDisplay.note)skillValue.append(Object.assign(document.createElement('small'),{className:'actual-subskill-note',textContent:skillDisplay.note}));detailGrid.append(mobileDetailRow('主技能',skillValue),mobileDetailRow('副技能',subskillList(mon)),mobileDetailRow('性格',mon.nature),mobileDetailRow('培养依据',mon.cultivation?.reason||'—'),mobileDetailRow('备注',mon.note||'—'));
+  const details=document.createElement('details'),summary=document.createElement('summary'),detailGrid=document.createElement('div'),skillDisplay=mainSkillDisplay(mon),skillValue=document.createElement('div');details.className='mobile-mon-details';summary.textContent='技能、性格与培养';detailGrid.className='mobile-mon-detail-grid';skillValue.textContent=skillDisplay.text;if(skillDisplay.note)skillValue.append(Object.assign(document.createElement('small'),{className:'actual-subskill-note',textContent:skillDisplay.note}));detailGrid.append(mobileDetailRow('主技能',skillValue),mobileDetailRow('副技能',subskillList(mon)),mobileDetailRow('性格',mon.nature),mobileDetailRow('培养依据',mon.cultivation?.reason||'—'));
   const actions=document.createElement('div'),levelButton=document.createElement('button'),manageButton=document.createElement('button'),investButton=document.createElement('button'),pokemonEditButton=document.createElement('button');actions.className='mobile-mon-actions';levelButton.type='button';levelButton.dataset.levelEdit=mon.id;levelButton.textContent='更新等级';manageButton.type='button';manageButton.className='manage';manageButton.dataset.boxManage=mon.id;manageButton.textContent='盒子／副技能';investButton.type='button';investButton.dataset.invest=mon.id;investButton.textContent='培养成本';pokemonEditButton.type='button';pokemonEditButton.dataset.pokemonEdit=mon.id;pokemonEditButton.textContent='编辑／放生';actions.append(levelButton,manageButton,investButton,pokemonEditButton);detailGrid.append(actions);details.append(summary,detailGrid);card.append(head,tags,food,details);return card;
 }
 function render(){
-  const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.append(cell(r.id,'nowrap'),pokemonNameCell(r),managementCell(r));const role=cell('','nowrap');role.append(specialtyBadge(r));const score=cell('','score-cell');score.append(scoreBadge(r));tr.append(role,score);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));tr.append(sh,cell(r.ingredients),mainSkillCell(r),subs,cell(r.nature),cultivationCell(r),cell(r.note||'','muted'));return tr}));
+  const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.append(pokedexCell(r),pokemonNameCell(r),managementCell(r));const role=cell('','nowrap');role.append(specialtyBadge(r));const score=cell('','score-cell');score.append(scoreBadge(r));tr.append(role,score);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));tr.append(sh,cell(r.ingredients),mainSkillCell(r),subs,cell(r.nature),cultivationCell(r));return tr}));
   mobileBoxList.replaceChildren(...(rows.length?rows.map(mobilePokemonCard):[Object.assign(document.createElement('div'),{className:'mobile-mon-empty',textContent:'没有符合当前筛选条件的宝可梦。'})]));document.querySelector('#shown').textContent=rows.length;syncFilterFeedback(rows);decorateIngredients(tbody);decorateIngredients(mobileBoxList);
 }
 const boxSortOptions={
-  'id-asc':['id',1],
+  'pokedex-asc':['pokedexId',1],
   'cultivation-desc':['cultivationRank',-1],
   'score-desc':['scoreTotal',-1],
   'score-asc':['scoreTotal',1],
@@ -1018,7 +1034,7 @@ const boxSortOptions={
   'individual-desc':['scoreIndividual',-1]
 };
 accountStage.value=activeAccountStage;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;
-q.addEventListener('input',render);bf.addEventListener('change',render);ef.addEventListener('change',render);sf.addEventListener('change',render);rf.addEventListener('change',render);pf.addEventListener('change',render);sortSelect.addEventListener('change',()=>{[sortKey,dir]=boxSortOptions[sortSelect.value]||boxSortOptions['id-asc'];render()});mobileFilterToggle.addEventListener('click',()=>{const root=mobileFilterToggle.closest('.filters'),expanded=!root.classList.contains('mobile-expanded');root.classList.toggle('mobile-expanded',expanded);mobileFilterToggle.setAttribute('aria-expanded',expanded?'true':'false')});document.querySelector('#reset').addEventListener('click',()=>{q.value='';bf.value='';ef.value='';sf.value='';rf.value='';pf.value='';sortSelect.value='id-asc';sortKey='id';dir=1;const root=mobileFilterToggle.closest('.filters');root.classList.remove('mobile-expanded');mobileFilterToggle.setAttribute('aria-expanded','false');render()});document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k)dir*=-1;else{sortKey=k;dir=['scoreTotal','cultivationRank'].includes(k)?-1:1}sortSelect.value=k==='scoreTotal'?(dir<0?'score-desc':'score-asc'):k==='cultivationRank'&&dir<0?'cultivation-desc':(k==='id'&&dir===1?'id-asc':'custom');render()}));
+q.addEventListener('input',render);[bf,ef,sf,rf,pf].forEach(root=>root.addEventListener('change',()=>{syncMultiFilterSummary(root);render()}));sortSelect.addEventListener('change',()=>{[sortKey,dir]=boxSortOptions[sortSelect.value]||boxSortOptions['pokedex-asc'];render()});mobileFilterToggle.addEventListener('click',()=>{const root=mobileFilterToggle.closest('.filters'),expanded=!root.classList.contains('mobile-expanded');root.classList.toggle('mobile-expanded',expanded);mobileFilterToggle.setAttribute('aria-expanded',expanded?'true':'false')});document.querySelector('#reset').addEventListener('click',()=>{q.value='';[bf,ef,sf,rf,pf].forEach(resetMultiFilter);sortSelect.value='pokedex-asc';sortKey='pokedexId';dir=1;const root=mobileFilterToggle.closest('.filters');root.classList.remove('mobile-expanded');mobileFilterToggle.setAttribute('aria-expanded','false');render()});document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k)dir*=-1;else{sortKey=k;dir=['scoreTotal','cultivationRank'].includes(k)?-1:1}sortSelect.value=k==='scoreTotal'?(dir<0?'score-desc':'score-asc'):k==='cultivationRank'&&dir<0?'cultivation-desc':(k==='pokedexId'&&dir===1?'pokedex-asc':'custom');render()}));
 function handlePokemonEdit(event){const levelButton=event.target.closest('[data-level-edit]'),boxButton=event.target.closest('[data-box-manage]'),investButton=event.target.closest('[data-invest]'),pokemonButton=event.target.closest('[data-pokemon-edit]');if(levelButton)levelManagerController?.openFor(levelButton.dataset.levelEdit);if(boxButton)boxManagerController?.openFor(boxButton.dataset.boxManage);if(investButton)document.dispatchEvent(new CustomEvent('pokemon-sleep:invest-pokemon',{detail:{id:investButton.dataset.invest}}));if(pokemonButton)pokemonManagerController?.openFor(pokemonButton.dataset.pokemonEdit)}
 tbody.addEventListener('click',handlePokemonEdit);mobileBoxList.addEventListener('click',handlePokemonEdit);
 function refreshAfterLevelChange(changes){changes.forEach(change=>{const mon=monById(change.id);if(mon)updateCurrentLevelEvaluation(mon)});refreshCultivationAdvice();renderEventTeam();renderIsland(activeIslandIndex);if(activeIngredientRecommendation)renderIngredientRecommendations(activeIngredientRecommendation);render();teamPlannerController?.refresh();weeklyPlannerController?.render();boxManagerController?.render();pokemonComparisonController?.render();pokemonPickerController?.render();refreshBoxStats();window.POKEMON_SLEEP_DATA.emit('levels',{changes})}

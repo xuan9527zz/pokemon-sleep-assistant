@@ -21,7 +21,6 @@
     transition:Object.freeze({id:'transition',label:'过渡使用',tone:'transition',sort:40,nextAction:'可以继续上场，但暂缓稀缺资源并继续筛选。'}),
     niche:Object.freeze({id:'niche',label:'限定用途',tone:'niche',sort:30,nextAction:'只在满足注明的岛屿、队友或技能条件时编入。'}),
     avoid:Object.freeze({id:'avoid',label:'暂不建议',tone:'avoid',sort:20,nextAction:'不建议继续投入；去留仍按同最终形态席位单独判断。'}),
-    collection:Object.freeze({id:'collection',label:'收藏用途',tone:'collection',sort:10,nextAction:'保留收藏，但不进入自动实战与培养队列。'}),
     manual:Object.freeze({id:'manual',label:'人工判断',tone:'manual',sort:0,nextAction:'资料补齐后再自动判断。'})
   });
 
@@ -72,7 +71,7 @@
   }
 
   function superiorInBox(rule,box){
-    return scoredMembers(box).filter(row=>row.mon&&row.mon.battleEligible!==false&&finalFormId(row.mon,row.score)===rule.superiorId&&finite(row.score&&row.score.finalScore)).sort((left,right)=>Number(right.score.finalScore)-Number(left.score.finalScore))[0]||null;
+    return scoredMembers(box).filter(row=>row.mon&&finalFormId(row.mon,row.score)===rule.superiorId&&finite(row.score&&row.score.finalScore)).sort((left,right)=>Number(right.score.finalScore)-Number(left.score.finalScore))[0]||null;
   }
 
   function baseTier(profile,speciesScore,individualScore,finalScore,level){
@@ -114,7 +113,6 @@
 
   function assess(mon,box,options={}){
     const profile=stageProfile(options.accountStage),score=scoreFor(mon,options.score),finalId=finalFormId(mon,score);
-    if(mon&&mon.battleEligible===false)return result('collection',{accountStage:profile,reason:'这只已被标记为“仅收藏”，因此不参与实战培养排序。'});
     if(!score||!finite(score.speciesScore)||!finite(score.individualScore))return result('manual',{accountStage:profile,reason:'种族分或个体分尚未完成，不能用缺失数据自动判断。'});
 
     const speciesScore=Number(score.speciesScore),individualScore=Number(score.individualScore),level=Math.max(1,Number(mon&&mon.lv||mon&&mon.level||1)),pattern=score.individual&&score.individual.ingredientPattern,teamModel=score.teamModel||catalog&&catalog.speciesScores&&catalog.speciesScores[finalId]&&catalog.speciesScores[finalId].teamModel||null,islandRoles=strategy&&strategy.islandRolesForSpecies?strategy.islandRolesForSpecies(finalId):[],islandRole=islandRoles[0]||null,strategicProfile=score.strategy||strategy&&strategy.SPECIES_ROLES&&strategy.SPECIES_ROLES[finalId]||null,minimum=strategy&&strategy.minimumStandard?strategy.minimumStandard(mon,{finalId,specialty:score.specialty,strategicProfile}):null;
@@ -189,7 +187,7 @@
     const lines=[`${value.label}｜${value.accountStage.label}`,value.reason,...value.details];
     if(value.directSuperior)lines.push(`直接上位：${value.directSuperior.name}${value.directSuperior.present?'（盒内已有）':'（盒内未检出）'}`);
     if(value.exception)lines.push(`例外用途：${value.exception}`);
-    lines.push(`建议动作：${value.nextAction}`,`依据：${value.evidence}`,'培养判断与种族分／个体分分开，不会反向修改综合评分，也不会自动放生。');
+    lines.push(`建议动作：${value.nextAction}`,`依据：${value.evidence}`,'培养判断、收藏状态与实战资格彼此独立；这里不会反向修改综合评分，也不会自动放生。');
     return lines.filter(Boolean).join('\n');
   }
 

@@ -49,5 +49,13 @@ assert.ok(html.includes('id="selectionGraduationRole"'), '严选概率工具缺�
 assert.ok(html.includes('id="pokemonCompareRole"'), '个体生产对比缺少定位选择');
 assert.ok(html.includes('<option value="berry">树果位（含树果骤增）</option>'), '树果骤增技能手必须明确归入树果位对比');
 assert.ok(html.includes("title.dataset.noIngredientIcons=''"), '食谱名称必须显式禁止食材图标装饰');
+assert.ok(html.includes('value="pokedex-asc">图鉴编号顺序'), '盒子默认排序必须提供图鉴编号顺序');
+assert.ok(html.includes('data-k="pokedexId">图鉴'), '盒子表格第一列必须显示图鉴编号');
+assert.ok(html.includes('id="pokemonCollectionIntent"'), '个体编辑器必须允许收藏与实战同时标记');
+assert.ok(!html.includes('id="pokemonPriority"'), '手工培养建议控件应移除，统一使用动态重算');
+assert.ok(!html.includes('id="pokemonNote"'), '不再需要的个体备注控件应移除');
+assert.ok(!html.includes('<th>备注</th>'), '盒子列表不应再展示备注列');
+assert.ok(html.includes('class="box-multi-filter" id="rf"'), '定位筛选必须支持同组多选');
+assert.ok(html.includes('value="both"><span>收藏＋实战</span>'), '筛选器必须支持收藏且可实战的组合状态');
 
 console.log(`site structure tests passed (${ids.length} ids, ${new Set(localRefs).size} local refs)`);

@@ -107,7 +107,7 @@
     const current=state&&state.meta?state:readAll(),id=String(current.meta.nextDisplayId);
     current.meta.nextDisplayId+=1;current.meta.updatedAt=now();return id;
   }
-  function upsertPokemon(record,{boxId='pending',battleEligible=true}={},target=storage()){
+  function upsertPokemon(record,{boxId='pending',battleEligible=true,collectionIntent=false}={},target=storage()){
     const state=readAll(target),normalized=canonicalRecord(record),index=state.pokemon.findIndex(item=>item.recordId===normalized.recordId||item.id===normalized.id),changedAt=now();
     normalized.updatedAt=changedAt;if(!normalized.createdAt)normalized.createdAt=changedAt;
     if(index>=0)state.pokemon[index]=normalized;else state.pokemon.push(normalized);
@@ -115,9 +115,9 @@
     state.meta=normalizeMeta(state.meta,state.pokemon,state.recycle);state.meta.nextDisplayId=Math.max(state.meta.nextDisplayId,Number(normalized.id)+1||1);
     const result=saveAll(state,target,index>=0?'pokemon-edit':'pokemon-add');
     const boxState=readJson(BOX_KEY,{},target),boxes=boxState&&typeof boxState==='object'?boxState:{};
-    boxes.version=1;boxes.boxes=boxes.boxes&&typeof boxes.boxes==='object'?boxes.boxes:{};boxes.pokemon=boxes.pokemon&&typeof boxes.pokemon==='object'?boxes.pokemon:{};
+    boxes.version=2;boxes.boxes=boxes.boxes&&typeof boxes.boxes==='object'?boxes.boxes:{};boxes.pokemon=boxes.pokemon&&typeof boxes.pokemon==='object'?boxes.pokemon:{};
     const previous=boxes.pokemon[normalized.id]&&typeof boxes.pokemon[normalized.id]==='object'?boxes.pokemon[normalized.id]:{};
-    boxes.pokemon[normalized.id]={...previous,boxId:String(boxId||previous.boxId||'pending'),battleEligible:Boolean(battleEligible),upgrades:previous.upgrades&&typeof previous.upgrades==='object'?previous.upgrades:{},updatedAt:changedAt};
+    boxes.pokemon[normalized.id]={...previous,boxId:String(boxId||previous.boxId||'pending'),battleEligible:Boolean(battleEligible),collectionIntent:Boolean(collectionIntent),upgrades:previous.upgrades&&typeof previous.upgrades==='object'?previous.upgrades:{},updatedAt:changedAt};
     writeJson(BOX_KEY,boxes,target);
     const levels=readJson(LEVEL_KEY,{},target);if(levels&&typeof levels==='object'){delete levels[normalized.id];writeJson(LEVEL_KEY,levels,target)}
     emit(index>=0?'pokemon-edit':'pokemon-add',{id:normalized.id,recordId:normalized.recordId});

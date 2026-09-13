@@ -10,12 +10,14 @@
 .box-management-box{display:inline-flex;width:max-content;max-width:100%;align-items:center;gap:6px;border:1px solid color-mix(in srgb,var(--box-color,#687588) 32%,white);border-radius:999px;background:color-mix(in srgb,var(--box-color,#687588) 10%,white);color:var(--box-color,#687588);padding:3px 8px;font-size:11px;font-weight:850}
 .box-management-box::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--box-color,#687588)}
 .box-management-state{font-size:10px;font-weight:800}
-.box-management-state.battle{color:#147347}
-.box-management-state.collection{color:#a45108}
+.box-management-state.battle-only{color:#147347}
+.box-management-state.collection-only{color:#a45108}
+.box-management-state.both{color:#7250aa}
+.box-management-state.inactive{color:#7a8494}
 .box-management-edit{width:max-content;border:0;background:none;color:#6045ad;padding:0;font:inherit;font-size:10px;font-weight:850;cursor:pointer}
 .box-management-edit:hover{text-decoration:underline}
 .box-page-table table{min-width:1300px!important}
-.box-page-table th:nth-child(1){width:36px!important}
+.box-page-table th:nth-child(1){width:64px!important}
 .box-page-table th:nth-child(2){width:90px!important}
 .box-page-table th:nth-child(3){width:105px!important}
 .box-page-table th:nth-child(4){width:92px!important}
@@ -62,9 +64,11 @@
 .box-manager-card-skill{margin-top:auto;padding-top:7px}
 .box-manager-card-badges{display:flex;align-items:center;gap:5px;min-height:24px;overflow:hidden}
 .box-manager-card-badges .shiny{padding:1px 6px;font-size:9px}
-.box-manager-battle,.box-manager-collection{display:inline-flex;width:max-content;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:850}
-.box-manager-battle{background:#e7f8ef;color:#147347}
-.box-manager-collection{background:#fff1dc;color:#985307}
+.box-manager-usage{display:inline-flex;width:max-content;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:850}
+.box-manager-usage.battle-only{background:#e7f8ef;color:#147347}
+.box-manager-usage.collection-only{background:#fff1dc;color:#985307}
+.box-manager-usage.both{background:#f0eaff;color:#6941a5}
+.box-manager-usage.inactive{background:#eef1f5;color:#667085}
 .box-manager-empty{grid-column:1/-1;border:1px dashed #c2cad5;border-radius:12px;padding:28px;text-align:center;color:var(--muted)}
 .box-manager-side{display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0;background:#fff}
 .box-manager-rename{display:grid;grid-template-columns:1fr auto;gap:8px;border-bottom:1px solid #e3e7ed;padding:12px 14px}

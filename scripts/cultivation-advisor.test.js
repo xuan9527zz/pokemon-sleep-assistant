@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const boxScoring = require('../skills/pokemon-sleep-scoring/scripts/box-scores.js');
 const advisor = require('../cultivation-advisor.js');
+const boxManager = require('../box-manager.js');
 const catalog = require('../pokemon-catalog.generated.js');
 
 require('../box-scores.generated.js');
@@ -98,5 +99,14 @@ const aabIngredient = {
 const aabAdvice=advisor.assess(aabIngredient,[aabIngredient],{accountStage:'mature'});
 assert.equal(aabAdvice.tier,'transition','AAB is a Lv.30 worker even when the mechanical score is high');
 assert.match(advisor.explanation(aabAdvice),/Lv\.59|Lv\.30食材工/);
+
+const collectionMarked={...courseBerry,id:'collection-battle-independent',battleEligible:false,collectionIntent:true};
+assert.equal(advisor.assess(collectionMarked,[collectionMarked],{accountStage:'mature'}).tier,'core','收藏与实战状态不得短路培养建议重算');
+
+box.forEach(mon=>{mon.specialty=mon.scoreBreakdown&&mon.scoreBreakdown.specialty;mon.cultivation=mature(mon)});
+const recalculated=boxManager.recalculateUsageState(box,{},{}).state;
+const records=Object.values(recalculated.pokemon),usageCounts=records.reduce((counts,record)=>{const status=boxManager.usageStatus(record);counts[status]=(counts[status]||0)+1;return counts},{});
+assert.equal(records.filter(record=>record.collectionIntent).length,box.filter(mon=>mon.shiny==='是').length,'自动重算的收藏维度必须恰好覆盖全部闪光个体');
+assert.deepEqual(usageCounts,{'battle-only':37,'both':25,'collection-only':19,inactive:16},'97只现有个体的用途分类应完整重算并锁定四种状态');
 
 console.log('cultivation advisor tests passed (course caps, stage, direct-superior, team-cost, berry scenarios)');

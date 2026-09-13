@@ -24,11 +24,13 @@ dataApi.writeJson(dataApi.CURRENT_TEAM_KEY, ['1','2'], storage);
 dataApi.writeJson(dataApi.SAVED_TEAMS_KEY, [{id:'team-1',members:['1','2','3','4','5']}], storage);
 
 const added = {...seed[0],id:'3',recordId:'new-3',speciesId:'1',finalFormId:'3',name:'妙蛙种子',nickname:'蜂蜜一号',customNumber:'A-03'};
-dataApi.upsertPokemon(added, {boxId:'training',battleEligible:true}, storage);
+dataApi.upsertPokemon(added, {boxId:'training',battleEligible:true,collectionIntent:true}, storage);
 assert.equal(dataApi.readAll(storage).pokemon.length, 3);
 assert.equal(dataApi.readAll(storage).pokemon.find(mon=>mon.id==='3').nickname,'蜂蜜一号');
 assert.equal(dataApi.readAll(storage).pokemon.find(mon=>mon.id==='3').customNumber,'A-03');
 assert.equal(dataApi.readJson(dataApi.BOX_KEY, {}, storage).pokemon['3'].boxId, 'training');
+assert.equal(dataApi.readJson(dataApi.BOX_KEY, {}, storage).pokemon['3'].collectionIntent, true);
+assert.equal(dataApi.readJson(dataApi.BOX_KEY, {}, storage).version, 2);
 
 const released = dataApi.releasePokemon('2', storage);
 assert.equal(released.ok, true);

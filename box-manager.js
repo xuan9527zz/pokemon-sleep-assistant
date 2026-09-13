@@ -7,6 +7,7 @@
   'use strict';
 
   const STORAGE_KEY='pokemon-sleep-box-management-v1';
+  const USAGE_MODEL_VERSION=2;
   const SUBSKILL_LEVELS=[10,25,50,70,80];
   const BOXES=Object.freeze([
     {id:'main',name:'实战主力',color:'#1d8b5b'},
@@ -19,8 +20,10 @@
     {id:'retire',name:'放生候选',color:'#b34f58'}
   ]);
   const BOX_IDS=new Set(BOXES.map(function(box){return box.id}));
-  const COLLECTION_BOXES=new Set(['shiny','retire']);
+  const COLLECTION_BOXES=new Set(['shiny']);
+  const NON_BATTLE_BOXES=new Set(['retire']);
   const SPECIAL_NAMES=new Set(['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊','超梦']);
+  const BATTLE_TIERS=new Set(['core','stage','transition','niche']);
   const UPGRADE_FAMILIES=Object.freeze([
     Object.freeze(['帮忙速度S','帮忙速度M']),
     Object.freeze(['食材概率S','食材概率M']),
@@ -69,7 +72,34 @@
   }
 
   function defaultBattleEligible(mon,boxId){
-    return !(String(mon&&mon.priority||'')==='闪光收藏'||COLLECTION_BOXES.has(boxId));
+    return !(String(mon&&mon.priority||'')==='闪光收藏'||NON_BATTLE_BOXES.has(boxId));
+  }
+
+  function defaultCollectionIntent(mon,boxId){
+    return Boolean(mon&&mon.shiny==='是'||String(mon&&mon.priority||'').includes('收藏')||COLLECTION_BOXES.has(boxId));
+  }
+
+  function usageStatus(value){
+    const battle=Boolean(value&&value.battleEligible!==false),collection=Boolean(value&&value.collectionIntent);
+    return battle&&collection?'both':battle?'battle-only':collection?'collection-only':'inactive';
+  }
+
+  function usageInfo(value){
+    const status=usageStatus(value),labels={'battle-only':'仅实战','collection-only':'仅收藏',both:'收藏＋实战',inactive:'暂不实战'};
+    return {status:status,label:labels[status],battleEligible:['battle-only','both'].includes(status),collectionIntent:['collection-only','both'].includes(status)};
+  }
+
+  function recommendedUsage(mon){
+    const cultivation=mon&&mon.cultivation||{},tier=String(cultivation.tier||'manual'),special=SPECIAL_NAMES.has(String(mon&&mon.name||'')),collectionIntent=Boolean(mon&&mon.shiny==='是'),battleEligible=BATTLE_TIERS.has(tier)||(tier==='manual'&&special);
+    let boxId='pending';
+    if(special)boxId='special';
+    else if(collectionIntent&&!battleEligible)boxId='shiny';
+    else if(tier==='core')boxId='main';
+    else if(tier==='stage')boxId='training';
+    else if(battleEligible&&mon&&mon.specialty==='ingredient')boxId='ingredient';
+    else if(battleEligible&&['skill','all'].includes(mon&&mon.specialty))boxId='skill';
+    else if(battleEligible)boxId='main';
+    return {boxId:boxId,battleEligible:battleEligible,collectionIntent:collectionIntent,usageStatus:usageStatus({battleEligible,collectionIntent})};
   }
 
   function normalizeBoxNames(value){
@@ -133,6 +163,7 @@
     return {
       boxId:boxId,
       battleEligible:typeof source.battleEligible==='boolean'?source.battleEligible:defaultBattleEligible(mon,boxId),
+      collectionIntent:typeof source.collectionIntent==='boolean'?source.collectionIntent:typeof source.collection==='boolean'?source.collection:defaultCollectionIntent(mon,boxId),
       upgrades:normalizeUpgrades(mon,source.upgrades),
       updatedAt:typeof source.updatedAt==='string'?source.updatedAt:''
     };
@@ -142,10 +173,23 @@
     const source=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
     const mons=Array.isArray(pokemon)?pokemon:[];
     const records=source.pokemon&&typeof source.pokemon==='object'&&!Array.isArray(source.pokemon)?source.pokemon:{};
-    const normalized={version:1,boxes:normalizeBoxNames(source.boxes),pokemon:{}};
+    const normalized={version:2,usageModelVersion:Math.max(0,Math.round(Number(source.usageModelVersion)||0)),boxes:normalizeBoxNames(source.boxes),pokemon:{}};
     mons.forEach(function(mon){normalized.pokemon[String(mon.id)]=normalizeRecord(mon,records[String(mon.id)])});
     return normalized;
   }
+
+  function recalculateUsageState(pokemon,state,options){
+    const normalized=normalizeState(state,pokemon),force=Boolean(options&&options.force);
+    if(!force&&normalized.usageModelVersion>=USAGE_MODEL_VERSION)return {state:normalized,changed:false};
+    (Array.isArray(pokemon)?pokemon:[]).forEach(function(mon){
+      const id=String(mon.id),current=normalized.pokemon[id],recommendation=recommendedUsage(mon);
+      normalized.pokemon[id]={...current,boxId:recommendation.boxId,battleEligible:recommendation.battleEligible,collectionIntent:recommendation.collectionIntent,updatedAt:new Date().toISOString()};
+    });
+    normalized.usageModelVersion=USAGE_MODEL_VERSION;
+    return {state:normalized,changed:true};
+  }
+
+  function saveState(state,storage){return writeJson(storage===undefined?browserStorage():storage,STORAGE_KEY,state)}
 
   function boxList(state){
     const names=normalizeBoxNames(state&&state.boxes);
@@ -166,6 +210,8 @@
     setHidden(mon,'boxId',normalized.boxId);
     setHidden(mon,'boxName',names[normalized.boxId].name);
     setHidden(mon,'battleEligible',normalized.battleEligible);
+    setHidden(mon,'collectionIntent',normalized.collectionIntent);
+    const usage=usageInfo(normalized);setHidden(mon,'usageStatus',usage.status);setHidden(mon,'usageLabel',usage.label);
     setHidden(mon,'subskillUpgrades',Object.assign({},normalized.upgrades));
     setHidden(mon,'effectiveSubs',effective.join('；'));
     setHidden(mon,'managementUpdatedAt',normalized.updatedAt);
@@ -296,6 +342,8 @@
     const moveButton=document.querySelector('#boxManagerMove');
     const enableButton=document.querySelector('#boxManagerEnable');
     const disableButton=document.querySelector('#boxManagerDisable');
+    const collectButton=document.querySelector('#boxManagerCollect');
+    const uncollectButton=document.querySelector('#boxManagerUncollect');
     const clearButton=document.querySelector('#boxManagerClearSelection');
     const messageRoot=document.querySelector('#boxManagerMessage');
     if(!openButton||!dialog||!gridRoot||!inspectorRoot)return null;
@@ -330,8 +378,9 @@
     }
     function updateToolbar(message,warning){
       const battle=mons.filter(function(mon){return recordFor(mon.id).battleEligible}).length;
-      const collection=mons.length-battle;
-      statusRoot.textContent=message||battle+' 只参与实战 · '+collection+' 只仅收藏';
+      const collection=mons.filter(function(mon){return recordFor(mon.id).collectionIntent}).length;
+      const both=mons.filter(function(mon){return usageStatus(recordFor(mon.id))==='both'}).length;
+      statusRoot.textContent=message||battle+' 只可实战 · '+collection+' 只收藏 · '+both+' 只两者兼具';
       statusRoot.classList.toggle('warning',Boolean(warning));
     }
     function visibleMons(){
@@ -339,11 +388,10 @@
       return mons.filter(function(mon){
         const record=recordFor(mon.id);
         if(record.boxId!==activeBox)return false;
-        if(mode==='battle'&&!record.battleEligible)return false;
-        if(mode==='collection'&&record.battleEligible)return false;
+        if(mode!=='all'&&usageStatus(record)!==mode)return false;
         const lv10=effectiveSubskills(mon)[0]||'—';
-        return !query||['#'+mon.id,mon.id,mon.name,mon.nickname,mon.customNumber,mon.shiny,mon.priority,lv10].join(' ').toLowerCase().includes(query);
-      }).sort(function(a,b){return Number(a.id)-Number(b.id)});
+        return !query||['#'+(mon.pokedexId||''),'个体#'+mon.id,mon.name,mon.nickname,mon.customNumber,mon.shiny,mon.usageLabel,lv10].join(' ').toLowerCase().includes(query);
+      }).sort(function(a,b){return Number(a.pokedexId||a.speciesId||Number.MAX_SAFE_INTEGER)-Number(b.pokedexId||b.speciesId||Number.MAX_SAFE_INTEGER)||Number(a.id)-Number(b.id)});
     }
     function renderTabs(){
       const counts=boxCounts();
@@ -376,15 +424,15 @@
       const rows=visibleMons();
       gridRoot.replaceChildren();
       rows.forEach(function(mon){
-        const record=recordFor(mon.id),pressed=selected.has(mon.id),card=element('button','box-manager-card'+(pressed?' selected':'')+(!record.battleEligible?' collection-only':''));
+        const record=recordFor(mon.id),usage=usageInfo(record),pressed=selected.has(mon.id),card=element('button','box-manager-card '+usage.status+(pressed?' selected':'')+(!record.battleEligible?' non-battle':''));
         card.type='button';card.setAttribute('aria-pressed',pressed?'true':'false');
         card.addEventListener('click',function(){toggleSelected(mon.id)});
         const head=element('span','box-manager-card-head');
-        head.append(element('span','box-manager-card-number','#'+mon.id),element('span','box-manager-card-check',pressed?'✓':''));
+        head.append(element('span','box-manager-card-number','图鉴 #'+String(mon.pokedexId||mon.speciesId||'?').padStart(3,'0')+' · 个体 #'+mon.id),element('span','box-manager-card-check',pressed?'✓':''));
         const name=element('strong','',mon.nickname||mon.name);if(mon.nickname)name.title=mon.name;if(mon.customNumber)name.append(element('small','box-manager-custom-number',' · '+mon.customNumber));
         const badges=element('span','box-manager-card-badges');
         if(mon.shiny==='是')badges.append(element('span','shiny','★ 闪光'));
-        badges.append(element('span',record.battleEligible?'box-manager-battle':'box-manager-collection',record.battleEligible?'参与实战':'仅收藏'));
+        badges.append(element('span','box-manager-usage '+usage.status,usage.label));
         const lv10=effectiveSubskills(mon)[0]||'—';
         const upgrade=record.upgrades['0']?'（原 '+splitSubskills(mon.subs)[0]+'）':'';
         card.append(head,name,badges,element('small','',('Lv.'+mon.lv+' · '+(mon.specialtyLabel||'待分类'))),element('small','box-manager-card-skill','Lv.10 '+lv10+upgrade));
@@ -434,19 +482,19 @@
       return rootNode;
     }
     function renderInspector(){
-      if(!selected.size){renderInspectorEmpty('选择一只宝可梦后，可编辑实际副技能升级；多选则可批量移动盒子或切换实战资格。');return}
-      if(selected.size>1){renderInspectorEmpty('已选择 '+selected.size+' 只。使用底部操作批量移动，或设为“参与实战／仅收藏”。');return}
+      if(!selected.size){renderInspectorEmpty('选择一只宝可梦后，可编辑实际副技能升级；多选则可批量移动盒子、实战资格或收藏状态。');return}
+      if(selected.size>1){renderInspectorEmpty('已选择 '+selected.size+' 只。实战资格与收藏状态可分别批量设置。');return}
       const id=focusedId||Array.from(selected)[0],mon=monFor(id),record=recordFor(id);
       if(!mon){renderInspectorEmpty('没有找到所选宝可梦。');return}
-      const head=element('div','box-manager-inspector-head');
-      const title=element('div','');title.append(element('span','box-manager-inspector-kicker','#'+mon.id+' · Lv.'+mon.lv),element('h3','',mon.name),element('p','',record.battleEligible?'会进入自动组队、食材推荐与当前队伍选择。':'仅作收藏显示，不进入任何自动实战计算。'));
-      const headActions=element('div','box-manager-inspector-head-actions'),back=element('button','box-manager-mobile-back','返回盒子');back.type='button';back.addEventListener('click',function(){selected.clear();focusedId=null;renderAll()});headActions.append(element('span',record.battleEligible?'box-manager-battle':'box-manager-collection',record.battleEligible?'参与实战':'仅收藏'),back);head.append(title,headActions);
+      const usage=usageInfo(record),head=element('div','box-manager-inspector-head');
+      const title=element('div','');title.append(element('span','box-manager-inspector-kicker','图鉴 #'+String(mon.pokedexId||mon.speciesId||'?').padStart(3,'0')+' · 个体 #'+mon.id+' · Lv.'+mon.lv),element('h3','',mon.name),element('p','',usage.battleEligible?(usage.collectionIntent?'既保留收藏，也会进入自动组队与推荐。':'会进入自动组队、食材推荐与当前队伍选择。'):(usage.collectionIntent?'只保留收藏，不进入自动实战计算。':'当前暂不参与实战，也未标记收藏。')));
+      const headActions=element('div','box-manager-inspector-head-actions'),back=element('button','box-manager-mobile-back','返回盒子');back.type='button';back.addEventListener('click',function(){selected.clear();focusedId=null;renderAll()});headActions.append(element('span','box-manager-usage '+usage.status,usage.label),back);head.append(title,headActions);
       const note=element('p','box-manager-seed-note','这里记录游戏中已经发生的升级，不改变Lv.70潜力评分。若同时有多个可升级的已解锁栏位，游戏实际使用种子时会随机抽选；本页不会模拟定向使用。');
       inspectorRoot.replaceChildren(head,note,renderSubskillEditor(mon,record));
     }
     function updateActions(){
       const disabled=!selected.size;
-      moveButton.disabled=disabled;enableButton.disabled=disabled;disableButton.disabled=disabled;clearButton.disabled=disabled;
+      moveButton.disabled=disabled;enableButton.disabled=disabled;disableButton.disabled=disabled;collectButton.disabled=disabled;uncollectButton.disabled=disabled;clearButton.disabled=disabled;
       dialog.classList.toggle('single-selection',selected.size===1);
       dialog.classList.toggle('multi-selection',selected.size>1);
     }
@@ -472,19 +520,27 @@
       const ids=Array.from(selected),now=new Date().toISOString();
       ids.forEach(function(id){state.pokemon[id].battleEligible=value;state.pokemon[id].updatedAt=now});
       applyIds(ids);persist();notifyChanges(ids.map(function(id){return {id:id,type:'eligibility',after:value}}));
-      showMessage(ids.length+'只宝可梦已设为'+(value?'参与实战。':'仅收藏；自动队伍会立即避开它们。'));renderAll();
+      showMessage(ids.length+'只宝可梦已'+(value?'启用实战资格。':'暂停实战；收藏状态保持不变。'));renderAll();
+    }
+    function changeCollection(value){
+      if(!selected.size)return;
+      const ids=Array.from(selected),now=new Date().toISOString();
+      ids.forEach(function(id){state.pokemon[id].collectionIntent=value;state.pokemon[id].updatedAt=now});
+      applyIds(ids);persist();notifyChanges(ids.map(function(id){return {id:id,type:'collection',after:value}}));
+      showMessage(ids.length+'只宝可梦已'+(value?'加入收藏。':'取消收藏标记；实战资格保持不变。'));renderAll();
     }
     function moveSelected(){
       if(!selected.size)return;
-      const target=destinationInput.value,ids=Array.from(selected),now=new Date().toISOString(),autoCollection=COLLECTION_BOXES.has(target);
+      const target=destinationInput.value,ids=Array.from(selected),now=new Date().toISOString(),autoCollection=COLLECTION_BOXES.has(target),autoNonBattle=NON_BATTLE_BOXES.has(target);
       ids.forEach(function(id){
         state.pokemon[id].boxId=target;
-        if(autoCollection)state.pokemon[id].battleEligible=false;
+        if(autoCollection)state.pokemon[id].collectionIntent=true;
+        if(autoNonBattle)state.pokemon[id].battleEligible=false;
         state.pokemon[id].updatedAt=now;
       });
       applyIds(ids);persist();notifyChanges(ids.map(function(id){return {id:id,type:'box',after:target,battleEligible:state.pokemon[id].battleEligible}}));
       selected.clear();focusedId=null;activeBox=target;
-      showMessage(ids.length+'只宝可梦已移动到“'+state.boxes[target].name+'”'+(autoCollection?'，并设为仅收藏。':'。'));renderAll();
+      showMessage(ids.length+'只宝可梦已移动到“'+state.boxes[target].name+'”'+(autoCollection?'，并加入收藏；实战资格保持不变。':autoNonBattle?'，并暂停实战。':'。'));renderAll();
     }
 
     openButton.addEventListener('click',openBulk);
@@ -504,6 +560,8 @@
     moveButton.addEventListener('click',moveSelected);
     enableButton.addEventListener('click',function(){changeEligibility(true)});
     disableButton.addEventListener('click',function(){changeEligibility(false)});
+    collectButton.addEventListener('click',function(){changeCollection(true)});
+    uncollectButton.addEventListener('click',function(){changeCollection(false)});
     clearButton.addEventListener('click',function(){selected.clear();focusedId=null;renderGrid();renderInspector();updateActions()});
     dialog.addEventListener('cancel',function(event){event.preventDefault();closeDialog()});
     dialog.addEventListener('click',function(event){if(event.target===dialog)closeDialog()});
@@ -521,16 +579,23 @@
 
   return {
     STORAGE_KEY:STORAGE_KEY,
+    USAGE_MODEL_VERSION:USAGE_MODEL_VERSION,
     SUBSKILL_LEVELS:SUBSKILL_LEVELS,
     BOXES:BOXES,
     UPGRADE_FAMILIES:UPGRADE_FAMILIES,
     splitSubskills:splitSubskills,
     defaultBoxId:defaultBoxId,
     defaultBattleEligible:defaultBattleEligible,
+    defaultCollectionIntent:defaultCollectionIntent,
+    usageStatus:usageStatus,
+    usageInfo:usageInfo,
+    recommendedUsage:recommendedUsage,
     normalizeBoxNames:normalizeBoxNames,
     normalizeUpgrades:normalizeUpgrades,
     normalizeRecord:normalizeRecord,
     normalizeState:normalizeState,
+    recalculateUsageState:recalculateUsageState,
+    saveState:saveState,
     boxList:boxList,
     applyRecord:applyRecord,
     applyState:applyState,
