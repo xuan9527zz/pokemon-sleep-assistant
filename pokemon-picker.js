@@ -6,52 +6,42 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(root){
   'use strict';
   const ROLE_LABELS={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手',unknown:'待核对'};
-  // The generated catalogue keeps Pokémon Sleep's internal IDs.  Most of them
-  // equal the National Pokédex number, but regional forms and size variants do
-  // not.  Resolve those by catalogue species ID before falling back to a base
-  // species for costumes that PokeAPI does not provide.
-  const SPRITE_SPECIES_IDS=Object.freeze({
-    '7006':10103,'7007':10104,'7054':10253,'8001':10184,
-    '710-1':710,'710-2':10027,'710-3':10028,'710-4':10029,
-    '711-1':711,'711-2':10030,'711-3':10031,'711-4':10032,
-    '9001-1':25,'9001-2':25,'9002':25,'9004':133,'9005':133,'9006':363,'9007':25
+  // PokéSleep Super Wiki uses the same internal IDs as the generated local
+  // catalogue, so regional, size and event forms can keep their own artwork.
+  const LOCAL_NAME_IDS=Object.freeze({
+    '皮卡丘（巫师帽）':'9001-1',
+    '皮卡丘（万圣节）':'9001-1',
+    '皮卡丘（圣诞）':'9002',
+    '皮卡丘（佳节）':'9002',
+    '皮卡丘（船长）':'9007',
+    '伊布（圣诞）':'9004',
+    '伊布（佳节）':'9004',
+    '伊布（万圣节）':'9005',
+    '乌波（城都）':'194',
+    '乌波（帕底亚）':'7054',
+    '乌波（帕底亚的样子）':'7054',
+    '六尾（阿罗拉的样子）':'7006',
+    '九尾（阿罗拉的样子）':'7007',
+    '颤弦蝾螈（低调的样子）':'8001',
+    '海豹球（节日）':'9006',
+    '海豹球（佳节）':'9006'
   });
-  const SPRITE_BASE_IDS=Object.freeze({9001:25,9002:25,9004:133,9005:133,9006:363,9007:25});
-  const SPRITE_NAME_IDS=Object.freeze({
-    '皮卡丘（巫师帽）':25,
-    '皮卡丘（万圣节）':25,
-    '皮卡丘（圣诞）':25,
-    '皮卡丘（佳节）':25,
-    '皮卡丘（船长）':25,
-    '伊布（圣诞）':133,
-    '伊布（佳节）':133,
-    '伊布（万圣节）':133,
-    '乌波（城都）':194,
-    '乌波（帕底亚）':10253,
-    '乌波（帕底亚的样子）':10253,
-    '六尾（阿罗拉的样子）':10103,
-    '九尾（阿罗拉的样子）':10104,
-    '颤弦蝾螈（低调的样子）':10184,
-    '海豹球（节日）':363,
-    '海豹球（佳节）':363
-  });
+  const LOCAL_EXTENSIONS=Object.freeze({'701':'webp','957':'webp','958':'webp','959':'webp','9007':'webp'});
   const normalize=value=>String(value||'').trim().toLowerCase();
   function recordFor(mon,catalog){
     const rows=catalog&&Array.isArray(catalog.pokemon)?catalog.pokemon:[];
     return rows.find(row=>String(row.id)===String(mon&&mon.speciesId||''))||rows.find(row=>row.name===mon.name)||rows.find(row=>String(row.id)===String(mon&&mon.finalFormId||''))||null;
   }
   function iconUrl(mon,catalog){
-    const record=recordFor(mon,catalog),rawId=Number(record&&record.pokedexId);
-    const speciesId=String(record&&record.id||mon&&mon.speciesId||'');
-    const nameId=SPRITE_NAME_IDS[String(mon&&mon.name||'')];
-    const id=SPRITE_SPECIES_IDS[speciesId]||nameId||SPRITE_BASE_IDS[rawId]||rawId;
-    return Number.isFinite(id)&&id>0?`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`:'';
+    const record=recordFor(mon,catalog),speciesId=String(record&&record.id||mon&&mon.speciesId||LOCAL_NAME_IDS[String(mon&&mon.name||'')]||'').trim();
+    const extension=LOCAL_EXTENSIONS[speciesId]||'png';
+    return /^[\w-]+$/.test(speciesId)?`./assets/pokemon/${speciesId}.${extension}`:'';
   }
   function displayName(mon){return String(mon&&mon.nickname||'').trim()||String(mon&&mon.name||'未命名')}
   function searchableText(mon){return normalize([mon.id,`#${mon.id}`,mon.name,mon.nickname,mon.customNumber,mon.boxName,mon.specialtyLabel,ROLE_LABELS[mon.specialty],mon.ingredients,mon.subs,mon.note].join(' '))}
   function createIcon(mon,{catalog,size='medium',document:doc=(root&&root.document)}={}){
     if(!doc)return null;const wrap=doc.createElement('span');wrap.className=`pokemon-sprite pokemon-sprite-${size}`;wrap.setAttribute('aria-hidden','true');const url=iconUrl(mon,catalog);
-    if(url){const img=doc.createElement('img');img.src=url;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>{img.remove();wrap.textContent=String(mon&&mon.name||'?').slice(0,1)});wrap.append(img)}else wrap.textContent=String(mon&&mon.name||'?').slice(0,1);return wrap;
+    if(url){const img=doc.createElement('img');img.src=url;img.alt='';img.loading='lazy';img.addEventListener('error',()=>{img.remove();wrap.textContent=String(mon&&mon.name||'?').slice(0,1)});wrap.append(img)}else wrap.textContent=String(mon&&mon.name||'?').slice(0,1);return wrap;
   }
   function setButton(button,mon,options={}){
     if(!button)return;button.replaceChildren();if(!mon){button.classList.add('is-empty');button.textContent=options.emptyLabel||'选择宝可梦';return}button.classList.remove('is-empty');button.append(createIcon(mon,options));const copy=button.ownerDocument.createElement('span'),strong=button.ownerDocument.createElement('strong'),small=button.ownerDocument.createElement('small');strong.textContent=displayName(mon);small.textContent=`#${mon.id}${mon.nickname?` · ${mon.name}`:''} · Lv.${mon.lv}`;copy.append(strong,small);button.append(copy);
@@ -75,5 +65,5 @@
     search.addEventListener('input',render);role.addEventListener('change',render);box.addEventListener('change',render);close.addEventListener('click',()=>dialog.close?dialog.close():dialog.removeAttribute('open'));dialog.addEventListener('click',event=>{if(event.target===dialog&&dialog.close)dialog.close()});
     return {open,close:()=>dialog.close&&dialog.close(),render,createIcon:(mon,config={})=>createIcon(mon,{catalog,document:doc,...config}),setButton:(button,mon,config={})=>setButton(button,mon,{catalog,document:doc,...config})};
   }
-  return Object.freeze({ROLE_LABELS,SPRITE_SPECIES_IDS,SPRITE_BASE_IDS,SPRITE_NAME_IDS,recordFor,iconUrl,displayName,searchableText,createIcon,setButton,mount});
+  return Object.freeze({ROLE_LABELS,LOCAL_NAME_IDS,LOCAL_EXTENSIONS,recordFor,iconUrl,displayName,searchableText,createIcon,setButton,mount});
 });

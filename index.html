@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="./box-manager.css">
 <link rel="stylesheet" href="./pokemon-manager.css?v=20260831-1">
 <link rel="stylesheet" href="./cloud-sync.css?v=20260831-1">
-<link rel="stylesheet" href="./weekly-planner.css?v=20260912-2">
+<link rel="stylesheet" href="./weekly-planner.css?v=20260913-3">
 <link rel="stylesheet" href="./investment-planner.css?v=20260831-2">
 <link rel="stylesheet" href="./retention-advisor.css?v=20260901-1">
 <link rel="stylesheet" href="./cultivation-advisor.css?v=20260831-1">
@@ -95,7 +95,7 @@
   <div class="cloud-sync-actions"><input id="cloudEmail" type="email" inputmode="email" autocomplete="email" placeholder="输入邮箱接收登录链接" aria-label="登录邮箱"><button id="cloudLogin" type="button">发送登录邮件</button><button class="secondary" id="cloudLogout" type="button" hidden>退出登录</button></div>
 </section>
 <section class="panel weekly-planner" id="weeklyPlanner" data-page="weekly" hidden aria-labelledby="weeklyPlannerTitle">
-  <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周作战台｜这周先做什么</h2><p>按当前岛屿、周类型与 800 格库存，滚动规划下一批真正放得下的食材。</p></div><span class="guide-stamp">当前盒子 · 自动保存</span></div>
+  <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周作战台｜这周先做什么</h2><p>按当前岛屿与周类型，切换本岛培养、活动备料或活动周完整推演。</p></div><span class="guide-stamp">当前盒子 · 自动保存</span></div>
   <div class="weekly-controls">
     <div class="weekly-profile-summary" id="weeklyProfileSummary"><span>个人设置</span><strong>正在读取当前岛屿与本周类型</strong><button id="weeklySettingsOpen" type="button">调整</button></div><select id="weeklyIsland" hidden aria-hidden="true"></select><select id="weeklyActivity" hidden aria-hidden="true"></select>
     <fieldset class="weekly-route-picker" id="weeklyPreparationRoutes" hidden><legend>活动周备料路线（可多选）</legend><label><input type="checkbox" value="咖喱／浓汤" checked><span>咖喱／浓汤</span></label><label><input type="checkbox" value="沙拉" checked><span>沙拉</span></label><label><input type="checkbox" value="点心／饮料"><span>点心／饮料</span></label><small>双路线按同一食材的较高需求合并，不重复囤积；活动首日确定料理后只走对应路线。</small></fieldset>
@@ -104,13 +104,37 @@
     <div class="weekly-field"><label for="weeklyMealGoal">目标餐数（1–21）</label><input id="weeklyMealGoal" type="number" min="1" max="21" inputmode="numeric" value="15"></div>
     <div class="weekly-berries" id="weeklyBerries" hidden></div>
   </div>
-  <details class="weekly-settings"><summary>高级设置：活动周道具</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">永久锅容量（同步个人设置）</label><input id="weeklyPot" type="number" min="1" max="81" inputmode="numeric" value="81" disabled></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox"><span>本周已启用好露营券（影响当前采集）</span></label><label class="weekly-check"><input id="weeklyEventGoodCamp" type="checkbox" checked><span>活动周计划启用好露营券（影响目标锅）</span></label><label class="weekly-check"><input id="weeklyTravelTicket" type="checkbox" checked><span>备有移动营地券（首日重抽料理）</span></label></div></details>
+  <details class="weekly-settings" id="weeklyActivityTools"><summary>高级设置：活动周道具</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">永久锅容量（同步个人设置）</label><input id="weeklyPot" type="number" min="1" max="81" inputmode="numeric" value="81" disabled></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox"><span>本周已启用好露营券（影响当前采集）</span></label><label class="weekly-check"><input id="weeklyEventGoodCamp" type="checkbox" checked><span>活动周计划启用好露营券（影响目标锅）</span></label><label class="weekly-check"><input id="weeklyTravelTicket" type="checkbox" checked><span>备有移动营地券（首日重抽料理）</span></label></div></details>
   <details class="weekly-settings weekly-simulation-settings" open><summary>活动周完整推演器</summary><div class="weekly-simulation-controls"><div class="weekly-field"><label for="weeklySimulationDays">推演时长（1–14天）</label><input id="weeklySimulationDays" type="number" min="1" max="14" inputmode="numeric" value="7"></div><label class="weekly-check"><input id="weeklySimulationAutoTasty" type="checkbox" checked><span>允许推演器自动安排爆锅队（料理成功 S）</span></label><div class="weekly-field"><label for="weeklySimulationTastyTarget">爆锅目标加成（0–70%）</label><input id="weeklySimulationTastyTarget" type="number" min="0" max="70" step="1" inputmode="numeric" value="70"></div><div class="weekly-field"><label for="weeklySkillCollectionHours">点击收取间隔</label><select id="weeklySkillCollectionHours"><option value="1">1 小时</option><option value="2">2 小时</option><option value="4" selected>4 小时</option><option value="8">8 小时</option><option value="12">12 小时</option></select></div><label class="weekly-check"><input id="weeklyCollectBeforeSwitch" type="checkbox" checked><span>每次换队前先点击收取技能</span></label><div class="weekly-field"><label for="weeklyExEffect">EX 本周追加效果</label><select id="weeklyExEffect"><option value="none">非 EX／尚未选择</option><option value="berry">树果能量强化</option><option value="ingredient">食材帮忙＋1</option><option value="skill">主技能触发率×1.25</option></select></div><p>读取上方目标食谱／餐数、个人库存、岛屿与食谱等级；生产按五档活力逐 10 分钟推进。技能会储存到专长上限，只有点击才结算；换队前不收取会清空待触发技能。</p></div></details>
   <details class="weekly-settings weekly-sleep-settings"><summary>睡眠方案优化器</summary><div class="weekly-sleep-settings-grid"><div class="weekly-field"><label for="weeklyCurrentStrength">当前卡比兽能量</label><input id="weeklyCurrentStrength" type="number" min="0" max="999999999" step="1000" inputmode="numeric" value="0"></div><div class="weekly-field"><label for="weeklySleepType">研究睡眠类型</label><select id="weeklySleepType"><option value="balanced">综合平均</option><option value="dozing">浅浅入梦</option><option value="snoozing">安然入睡</option><option value="slumbering">深深入眠</option></select></div><div class="weekly-field"><label for="weeklySleepObjective">优化目标</label><select id="weeklySleepObjective"><option value="combined">梦之碎片＋研究EXP</option><option value="spawns">遇见总数</option><option value="shards">梦之碎片</option><option value="researchExp">研究EXP</option><option value="pokemon">指定宝可梦出现</option><option value="candy">指定进化系糖果</option></select></div><div class="weekly-field weekly-sleep-target-field" id="weeklySleepTargetField" hidden><label for="weeklySleepTargetSelect">指定宝可梦</label><select id="weeklySleepTargetSelect"></select><span>本周严选快捷选择</span><div id="weeklySleepTarget" class="weekly-sleep-targets" role="group" aria-label="本周严选目标"></div></div><p class="weekly-sleep-help">奖励目标会结合本岛收益减速线判断是否需要分睡；指定宝可梦和糖果目标会直接比较一次睡满与 18＋82 到 99＋1 的全部方案，不受惩罚线限制。下方严选卡片仍可一键带入。</p></div></details>
   <div class="weekly-inventory" id="weeklyInventory" hidden></div>
   <div class="weekly-save-line"><span class="weekly-save-stamp" id="weeklySaveStamp">设置与进度会自动保存并同步云端</span></div>
   <div class="weekly-result" id="weeklyResult" aria-live="polite"></div>
-  <p class="weekly-method">口径：仓库硬上限为 800，本页只为当前能容纳的下一批食材设阈值，用掉后再滚动规划；双路线储备对相同食材取较高需求、不同食材同时保留。完整推演器把准备队、料理成功 S 爆锅队与岛屿输出队放进同一个固定时长，累计目标食材、料理能量和不计食材的队伍能量；爆锅按触发概率和工作日 2 倍／周日 3 倍的大成功期望计算。锅容量只读取永久锅、好露营券与活动容量倍率，不会再把爆锅当作扩锅。睡意之力倍率只用于睡眠研究，不会混入卡比兽能量。参考：<a href="https://www.pokemonsleep.net/en/news/323339353434313836353332303033383431/" target="_blank" rel="noreferrer">官方研究奖励调整</a>与 <a href="https://wiki.pokesleep.com/en/sleep-optimizer" target="_blank" rel="noreferrer">社区睡眠方案优化器</a>。</p>
+  <details class="panel selection-odds" id="selectionOddsTool">
+    <summary><span class="selection-odds-summary"><span>SELECTION ODDS</span><strong>友情徽章与严选概率</strong><small>默认收起；需要抓新个体时再计算锁金、目标副技能和本站毕业面板。</small></span></summary>
+    <div class="selection-odds-body">
+      <div class="selection-odds-grid">
+        <section class="selection-odds-card" aria-labelledby="selectionMedalTitle"><h3 id="selectionMedalTitle">友情徽章</h3><p>输入该种宝可梦的友情点分组与当前友情等级。</p><div class="selection-odds-fields">
+          <label class="selection-odds-field"><span>成为伙伴所需友情点</span><select id="selectionFriendshipPoints"><option>5</option><option>7</option><option>10</option><option>12</option><option>15</option><option>16</option><option>18</option><option>20</option><option>22</option><option>25</option><option>30</option></select></label>
+          <label class="selection-odds-field"><span>当前友情等级</span><input id="selectionFriendshipLevel" type="number" min="1" max="999" step="1" inputmode="numeric" value="1"></label>
+          <label class="selection-odds-field wide"><span>实际启用的金色保证</span><select id="selectionLockedGold"></select></label>
+        </div><div class="selection-odds-result" id="selectionMedalResult" aria-live="polite"></div></section>
+        <section class="selection-odds-card" aria-labelledby="selectionTargetTitle"><h3 id="selectionTargetTitle">目标副技能概率</h3><p>按社区推定权重、有序且无放回地枚举，不把各格概率直接相乘。</p><div class="selection-odds-fields">
+          <label class="selection-odds-field"><span>观察范围</span><select id="selectionTargetSlots"><option value="3">Lv.50 前三格</option><option value="4">Lv.70 前四格</option></select></label>
+          <label class="selection-odds-field"><span>组合条件</span><select id="selectionTargetMode"><option value="all">全部同时出现</option><option value="any">至少出现一个</option></select></label>
+          <label class="selection-odds-field"><span>目标 1</span><select data-selection-target></select></label>
+          <label class="selection-odds-field"><span>目标 2</span><select data-selection-target></select></label>
+          <label class="selection-odds-field wide"><span>目标 3</span><select data-selection-target></select></label>
+        </div><div class="selection-odds-result" id="selectionTargetResult" aria-live="polite"></div></section>
+        <section class="selection-odds-card" aria-labelledby="selectionGraduationTitle"><h3 id="selectionGraduationTitle">本站毕业概率</h3><p>沿用本站Lv.50严格面板，不采用Wiki的综合倍率毕业线。</p><div class="selection-odds-fields">
+          <label class="selection-odds-field wide"><span>严选定位</span><select id="selectionGraduationRole"><option value="berry">树果位</option><option value="berrySkill">树果位技能手</option><option value="ingredient">食材手</option><option value="healer">正式群回奶妈</option><option value="skill">普通技能手</option><option value="tool">短驻场工具技能手</option></select></label>
+          <label class="selection-odds-field wide" id="selectionIngredientRouteField" hidden><span>食材路线计入方式</span><select id="selectionIngredientRoute"><option value="panel">只算面板</option><option value="aaa">同时要求AAA</option><option value="aaa-or-verified-abb">AAA或该物种已验证ABB</option></select></label>
+        </div><div class="selection-odds-result" id="selectionGraduationResult" aria-live="polite"></div></section>
+      </div>
+      <p class="selection-odds-source">概率采用社区推定的单项权重与25种性格等概率模型，并非官方公布概率；按正文规则逐格无放回计算，因此可能与引用旧资料或四舍五入权重的现成概率表略有差异。不含物种出现率、喂饼干、闪光或食材路线，除非在食材手选项中主动计入。机制参考：<a href="https://wiki.pokesleep.com/zhs/sub-skill-rolls" target="_blank" rel="noreferrer">副技能抽取</a>、<a href="https://wiki.pokesleep.com/zhs/friend-medal" target="_blank" rel="noreferrer">友情徽章</a>。</p>
+    </div>
+  </details>
+  <p class="weekly-method">普通周只显示本岛培养路线、睡眠优化与严选目标；准备周按当前库存滚动给出食材储备目标；实际活动周才启用完整推演器。仓库硬上限为 800，双路线储备对相同食材取较高需求、不同食材同时保留。完整推演把准备队、料理成功 S 爆锅队与岛屿输出队放进同一个固定时长；锅容量只读取永久锅、好露营券与活动容量倍率，睡意之力倍率只用于睡眠研究。参考：<a href="https://www.pokemonsleep.net/en/news/323339353434313836353332303033383431/" target="_blank" rel="noreferrer">官方研究奖励调整</a>与 <a href="https://wiki.pokesleep.com/en/sleep-optimizer" target="_blank" rel="noreferrer">社区睡眠方案优化器</a>。</p>
 </section>
 <section class="panel current-team-guide" aria-labelledby="currentTeamTitle" data-page="team" hidden>
   <div class="guide-head">
@@ -234,30 +258,6 @@
   <div class="guide-sources">食谱数据参考：<a href="https://pks.raenonx.cc/zh/meal" target="_blank" rel="noreferrer">RaenonX 食谱一览</a>，并参考 <a href="https://game8.jp/pokemonsleep/542649" target="_blank" rel="noreferrer">新版 Game8 食谱列表</a>交叉核对。网页使用本地数据文件，离线打开也能查询。</div>
 </section>
 <section class="panel box-page-head" data-page="box" aria-labelledby="boxPageTitle"><div><h2 id="boxPageTitle">宝可梦盒子</h2><p>搜索、筛选并比较当前盒子个体；点击表头可切换排序。</p></div><button id="pokemonComparisonOpen" type="button">双个体对比</button></section>
-<details class="panel selection-odds" id="selectionOddsTool" data-page="box">
-  <summary><span class="selection-odds-summary"><span>SELECTION ODDS</span><strong>友情徽章与严选概率</strong><small>默认收起；需要抓新个体时再计算锁金、目标副技能和本站毕业面板。</small></span></summary>
-  <div class="selection-odds-body">
-    <div class="selection-odds-grid">
-      <section class="selection-odds-card" aria-labelledby="selectionMedalTitle"><h3 id="selectionMedalTitle">友情徽章</h3><p>输入该种宝可梦的友情点分组与当前友情等级。</p><div class="selection-odds-fields">
-        <label class="selection-odds-field"><span>成为伙伴所需友情点</span><select id="selectionFriendshipPoints"><option>5</option><option>7</option><option>10</option><option>12</option><option>15</option><option>16</option><option>18</option><option>20</option><option>22</option><option>25</option><option>30</option></select></label>
-        <label class="selection-odds-field"><span>当前友情等级</span><input id="selectionFriendshipLevel" type="number" min="1" max="999" step="1" inputmode="numeric" value="1"></label>
-        <label class="selection-odds-field wide"><span>实际启用的金色保证</span><select id="selectionLockedGold"></select></label>
-      </div><div class="selection-odds-result" id="selectionMedalResult" aria-live="polite"></div></section>
-      <section class="selection-odds-card" aria-labelledby="selectionTargetTitle"><h3 id="selectionTargetTitle">目标副技能概率</h3><p>按社区推定权重、有序且无放回地枚举，不把各格概率直接相乘。</p><div class="selection-odds-fields">
-        <label class="selection-odds-field"><span>观察范围</span><select id="selectionTargetSlots"><option value="3">Lv.50 前三格</option><option value="4">Lv.70 前四格</option></select></label>
-        <label class="selection-odds-field"><span>组合条件</span><select id="selectionTargetMode"><option value="all">全部同时出现</option><option value="any">至少出现一个</option></select></label>
-        <label class="selection-odds-field"><span>目标 1</span><select data-selection-target></select></label>
-        <label class="selection-odds-field"><span>目标 2</span><select data-selection-target></select></label>
-        <label class="selection-odds-field wide"><span>目标 3</span><select data-selection-target></select></label>
-      </div><div class="selection-odds-result" id="selectionTargetResult" aria-live="polite"></div></section>
-      <section class="selection-odds-card" aria-labelledby="selectionGraduationTitle"><h3 id="selectionGraduationTitle">本站毕业概率</h3><p>沿用本站Lv.50严格面板，不采用Wiki的综合倍率毕业线。</p><div class="selection-odds-fields">
-        <label class="selection-odds-field wide"><span>严选定位</span><select id="selectionGraduationRole"><option value="berry">树果位</option><option value="berrySkill">树果位技能手</option><option value="ingredient">食材手</option><option value="healer">正式群回奶妈</option><option value="skill">普通技能手</option><option value="tool">短驻场工具技能手</option></select></label>
-        <label class="selection-odds-field wide" id="selectionIngredientRouteField" hidden><span>食材路线计入方式</span><select id="selectionIngredientRoute"><option value="panel">只算面板</option><option value="aaa">同时要求AAA</option><option value="aaa-or-verified-abb">AAA或该物种已验证ABB</option></select></label>
-      </div><div class="selection-odds-result" id="selectionGraduationResult" aria-live="polite"></div></section>
-    </div>
-    <p class="selection-odds-source">概率采用社区推定的单项权重与25种性格等概率模型，并非官方公布概率；按正文规则逐格无放回计算，因此可能与引用旧资料或四舍五入权重的现成概率表略有差异。不含物种出现率、喂饼干、闪光或食材路线，除非在食材手选项中主动计入。机制参考：<a href="https://wiki.pokesleep.com/zhs/sub-skill-rolls" target="_blank" rel="noreferrer">副技能抽取</a>、<a href="https://wiki.pokesleep.com/zhs/friend-medal" target="_blank" rel="noreferrer">友情徽章</a>。</p>
-  </div>
-</details>
 <section class="panel pokemon-data-toolbar" aria-labelledby="pokemonDataToolbarTitle" data-settings-move hidden>
   <div class="pokemon-data-toolbar-copy"><span>个体资料</span><h3 id="pokemonDataToolbarTitle">快速录入、即时评分与放生管理</h3><p>选择种类后自动带出定位、主技能与合法食材；只需填写等级、食材栏、副技能和性格。</p></div>
   <div class="pokemon-data-toolbar-actions"><button class="primary" id="pokemonAddOpen" type="button">＋ 录入新个体</button><button id="investmentPlannerOpen" type="button">培养投资计算器</button><button class="recycle" id="pokemonRecycleOpen" type="button">回收站</button></div>
@@ -420,13 +420,13 @@
 <script src="box-manager.js"></script>
 <script src="level-manager.js"></script>
 <script src="personal-settings.js?v=20260911-1"></script>
-<script src="pokemon-picker.js?v=20260911-3"></script>
+<script src="pokemon-picker.js?v=20260913-4"></script>
 <script src="cooking-success.js?v=20260912-1"></script>
 <script src="production-timeline.js?v=20260913-2"></script>
 <script src="team-planner.js?v=20260913-2"></script>
 <script src="sleep-reward-curves.generated.js?v=20260911-2"></script>
 <script src="sleep-research-planner.js?v=20260911-3"></script>
-<script src="weekly-planner.js?v=20260913-2"></script>
+<script src="weekly-planner.js?v=20260913-5"></script>
 <script src="investment-planner.js?v=20260912-1"></script>
 <script src="retention-advisor.js?v=20260901-2"></script>
 <script src="pokemon-manager.js?v=20260912-1"></script>

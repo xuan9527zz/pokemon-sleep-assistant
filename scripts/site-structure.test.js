@@ -37,7 +37,11 @@ assert.ok(html.includes('id="recipeIngredient" multiple'), '食谱页必须支�
 assert.ok(html.includes('id="recipeCookedFilter"'), '食谱页缺少未做过筛选');
 assert.ok(html.includes('id="currentTeamDrawer"'), '当前队伍缺少切换侧栏');
 assert.ok(html.includes('id="pokemonPickerDialog"'), '缺少可搜索的宝可梦图标选择器');
-assert.ok(html.includes('id="selectionOddsTool"'), '盒子页缺少友情徽章与严选概率小工具');
+assert.ok(html.includes('id="selectionOddsTool"'), '本周作战页缺少友情徽章与严选概率小工具');
+const weeklyMarkup=html.slice(html.indexOf('id="weeklyPlanner"'),html.indexOf('data-page="team"'));
+assert.ok(weeklyMarkup.includes('id="selectionOddsTool"'), '友情徽章与严选概率应放在本周作战，而不是宝可梦盒子');
+assert.ok(!html.includes('id="selectionOddsTool" data-page="box"'), '友情徽章与严选概率不应继续归属盒子页');
+assert.ok(html.includes('id="weeklyActivityTools"'), '本周作战缺少按周模式显隐的活动设置容器');
 assert.ok(html.includes('id="selectionLockedGold"'), '严选概率工具缺少实际锁金格数');
 assert.ok(html.includes('id="selectionGraduationRole"'), '严选概率工具缺少本站毕业定位选择');
 assert.ok(html.includes('id="pokemonCompareRole"'), '个体生产对比缺少定位选择');
