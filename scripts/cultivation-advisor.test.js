@@ -32,6 +32,8 @@ assert.equal(mature(byId(89)).tier, 'transition', 'Cresselia is a formal healer 
 assert.equal(mature(byId(85)).tier, 'avoid', 'Magnezone below break-even should not be a mature-account default investment');
 assert.equal(mature(byId(13)).tier, 'niche', 'Golduck operation/stability cost should remain visible');
 assert.equal(mature(byId(81)).tier, 'niche', 'Latios value depends on the Latias pair scenario');
+assert.equal(mature(byId(62)).tier, 'avoid', 'the current low-panel Mew must use its numeric all-rounder score instead of staying manually battle-enabled');
+assert.equal(mature(byId(91)).tier, 'avoid', 'the current Darkrai must use its numeric all-rounder score instead of staying manually battle-enabled');
 
 const tinkaton = catalog.pokemon.find(record => record.id === '959');
 const feraligatr = catalog.pokemon.find(record => record.id === '160');
@@ -107,6 +109,6 @@ box.forEach(mon=>{mon.specialty=mon.scoreBreakdown&&mon.scoreBreakdown.specialty
 const recalculated=boxManager.recalculateUsageState(box,{},{}).state;
 const records=Object.values(recalculated.pokemon),usageCounts=records.reduce((counts,record)=>{const status=boxManager.usageStatus(record);counts[status]=(counts[status]||0)+1;return counts},{});
 assert.equal(records.filter(record=>record.collectionIntent).length,box.filter(mon=>mon.shiny==='是').length,'自动重算的收藏维度必须恰好覆盖全部闪光个体');
-assert.deepEqual(usageCounts,{'battle-only':37,'both':25,'collection-only':19,inactive:16},'97只现有个体的用途分类应完整重算并锁定四种状态');
+assert.deepEqual(usageCounts,{'battle-only':35,'both':25,'collection-only':19,inactive:18},'97只现有个体的用途分类应完整重算并锁定四种状态');
 
 console.log('cultivation advisor tests passed (course caps, stage, direct-superior, team-cost, berry scenarios)');

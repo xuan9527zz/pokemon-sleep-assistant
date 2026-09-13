@@ -57,5 +57,6 @@ assert.ok(!html.includes('id="pokemonNote"'), '不再需要的个体备注控件
 assert.ok(!html.includes('<th>备注</th>'), '盒子列表不应再展示备注列');
 assert.ok(html.includes('class="box-multi-filter" id="rf"'), '定位筛选必须支持同组多选');
 assert.ok(html.includes('value="both"><span>收藏＋实战</span>'), '筛选器必须支持收藏且可实战的组合状态');
+assert.ok(html.indexOf('all-rounder-rules.js') < html.indexOf('pokemon-scoring.js'), '动态评分必须在全能型规则加载后初始化');
 
 console.log(`site structure tests passed (${ids.length} ids, ${new Set(localRefs).size} local refs)`);

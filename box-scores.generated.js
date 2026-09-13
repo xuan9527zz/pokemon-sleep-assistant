@@ -2,9 +2,9 @@
   'use strict';
   root.POKEMON_SLEEP_BOX_SCORES=Object.freeze({
   "meta": {
-    "generatedAt": "2026-09-01T01:06:14.422Z",
+    "generatedAt": "2026-09-13T12:13:13.109Z",
     "targetLevel": 70,
-    "formula": "最终综合分=种族分×75%+个体分×25%；个体分=(副技能合法满分百分分×70%+性格理论百分分×30%)×食材组合系数",
+    "formula": "最终综合分=种族分×75%+个体分×25%；个体分=(副技能合法满分百分分×70%+性格理论百分分×30%)×食材手／全能型食材组合系数",
     "speciesWeight": 0.75,
     "individualWeight": 0.25,
     "subskillWeight": 0.7,
@@ -12,16 +12,14 @@
     "legalSubskillMaximums": {
       "berry": 66.7,
       "ingredient": 70,
-      "skill": 70
+      "skill": 70,
+      "all": 53.8
     },
     "collectionProfile": "技能手种族分使用4小时收菜、好露营券、50%额外食材满足率；操作韧性保留8小时模型",
-    "scored": 95,
-    "pending": 2,
-    "pendingIds": [
-      "62",
-      "91"
-    ],
-    "provisionalCount": 57,
+    "scored": 97,
+    "pending": 0,
+    "pendingIds": [],
+    "provisionalCount": 59,
     "highest": {
       "id": "33",
       "name": "快龙",
@@ -50,6 +48,8 @@
       "speciesContribution": 60.5,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 45.8,
       "individualContribution": 11.5,
@@ -175,6 +175,8 @@
       "speciesContribution": 60.5,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 49.4,
       "individualContribution": 12.4,
@@ -300,6 +302,8 @@
       "speciesContribution": 61.7,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 50.5,
       "individualContribution": 12.6,
@@ -425,6 +429,8 @@
       "speciesContribution": 61.7,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 55.1,
       "individualContribution": 13.8,
@@ -559,6 +565,8 @@
         "rankChangeWhenFull": -1,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 30.1,
       "individualContribution": 7.5,
@@ -660,7 +668,7 @@
         ]
       },
       "finalScore": 65.3,
-      "rank": 50,
+      "rank": 51,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -696,6 +704,8 @@
         "rankChangeWhenFull": -1,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 10.5,
       "individualContribution": 2.6,
@@ -798,7 +808,7 @@
         ]
       },
       "finalScore": 60.4,
-      "rank": 65,
+      "rank": 66,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -834,6 +844,8 @@
         "rankChangeWhenFull": 4,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 15.2,
       "individualContribution": 3.8,
@@ -934,7 +946,7 @@
         ]
       },
       "finalScore": 58.8,
-      "rank": 70,
+      "rank": 71,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -970,6 +982,8 @@
         "rankChangeWhenFull": 0,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 9.7,
       "individualContribution": 2.4,
@@ -1071,7 +1085,7 @@
         ]
       },
       "finalScore": 59.9,
-      "rank": 66,
+      "rank": 67,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1090,6 +1104,8 @@
       "speciesContribution": 41.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -1197,7 +1213,7 @@
         "provisionalItems": []
       },
       "finalScore": 53.7,
-      "rank": 85,
+      "rank": 86,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -1233,6 +1249,8 @@
         "rankChangeWhenFull": 5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 8.9,
       "individualContribution": 2.2,
@@ -1350,6 +1368,8 @@
       "speciesContribution": 59.1,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -1457,7 +1477,7 @@
         "provisionalItems": []
       },
       "finalScore": 62.4,
-      "rank": 61,
+      "rank": 62,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -1476,6 +1496,8 @@
       "speciesContribution": 59.1,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -1602,6 +1624,8 @@
       "speciesContribution": 47,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -1711,7 +1735,7 @@
         ]
       },
       "finalScore": 55.1,
-      "rank": 83,
+      "rank": 84,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1747,6 +1771,8 @@
         "rankChangeWhenFull": 1,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 7.9,
       "individualContribution": 2,
@@ -1848,7 +1874,7 @@
         ]
       },
       "finalScore": 58.7,
-      "rank": 72,
+      "rank": 73,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1867,6 +1893,8 @@
       "speciesContribution": 45.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -1974,7 +2002,7 @@
         "provisionalItems": []
       },
       "finalScore": 45.8,
-      "rank": 94,
+      "rank": 96,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -1993,6 +2021,8 @@
       "speciesContribution": 56,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 57.2,
       "individualContribution": 14.3,
@@ -2118,6 +2148,8 @@
       "speciesContribution": 57.4,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 64.7,
       "individualContribution": 16.2,
@@ -2235,6 +2267,8 @@
       "speciesContribution": 48.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -2344,7 +2378,7 @@
         ]
       },
       "finalScore": 52.5,
-      "rank": 87,
+      "rank": 88,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2363,6 +2397,8 @@
       "speciesContribution": 48.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -2470,7 +2506,7 @@
         "provisionalItems": []
       },
       "finalScore": 59,
-      "rank": 69,
+      "rank": 70,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -2501,6 +2537,8 @@
       "speciesContribution": 47.3,
       "speciesSource": "ingredient-mechanical-plus-strategic-role",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 27.3,
       "individualContribution": 6.8,
@@ -2600,7 +2638,7 @@
         ]
       },
       "finalScore": 54.1,
-      "rank": 84,
+      "rank": 85,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2619,6 +2657,8 @@
       "speciesContribution": 51.3,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 76.7,
       "individualContribution": 19.2,
@@ -2753,6 +2793,8 @@
         "rankChangeWhenFull": 0,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 16,
       "individualContribution": 4,
@@ -2853,7 +2895,7 @@
         ]
       },
       "finalScore": 56.4,
-      "rank": 78,
+      "rank": 79,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2872,6 +2914,8 @@
       "speciesContribution": 51.3,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 55.7,
       "individualContribution": 13.9,
@@ -2971,7 +3015,7 @@
         ]
       },
       "finalScore": 65.2,
-      "rank": 51,
+      "rank": 52,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2990,6 +3034,8 @@
       "speciesContribution": 55.8,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 34.4,
       "individualContribution": 8.6,
@@ -3088,7 +3134,7 @@
         ]
       },
       "finalScore": 64.4,
-      "rank": 55,
+      "rank": 56,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3107,6 +3153,8 @@
       "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -3274,6 +3322,8 @@
       "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -3383,7 +3433,7 @@
         ]
       },
       "finalScore": 61.5,
-      "rank": 62,
+      "rank": 63,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -3443,6 +3493,8 @@
       "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -3552,7 +3604,7 @@
         ]
       },
       "finalScore": 66.1,
-      "rank": 48,
+      "rank": 49,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -3612,6 +3664,8 @@
       "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -3779,6 +3833,8 @@
       "speciesContribution": 45.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -3886,7 +3942,7 @@
         "provisionalItems": []
       },
       "finalScore": 56.5,
-      "rank": 77,
+      "rank": 78,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -3922,6 +3978,8 @@
         "rankChangeWhenFull": -5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 7.3,
       "individualContribution": 1.8,
@@ -4022,7 +4080,7 @@
         ]
       },
       "finalScore": 56.5,
-      "rank": 76,
+      "rank": 77,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4058,6 +4116,8 @@
         "rankChangeWhenFull": -5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 10.6,
       "individualContribution": 2.7,
@@ -4158,7 +4218,7 @@
         ]
       },
       "finalScore": 57.3,
-      "rank": 73,
+      "rank": 74,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4177,6 +4237,8 @@
       "speciesContribution": 46.7,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -4284,7 +4346,7 @@
         "provisionalItems": []
       },
       "finalScore": 51.3,
-      "rank": 89,
+      "rank": 90,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -4310,6 +4372,8 @@
       "speciesContribution": 69.2,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 80,
       "individualContribution": 20,
@@ -4445,6 +4509,8 @@
         "rankChangeWhenFull": 14,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 22.3,
       "individualContribution": 5.6,
@@ -4582,6 +4648,8 @@
         "rankChangeWhenFull": -6,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 19.1,
       "individualContribution": 4.8,
@@ -4683,7 +4751,7 @@
         ]
       },
       "finalScore": 63.2,
-      "rank": 58,
+      "rank": 59,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4702,6 +4770,8 @@
       "speciesContribution": 51.1,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -4811,7 +4881,7 @@
         ]
       },
       "finalScore": 56.3,
-      "rank": 79,
+      "rank": 80,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4830,6 +4900,8 @@
       "speciesContribution": 48.6,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -4939,7 +5011,7 @@
         ]
       },
       "finalScore": 65.7,
-      "rank": 49,
+      "rank": 50,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -4958,6 +5030,8 @@
       "speciesContribution": 45.8,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 42.3,
       "individualContribution": 10.6,
@@ -5057,7 +5131,7 @@
         ]
       },
       "finalScore": 56.3,
-      "rank": 80,
+      "rank": 81,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5076,6 +5150,8 @@
       "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -5204,6 +5280,8 @@
       "speciesContribution": 43.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -5311,7 +5389,7 @@
         "provisionalItems": []
       },
       "finalScore": 44.2,
-      "rank": 95,
+      "rank": 97,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5330,6 +5408,8 @@
       "speciesContribution": 47.1,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -5437,7 +5517,7 @@
         "provisionalItems": []
       },
       "finalScore": 50.2,
-      "rank": 90,
+      "rank": 91,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5473,6 +5553,8 @@
         "rankChangeWhenFull": 0,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 33,
       "individualContribution": 8.3,
@@ -5572,7 +5654,7 @@
         ]
       },
       "finalScore": 65.1,
-      "rank": 52,
+      "rank": 53,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5591,6 +5673,8 @@
       "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "特殊额外技能位",
         "sourceType": "special-fixed-team",
@@ -5698,7 +5782,7 @@
         "provisionalItems": []
       },
       "finalScore": 63.1,
-      "rank": 59,
+      "rank": 60,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5724,6 +5808,8 @@
       "speciesContribution": 64.8,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 15,
       "individualContribution": 3.8,
@@ -5849,6 +5935,8 @@
       "speciesContribution": 64.8,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 30.2,
       "individualContribution": 7.6,
@@ -5969,6 +6057,8 @@
       "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -6112,6 +6202,8 @@
         "rankChangeWhenFull": -10,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 43.1,
       "individualContribution": 10.8,
@@ -6231,6 +6323,8 @@
       "speciesContribution": 64.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -6357,6 +6451,8 @@
       "speciesContribution": 48.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -6466,7 +6562,7 @@
         ]
       },
       "finalScore": 48.9,
-      "rank": 92,
+      "rank": 94,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6502,6 +6598,8 @@
         "rankChangeWhenFull": 9,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 17.2,
       "individualContribution": 4.3,
@@ -6604,7 +6702,7 @@
         ]
       },
       "finalScore": 61.5,
-      "rank": 63,
+      "rank": 64,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6640,6 +6738,8 @@
         "rankChangeWhenFull": 5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 19.8,
       "individualContribution": 5,
@@ -6759,6 +6859,8 @@
       "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -6866,7 +6968,7 @@
         "provisionalItems": []
       },
       "finalScore": 64.7,
-      "rank": 54,
+      "rank": 55,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6885,6 +6987,8 @@
       "speciesContribution": 62.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -7011,6 +7115,8 @@
       "speciesContribution": 48.1,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -7118,7 +7224,7 @@
         "provisionalItems": []
       },
       "finalScore": 49,
-      "rank": 91,
+      "rank": 93,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -7137,6 +7243,8 @@
       "speciesContribution": 54.6,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 9.7,
       "individualContribution": 2.4,
@@ -7237,7 +7345,7 @@
         ]
       },
       "finalScore": 57,
-      "rank": 74,
+      "rank": 75,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7256,6 +7364,8 @@
       "speciesContribution": 57.9,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -7363,7 +7473,7 @@
         "provisionalItems": []
       },
       "finalScore": 59,
-      "rank": 68,
+      "rank": 69,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -7382,6 +7492,8 @@
       "speciesContribution": 57.9,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -7489,7 +7601,7 @@
         "provisionalItems": []
       },
       "finalScore": 63.8,
-      "rank": 56,
+      "rank": 57,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -7508,6 +7620,8 @@
       "speciesContribution": 46.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -7615,7 +7729,7 @@
         "provisionalItems": []
       },
       "finalScore": 58.8,
-      "rank": 71,
+      "rank": 72,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -7634,6 +7748,8 @@
       "speciesContribution": 67.4,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -7767,6 +7883,8 @@
       "speciesContribution": 56.6,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 12.5,
       "individualContribution": 3.1,
@@ -7866,7 +7984,7 @@
         ]
       },
       "finalScore": 59.7,
-      "rank": 67,
+      "rank": 68,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7892,6 +8010,8 @@
       "speciesContribution": 61.7,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 54.8,
       "individualContribution": 13.7,
@@ -8002,13 +8122,130 @@
       "specialty": "all",
       "finalFormId": "151",
       "finalFormNameZh": "梦幻",
-      "speciesScore": null,
-      "individualScore": null,
-      "finalScore": null,
-      "rank": null,
+      "mechanicalSpeciesScore": 64.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
+      "speciesScore": 64.9,
+      "speciesContribution": 48.7,
+      "speciesSource": "balanced-all-rounder-team-slot-score",
+      "speciesScenarios": null,
+      "selectedAllRounderSkillId": "metronome",
+      "selectedAllRounderSkillNameZh": "挥指",
+      "teamModel": {
+        "role": "extra-skill",
+        "ordinaryBaseEnergyPerDay": 15190.9,
+        "slotAdjustedOutputIndex": 106.7,
+        "normalizedOutputScore": 23,
+        "stabilityScore": 14.4,
+        "operationScore": 46.8,
+        "versatilityScore": 90.9,
+        "scoringStatus": "confirmed-effects-user-selected-skill-rate"
+      },
+      "individualScore": 3.1,
+      "individualContribution": 0.8,
+      "individual": {
+        "score": 3.1,
+        "subskillRaw": 4.8,
+        "subskillRawBeforeClamp": 4.8,
+        "subskillLegalMaximum": 53.8,
+        "subskillLegalMaximumBuild": [
+          "帮手奖励",
+          "技能概率M",
+          "帮忙速度M",
+          "树果数量S",
+          "食材概率M"
+        ],
+        "subskillScore": 8.9,
+        "subskillContribution": 6.2,
+        "natureRaw": 0,
+        "natureScore": 0,
+        "natureContribution": 0,
+        "individualBeforePattern": 6.2,
+        "ingredientPattern": "ABC",
+        "ingredientPatternCoefficient": 0.5,
+        "interactionMultiplier": 1,
+        "interactionBonus": 0,
+        "slots": [
+          {
+            "level": 10,
+            "weight": 0.25,
+            "skill": "技能等级M",
+            "scoredSkill": "技能等级M",
+            "seedUpgraded": false,
+            "seedNote": "",
+            "fitScore": 8,
+            "fitStatus": "provisional-balanced-all-rounder-average",
+            "interactionScore": 0,
+            "effectiveFitScore": 8,
+            "contribution": 2
+          },
+          {
+            "level": 25,
+            "weight": 0.25,
+            "skill": "持有上限S",
+            "scoredSkill": "持有上限L",
+            "seedUpgraded": true,
+            "seedNote": "按副技能种子最高合法形态计分",
+            "fitScore": 11,
+            "fitStatus": "provisional-balanced-all-rounder-average",
+            "interactionScore": 0,
+            "effectiveFitScore": 11,
+            "contribution": 2.8
+          },
+          {
+            "level": 50,
+            "weight": 0.25,
+            "skill": "—",
+            "scoredSkill": "—",
+            "seedUpgraded": false,
+            "seedNote": "",
+            "fitScore": 0,
+            "fitStatus": "not-present",
+            "interactionScore": 0,
+            "effectiveFitScore": 0,
+            "contribution": 0
+          },
+          {
+            "level": 70,
+            "weight": 0.15,
+            "skill": "—",
+            "scoredSkill": "—",
+            "seedUpgraded": false,
+            "seedNote": "",
+            "fitScore": 0,
+            "fitStatus": "not-present",
+            "interactionScore": 0,
+            "effectiveFitScore": 0,
+            "contribution": 0
+          },
+          {
+            "level": 80,
+            "weight": 0.1,
+            "skill": "—",
+            "scoredSkill": "—",
+            "seedUpgraded": false,
+            "seedNote": "",
+            "fitScore": 0,
+            "fitStatus": "not-present",
+            "interactionScore": 0,
+            "effectiveFitScore": 0,
+            "contribution": 0
+          }
+        ],
+        "provisional": true,
+        "provisionalItems": [
+          "技能等级M",
+          "持有上限L",
+          "合法满分基准：技能概率M",
+          "合法满分基准：树果数量S"
+        ]
+      },
+      "finalScore": 49.5,
+      "rank": 92,
       "routeReason": null,
       "routeCandidates": null,
-      "status": "pending-all-rounder-formula"
+      "status": "scored-with-provisional-subskill-bridges"
     },
     "63": {
       "id": "63",
@@ -8041,6 +8278,8 @@
         "rankChangeWhenFull": -1,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 60.2,
       "individualContribution": 15.1,
@@ -8159,6 +8398,8 @@
       "speciesContribution": 45.8,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 44.6,
       "individualContribution": 11.2,
@@ -8258,7 +8499,7 @@
         ]
       },
       "finalScore": 56.9,
-      "rank": 75,
+      "rank": 76,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -8289,6 +8530,8 @@
       "speciesContribution": 51,
       "speciesSource": "ingredient-mechanical-plus-strategic-role",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 20,
       "individualContribution": 5,
@@ -8388,7 +8631,7 @@
         ]
       },
       "finalScore": 56,
-      "rank": 82,
+      "rank": 83,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -8407,6 +8650,8 @@
       "speciesContribution": 56.6,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "特殊额外技能位",
         "sourceType": "special-fixed-team",
@@ -8514,7 +8759,7 @@
         "provisionalItems": []
       },
       "finalScore": 62.9,
-      "rank": 60,
+      "rank": 61,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8533,6 +8778,8 @@
       "speciesContribution": 58.6,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "特殊额外技能位",
         "sourceType": "special-fixed-team",
@@ -8659,6 +8906,8 @@
       "speciesContribution": 58.6,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "特殊额外技能位",
         "sourceType": "special-fixed-team",
@@ -8766,7 +9015,7 @@
         "provisionalItems": []
       },
       "finalScore": 64.9,
-      "rank": 53,
+      "rank": 54,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8785,6 +9034,8 @@
       "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -8913,6 +9164,8 @@
       "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -9039,6 +9292,8 @@
       "speciesContribution": 64.4,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -9184,6 +9439,8 @@
         "rankChangeWhenFull": -6,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 59.7,
       "individualContribution": 14.9,
@@ -9304,6 +9561,8 @@
       "speciesContribution": 64.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -9442,6 +9701,8 @@
       "speciesContribution": 56.3,
       "speciesSource": "ingredient-mechanical-plus-strategic-role",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 54,
       "individualContribution": 13.5,
@@ -9560,6 +9821,8 @@
       "speciesContribution": 59.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -9667,7 +9930,7 @@
         "provisionalItems": []
       },
       "finalScore": 63.2,
-      "rank": 57,
+      "rank": 58,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -9703,6 +9966,8 @@
         "rankChangeWhenFull": 5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 63.8,
       "individualContribution": 16,
@@ -9838,6 +10103,8 @@
         "rankChangeWhenFull": 5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 48.2,
       "individualContribution": 12.1,
@@ -9973,6 +10240,8 @@
         "rankChangeWhenFull": 5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 51.7,
       "individualContribution": 12.9,
@@ -10108,6 +10377,8 @@
         "rankChangeWhenFull": 5,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 79.9,
       "individualContribution": 20,
@@ -10225,6 +10496,8 @@
       "speciesContribution": 56.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -10351,6 +10624,8 @@
       "speciesContribution": 70.4,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "拉帝双龙组合归因",
         "sourceType": "latios-latias-shapley-attribution",
@@ -10477,6 +10752,8 @@
       "speciesContribution": 62.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -10605,6 +10882,8 @@
       "speciesContribution": 62.8,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -10748,6 +11027,8 @@
         "rankChangeWhenFull": 9,
         "scope": "Lv.70 final-form species baseline; no nature, subskills, favorite-Berry bonus, Energy-speed multiplier, ingredients, or main-skill output"
       },
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 21.3,
       "individualContribution": 5.3,
@@ -10868,6 +11149,8 @@
       "speciesContribution": 48.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -10975,7 +11258,7 @@
         "provisionalItems": []
       },
       "finalScore": 53.1,
-      "rank": 86,
+      "rank": 87,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -10994,6 +11277,8 @@
       "speciesContribution": 41.3,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -11101,7 +11386,7 @@
         "provisionalItems": []
       },
       "finalScore": 48.2,
-      "rank": 93,
+      "rank": 95,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -11120,6 +11405,8 @@
       "speciesContribution": 46.9,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -11227,7 +11514,7 @@
         "provisionalItems": []
       },
       "finalScore": 51.7,
-      "rank": 88,
+      "rank": 89,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -11246,6 +11533,8 @@
       "speciesContribution": 69.2,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -11372,6 +11661,8 @@
       "speciesContribution": 69.2,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -11498,6 +11789,8 @@
       "speciesContribution": 69.2,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -11616,13 +11909,128 @@
       "specialty": "all",
       "finalFormId": "491",
       "finalFormNameZh": "达克莱伊",
-      "speciesScore": null,
-      "individualScore": null,
-      "finalScore": null,
-      "rank": null,
+      "mechanicalSpeciesScore": 77.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
+      "speciesScore": 77.3,
+      "speciesContribution": 58,
+      "speciesSource": "balanced-all-rounder-team-slot-score",
+      "speciesScenarios": null,
+      "selectedAllRounderSkillId": "nightmare",
+      "selectedAllRounderSkillNameZh": "噩梦（能量填充M）",
+      "teamModel": {
+        "role": "extra-skill",
+        "ordinaryBaseEnergyPerDay": 17013.5,
+        "slotAdjustedOutputIndex": 228.8,
+        "normalizedOutputScore": 49.4,
+        "stabilityScore": 100,
+        "operationScore": 52.9,
+        "versatilityScore": 76
+      },
+      "individualScore": 34.9,
+      "individualContribution": 8.7,
+      "individual": {
+        "score": 34.9,
+        "subskillRaw": 38.4,
+        "subskillRawBeforeClamp": 38.4,
+        "subskillLegalMaximum": 53.9,
+        "subskillLegalMaximumBuild": [
+          "帮手奖励",
+          "技能概率M",
+          "帮忙速度M",
+          "树果数量S",
+          "食材概率M"
+        ],
+        "subskillScore": 71.2,
+        "subskillContribution": 49.8,
+        "natureRaw": 0,
+        "natureScore": 0,
+        "natureContribution": 0,
+        "individualBeforePattern": 49.8,
+        "ingredientPattern": "AAB",
+        "ingredientPatternCoefficient": 0.7,
+        "interactionMultiplier": 1.2825,
+        "interactionBonus": -4.3,
+        "slots": [
+          {
+            "level": 10,
+            "weight": 0.25,
+            "skill": "帮手奖励",
+            "scoredSkill": "帮手奖励",
+            "seedUpgraded": false,
+            "seedNote": "",
+            "fitScore": 75,
+            "fitStatus": "confirmed-balanced-all-rounder-average",
+            "interactionScore": 0,
+            "effectiveFitScore": 75,
+            "contribution": 18.8
+          },
+          {
+            "level": 25,
+            "weight": 0.25,
+            "skill": "树果数量S",
+            "scoredSkill": "树果数量S",
+            "seedUpgraded": false,
+            "seedNote": "",
+            "fitScore": 45,
+            "fitStatus": "provisional-balanced-all-rounder-average",
+            "interactionScore": 0,
+            "effectiveFitScore": 45,
+            "contribution": 11.3
+          },
+          {
+            "level": 50,
+            "weight": 0.25,
+            "skill": "食材概率M",
+            "scoredSkill": "食材概率M",
+            "seedUpgraded": false,
+            "seedNote": "同系技能分别占位并叠加",
+            "fitScore": 27.6,
+            "fitStatus": "confirmed-balanced-all-rounder-average",
+            "interactionScore": 0,
+            "effectiveFitScore": 27.6,
+            "contribution": 6.9
+          },
+          {
+            "level": 70,
+            "weight": 0.15,
+            "skill": "食材概率S",
+            "scoredSkill": "食材概率S",
+            "seedUpgraded": false,
+            "seedNote": "同系技能分别占位并叠加",
+            "fitScore": 13.8,
+            "fitStatus": "confirmed-balanced-all-rounder-average",
+            "interactionScore": -4.3,
+            "effectiveFitScore": 9.5,
+            "contribution": 1.4
+          },
+          {
+            "level": 80,
+            "weight": 0.1,
+            "skill": "—",
+            "scoredSkill": "—",
+            "seedUpgraded": false,
+            "seedNote": "",
+            "fitScore": 0,
+            "fitStatus": "not-present",
+            "interactionScore": 0,
+            "effectiveFitScore": 0,
+            "contribution": 0
+          }
+        ],
+        "provisional": true,
+        "provisionalItems": [
+          "树果数量S",
+          "合法满分基准：技能概率M",
+          "合法满分基准：树果数量S"
+        ]
+      },
+      "finalScore": 66.7,
+      "rank": 47,
       "routeReason": null,
       "routeCandidates": null,
-      "status": "pending-all-rounder-formula"
+      "status": "scored-with-provisional-subskill-bridges"
     },
     "92": {
       "id": "92",
@@ -11638,6 +12046,8 @@
       "speciesContribution": 59,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "回复位",
         "sourceType": "dynamic-healer-team",
@@ -11764,6 +12174,8 @@
       "speciesContribution": 67.4,
       "speciesSource": "team-calibrated-final-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": {
         "role": "额外技能位",
         "sourceType": "ordinary-fixed-team",
@@ -11897,6 +12309,8 @@
       "speciesContribution": 56.6,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 38.5,
       "individualContribution": 9.6,
@@ -11997,7 +12411,7 @@
         ]
       },
       "finalScore": 66.2,
-      "rank": 47,
+      "rank": 48,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -12016,6 +12430,8 @@
       "speciesContribution": 48.1,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 51.7,
       "individualContribution": 12.9,
@@ -12115,7 +12531,7 @@
         ]
       },
       "finalScore": 61,
-      "rank": 64,
+      "rank": 65,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -12146,6 +12562,8 @@
       "speciesContribution": 48,
       "speciesSource": "ingredient-mechanical-plus-strategic-role",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 32.6,
       "individualContribution": 8.2,
@@ -12245,7 +12663,7 @@
         ]
       },
       "finalScore": 56.2,
-      "rank": 81,
+      "rank": 82,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -12264,6 +12682,8 @@
       "speciesContribution": 62.3,
       "speciesSource": "ingredient-species-score",
       "speciesScenarios": null,
+      "selectedAllRounderSkillId": null,
+      "selectedAllRounderSkillNameZh": null,
       "teamModel": null,
       "individualScore": 29.3,
       "individualContribution": 7.3,

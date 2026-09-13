@@ -121,6 +121,15 @@
       const berryShare = (1 - baseIngredientRate * modifiers.ingredientChance) / (1 - baseIngredientRate);
       return speed * berryShare;
     }
+    if (role === 'all') {
+      if (!(baseIngredientRate > 0 && baseIngredientRate < 1)) {
+        throw new Error('全能型必须提供0到1之间的基础食材概率');
+      }
+      const berry = coreMultiplier('berry', value, baseIngredientRate);
+      const ingredient = coreMultiplier('ingredient', value, baseIngredientRate);
+      const skill = coreMultiplier('skill', value, baseIngredientRate);
+      return (berry + ingredient + skill) / 3;
+    }
     throw new Error(`未知定位：${role}`);
   }
 
@@ -161,12 +170,12 @@
     return { finalForm, ...data };
   }
 
-  function scoreNatureText(role, natureText, boxPokemonName) {
-    if (role !== 'berry') return natureScore(role, natureText);
+  function scoreNatureText(role, natureText, boxPokemonName, baseIngredientRate) {
+    if (role !== 'berry' && role !== 'all') return natureScore(role, natureText);
     const finalForm = finalFormForBoxName(boxPokemonName);
-    const data = BERRY_FINAL_FORM_RATES[finalForm];
-    if (!data) throw new Error(`缺少树果手最终形态食材概率：${boxPokemonName}`);
-    return natureScore(role, natureText, data.rate);
+    const rate = role === 'all' ? Number(baseIngredientRate) : BERRY_FINAL_FORM_RATES[finalForm]?.rate;
+    if (!(rate > 0 && rate < 1)) throw new Error(`缺少${role === 'all' ? '全能型' : '树果手'}最终形态食材概率：${boxPokemonName}`);
+    return natureScore(role, natureText, rate);
   }
 
   function selfTest() {
@@ -176,7 +185,9 @@
       ['食材手食材上升速度下降', natureScore('ingredient', '内敛'), 32.3],
       ['技能手技能上升', natureScore('skill', '慎重'), 55.6],
       ['技能手技能上升速度下降', natureScore('skill', '温和'), 32.3],
-      ['巴大蝶无补正', natureScore('berry', '认真', 0.197), 0]
+      ['巴大蝶无补正', natureScore('berry', '认真', 0.197), 0],
+      ['全能型无补正', natureScore('all', '认真', 0.2), 0],
+      ['全能型速度上升EXP下降', natureScore('all', '勇敢', 0.2), 25.7]
     ];
     const failures = assertions.filter(([, actual, expected]) => actual !== expected);
     return { ok: failures.length === 0, assertions, failures };

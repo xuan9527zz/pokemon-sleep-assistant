@@ -14,13 +14,13 @@ The project has one score pipeline:
 
 ## Final score
 
-For berry, ingredient and skill specialists:
+For berry, ingredient, skill and all-rounder helpers:
 
 `final = adjusted species score × 75% + individual score × 25%`
 
 The adjusted species score is the mechanical score plus any bounded strategic-role adjustment, clamped to 0–100. The tooltip must disclose the mechanical score, strategic adjustment, adjusted score, individual score and all components.
 
-All-rounders remain pending until their model is confirmed.
+All-rounder species scores use the same positive team-slot output anchor as skill specialists. Their ordinary berry and ingredient production is added to the selected main-skill effect before the standard producer-slot opportunity cost is removed. Apply the same 50% cross-specialty role-gap compensation used by the skill model. Mew uses the currently selected All-Mighty option and that option's verified trigger-rate tier; Darkrai uses Nightmare with two non-Dark teammates as the catalog baseline. Unknown All-Mighty bonus-Candy value is excluded rather than making the whole score pending.
 
 ## Individual score
 
@@ -39,6 +39,7 @@ Current legal benchmark builds:
 - Berry: Berry Finding S, Helping Bonus, Helping Speed M, Helping Speed S, Skill Trigger M.
 - Ingredient: Helping Bonus, Ingredient Finder S, Ingredient Finder M, Helping Speed M, Helping Speed S.
 - Skill: Helping Bonus, Skill Trigger S, Skill Trigger M, Helping Speed M, Helping Speed S.
+- All-rounder: Helping Bonus, Skill Trigger M, Helping Speed M, Berry Finding S, Ingredient Finder M.
 
 Always derive the legal ceiling with `scoring-core.js`; never assume five copies of a best skill.
 
@@ -58,6 +59,8 @@ The executable values live only in `scoring-core.js`. Important confirmed anchor
 
 Resource skills are deliberately modest: Sleep EXP Bonus 20, Energy Recovery Bonus 12, Dream Shard Bonus 10, Research EXP Bonus 8.
 
+All-rounder subskill fit is the equal-weight average of the berry, ingredient and skill values for the same subskill. Its multiplicative interaction bonus is likewise the mean of the three role interactions. This deliberately rewards universally useful Helping Bonus and speed while still recognizing Berry Finding, Ingredient Finder and Skill Trigger without pretending that one output channel is the whole helper.
+
 For berry specialists, Ingredient Finder is negative and must use the final form's ingredient rate. Helping Speed, role probability, and Berry Finding interactions are multiplicative.
 
 ## Nature
@@ -66,7 +69,7 @@ Use `scripts/nature-scores.js`. Neutral is `0`, benefits are positive, penalties
 
 ## Ingredient route
 
-Only ingredient specialists and future all-rounders use this coefficient:
+Only ingredient specialists and all-rounders use this coefficient:
 
 | Route | Coefficient |
 |---|---:|
@@ -86,6 +89,7 @@ These coefficients remain provisional display inputs. The course-derived selecti
 - Berry species: Lv.70 berry production 90% and main-skill synergy 10%. Production includes interval, ingredient-rate berry loss, base berry count and Lv.70 berry strength. Keep full-bag Sneaky Snacking as a separate scenario, never as the primary score.
 - Both roles use main-skill type fit 50%, trigger efficiency 40%, natural main-skill level 10%.
 - Skill species use the team-calibrated model described in `main-skill-models.md`.
+- All-rounder species use the shared skill-team slot anchor, but include their own ordinary berry/ingredient production and current main-skill variant. Their individual score remains a balanced three-role score rather than being treated as an ordinary skill specialist.
 
 ## Cultivation and retention separation
 

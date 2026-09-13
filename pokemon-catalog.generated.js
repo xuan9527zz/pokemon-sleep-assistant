@@ -7,11 +7,11 @@
   'use strict';
   return Object.freeze({
   "meta": {
-    "generatedAt": "2026-09-12T16:59:32.145Z",
+    "generatedAt": "2026-09-13T12:12:50.921Z",
     "sourceUpdatedAt": "2026-08-23T20:32:34.939Z",
     "count": 247,
     "speciesScoreCount": 127,
-    "collectionProfile": "Lv.70; skill species use 4-hour collection, Good Camp, 50% extra-ingredient availability"
+    "collectionProfile": "Lv.70; skill and all-rounder species use shared team-slot output anchors; skill species use 4-hour collection, Good Camp, 50% extra-ingredient availability"
   },
   "pokemon": [
     {
@@ -24061,8 +24061,294 @@
     },
     "151": {
       "specialty": "all",
-      "score": null,
-      "source": "pending-all-rounder-formula"
+      "selectedSkillId": "metronome",
+      "selectedSkillNameZh": "挥指",
+      "rawSpeciesScore": 29.7,
+      "mechanicalScore": 64.9,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
+      "score": 64.9,
+      "teamModel": {
+        "role": "extra-skill",
+        "selectedSkillId": "metronome",
+        "selectedSkillNameZh": "挥指",
+        "ordinaryBaseEnergyPerDay": 15190.9,
+        "slotAdjustedOutputIndex": 106.7,
+        "normalizedOutputScore": 23,
+        "stabilityScore": 14.4,
+        "operationScore": 46.8,
+        "versatilityScore": 90.9,
+        "scoringStatus": "balanced-all-rounder-team-slot-formula"
+      },
+      "defaultVariantId": "metronome",
+      "variants": {
+        "e4e": {
+          "selectedSkillId": "e4e",
+          "selectedSkillNameZh": "活力全体疗愈S",
+          "rawSpeciesScore": 68.6,
+          "mechanicalScore": 84.3,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 84.3,
+          "teamModel": {
+            "role": "healer",
+            "selectedSkillId": "e4e",
+            "selectedSkillNameZh": "活力全体疗愈S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 319.3,
+            "normalizedOutputScore": 68.9,
+            "stabilityScore": 100,
+            "operationScore": 39.2,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "tasty-chance": {
+          "selectedSkillId": "tasty-chance",
+          "selectedSkillNameZh": "料理大成功S",
+          "rawSpeciesScore": 62.8,
+          "mechanicalScore": 81.4,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 81.4,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "tasty-chance",
+            "selectedSkillNameZh": "料理大成功S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 268.4,
+            "normalizedOutputScore": 57.9,
+            "stabilityScore": 97.8,
+            "operationScore": 57.9,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "cooking-power": {
+          "selectedSkillId": "cooking-power",
+          "selectedSkillNameZh": "料理强化S",
+          "rawSpeciesScore": 55.4,
+          "mechanicalScore": 77.7,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 77.7,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "cooking-power",
+            "selectedSkillNameZh": "料理强化S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 240.5,
+            "normalizedOutputScore": 51.9,
+            "stabilityScore": 100,
+            "operationScore": 50.8,
+            "versatilityScore": 69.3,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "berry-burst": {
+          "selectedSkillId": "berry-burst",
+          "selectedSkillNameZh": "树果骤增",
+          "rawSpeciesScore": 46.3,
+          "mechanicalScore": 73.2,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 73.2,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "berry-burst",
+            "selectedSkillNameZh": "树果骤增",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 175,
+            "normalizedOutputScore": 37.8,
+            "stabilityScore": 100,
+            "operationScore": 49,
+            "versatilityScore": 73.6,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "dream-shard-fixed": {
+          "selectedSkillId": "dream-shard-fixed",
+          "selectedSkillNameZh": "梦之碎片获取S",
+          "rawSpeciesScore": 42.8,
+          "mechanicalScore": 71.4,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 71.4,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "dream-shard-fixed",
+            "selectedSkillNameZh": "梦之碎片获取S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 133.9,
+            "normalizedOutputScore": 28.9,
+            "stabilityScore": 100,
+            "operationScore": 48.6,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "energy-m": {
+          "selectedSkillId": "energy-m",
+          "selectedSkillNameZh": "能量填充M",
+          "rawSpeciesScore": 39.7,
+          "mechanicalScore": 69.9,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 69.9,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "energy-m",
+            "selectedSkillNameZh": "能量填充M",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 112,
+            "normalizedOutputScore": 24.2,
+            "stabilityScore": 100,
+            "operationScore": 48.6,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "charge-energy": {
+          "selectedSkillId": "charge-energy",
+          "selectedSkillNameZh": "活力填充S",
+          "rawSpeciesScore": 39.1,
+          "mechanicalScore": 69.6,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 69.6,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "charge-energy",
+            "selectedSkillNameZh": "活力填充S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 116.4,
+            "normalizedOutputScore": 25.1,
+            "stabilityScore": 100,
+            "operationScore": 36.7,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "energy-s-fixed": {
+          "selectedSkillId": "energy-s-fixed",
+          "selectedSkillNameZh": "能量填充S",
+          "rawSpeciesScore": 36.2,
+          "mechanicalScore": 68.1,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 68.1,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "energy-s-fixed",
+            "selectedSkillNameZh": "能量填充S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 89.6,
+            "normalizedOutputScore": 19.3,
+            "stabilityScore": 100,
+            "operationScore": 45.9,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "ingredient-magnet": {
+          "selectedSkillId": "ingredient-magnet",
+          "selectedSkillNameZh": "食材获取S",
+          "rawSpeciesScore": 31.7,
+          "mechanicalScore": 65.9,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 65.9,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "ingredient-magnet",
+            "selectedSkillNameZh": "食材获取S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 78.9,
+            "normalizedOutputScore": 17,
+            "stabilityScore": 66.3,
+            "operationScore": 48.6,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "metronome": {
+          "selectedSkillId": "metronome",
+          "selectedSkillNameZh": "挥指",
+          "rawSpeciesScore": 29.7,
+          "mechanicalScore": 64.9,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 64.9,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "metronome",
+            "selectedSkillNameZh": "挥指",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 106.7,
+            "normalizedOutputScore": 23,
+            "stabilityScore": 14.4,
+            "operationScore": 46.8,
+            "versatilityScore": 90.9,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "energizing-cheer": {
+          "selectedSkillId": "energizing-cheer",
+          "selectedSkillNameZh": "活力疗愈S",
+          "rawSpeciesScore": 29.3,
+          "mechanicalScore": 64.7,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 64.7,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "energizing-cheer",
+            "selectedSkillNameZh": "活力疗愈S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 58.9,
+            "normalizedOutputScore": 12.7,
+            "stabilityScore": 80,
+            "operationScore": 38.9,
+            "versatilityScore": 100,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        },
+        "helping-support": {
+          "selectedSkillId": "helping-support",
+          "selectedSkillNameZh": "帮手支援S",
+          "rawSpeciesScore": 29,
+          "mechanicalScore": 64.5,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 64.5,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "helping-support",
+            "selectedSkillNameZh": "帮手支援S",
+            "ordinaryBaseEnergyPerDay": 15190.9,
+            "slotAdjustedOutputIndex": 80.2,
+            "normalizedOutputScore": 17.3,
+            "stabilityScore": 48.9,
+            "operationScore": 48.6,
+            "versatilityScore": 85.9,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        }
+      },
+      "source": "balanced-all-rounder-team-slot-score"
     },
     "154": {
       "specialty": "berry",
@@ -25259,8 +25545,52 @@
     },
     "491": {
       "specialty": "all",
-      "score": null,
-      "source": "pending-all-rounder-formula"
+      "selectedSkillId": "nightmare",
+      "selectedSkillNameZh": "噩梦（能量填充M）",
+      "rawSpeciesScore": 54.6,
+      "mechanicalScore": 77.3,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
+      "score": 77.3,
+      "teamModel": {
+        "role": "extra-skill",
+        "selectedSkillId": "nightmare",
+        "selectedSkillNameZh": "噩梦（能量填充M）",
+        "ordinaryBaseEnergyPerDay": 17013.5,
+        "slotAdjustedOutputIndex": 228.8,
+        "normalizedOutputScore": 49.4,
+        "stabilityScore": 100,
+        "operationScore": 52.9,
+        "versatilityScore": 76,
+        "scoringStatus": "balanced-all-rounder-team-slot-formula"
+      },
+      "defaultVariantId": "nightmare",
+      "variants": {
+        "nightmare": {
+          "selectedSkillId": "nightmare",
+          "selectedSkillNameZh": "噩梦（能量填充M）",
+          "rawSpeciesScore": 54.6,
+          "mechanicalScore": 77.3,
+          "strategicRoleScore": null,
+          "strategicBonus": 0,
+          "strategy": null,
+          "score": 77.3,
+          "teamModel": {
+            "role": "extra-skill",
+            "selectedSkillId": "nightmare",
+            "selectedSkillNameZh": "噩梦（能量填充M）",
+            "ordinaryBaseEnergyPerDay": 17013.5,
+            "slotAdjustedOutputIndex": 228.8,
+            "normalizedOutputScore": 49.4,
+            "stabilityScore": 100,
+            "operationScore": 52.9,
+            "versatilityScore": 76,
+            "scoringStatus": "balanced-all-rounder-team-slot-formula"
+          }
+        }
+      },
+      "source": "balanced-all-rounder-team-slot-score"
     },
     "518": {
       "specialty": "berry",

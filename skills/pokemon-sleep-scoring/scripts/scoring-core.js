@@ -14,7 +14,8 @@
   const LEGAL_SUBSKILL_MAX_BUILDS=Object.freeze({
     berry:Object.freeze(['树果数量S','帮手奖励','帮忙速度M','帮忙速度S','技能概率M']),
     ingredient:Object.freeze(['帮手奖励','食材概率S','食材概率M','帮忙速度M','帮忙速度S']),
-    skill:Object.freeze(['帮手奖励','技能概率S','技能概率M','帮忙速度M','帮忙速度S'])
+    skill:Object.freeze(['帮手奖励','技能概率S','技能概率M','帮忙速度M','帮忙速度S']),
+    all:Object.freeze(['帮手奖励','技能概率M','帮忙速度M','树果数量S','食材概率M'])
   });
   const SUBSKILL_UPGRADE_FAMILIES=Object.freeze([
     Object.freeze(['帮忙速度S','帮忙速度M']),Object.freeze(['食材概率S','食材概率M']),
@@ -56,6 +57,11 @@
 
   function subskillFit(role,skill,finalRecord){
     if(Object.hasOwn(RESOURCE_SUBSKILL_FIT,skill)){const [score,status]=RESOURCE_SUBSKILL_FIT[skill];return {score,status}}
+    if(role==='all'){
+      const parts=['berry','ingredient','skill'].map(partRole=>subskillFit(partRole,skill,finalRecord));
+      const provisional=parts.some(part=>part.status.startsWith('provisional'));
+      return {score:round(parts.reduce((sum,part)=>sum+part.score,0)/parts.length),status:provisional?'provisional-balanced-all-rounder-average':'confirmed-balanced-all-rounder-average'};
+    }
     if(role==='berry'&&(skill==='食材概率M'||skill==='食材概率S')){
       const p=Number(finalRecord&&finalRecord.ingredientRate),score=-(p*PROBABILITY_BOOST[skill]/(1-p))/.5*100;
       return {score:round(score),status:'confirmed-dynamic-negative'};
@@ -65,6 +71,12 @@
   }
 
   function interactionBonus(role,slots,finalRecord){
+    if(role==='all'){
+      const parts=['berry','ingredient','skill'].map(partRole=>interactionBonus(partRole,slots,finalRecord));
+      const active=parts.filter(part=>part.slotIndex!==null);
+      if(!active.length)return {score:0,slotIndex:null,multiplier:1};
+      return {score:round(parts.reduce((sum,part)=>sum+part.score,0)/parts.length),slotIndex:Math.max(...active.map(part=>part.slotIndex)),multiplier:round(parts.reduce((sum,part)=>sum+part.multiplier,0)/parts.length,4)};
+    }
     const relevant=[],speedEffects=[];let speedReduction=0,probabilityBoost=0,berryFinding=0;
     slots.forEach((slot,index)=>{
       const speed=HELP_SPEED_REDUCTION[slot.scoredSkill]||0;
@@ -102,12 +114,12 @@
   }
 
   function individualScore(box,role,finalRecord){
-    if(!['berry','ingredient','skill'].includes(role))return null;
+    if(!['berry','ingredient','skill','all'].includes(role))return null;
     const scored=scoreSubskillSlots(box&&box.subskills||box&&box.subs||'',role,finalRecord),legalMaximum=legalSubskillMaximum(role,finalRecord);
     const subskillRawBeforeClamp=scored.raw,subskillRaw=round(clamp(subskillRawBeforeClamp)),subskillScore=round(clamp(subskillRawBeforeClamp/legalMaximum.raw*100)),subskillContribution=round(subskillScore*SUBSKILL_WEIGHT);
-    const natureRaw=natureScoring.natureScore(role,box&&box.nature,role==='berry'?Number(finalRecord&&finalRecord.ingredientRate):undefined);
+    const natureRaw=natureScoring.natureScore(role,box&&box.nature,['berry','all'].includes(role)?Number(finalRecord&&finalRecord.ingredientRate):undefined);
     const natureScoreBeforeRound=clamp(natureRaw/NATURE_POSITIVE_BENCHMARK*100,-100,100),natureScore=round(natureScoreBeforeRound),natureContribution=round(natureScoreBeforeRound*NATURE_WEIGHT);
-    const individualBeforePattern=round(clamp(subskillContribution+natureContribution)),pattern=role==='ingredient'?ingredientPattern(box&&box.ingredients):'不适用',patternCoefficient=role==='ingredient'?(INGREDIENT_PATTERN_COEFFICIENTS[pattern]??INGREDIENT_PATTERN_COEFFICIENTS.ABC):1,score=round(individualBeforePattern*patternCoefficient);
+    const routeRole=role==='ingredient'||role==='all',individualBeforePattern=round(clamp(subskillContribution+natureContribution)),pattern=routeRole?ingredientPattern(box&&box.ingredients):'不适用',patternCoefficient=routeRole?(INGREDIENT_PATTERN_COEFFICIENTS[pattern]??INGREDIENT_PATTERN_COEFFICIENTS.ABC):1,score=round(individualBeforePattern*patternCoefficient);
     const provisionalItems=[...new Set([...scored.slots.filter(slot=>slot.fitStatus.startsWith('provisional')).map(slot=>slot.scoredSkill),...legalMaximum.provisionalItems.map(skill=>`合法满分基准：${skill}`)])];
     return {score,subskillRaw,subskillRawBeforeClamp:round(subskillRawBeforeClamp),subskillLegalMaximum:legalMaximum.raw,subskillLegalMaximumBuild:legalMaximum.build,subskillScore,subskillContribution,natureRaw,natureScore,natureContribution,individualBeforePattern,ingredientPattern:pattern,ingredientPatternCoefficient:patternCoefficient,interactionMultiplier:scored.interaction.multiplier,interactionBonus:scored.interaction.score,slots:scored.slots,provisional:provisionalItems.length>0,provisionalItems};
   }

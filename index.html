@@ -299,7 +299,7 @@
 </section>
 <section class="stats" data-page="box"><div class="stat"><b id="total">0</b><span>总个体</span></div><div class="stat"><b id="shinyCount">0</b><span>闪光个体</span></div><div class="stat"><b id="normalCount">0</b><span>非闪光</span></div><div class="stat"><b id="battleCount">0</b><span>参与实战</span></div><div class="stat"><b id="shown">0</b><span>当前显示</span></div></section>
 <section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、图鉴号、个体编号、盒子、定位、食材、技能或培养判断"><button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-expanded="false">筛选与排序</button><details class="box-multi-filter" id="bf" data-placeholder="全部盒子"><summary>全部盒子</summary><div class="box-multi-options"></div></details><details class="box-multi-filter" id="ef" data-placeholder="全部用途状态"><summary>全部用途状态</summary><div class="box-multi-options"><label><input type="checkbox" value="both"><span>收藏＋实战</span><small data-count></small></label><label><input type="checkbox" value="battle-only"><span>仅实战</span><small data-count></small></label><label><input type="checkbox" value="collection-only"><span>仅收藏</span><small data-count></small></label><label><input type="checkbox" value="inactive"><span>暂不实战</span><small data-count></small></label></div></details><details class="box-multi-filter" id="sf" data-placeholder="全部闪光状态"><summary>全部闪光状态</summary><div class="box-multi-options"><label><input type="checkbox" value="是"><span>闪光</span><small data-count></small></label><label><input type="checkbox" value="否"><span>非闪光</span><small data-count></small></label></div></details><details class="box-multi-filter" id="rf" data-placeholder="全部定位"><summary>全部定位</summary><div class="box-multi-options"><label><input type="checkbox" value="berry"><span>树果手</span><small data-count></small></label><label><input type="checkbox" value="ingredient"><span>食材手</span><small data-count></small></label><label><input type="checkbox" value="skill"><span>技能手</span><small data-count></small></label><label><input type="checkbox" value="all"><span>全能手</span><small data-count></small></label></div></details><details class="box-multi-filter" id="pf" data-placeholder="全部培养判断"><summary>全部培养判断</summary><div class="box-multi-options"><label><input type="checkbox" value="core"><span>核心培养</span><small data-count></small></label><label><input type="checkbox" value="stage"><span>阶段性培养</span><small data-count></small></label><label><input type="checkbox" value="transition"><span>过渡使用</span><small data-count></small></label><label><input type="checkbox" value="niche"><span>限定用途</span><small data-count></small></label><label><input type="checkbox" value="avoid"><span>暂不建议</span><small data-count></small></label><label><input type="checkbox" value="manual"><span>人工判断</span><small data-count></small></label></div></details><select id="sortSelect" aria-label="盒子排序"><option value="pokedex-asc">图鉴编号顺序</option><option value="cultivation-desc">培养优先级：高到低</option><option value="score-desc">综合评分：高到低</option><option value="species-desc">种族分：高到低</option><option value="individual-desc">个体分：高到低</option><option value="score-asc">综合评分：低到高</option><option value="custom" hidden>表头排序</option></select><button id="reset">重置筛选</button><div class="box-filter-summary is-unfiltered" id="boxFilterSummary" role="status" aria-live="polite"><span class="box-filter-mode">尚未筛选</span><span>显示全部 97 只</span></div></section>
-<div class="meta" data-page="box">综合评分采用已确认的个人规则：种族分 75%＋个体分 25%；个体分由副技能合法满分百分分 70%＋性格理论百分分 30%组成，食材手再乘 AAA 1.00／ABB 0.85／ABA 0.80／AAB、AAC 0.70／ABC 0.50 的组合系数。副技能按同定位最佳合法五栏组合换算为 100 分，当前原始上限为树果手 66.7、食材手 70.0、技能手 70.0；五栏仍按 Lv.10／25／50／70／80 分别占 25%／25%／25%／15%／10%，合法种子升级和 S＋M 乘算收益均计入。培养判断是独立建议层，会考虑账号阶段、直接上位、队伍条件和投入门槛，不会反向修改分数。收藏与实战也是两个独立维度：闪光自动标记收藏，达到培养门槛时仍可同时参与实战。梦幻与达克莱伊因全能型公式尚未确认而显示“待定”。</div>
+<div class="meta" data-page="box">综合评分采用统一权重：种族分 75%＋个体分 25%；个体分由副技能合法满分百分分 70%＋性格理论百分分 30%组成，食材手与全能型再乘 AAA 1.00／ABB 0.85／ABA 0.80／AAB、AAC 0.70／ABC 0.50 的组合系数。副技能按同定位最佳合法五栏组合换算为 100 分，五栏仍按 Lv.10／25／50／70／80 分别占 25%／25%／25%／15%／10%，合法种子升级和 S＋M 乘算收益均计入。全能型个体分把树果、食材、技能三类收益等权合成；种族分把普通树果／食材产出与主技能放进同一团队位置净收益模型，梦幻会随当前十项全能选项重算，达克莱伊按两名非恶属性队友的标准场景计分。培养判断是独立建议层，会考虑账号阶段、直接上位、队伍条件和投入门槛，不会反向修改分数。收藏与实战也是两个独立维度：闪光自动标记收藏，达到培养门槛时仍可同时参与实战。</div>
 <details class="mobile-score-note panel" data-page="box"><summary>查看评分口径</summary><p>综合评分为种族分75%＋个体分25%；个体分由副技能70%＋性格30%组成，食材手再乘食材组合系数。实际副技能升级只影响当前产出，不改Lv.70潜力评分。</p></details>
 <div class="tablebox box-page-table" data-page="box"><table id="tbl"><thead><tr><th data-k="pokedexId">图鉴</th><th data-k="name">宝可梦</th><th data-k="boxId">盒子与用途</th><th data-k="specialty">定位</th><th data-k="scoreTotal">综合评分<span class="score-draft-note">个人规则</span></th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>主技能</th><th>副技能</th><th>性格</th><th data-k="cultivationRank">培养判断</th></tr></thead><tbody></tbody></table></div>
 <div class="mobile-box-list" id="mobileBoxList" data-page="box" aria-live="polite"></div>
@@ -397,15 +397,15 @@
   </div>
 </dialog>
 </main>
-<script src="skills/pokemon-sleep-scoring/scripts/nature-scores.js"></script>
-<script src="skills/pokemon-sleep-scoring/scripts/scoring-core.js?v=20260901-2"></script>
-<script src="pokemon-strategy.js?v=20260901-2"></script>
+<script src="skills/pokemon-sleep-scoring/scripts/nature-scores.js?v=20260914-1"></script>
+<script src="skills/pokemon-sleep-scoring/scripts/scoring-core.js?v=20260914-1"></script>
+<script src="pokemon-strategy.js?v=20260914-1"></script>
 <script src="selection-odds.js?v=20260912-1"></script>
-<script src="box-scores.generated.js?v=20260901-2"></script>
-<script src="pokemon-catalog.generated.js?v=20260901-2"></script>
-<script src="pokemon-scoring.js?v=20260901-2"></script>
+<script src="box-scores.generated.js?v=20260914-1"></script>
+<script src="pokemon-catalog.generated.js?v=20260914-1"></script>
+<script src="all-rounder-rules.js?v=20260914-1"></script>
+<script src="pokemon-scoring.js?v=20260914-1"></script>
 <script src="cultivation-advisor.js?v=20260913-1"></script>
-<script src="all-rounder-rules.js?v=20260913-1"></script>
 <script src="production-calculator.js?v=20260913-4"></script>
 <script src="pokemon-comparison.js?v=20260913-5"></script>
 <script src="box-filter.js?v=20260913-1"></script>
@@ -606,7 +606,7 @@ const subskillUnlockLevels=[10,25,50,70,80];
 const scoreClamp=(value,min,max)=>Math.min(max,Math.max(min,value));
 function draftScoreBreakdown(mon){
   const generated=window.POKEMON_SLEEP_BOX_SCORES?.scores?.[mon.id];
-  if(generated&&!mon.speciesId)return generated;
+  if(generated&&!mon.speciesId&&mon.specialty!=='all')return generated;
   return window.POKEMON_SLEEP_DYNAMIC_SCORING?.scorePokemon(mon)||generated||{
     id:mon.id,name:mon.name,specialty:mon.specialty,finalScore:null,status:'missing-generated-score'
   };
@@ -969,20 +969,22 @@ function actualUpgradeSummary(mon){
 function scoreBreakdownText(mon){
   const s=mon.scoreBreakdown,signed=value=>`${value>0?'+':''}${Number(value).toFixed(1)}`;
   const actualUpgrade=actualUpgradeSummary(mon),actualUpgradeLine=actualUpgrade?`\n实际升级记录　${actualUpgrade}（影响当前产出，不改潜力评分）`:'';
-  if(!Number.isFinite(s.finalScore)){const dynamic=window.POKEMON_SLEEP_ALL_ROUNDER_RULES?.assess(mon);return `#${mon.id} ${mon.name}｜综合评分待定\n最终形态：${s.finalFormNameZh||mon.name}${dynamic?`\n动态定位：${dynamic.role}\n适合队伍：${dynamic.team}\n当前构筑：${dynamic.build}\n提醒：${dynamic.warning}`:''}\n全能型百分制权重尚未确认，因此不使用虚构的临时分数；生产、活力和队伍联动仍按当前实际资料计算。${actualUpgradeLine}`}
+  if(!Number.isFinite(s.finalScore)){const dynamic=window.POKEMON_SLEEP_ALL_ROUNDER_RULES?.assess(mon);return `#${mon.id} ${mon.name}｜综合评分待定\n最终形态：${s.finalFormNameZh||mon.name}${dynamic?`\n动态定位：${dynamic.role}\n适合队伍：${dynamic.team}\n当前构筑：${dynamic.build}\n提醒：${dynamic.warning}`:''}\n当前图鉴或评分模型缺少必要数据，请核对录入物种与最终形态。${actualUpgradeLine}`}
   const i=s.individual;
   const slotLines=i.slots.map(slot=>{const skillLabel=slot.seedUpgraded?`${slot.skill}→${slot.scoredSkill}`:slot.skill,provisional=slot.fitStatus.startsWith('provisional')?'（暂定）':'',interaction=slot.interactionScore?`，组合${signed(slot.interactionScore)}`:'',note=slot.seedNote?`；${slot.seedNote}`:'';return `  Lv.${slot.level} ${skillLabel}：${signed(slot.fitScore)}${provisional}${interaction} × ${Math.round(slot.weight*100)}% = ${signed(slot.contribution)}${note}`}).join('\n');
   const subskillScore=Number.isFinite(i.subskillScore)?i.subskillScore:i.subskillRaw;
   const legalMaximum=Number.isFinite(i.subskillLegalMaximum)?i.subskillLegalMaximum:100;
   const legalBuild=Array.isArray(i.subskillLegalMaximumBuild)?i.subskillLegalMaximumBuild.map((skill,index)=>`Lv.${subskillUnlockLevels[index]} ${skill}`).join('／'):'';
   const natureScore=Number.isFinite(i.natureScore)?i.natureScore:i.natureContribution/0.3;
-  const patternLine=mon.specialty==='ingredient'?`\n食材组合　　　${i.ingredientPattern} × ${i.ingredientPatternCoefficient.toFixed(2)}\n系数前个体分　${i.individualBeforePattern.toFixed(1)}`:'';
+  const patternLine=['ingredient','all'].includes(mon.specialty)?`\n食材组合　　　${i.ingredientPattern} × ${i.ingredientPatternCoefficient.toFixed(2)}\n系数前个体分　${i.individualBeforePattern.toFixed(1)}`:'';
   const routeLine=s.routeReason?`\n进化路线　　　${s.routeReason}`:'';
   const strategicLine=s.strategy?`\n战略岗位　　　${s.strategy.role||s.strategy.title}${s.strategy.ingredient?`（${s.strategy.ingredient}）`:''}${Number(s.strategicBonus)>0?`\n  机械种族分 ${Number(s.mechanicalSpeciesScore).toFixed(1)}，岗位修正 +${Number(s.strategicBonus).toFixed(1)} → ${Number(s.speciesScore).toFixed(1)}`:'（机械种族分已足够，不重复加分）'}\n  ${s.strategy.reason}`:'';
   const provisionalLine=i.provisional?`\n暂定参数　　　${i.provisionalItems.join('、')}（以后改参数会自动全量重算）`:'';
   const scenarios=s.speciesScenarios,rankChange=scenarios&&Number(scenarios.rankChangeWhenFull),rankText=rankChange>0?`满包上升 ${rankChange} 位`:rankChange<0?`满包下降 ${Math.abs(rankChange)} 位`:'名次不变';
   const scenarioLine=scenarios?`\n树果双情景　　Lv.${scenarios.targetLevel}最终形态种族基准（不计个体、喜爱树果、活力与主技能）\n  正常收菜：${Number(scenarios.normalCollection.berryStrengthPerDay).toLocaleString('zh-CN')} 树果指数/日｜树果手 #${scenarios.normalCollection.rank}\n  满包偷吃：${Number(scenarios.fullBagSneakySnacking.berryStrengthPerDay).toLocaleString('zh-CN')} 树果指数/日｜树果手 #${scenarios.fullBagSneakySnacking.rank}｜${rankText}\n  满包时不再抽食材或主技能，所以此情景不替换当前综合分。`:'';
-  return `#${mon.id} ${mon.name}｜综合评分 ${s.finalScore.toFixed(1)} / 100｜盒内 #${s.rank}\n最终形态　　　${s.finalFormNameZh}\n种族分　　　　${s.speciesScore.toFixed(1)} × 75% = ${s.speciesContribution.toFixed(1)}${strategicLine}\n个体分　　　　${s.individualScore.toFixed(1)} × 25% = ${s.individualContribution.toFixed(1)}\n副技能百分分　${subskillScore.toFixed(1)} × 70% = ${i.subskillContribution.toFixed(1)}\n加权原始值　　${i.subskillRawBeforeClamp.toFixed(1)} ÷ 合法上限 ${legalMaximum.toFixed(1)}${legalBuild?`\n合法满分组合　${legalBuild}`:''}\n${slotLines}\n性格百分分　　${signed(natureScore)} × 30% = ${signed(i.natureContribution)}（机制原始 ${signed(i.natureRaw)}；无补正为0）${patternLine}${routeLine}\n乘算交互　　　倍率 ${i.interactionMultiplier.toFixed(4)}，副技能组合奖励 ${signed(i.interactionBonus)}${scenarioLine}${provisionalLine}${actualUpgradeLine}\nLv.80栏位按长期潜力计10%；副技能100分代表同定位最佳合法五栏组合。`;
+  const allRounderLine=mon.specialty==='all'?`\n全能型场景　　${s.selectedAllRounderSkillNameZh||'当前主技能'}｜普通产出 ${Number(s.teamModel?.ordinaryBaseEnergyPerDay||0).toLocaleString('zh-CN')}／日｜位置净产出指数 ${Number(s.teamModel?.slotAdjustedOutputIndex||0).toFixed(1)}`:'';
+  const rankLine=Number.isFinite(s.rank)?`｜盒内 #${s.rank}`:'';
+  return `#${mon.id} ${mon.name}｜综合评分 ${s.finalScore.toFixed(1)} / 100${rankLine}\n最终形态　　　${s.finalFormNameZh}\n种族分　　　　${s.speciesScore.toFixed(1)} × 75% = ${s.speciesContribution.toFixed(1)}${strategicLine}${allRounderLine}\n个体分　　　　${s.individualScore.toFixed(1)} × 25% = ${s.individualContribution.toFixed(1)}\n副技能百分分　${subskillScore.toFixed(1)} × 70% = ${i.subskillContribution.toFixed(1)}\n加权原始值　　${i.subskillRawBeforeClamp.toFixed(1)} ÷ 合法上限 ${legalMaximum.toFixed(1)}${legalBuild?`\n合法满分组合　${legalBuild}`:''}\n${slotLines}\n性格百分分　　${signed(natureScore)} × 30% = ${signed(i.natureContribution)}（机制原始 ${signed(i.natureRaw)}；无补正为0）${patternLine}${routeLine}\n乘算交互　　　倍率 ${i.interactionMultiplier.toFixed(4)}，副技能组合奖励 ${signed(i.interactionBonus)}${scenarioLine}${provisionalLine}${actualUpgradeLine}\nLv.80栏位按长期潜力计10%；副技能100分代表同定位最佳合法五栏组合。`;
 }
 function showScoreTooltip(target){scoreTooltip.textContent=target.dataset.scoreTooltip;scoreTooltip.hidden=false;const rect=target.getBoundingClientRect(),gap=8,width=scoreTooltip.offsetWidth,height=scoreTooltip.offsetHeight;let left=scoreClamp(rect.left,10,window.innerWidth-width-10),top=rect.bottom+gap;if(top+height>window.innerHeight-10)top=Math.max(10,rect.top-height-gap);scoreTooltip.style.left=`${left}px`;scoreTooltip.style.top=`${top}px`}
 function hideScoreTooltip(){scoreTooltip.hidden=true}

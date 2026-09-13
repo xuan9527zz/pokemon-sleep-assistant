@@ -39,7 +39,7 @@
   function isDarkrai(mon){return String(mon&&mon.speciesId||'')==='491'||String(mon&&mon.finalFormId||'')==='491'||/达克莱伊|達克萊伊/.test(String(mon&&mon.name||''))}
   function selectedId(mon){
     const stored=String(mon&&mon.versatileSkillId||'');if(BY_ID[stored])return stored;
-    const label=String(mon&&mon.main||'');return ALL_MIGHTY_OPTIONS.find(item=>label.includes(item.label))?.id||'metronome';
+    const label=String(mon&&(mon.main||mon.mainSkill)||'');return ALL_MIGHTY_OPTIONS.find(item=>label.includes(item.label))?.id||'metronome';
   }
   function apply(mon,id){
     if(!isMew(mon))return {...mon};

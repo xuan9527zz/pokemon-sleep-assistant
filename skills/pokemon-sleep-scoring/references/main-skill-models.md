@@ -40,7 +40,7 @@ Latias and Latios are the only allowed two-Special pair and use separate final-f
 - Helping Support, Helper Boost and Berry Burst: recompute from the actual five members and their output; extra helps cannot trigger another main skill.
 - Tasty Chance, Cooking Power-Up, Cooking Assist and Metronome: use weekly nonlinear cooking states, not flat value per trigger. Respect pot thresholds, surplus ingredients, Good Camp and caps.
 - Skill Copy: use the four actual teammate effects at the copier's level.
-- All-Mighty: expose every selectable output; keep unknown trigger or Candy components pending.
+- All-Mighty: expose and score every selectable output with its verified trigger-rate tier. Unknown bonus-Candy probability/value remains excluded and explicitly pending as a resource component; it no longer blocks the confirmed ordinary-production and selected-skill components from producing an all-rounder score.
 - Inventory affects trigger retention and two-trigger storage for skill specialists but receives no separate raw individual points.
 
 ## Selection-role boundary

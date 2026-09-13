@@ -195,7 +195,7 @@
 
   function minimumStandard(mon,{finalId,specialty,strategicProfile}={}){
     const id=String(finalId||mon&&mon.finalFormId||mon&&mon.scoreBreakdown&&mon.scoreBreakdown.finalFormId||''),specialtyRole=specialty||mon&&mon.specialty||mon&&mon.scoreBreakdown&&mon.scoreBreakdown.specialty,rule=ruleFor(id,specialtyRole,mon);
-    if(!rule)return {status:'manual',label:'人工判断',meetsMinimum:false,meetsGraduation:false,rule:null,missing:['评分定位尚未完成'],source:SELECTION_SOURCE};
+    if(!rule)return {status:'manual',label:'人工判断',meetsMinimum:false,meetsGraduation:false,rule:null,missing:[specialtyRole==='all'?'全能型毕业线需结合当前主技能与食材路线人工复核':'评分定位尚未完成'],source:SELECTION_SOURCE};
     const skills=skillsAt(mon,50),skills25=skillsAt(mon,25),profile=strategicProfile||SPECIES_ROLES[id]||null,routeMatch=!profile||!profile.ingredient||ingredientNames(mon).includes(normalizeIngredientName(profile.ingredient)),missing=[];
     let status='pass',meetsMinimum=false,meetsGraduation=false,roleKind=specialtyRole,effectiveGains=[],secondaryGains=[],routePattern='不适用',routeStatus='not-applicable',investmentLimit='',courseNote='';
 

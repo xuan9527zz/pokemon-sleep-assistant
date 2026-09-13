@@ -8,6 +8,7 @@ const speciesScoring = require('./species-scores.js');
 const skillSpeciesScoring = require('./skill-team-species-scores.js');
 const core = require('./scoring-core.js');
 const strategy = require('../../../pokemon-strategy.js');
+const allRounderRules = require('../../../all-rounder-rules.js');
 
 const TARGET_LEVEL = 70;
 const SPECIES_WEIGHT = core.weights.species;
@@ -143,10 +144,18 @@ function buildSpeciesSources(records) {
     ingredientAvailability: 0.5,
     goodCamp: true
   });
+  const allRows = speciesScoring.allRounderSpeciesRankingRows(records);
+  const all = new Map();
+  allRows.forEach(row => {
+    const id = String(row.id);
+    if (!all.has(id)) all.set(id, new Map());
+    all.get(id).set(String(row.selectedSkillId), row);
+  });
   return {
     ingredient: new Map(ingredient.map(row => [String(row.id), row])),
     berry: new Map(berry.map(row => [String(row.id), row])),
-    skill: new Map(skill.map(row => [String(row.id), row]))
+    skill: new Map(skill.map(row => [String(row.id), row])),
+    all
   };
 }
 
@@ -178,25 +187,18 @@ function boxScoreRows(boxRows, records) {
     const target = targetForBox(box, sources, recordsById);
     const finalRecord = recordsById.get(target.id);
     const role = finalRecord.specialty;
-    if (role === 'all') {
-      return {
-        id: box.id,
-        name: box.name,
-        specialty: role,
-        finalFormId: target.id,
-        finalFormNameZh: target.nameZh,
-        speciesScore: null,
-        individualScore: null,
-        finalScore: null,
-        rank: null,
-        routeReason: target.routeReason,
-        routeCandidates: target.routeCandidates,
-        status: 'pending-all-rounder-formula'
-      };
-    }
-    const source = sources[role]?.get(target.id);
+    const selectedAllRounderSkillId = role === 'all'
+      ? (allRounderRules.isMew(box) ? allRounderRules.selectedId(box) : 'nightmare')
+      : null;
+    const source = role === 'all'
+      ? sources.all.get(target.id)?.get(selectedAllRounderSkillId)
+      : sources[role]?.get(target.id);
     if (!source) throw new Error(`缺少${box.name}→${target.nameZh}的${role}种族分`);
-    const mechanicalSpeciesScore = role === 'skill' ? source.finalSpeciesScore : source.speciesScore;
+    const mechanicalSpeciesScore = role === 'skill'
+      ? source.finalSpeciesScore
+      : role === 'all'
+        ? skillSpeciesScoring.roleCalibratedSpeciesScore(source.speciesScore)
+        : source.speciesScore;
     const strategic = strategy.strategicAdjustment(target.id, mechanicalSpeciesScore);
     const speciesScore = strategic.adjustedScore;
     if (!Number.isFinite(speciesScore)) throw new Error(`${target.nameZh}种族分待定`);
@@ -217,15 +219,20 @@ function boxScoreRows(boxRows, records) {
       strategy: strategic.profile,
       speciesScore,
       speciesContribution: round(speciesScore * SPECIES_WEIGHT),
-      speciesSource: strategic.strategicBonus > 0 ? `${role}-mechanical-plus-strategic-role` : role === 'skill' ? 'team-calibrated-final-species-score' : `${role}-species-score`,
+      speciesSource: strategic.strategicBonus > 0 ? `${role}-mechanical-plus-strategic-role` : role === 'skill' ? 'team-calibrated-final-species-score' : role === 'all' ? 'balanced-all-rounder-team-slot-score' : `${role}-species-score`,
       speciesScenarios: role === 'berry' ? source.berryScenarios : null,
-      teamModel: role === 'skill' ? {
-        role: source.role,
+      selectedAllRounderSkillId,
+      selectedAllRounderSkillNameZh: role === 'all' ? source.selectedSkillNameZh : null,
+      teamModel: role === 'skill' || role === 'all' ? {
+        role: role === 'all' ? source.speciesScoreRole : source.role,
         sourceType: source.sourceType,
         islandNameZh: source.islandNameZh,
         candidateTeam: source.candidateTeam,
         baselineTeam: source.baselineTeam,
         yieldCoefficient: source.yieldCoefficient,
+        ordinaryBaseEnergyPerDay: source.ordinaryBaseEnergyPerDay,
+        slotAdjustedOutputIndex: source.slotAdjustedOutputIndex,
+        normalizedOutputScore: source.normalizedOutputScore,
         stabilityScore: source.stabilityScore,
         operationScore: source.operationScore,
         versatilityScore: source.versatilityScore,
@@ -255,7 +262,7 @@ function buildOutput(boxRows, records) {
   const scored = rows.filter(row => Number.isFinite(row.finalScore));
   const pending = rows.filter(row => !Number.isFinite(row.finalScore));
   const ranked = [...scored].sort((left, right) => left.rank - right.rank);
-  const legalSubskillMaximums = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => {
+  const legalSubskillMaximums = Object.fromEntries(['berry', 'ingredient', 'skill', 'all'].map(role => {
     const representative = records.find(record => record.specialty === role);
     return [role, legalSubskillMaximum(role, representative).raw];
   }));
@@ -263,7 +270,7 @@ function buildOutput(boxRows, records) {
     meta: {
       generatedAt: new Date().toISOString(),
       targetLevel: TARGET_LEVEL,
-      formula: '最终综合分=种族分×75%+个体分×25%；个体分=(副技能合法满分百分分×70%+性格理论百分分×30%)×食材组合系数',
+      formula: '最终综合分=种族分×75%+个体分×25%；个体分=(副技能合法满分百分分×70%+性格理论百分分×30%)×食材手／全能型食材组合系数',
       speciesWeight: SPECIES_WEIGHT,
       individualWeight: INDIVIDUAL_WEIGHT,
       subskillWeight: SUBSKILL_WEIGHT,
@@ -288,8 +295,8 @@ function selfTest(boxRows, records) {
   }
   if (rows.length !== 97) throw new Error(`盒子数量错误：${rows.length}`);
   if (new Set(rows.map(row => row.id)).size !== rows.length) throw new Error('盒子评分存在重复ID');
-  if (output.meta.scored !== 95 || output.meta.pending !== 2) {
-    throw new Error(`盒子完成数量错误：${output.meta.scored}/95，待定${output.meta.pending}/2`);
+  if (output.meta.scored !== 97 || output.meta.pending !== 0) {
+    throw new Error(`盒子完成数量错误：${output.meta.scored}/97，待定${output.meta.pending}/0`);
   }
   if (!rows.filter(row => Number.isFinite(row.finalScore)).every(row => (
     row.speciesScore >= 0 && row.speciesScore <= 100
@@ -299,8 +306,8 @@ function selfTest(boxRows, records) {
   if (!rows.filter(row => Number.isFinite(row.finalScore)).every(row => (
     row.finalScore === round(row.speciesScore * SPECIES_WEIGHT + row.individualScore * INDIVIDUAL_WEIGHT)
   ))) throw new Error('盒子综合分未按75/25权重合成');
-  if (!['62', '91'].every(id => output.scores[id]?.status === 'pending-all-rounder-formula')) {
-    throw new Error('梦幻／达克莱伊没有保持全能型待定');
+  if (!['62', '91'].every(id => Number.isFinite(output.scores[id]?.finalScore))) {
+    throw new Error('梦幻／达克莱伊没有生成全能型综合分');
   }
   if (output.scores['48'].finalFormId !== '282' || output.scores['73'].finalFormId !== '282') {
     throw new Error('奇鲁莉安与沙奈朵没有共用沙奈朵最终形态种族分');
@@ -313,14 +320,14 @@ function selfTest(boxRows, records) {
     throw new Error('个体副技能栏位数量错误');
   }
   const ceilingRecord = { ingredientRate: 0.2 };
-  const legalMaximums = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => [
+  const legalMaximums = Object.fromEntries(['berry', 'ingredient', 'skill', 'all'].map(role => [
     role,
     legalSubskillMaximum(role, ceilingRecord).raw
   ]));
-  if (legalMaximums.berry !== 66.7 || legalMaximums.ingredient !== 70 || legalMaximums.skill !== 70) {
+  if (legalMaximums.berry !== 66.7 || legalMaximums.ingredient !== 70 || legalMaximums.skill !== 70 || !(legalMaximums.all > 0)) {
     throw new Error(`副技能合法满分上限异常：${JSON.stringify(legalMaximums)}`);
   }
-  const ceilingScores = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => {
+  const ceilingScores = Object.fromEntries(['berry', 'ingredient', 'skill', 'all'].map(role => {
     const testBox = {
       name: role === 'berry' ? '雷丘' : role === 'ingredient' ? '耿鬼' : '沙奈朵',
       nature: '认真',

@@ -5,10 +5,11 @@
     :root.POKEMON_SLEEP_SCORING_CORE;
   const catalog=typeof module==='object'&&module.exports?require('./pokemon-catalog.generated.js'):root.POKEMON_SLEEP_CATALOG;
   const strategy=typeof module==='object'&&module.exports?require('./pokemon-strategy.js'):root.POKEMON_SLEEP_STRATEGY;
-  const api=factory(core,catalog,strategy);
+  const allRounder=typeof module==='object'&&module.exports?require('./all-rounder-rules.js'):root.POKEMON_SLEEP_ALL_ROUNDER_RULES;
+  const api=factory(core,catalog,strategy,allRounder);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_DYNAMIC_SCORING=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(core,catalog,strategy){
+})(typeof globalThis!=='undefined'?globalThis:this,function(core,catalog,strategy,allRounder){
   'use strict';
 
   const LEGACY_SOURCE_IDS=Object.freeze({'皮卡丘（巫师帽）':'9001-1','皮卡丘（圣诞）':'9002','伊布（圣诞）':'9004','乌波（城都）':'194','乌波（帕底亚）':'7054','海豹球（节日）':'9006'});
@@ -39,11 +40,12 @@
     const target=targetForPokemon(mon);
     if(!target)return {id:String(mon&&mon.id||''),name:String(mon&&mon.name||''),finalScore:null,status:'missing-species-catalog'};
     const role=target.specialty,base={id:String(mon&&mon.id||''),name:String(mon&&mon.name||target.name),specialty:role,finalFormId:target.id,finalFormNameZh:target.name,routeReason:null,routeCandidates:null};
-    if(role==='all')return {...base,speciesScore:null,individualScore:null,finalScore:null,rank:null,status:'pending-all-rounder-formula',strategy:strategy&&strategy.SPECIES_ROLES[target.id]||null};
-    const source=catalog&&catalog.speciesScores&&catalog.speciesScores[target.id];
+    const catalogSource=catalog&&catalog.speciesScores&&catalog.speciesScores[target.id];
+    const selectedAllRounderSkillId=role==='all'?(allRounder&&allRounder.isMew(mon)?allRounder.selectedId(mon):'nightmare'):null;
+    const source=role==='all'?(catalogSource&&catalogSource.variants&&catalogSource.variants[selectedAllRounderSkillId]):catalogSource;
     if(!source||!Number.isFinite(source.score))return {...base,speciesScore:null,individualScore:null,finalScore:null,rank:null,status:'missing-species-score'};
     const individual=core.individualScore(mon,role,target),speciesScore=source.score,finalScore=core.round(speciesScore*core.weights.species+individual.score*core.weights.individual);
-    return {...base,mechanicalSpeciesScore:Number.isFinite(source.mechanicalScore)?source.mechanicalScore:speciesScore,strategicRoleScore:source.strategicRoleScore??null,strategicBonus:source.strategicBonus||0,strategy:source.strategy||strategy&&strategy.SPECIES_ROLES[target.id]||null,speciesScore,speciesContribution:core.round(speciesScore*core.weights.species),speciesSource:source.source,speciesScenarios:source.scenarios||null,teamModel:source.teamModel||null,individualScore:individual.score,individualContribution:core.round(individual.score*core.weights.individual),individual,finalScore,rank:null,status:individual.provisional?'scored-with-provisional-subskill-bridges':'scored-confirmed-components'};
+    return {...base,mechanicalSpeciesScore:Number.isFinite(source.mechanicalScore)?source.mechanicalScore:speciesScore,rawSpeciesScore:source.rawSpeciesScore??null,strategicRoleScore:source.strategicRoleScore??null,strategicBonus:source.strategicBonus||0,strategy:source.strategy||strategy&&strategy.SPECIES_ROLES[target.id]||null,speciesScore,speciesContribution:core.round(speciesScore*core.weights.species),speciesSource:role==='all'?catalogSource.source:source.source,speciesScenarios:source.scenarios||null,teamModel:source.teamModel||null,selectedAllRounderSkillId,selectedAllRounderSkillNameZh:role==='all'?source.selectedSkillNameZh:null,individualScore:individual.score,individualContribution:core.round(individual.score*core.weights.individual),individual,finalScore,rank:null,status:individual.provisional?'scored-with-provisional-subskill-bridges':'scored-confirmed-components'};
   }
 
   function speciesSearch(query){

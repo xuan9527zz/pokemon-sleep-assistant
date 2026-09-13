@@ -24,7 +24,7 @@ Use one reproducible data flow. Do not recreate scoring tables inside a webpage 
 - Neutral nature is `0`; a harmful nature is negative. Preserve multiplicative interactions.
 - Apply only legal Sub Skill Seed upgrades. When S and M coexist, keep both slots and score both.
 - Ingredient-route coefficients affect only ingredient/all-rounder individual quality, never the species base score.
-- Map an unevolved helper to its selected final form. Keep Mew and Darkrai pending until their all-rounder formula is confirmed.
+- Map an unevolved helper to its selected final form. Score Mew and Darkrai with the balanced all-rounder model: shared team-slot species anchor plus an equal berry/ingredient/skill individual lens; Mew follows its currently selected All-Mighty skill and Darkrai uses the two-non-Dark-teammate Nightmare baseline.
 - Helping Bonus stacks for every team member. Recompute each member from their own speed reduction and enforce the combined 35% speed-reduction cap.
 - A strategic-role adjustment may fill a bounded verified role gap, but may not erase a poor individual, invent output, or duplicate value already expressed by the mechanical score.
 - Never release automatically. Shiny collection, unique ingredient routes, strategic minimums, limited Pokémon, and invested individuals require explicit safeguards.

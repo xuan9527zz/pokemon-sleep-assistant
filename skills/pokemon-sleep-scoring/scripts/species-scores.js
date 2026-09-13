@@ -558,6 +558,20 @@ const ALL_MIGHTY = Object.freeze({
     'tasty-chance', 'cooking-power', 'helping-support', 'berry-burst'
   ]),
   guaranteedCandyPerUse: 1,
+  selectedSkillRatePct: Object.freeze({
+    metronome: 4,
+    'energy-s-fixed': 8,
+    'energy-m': 4,
+    'dream-shard-fixed': 4,
+    'ingredient-magnet': 4,
+    'energizing-cheer': 4,
+    'charge-energy': 8,
+    e4e: 3.2,
+    'tasty-chance': 4,
+    'cooking-power': 4,
+    'helping-support': 4,
+    'berry-burst': 3.2
+  }),
   possibleCandyByLevel: Object.freeze({ 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 7: 3, 8: 4 }),
   bonusCandyProbability: null,
   provisionalIngredientQuantitiesByLevel: Object.freeze({
@@ -1150,13 +1164,15 @@ function immediateHelpBaseEnergy(record, favoriteShare = HEAL_PULSE.standardFavo
 }
 
 function skillSpecialistOrdinaryProductionRows(records, {
-  favoriteShare = SKILL_SPECIALIST_ORDINARY_FAVORITE_SHARE
+  favoriteShare = SKILL_SPECIALIST_ORDINARY_FAVORITE_SHARE,
+  specialties = ['skill']
 } = {}) {
   if (!(favoriteShare >= 0 && favoriteShare <= 1)) {
     throw new Error(`无效喜爱树果占比：${favoriteShare}`);
   }
-  const candidates = records.filter(record => record.specialty === 'skill' && record.isFinalEvolution);
-  if (!candidates.length) throw new Error('没有最终形态技能手数据');
+  const specialtySet = new Set(specialties.map(String));
+  const candidates = records.filter(record => specialtySet.has(String(record.specialty)) && record.isFinalEvolution);
+  if (!candidates.length) throw new Error(`没有最终形态${specialties.join('／')}专长数据`);
 
   const rows = candidates.map(record => {
     const level70HelpIntervalSec = helpIntervalAtLevel(record.helpFrequencyBaseSec);
@@ -1318,7 +1334,7 @@ function attachSkillSpecialistSlotEconomics(rows, records, {
     )
       ? grossSkillOutputIndex + ordinaryOutputIndex
       : null;
-    const inferredRole = slotRole ?? defaultSkillSpecialistSlotRole(record);
+    const inferredRole = row.slotRole ?? slotRole ?? defaultSkillSpecialistSlotRole(record);
     const netOutputIndexAsExtraSkill = grossCombinedOutputIndex == null
       ? null
       : grossCombinedOutputIndex - benchmarkOutputIndex;
@@ -5115,6 +5131,90 @@ function nightmareRows(records, { nonDarkTeammates = 2 } = {}) {
   });
 }
 
+function allRounderSpeciesRankingRows(records, {
+  favoriteShare = SKILL_SPECIALIST_ORDINARY_FAVORITE_SHARE,
+  producerCount = SKILL_SPECIALIST_STANDARD_PRODUCER_COUNT,
+  allMightyOptions = {},
+  nightmareOptions = {}
+} = {}) {
+  const candidates = records.filter(record => record.specialty === 'all' && record.isFinalEvolution);
+  if (!candidates.length) throw new Error('没有最终形态全能型数据');
+  const candidateById = new Map(candidates.map(record => [String(record.id), record]));
+  const skillAnchorRows = skillSpecialistSpeciesRankingRows(records, { favoriteShare, producerCount });
+  const outputNormalizationMaximum = Number(skillAnchorRows[0]?.outputNormalizationMaximum);
+  if (!(outputNormalizationMaximum > 0)) throw new Error('缺少技能手位置净产出归一化上限');
+
+  const mewVariants = ALL_MIGHTY.selectableSkillIds.flatMap(selectedSkillId => allMightyRows(records, {
+    ...allMightyOptions,
+    selectedSkillId,
+    selectedSkillRatePct: ALL_MIGHTY.selectedSkillRatePct[selectedSkillId]
+  })).map(row => ({
+    ...row,
+    naturalLevelContribution: 0,
+    slotRole: selectedSkillIdForRow(row) === 'e4e'
+      ? SKILL_SPECIALIST_SLOT_ROLES.HEALER
+      : SKILL_SPECIALIST_SLOT_ROLES.EXTRA_SKILL
+  }));
+  const nightmareVariants = nightmareRows(records, nightmareOptions).map(row => ({
+    ...row,
+    selectedSkillId: 'nightmare',
+    selectedSkillNameZh: '噩梦（能量填充M）',
+    skillNameZh: '噩梦（能量填充M）',
+    slotRole: SKILL_SPECIALIST_SLOT_ROLES.EXTRA_SKILL
+  }));
+  const variants = [...mewVariants, ...nightmareVariants].filter(row => candidateById.has(String(row.id)));
+  const withProduction = attachSkillSpecialistOrdinaryProduction(variants, records, {
+    favoriteShare,
+    specialties: ['all']
+  });
+  const withEconomics = attachSkillSpecialistSlotEconomics(withProduction, records, {
+    favoriteShare,
+    producerCount
+  });
+  const anchor = skillAnchorRows.find(row => Number(row.outputNormalizationMaximum) === outputNormalizationMaximum)
+    || skillAnchorRows[0];
+
+  const scored = withEconomics.map(row => {
+    const normalizedOutputScore = skillSpecialistNormalizedOutputScore(
+      row.slotAdjustedOutputIndex,
+      outputNormalizationMaximum
+    );
+    const mainSkillComprehensiveScore = skillSpecialistMainComprehensiveScore({
+      theoreticalOutputScore: normalizedOutputScore,
+      stabilityScore: row.stabilityScore,
+      operationScore: row.operationScore,
+      versatilityScore: row.versatilityScore
+    });
+    const naturalMainSkillLevelScore = Number(row.naturalLevelContribution || 0) / 5 * 100;
+    const speciesScore = skillSpecialistSpeciesScore({
+      mainSkillComprehensiveScore,
+      naturalMainSkillLevelScore
+    });
+    return {
+      ...row,
+      speciesScoreRole: row.slotRole,
+      normalizedOutputScore,
+      mainSkillComprehensiveScore,
+      naturalMainSkillLevelScore: round(naturalMainSkillLevelScore),
+      speciesScore,
+      outputNormalizationMaximum: round(outputNormalizationMaximum, 1),
+      outputNormalizationAnchorNameZh: anchor.outputNormalizationAnchorNameZh,
+      outputNormalizationAnchorRole: anchor.outputNormalizationAnchorRole,
+      outputNormalizationStatus: 'shared-skill-specialist-positive-slot-output-anchor',
+      speciesScoreStatus: 'balanced-all-rounder-team-slot-formula'
+    };
+  }).sort((left, right) => (
+    right.speciesScore - left.speciesScore
+    || String(left.id).localeCompare(String(right.id), 'en', { numeric: true })
+    || left.selectedSkillId.localeCompare(right.selectedSkillId)
+  ));
+  return scored.map((row, index) => ({ speciesRank: index + 1, ...row }));
+}
+
+function selectedSkillIdForRow(row) {
+  return String(row?.selectedSkillId || '');
+}
+
 function crescentPrayerScenario({
   distinctPsychicSpecies = 3,
   cresseliaLevel = TARGET_LEVEL,
@@ -6294,6 +6394,7 @@ module.exports = Object.freeze({
   skillCopyScenario,
   skillCopyRows,
   allMightyRows,
+  allRounderSpeciesRankingRows,
   energyChargeMRows,
   stockpileScenario,
   stockpileRows,

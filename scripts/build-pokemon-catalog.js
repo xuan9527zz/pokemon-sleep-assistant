@@ -34,6 +34,7 @@ const skillRows = skillSpeciesScoring.skillTeamSpeciesScoreRows(records, {
   ingredientAvailability: 0.5,
   goodCamp: true
 });
+const allRounderRows = speciesScoring.allRounderSpeciesRankingRows(records);
 
 const speciesScores = {};
 ingredientRows.forEach(row => {
@@ -85,11 +86,49 @@ skillRows.forEach(row => {
     }
   };
 });
-records.filter(record => record.specialty === 'all' && record.isFinalEvolution).forEach(record => {
-  speciesScores[String(record.id)] = {
+const allRounderRowsById = Map.groupBy
+  ? Map.groupBy(allRounderRows, row => String(row.id))
+  : allRounderRows.reduce((groups, row) => {
+      const id = String(row.id);
+      if (!groups.has(id)) groups.set(id, []);
+      groups.get(id).push(row);
+      return groups;
+    }, new Map());
+allRounderRowsById.forEach((rows, id) => {
+  const variants = Object.fromEntries(rows.map(row => {
+    const mechanicalScore = skillSpeciesScoring.roleCalibratedSpeciesScore(row.speciesScore);
+    const strategic = strategy.strategicAdjustment(id, mechanicalScore);
+    return [row.selectedSkillId, {
+      selectedSkillId: row.selectedSkillId,
+      selectedSkillNameZh: row.selectedSkillNameZh,
+      rawSpeciesScore: row.speciesScore,
+      mechanicalScore: strategic.mechanicalScore,
+      strategicRoleScore: strategic.strategicRoleScore,
+      strategicBonus: strategic.strategicBonus,
+      strategy: strategic.profile,
+      score: strategic.adjustedScore,
+      teamModel: {
+        role: row.speciesScoreRole,
+        selectedSkillId: row.selectedSkillId,
+        selectedSkillNameZh: row.selectedSkillNameZh,
+        ordinaryBaseEnergyPerDay: row.ordinaryBaseEnergyPerDay,
+        slotAdjustedOutputIndex: row.slotAdjustedOutputIndex,
+        normalizedOutputScore: row.normalizedOutputScore,
+        stabilityScore: row.stabilityScore,
+        operationScore: row.operationScore,
+        versatilityScore: row.versatilityScore,
+        scoringStatus: row.speciesScoreStatus
+      }
+    }];
+  }));
+  const defaultVariantId = id === '151' ? 'metronome' : 'nightmare';
+  const selected = variants[defaultVariantId] || Object.values(variants)[0];
+  speciesScores[id] = {
     specialty: 'all',
-    score: null,
-    source: 'pending-all-rounder-formula'
+    ...selected,
+    defaultVariantId,
+    variants,
+    source: 'balanced-all-rounder-team-slot-score'
   };
 });
 
@@ -185,7 +224,7 @@ const output = {
     sourceUpdatedAt: source.generatedAt || source.source?.generatedAt || null,
     count: catalog.length,
     speciesScoreCount: Object.keys(speciesScores).length,
-    collectionProfile: 'Lv.70; skill species use 4-hour collection, Good Camp, 50% extra-ingredient availability'
+    collectionProfile: 'Lv.70; skill and all-rounder species use shared team-slot output anchors; skill species use 4-hour collection, Good Camp, 50% extra-ingredient availability'
   },
   pokemon: catalog,
   speciesScores,
