@@ -23,8 +23,8 @@ Use one reproducible data flow. Do not recreate scoring tables inside a webpage 
 - Separate mechanical score, strategic-role adjustment, cultivation advice, and release advice. Each answers a different question.
 - Neutral nature is `0`; a harmful nature is negative. Preserve multiplicative interactions.
 - Apply only legal Sub Skill Seed upgrades. When S and M coexist, keep both slots and score both.
-- Ingredient-route coefficients affect only ingredient/all-rounder individual quality, never the species base score.
-- Map an unevolved helper to its selected final form. Score Mew and Darkrai with the balanced all-rounder model: shared team-slot species anchor plus an equal berry/ingredient/skill individual lens; Mew follows its currently selected All-Mighty skill and Darkrai uses the two-non-Dark-teammate Nightmare baseline.
+- Ingredient-route coefficients affect only ingredient-specialist quality or the ingredient channel of an all-rounder; never discount an all-rounder's berry or skill channel and never change the species base score.
+- Map an unevolved helper to its selected final form. Score Mew and Darkrai with the mythical all-rounder model: shared team-slot species anchor plus separate berry/ingredient/skill individual channels. Their fixed Natures do not create an impossible reroll-quality gap, unopened Eureka Seed slots are excluded from the current denominator, and the displayed individual score uses the user-selected focus or the strongest currently revealed channel. Mew follows its currently selected All-Mighty skill and Darkrai uses the two-non-Dark-teammate Nightmare baseline.
 - Helping Bonus stacks for every team member. Recompute each member from their own speed reduction and enforce the combined 35% speed-reduction cap.
 - A strategic-role adjustment may fill a bounded verified role gap, but may not erase a poor individual, invent output, or duplicate value already expressed by the mechanical score.
 - Never release automatically. Shiny collection, unique ingredient routes, strategic minimums, limited Pokémon, and invested individuals require explicit safeguards.

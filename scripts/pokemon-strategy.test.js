@@ -20,6 +20,10 @@ assert.equal(latiosBerryPanel.roleKind,'berry-position');
 assert.equal(latiosBerryPanel.meetsGraduation,true,'Latios Berry Burst must use the berry-position standard');
 const berrySkillTriggerOnly=strategy.minimumStandard({specialty:'skill',main:'树果骤增',subs:'树果数量S；帮手奖励；技能概率M；研究EXP奖励；睡眠EXP奖励',nature:'认真'},{finalId:'254',specialty:'skill'});
 assert.equal(berrySkillTriggerOnly.meetsGraduation,false,'Skill Trigger M cannot replace personal speed on a Berry Burst berry position');
+const darkraiBerryFocus=strategy.minimumStandard({specialty:'all',main:'噩梦（能量填充M）',subs:'帮手奖励；树果数量S；帮忙速度M；食材概率S；—',nature:'害羞',scoreBreakdown:{individual:{focusRole:'berry'}}},{finalId:'491',specialty:'all'});
+assert.equal(darkraiBerryFocus.roleKind,'berry-position');
+assert.equal(darkraiBerryFocus.meetsGraduation,true,'an all-rounder scored in the berry position must use the strict berry graduation standard');
+assert.match(darkraiBerryFocus.courseNote,/全能型当前按树果位/);
 
 const ingredientStandard=strategy.minimumStandard({specialty:'ingredient',ingredients:'牛奶×2／牛奶×5／牛奶×7',subs:'食材概率M；帮忙速度M；食材概率S；研究EXP奖励；睡眠EXP奖励',nature:'认真'},{finalId:'9',specialty:'ingredient'});
 assert.equal(ingredientStandard.meetsGraduation,true,'AAA ingredient graduation does not require Helping Bonus');

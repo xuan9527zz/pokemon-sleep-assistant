@@ -2,9 +2,9 @@
   'use strict';
   root.POKEMON_SLEEP_BOX_SCORES=Object.freeze({
   "meta": {
-    "generatedAt": "2026-09-13T12:13:13.109Z",
+    "generatedAt": "2026-09-13T18:12:11.739Z",
     "targetLevel": 70,
-    "formula": "最终综合分=种族分×75%+个体分×25%；个体分=(副技能合法满分百分分×70%+性格理论百分分×30%)×食材手／全能型食材组合系数",
+    "formula": "最终综合分=种族分×75%+个体分×25%；普通个体分=副技能70%+性格30%；梦幻／达克莱伊按已开放栏位最强定位评分，固定性格不计可洗差异，食材系数只作用于食材分支",
     "speciesWeight": 0.75,
     "individualWeight": 0.25,
     "subskillWeight": 0.7,
@@ -149,7 +149,7 @@
         ]
       },
       "finalScore": 72,
-      "rank": 32,
+      "rank": 33,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -276,7 +276,7 @@
         ]
       },
       "finalScore": 72.9,
-      "rank": 29,
+      "rank": 30,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -403,7 +403,7 @@
         ]
       },
       "finalScore": 74.3,
-      "rank": 23,
+      "rank": 24,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -529,7 +529,7 @@
         ]
       },
       "finalScore": 75.4,
-      "rank": 20,
+      "rank": 21,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1349,7 +1349,7 @@
         ]
       },
       "finalScore": 67.9,
-      "rank": 44,
+      "rank": 45,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -1605,7 +1605,7 @@
         "provisionalItems": []
       },
       "finalScore": 78,
-      "rank": 13,
+      "rank": 14,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -2122,7 +2122,7 @@
         ]
       },
       "finalScore": 70.3,
-      "rank": 37,
+      "rank": 38,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2248,7 +2248,7 @@
         ]
       },
       "finalScore": 73.6,
-      "rank": 27,
+      "rank": 28,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2378,7 +2378,7 @@
         ]
       },
       "finalScore": 52.5,
-      "rank": 88,
+      "rank": 89,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -2757,7 +2757,7 @@
         ]
       },
       "finalScore": 70.5,
-      "rank": 36,
+      "rank": 37,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -3262,7 +3262,7 @@
         "provisionalItems": []
       },
       "finalScore": 70.2,
-      "rank": 38,
+      "rank": 39,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -3773,7 +3773,7 @@
         "provisionalItems": []
       },
       "finalScore": 72.3,
-      "rank": 31,
+      "rank": 32,
       "routeReason": "按纯综合分采用当前最高种族分路线：仙子伊布",
       "routeCandidates": [
         {
@@ -4346,7 +4346,7 @@
         "provisionalItems": []
       },
       "finalScore": 51.3,
-      "rank": 90,
+      "rank": 91,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -4612,7 +4612,7 @@
         ]
       },
       "finalScore": 67.9,
-      "rank": 45,
+      "rank": 46,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5261,7 +5261,7 @@
         ]
       },
       "finalScore": 68.6,
-      "rank": 43,
+      "rank": 44,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -5517,7 +5517,7 @@
         "provisionalItems": []
       },
       "finalScore": 50.2,
-      "rank": 91,
+      "rank": 92,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -5909,7 +5909,7 @@
         ]
       },
       "finalScore": 68.6,
-      "rank": 42,
+      "rank": 43,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6038,7 +6038,7 @@
         ]
       },
       "finalScore": 72.4,
-      "rank": 30,
+      "rank": 31,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6166,7 +6166,7 @@
         "provisionalItems": []
       },
       "finalScore": 71.4,
-      "rank": 33,
+      "rank": 34,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6304,7 +6304,7 @@
         ]
       },
       "finalScore": 77.2,
-      "rank": 16,
+      "rank": 17,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -6432,7 +6432,7 @@
         "provisionalItems": []
       },
       "finalScore": 77.7,
-      "rank": 15,
+      "rank": 16,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -6840,7 +6840,7 @@
         ]
       },
       "finalScore": 67,
-      "rank": 46,
+      "rank": 47,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -7096,7 +7096,7 @@
         "provisionalItems": []
       },
       "finalScore": 73.7,
-      "rank": 26,
+      "rank": 27,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -8111,7 +8111,7 @@
         ]
       },
       "finalScore": 75.4,
-      "rank": 19,
+      "rank": 20,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -8142,28 +8142,311 @@
         "versatilityScore": 90.9,
         "scoringStatus": "confirmed-effects-user-selected-skill-rate"
       },
-      "individualScore": 3.1,
-      "individualContribution": 0.8,
+      "individualScore": 18.9,
+      "individualContribution": 4.7,
       "individual": {
-        "score": 3.1,
-        "subskillRaw": 4.8,
-        "subskillRawBeforeClamp": 4.8,
-        "subskillLegalMaximum": 53.8,
+        "model": "mythical-role-focus",
+        "score": 18.9,
+        "focusRole": "ingredient",
+        "focusRoleLabel": "食材位",
+        "focusSelection": "automatic-best-fit",
+        "channels": {
+          "berry": {
+            "role": "berry",
+            "label": "树果位",
+            "score": 9.1,
+            "adjustedScore": 9.1,
+            "routeCoefficient": 1,
+            "subskillRaw": 4,
+            "subskillLegalMaximum": 43.8,
+            "subskillLegalMaximumBuild": [
+              "树果数量S",
+              "帮手奖励",
+              "—",
+              "—",
+              "—"
+            ],
+            "interactionMultiplier": 1,
+            "interactionBonus": 0,
+            "slots": [
+              {
+                "level": 10,
+                "weight": 0.25,
+                "skill": "技能等级M",
+                "scoredSkill": "技能等级M",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 8,
+                "fitStatus": "provisional",
+                "interactionScore": 0,
+                "effectiveFitScore": 8,
+                "contribution": 2
+              },
+              {
+                "level": 25,
+                "weight": 0.25,
+                "skill": "持有上限S",
+                "scoredSkill": "持有上限L",
+                "seedUpgraded": true,
+                "seedNote": "按副技能种子最高合法形态计分",
+                "fitScore": 8,
+                "fitStatus": "provisional",
+                "interactionScore": 0,
+                "effectiveFitScore": 8,
+                "contribution": 2
+              },
+              {
+                "level": 50,
+                "weight": 0.25,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 70,
+                "weight": 0.15,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 80,
+                "weight": 0.1,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              }
+            ],
+            "provisional": true,
+            "provisionalItems": [
+              "技能等级M",
+              "持有上限L"
+            ]
+          },
+          "ingredient": {
+            "role": "ingredient",
+            "label": "食材位",
+            "score": 18.9,
+            "adjustedScore": 18.9,
+            "routeCoefficient": 1,
+            "subskillRaw": 8.3,
+            "subskillLegalMaximum": 43.8,
+            "subskillLegalMaximumBuild": [
+              "帮手奖励",
+              "食材概率S",
+              "—",
+              "—",
+              "—"
+            ],
+            "interactionMultiplier": 1,
+            "interactionBonus": 0,
+            "slots": [
+              {
+                "level": 10,
+                "weight": 0.25,
+                "skill": "技能等级M",
+                "scoredSkill": "技能等级M",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 8,
+                "fitStatus": "provisional",
+                "interactionScore": 0,
+                "effectiveFitScore": 8,
+                "contribution": 2
+              },
+              {
+                "level": 25,
+                "weight": 0.25,
+                "skill": "持有上限S",
+                "scoredSkill": "持有上限L",
+                "seedUpgraded": true,
+                "seedNote": "按副技能种子最高合法形态计分",
+                "fitScore": 25,
+                "fitStatus": "provisional",
+                "interactionScore": 0,
+                "effectiveFitScore": 25,
+                "contribution": 6.3
+              },
+              {
+                "level": 50,
+                "weight": 0.25,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 70,
+                "weight": 0.15,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 80,
+                "weight": 0.1,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              }
+            ],
+            "provisional": true,
+            "provisionalItems": [
+              "技能等级M",
+              "持有上限L"
+            ]
+          },
+          "skill": {
+            "role": "skill",
+            "label": "技能位",
+            "score": 4.6,
+            "adjustedScore": 4.6,
+            "routeCoefficient": 1,
+            "subskillRaw": 2,
+            "subskillLegalMaximum": 43.8,
+            "subskillLegalMaximumBuild": [
+              "帮手奖励",
+              "技能概率S",
+              "—",
+              "—",
+              "—"
+            ],
+            "interactionMultiplier": 1,
+            "interactionBonus": 0,
+            "slots": [
+              {
+                "level": 10,
+                "weight": 0.25,
+                "skill": "技能等级M",
+                "scoredSkill": "技能等级M",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 8,
+                "fitStatus": "confirmed",
+                "interactionScore": 0,
+                "effectiveFitScore": 8,
+                "contribution": 2
+              },
+              {
+                "level": 25,
+                "weight": 0.25,
+                "skill": "持有上限S",
+                "scoredSkill": "持有上限L",
+                "seedUpgraded": true,
+                "seedNote": "按副技能种子最高合法形态计分",
+                "fitScore": 0,
+                "fitStatus": "confirmed-no-separate-individual-score",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 50,
+                "weight": 0.25,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 70,
+                "weight": 0.15,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 80,
+                "weight": 0.1,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              }
+            ],
+            "provisional": false,
+            "provisionalItems": []
+          }
+        },
+        "revealedSubskillCount": 2,
+        "unopenedSubskillLevels": [
+          50,
+          70,
+          80
+        ],
+        "subskillRaw": 8.3,
+        "subskillRawBeforeClamp": 8.3,
+        "subskillLegalMaximum": 43.8,
         "subskillLegalMaximumBuild": [
           "帮手奖励",
-          "技能概率M",
-          "帮忙速度M",
-          "树果数量S",
-          "食材概率M"
+          "食材概率S",
+          "—",
+          "—",
+          "—"
         ],
-        "subskillScore": 8.9,
-        "subskillContribution": 6.2,
+        "subskillScore": 18.9,
+        "subskillContribution": 18.9,
         "natureRaw": 0,
         "natureScore": 0,
         "natureContribution": 0,
-        "individualBeforePattern": 6.2,
-        "ingredientPattern": "ABC",
-        "ingredientPatternCoefficient": 0.5,
+        "fixedNature": true,
+        "natureNote": "幻之宝可梦性格固定，不参与可洗个体差异",
+        "individualBeforePattern": 18.9,
+        "ingredientPattern": "AB?",
+        "ingredientPatternCoefficient": 1,
+        "ingredientRouteComplete": false,
+        "ingredientRouteScope": "ingredient-channel-only",
         "interactionMultiplier": 1,
         "interactionBonus": 0,
         "slots": [
@@ -8175,7 +8458,7 @@
             "seedUpgraded": false,
             "seedNote": "",
             "fitScore": 8,
-            "fitStatus": "provisional-balanced-all-rounder-average",
+            "fitStatus": "provisional",
             "interactionScore": 0,
             "effectiveFitScore": 8,
             "contribution": 2
@@ -8187,11 +8470,11 @@
             "scoredSkill": "持有上限L",
             "seedUpgraded": true,
             "seedNote": "按副技能种子最高合法形态计分",
-            "fitScore": 11,
-            "fitStatus": "provisional-balanced-all-rounder-average",
+            "fitScore": 25,
+            "fitStatus": "provisional",
             "interactionScore": 0,
-            "effectiveFitScore": 11,
-            "contribution": 2.8
+            "effectiveFitScore": 25,
+            "contribution": 6.3
           },
           {
             "level": 50,
@@ -8237,12 +8520,11 @@
         "provisionalItems": [
           "技能等级M",
           "持有上限L",
-          "合法满分基准：技能概率M",
-          "合法满分基准：树果数量S"
+          "食材栏尚未全部开放，暂不扣路线系数"
         ]
       },
-      "finalScore": 49.5,
-      "rank": 92,
+      "finalScore": 53.4,
+      "rank": 87,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -8887,7 +9169,7 @@
         "provisionalItems": []
       },
       "finalScore": 73.4,
-      "rank": 28,
+      "rank": 29,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -9145,7 +9427,7 @@
         ]
       },
       "finalScore": 76.4,
-      "rank": 17,
+      "rank": 18,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -9273,7 +9555,7 @@
         "provisionalItems": []
       },
       "finalScore": 79.2,
-      "rank": 9,
+      "rank": 10,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -9403,7 +9685,7 @@
         ]
       },
       "finalScore": 74.2,
-      "rank": 24,
+      "rank": 25,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -9802,7 +10084,7 @@
         ]
       },
       "finalScore": 69.8,
-      "rank": 39,
+      "rank": 40,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -10067,7 +10349,7 @@
         ]
       },
       "finalScore": 78,
-      "rank": 12,
+      "rank": 13,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -10204,7 +10486,7 @@
         ]
       },
       "finalScore": 74.1,
-      "rank": 25,
+      "rank": 26,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -10341,7 +10623,7 @@
         ]
       },
       "finalScore": 75,
-      "rank": 21,
+      "rank": 22,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -10605,7 +10887,7 @@
         "provisionalItems": []
       },
       "finalScore": 70.9,
-      "rank": 34,
+      "rank": 35,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -10863,7 +11145,7 @@
         ]
       },
       "finalScore": 74.6,
-      "rank": 22,
+      "rank": 23,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -10991,7 +11273,7 @@
         "provisionalItems": []
       },
       "finalScore": 78.8,
-      "rank": 10,
+      "rank": 11,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -11130,7 +11412,7 @@
         ]
       },
       "finalScore": 68.9,
-      "rank": 41,
+      "rank": 42,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -11258,7 +11540,7 @@
         "provisionalItems": []
       },
       "finalScore": 53.1,
-      "rank": 87,
+      "rank": 88,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -11514,7 +11796,7 @@
         "provisionalItems": []
       },
       "finalScore": 51.7,
-      "rank": 89,
+      "rank": 90,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -11642,7 +11924,7 @@
         "provisionalItems": []
       },
       "finalScore": 77.8,
-      "rank": 14,
+      "rank": 15,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -11898,7 +12180,7 @@
         "provisionalItems": []
       },
       "finalScore": 75.6,
-      "rank": 18,
+      "rank": 19,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -11928,30 +12210,309 @@
         "operationScore": 52.9,
         "versatilityScore": 76
       },
-      "individualScore": 34.9,
-      "individualContribution": 8.7,
+      "individualScore": 86.4,
+      "individualContribution": 21.6,
       "individual": {
-        "score": 34.9,
-        "subskillRaw": 38.4,
-        "subskillRawBeforeClamp": 38.4,
-        "subskillLegalMaximum": 53.9,
+        "model": "mythical-role-focus",
+        "score": 86.4,
+        "focusRole": "ingredient",
+        "focusRoleLabel": "食材位",
+        "focusSelection": "automatic-best-fit",
+        "channels": {
+          "berry": {
+            "role": "berry",
+            "label": "树果位",
+            "score": 57,
+            "adjustedScore": 57,
+            "routeCoefficient": 1,
+            "subskillRaw": 36.3,
+            "subskillLegalMaximum": 63.7,
+            "subskillLegalMaximumBuild": [
+              "树果数量S",
+              "帮手奖励",
+              "帮忙速度M",
+              "帮忙速度S",
+              "—"
+            ],
+            "interactionMultiplier": 1.3075,
+            "interactionBonus": -12.8,
+            "slots": [
+              {
+                "level": 10,
+                "weight": 0.25,
+                "skill": "帮手奖励",
+                "scoredSkill": "帮手奖励",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 75,
+                "fitStatus": "confirmed",
+                "interactionScore": 0,
+                "effectiveFitScore": 75,
+                "contribution": 18.8
+              },
+              {
+                "level": 25,
+                "weight": 0.25,
+                "skill": "树果数量S",
+                "scoredSkill": "树果数量S",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 100,
+                "fitStatus": "confirmed",
+                "interactionScore": 0,
+                "effectiveFitScore": 100,
+                "contribution": 25
+              },
+              {
+                "level": 50,
+                "weight": 0.25,
+                "skill": "食材概率M",
+                "scoredSkill": "食材概率M",
+                "seedUpgraded": false,
+                "seedNote": "同系技能分别占位并叠加",
+                "fitScore": -17.1,
+                "fitStatus": "confirmed-dynamic-negative",
+                "interactionScore": 0,
+                "effectiveFitScore": -17.1,
+                "contribution": -4.3
+              },
+              {
+                "level": 70,
+                "weight": 0.15,
+                "skill": "食材概率S",
+                "scoredSkill": "食材概率S",
+                "seedUpgraded": false,
+                "seedNote": "同系技能分别占位并叠加",
+                "fitScore": -8.6,
+                "fitStatus": "confirmed-dynamic-negative",
+                "interactionScore": -12.8,
+                "effectiveFitScore": -21.4,
+                "contribution": -3.2
+              },
+              {
+                "level": 80,
+                "weight": 0.1,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              }
+            ],
+            "provisional": false,
+            "provisionalItems": []
+          },
+          "ingredient": {
+            "role": "ingredient",
+            "label": "食材位",
+            "score": 86.4,
+            "adjustedScore": 86.4,
+            "routeCoefficient": 1,
+            "subskillRaw": 57.6,
+            "subskillLegalMaximum": 66.7,
+            "subskillLegalMaximumBuild": [
+              "帮手奖励",
+              "食材概率S",
+              "食材概率M",
+              "帮忙速度M",
+              "—"
+            ],
+            "interactionMultiplier": 1.54,
+            "interactionBonus": 0,
+            "slots": [
+              {
+                "level": 10,
+                "weight": 0.25,
+                "skill": "帮手奖励",
+                "scoredSkill": "帮手奖励",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 75,
+                "fitStatus": "confirmed",
+                "interactionScore": 0,
+                "effectiveFitScore": 75,
+                "contribution": 18.8
+              },
+              {
+                "level": 25,
+                "weight": 0.25,
+                "skill": "树果数量S",
+                "scoredSkill": "树果数量S",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 25,
+                "fitStatus": "provisional",
+                "interactionScore": 0,
+                "effectiveFitScore": 25,
+                "contribution": 6.3
+              },
+              {
+                "level": 50,
+                "weight": 0.25,
+                "skill": "食材概率M",
+                "scoredSkill": "食材概率M",
+                "seedUpgraded": false,
+                "seedNote": "同系技能分别占位并叠加",
+                "fitScore": 100,
+                "fitStatus": "confirmed",
+                "interactionScore": 0,
+                "effectiveFitScore": 100,
+                "contribution": 25
+              },
+              {
+                "level": 70,
+                "weight": 0.15,
+                "skill": "食材概率S",
+                "scoredSkill": "食材概率S",
+                "seedUpgraded": false,
+                "seedNote": "同系技能分别占位并叠加",
+                "fitScore": 50,
+                "fitStatus": "confirmed",
+                "interactionScore": 0,
+                "effectiveFitScore": 50,
+                "contribution": 7.5
+              },
+              {
+                "level": 80,
+                "weight": 0.1,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              }
+            ],
+            "provisional": true,
+            "provisionalItems": [
+              "树果数量S"
+            ]
+          },
+          "skill": {
+            "role": "skill",
+            "label": "技能位",
+            "score": 31.9,
+            "adjustedScore": 31.9,
+            "routeCoefficient": 1,
+            "subskillRaw": 21.3,
+            "subskillLegalMaximum": 66.7,
+            "subskillLegalMaximumBuild": [
+              "帮手奖励",
+              "技能概率S",
+              "技能概率M",
+              "帮忙速度M",
+              "—"
+            ],
+            "interactionMultiplier": 1,
+            "interactionBonus": 0,
+            "slots": [
+              {
+                "level": 10,
+                "weight": 0.25,
+                "skill": "帮手奖励",
+                "scoredSkill": "帮手奖励",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 75,
+                "fitStatus": "confirmed",
+                "interactionScore": 0,
+                "effectiveFitScore": 75,
+                "contribution": 18.8
+              },
+              {
+                "level": 25,
+                "weight": 0.25,
+                "skill": "树果数量S",
+                "scoredSkill": "树果数量S",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 10,
+                "fitStatus": "provisional",
+                "interactionScore": 0,
+                "effectiveFitScore": 10,
+                "contribution": 2.5
+              },
+              {
+                "level": 50,
+                "weight": 0.25,
+                "skill": "食材概率M",
+                "scoredSkill": "食材概率M",
+                "seedUpgraded": false,
+                "seedNote": "同系技能分别占位并叠加",
+                "fitScore": 0,
+                "fitStatus": "confirmed-not-applicable-before-cap",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 70,
+                "weight": 0.15,
+                "skill": "食材概率S",
+                "scoredSkill": "食材概率S",
+                "seedUpgraded": false,
+                "seedNote": "同系技能分别占位并叠加",
+                "fitScore": 0,
+                "fitStatus": "confirmed-not-applicable-before-cap",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              },
+              {
+                "level": 80,
+                "weight": 0.1,
+                "skill": "—",
+                "scoredSkill": "—",
+                "seedUpgraded": false,
+                "seedNote": "",
+                "fitScore": 0,
+                "fitStatus": "not-present",
+                "interactionScore": 0,
+                "effectiveFitScore": 0,
+                "contribution": 0
+              }
+            ],
+            "provisional": true,
+            "provisionalItems": [
+              "树果数量S"
+            ]
+          }
+        },
+        "revealedSubskillCount": 4,
+        "unopenedSubskillLevels": [
+          80
+        ],
+        "subskillRaw": 57.6,
+        "subskillRawBeforeClamp": 57.6,
+        "subskillLegalMaximum": 66.7,
         "subskillLegalMaximumBuild": [
           "帮手奖励",
-          "技能概率M",
+          "食材概率S",
+          "食材概率M",
           "帮忙速度M",
-          "树果数量S",
-          "食材概率M"
+          "—"
         ],
-        "subskillScore": 71.2,
-        "subskillContribution": 49.8,
+        "subskillScore": 86.4,
+        "subskillContribution": 86.4,
         "natureRaw": 0,
         "natureScore": 0,
         "natureContribution": 0,
-        "individualBeforePattern": 49.8,
-        "ingredientPattern": "AAB",
-        "ingredientPatternCoefficient": 0.7,
-        "interactionMultiplier": 1.2825,
-        "interactionBonus": -4.3,
+        "fixedNature": true,
+        "natureNote": "幻之宝可梦性格固定，不参与可洗个体差异",
+        "individualBeforePattern": 86.4,
+        "ingredientPattern": "AA?",
+        "ingredientPatternCoefficient": 1,
+        "ingredientRouteComplete": false,
+        "ingredientRouteScope": "ingredient-channel-only",
+        "interactionMultiplier": 1.54,
+        "interactionBonus": 0,
         "slots": [
           {
             "level": 10,
@@ -11961,7 +12522,7 @@
             "seedUpgraded": false,
             "seedNote": "",
             "fitScore": 75,
-            "fitStatus": "confirmed-balanced-all-rounder-average",
+            "fitStatus": "confirmed",
             "interactionScore": 0,
             "effectiveFitScore": 75,
             "contribution": 18.8
@@ -11973,11 +12534,11 @@
             "scoredSkill": "树果数量S",
             "seedUpgraded": false,
             "seedNote": "",
-            "fitScore": 45,
-            "fitStatus": "provisional-balanced-all-rounder-average",
+            "fitScore": 25,
+            "fitStatus": "provisional",
             "interactionScore": 0,
-            "effectiveFitScore": 45,
-            "contribution": 11.3
+            "effectiveFitScore": 25,
+            "contribution": 6.3
           },
           {
             "level": 50,
@@ -11986,11 +12547,11 @@
             "scoredSkill": "食材概率M",
             "seedUpgraded": false,
             "seedNote": "同系技能分别占位并叠加",
-            "fitScore": 27.6,
-            "fitStatus": "confirmed-balanced-all-rounder-average",
+            "fitScore": 100,
+            "fitStatus": "confirmed",
             "interactionScore": 0,
-            "effectiveFitScore": 27.6,
-            "contribution": 6.9
+            "effectiveFitScore": 100,
+            "contribution": 25
           },
           {
             "level": 70,
@@ -11999,11 +12560,11 @@
             "scoredSkill": "食材概率S",
             "seedUpgraded": false,
             "seedNote": "同系技能分别占位并叠加",
-            "fitScore": 13.8,
-            "fitStatus": "confirmed-balanced-all-rounder-average",
-            "interactionScore": -4.3,
-            "effectiveFitScore": 9.5,
-            "contribution": 1.4
+            "fitScore": 50,
+            "fitStatus": "confirmed",
+            "interactionScore": 0,
+            "effectiveFitScore": 50,
+            "contribution": 7.5
           },
           {
             "level": 80,
@@ -12022,12 +12583,11 @@
         "provisional": true,
         "provisionalItems": [
           "树果数量S",
-          "合法满分基准：技能概率M",
-          "合法满分基准：树果数量S"
+          "食材栏尚未全部开放，暂不扣路线系数"
         ]
       },
-      "finalScore": 66.7,
-      "rank": 47,
+      "finalScore": 79.6,
+      "rank": 9,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"
@@ -12155,7 +12715,7 @@
         "provisionalItems": []
       },
       "finalScore": 78.2,
-      "rank": 11,
+      "rank": 12,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -12283,7 +12843,7 @@
         "provisionalItems": []
       },
       "finalScore": 70.7,
-      "rank": 35,
+      "rank": 36,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-confirmed-components"
@@ -12784,7 +13344,7 @@
         ]
       },
       "finalScore": 69.6,
-      "rank": 40,
+      "rank": 41,
       "routeReason": null,
       "routeCandidates": null,
       "status": "scored-with-provisional-subskill-bridges"

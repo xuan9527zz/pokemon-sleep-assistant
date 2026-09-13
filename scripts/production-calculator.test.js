@@ -55,6 +55,9 @@ assert.equal(mew.skillRatePct,3.2);
 assert.match(mew.main,/十项全能→树果骤增 Lv\.3/);
 assert.equal(rules.assess(mew).role,'树果联动输出位');
 assert.match(rules.assess({...base,speciesId:'491',name:'达克莱伊',main:'噩梦（能量填充M） Lv.1'}).team,/恶属性/);
+assert.equal(rules.fixedNature({speciesId:'151',name:'梦幻'}),'浮躁');
+assert.equal(rules.fixedNature({speciesId:'491',name:'达克莱伊'}),'害羞');
+assert.equal(rules.focusRole({allRounderFocusRole:'ingredient'}),'ingredient');
 assert.equal(calculator.mewSkillScenarios(mew,'萌绿玉米',{teamPlanner:planner,production:{...production,m:{ingredientRate:.2,baseBerryCount:2}},baselineTeam:supporters,goodCamp:true,energyProfile:'average'}).length,12);
 
 console.log('production calculator tests passed');

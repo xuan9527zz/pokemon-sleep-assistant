@@ -11,6 +11,7 @@
   const SLOT_LEVELS=Object.freeze([10,25,50,70,80]);
   const SLOT_WEIGHTS=Object.freeze([.25,.25,.25,.15,.10]);
   const INGREDIENT_PATTERN_COEFFICIENTS=Object.freeze({AAA:1,ABB:.85,ABA:.80,AAB:.70,AAC:.70,ABC:.50});
+  const ALL_ROUNDER_FOCUS_LABELS=Object.freeze({berry:'树果位',ingredient:'食材位',skill:'技能位'});
   const LEGAL_SUBSKILL_MAX_BUILDS=Object.freeze({
     berry:Object.freeze(['树果数量S','帮手奖励','帮忙速度M','帮忙速度S','技能概率M']),
     ingredient:Object.freeze(['帮手奖励','食材概率S','食材概率M','帮忙速度M','帮忙速度S']),
@@ -113,8 +114,52 @@
     return {raw:scored.raw,build:[...build],slots:scored.slots,provisional:provisionalItems.length>0,provisionalItems};
   }
 
+  function allRounderIngredientRoute(ingredients){
+    const names=String(ingredients||'').split('／').slice(0,3).map(slot=>slot.replace(/×\d+$/,'').trim());
+    while(names.length<3)names.push('');
+    const letters=new Map();let next=0,complete=true;
+    const pattern=names.map(name=>{
+      if(!name||name==='—'){complete=false;return '?'}
+      if(!letters.has(name))letters.set(name,String.fromCharCode(65+next++));
+      return letters.get(name);
+    }).join('');
+    return {pattern,coefficient:complete?(INGREDIENT_PATTERN_COEFFICIENTS[pattern]??INGREDIENT_PATTERN_COEFFICIENTS.ABC):1,complete};
+  }
+
+  function allRounderChannelScore(box,role,finalRecord,revealedMask,route){
+    const rawSkills=box&&box.subskills||box&&box.subs||'',scored=scoreSubskillSlots(rawSkills,role,finalRecord);
+    const ceilingBuild=LEGAL_SUBSKILL_MAX_BUILDS[role].map((skill,index)=>revealedMask[index]?skill:'—');
+    const ceiling=scoreSubskillSlots(ceilingBuild,role,finalRecord),score=ceiling.raw>0?round(clamp(scored.raw/ceiling.raw*100)):0;
+    const routeCoefficient=role==='ingredient'?route.coefficient:1,adjustedScore=round(score*routeCoefficient);
+    const provisionalItems=[...new Set([
+      ...scored.slots.filter((slot,index)=>revealedMask[index]&&slot.fitStatus.startsWith('provisional')).map(slot=>slot.scoredSkill),
+      ...ceiling.slots.filter((slot,index)=>revealedMask[index]&&slot.fitStatus.startsWith('provisional')).map(slot=>`当前开放栏位基准：${slot.scoredSkill}`)
+    ])];
+    return {role,label:ALL_ROUNDER_FOCUS_LABELS[role],score,adjustedScore,routeCoefficient,subskillRaw:scored.raw,subskillLegalMaximum:ceiling.raw,subskillLegalMaximumBuild:ceilingBuild,interactionMultiplier:scored.interaction.multiplier,interactionBonus:scored.interaction.score,slots:scored.slots,provisional:provisionalItems.length>0,provisionalItems};
+  }
+
+  function allRounderIndividualScore(box,finalRecord){
+    const rawSkills=splitSubskills(box&&box.subskills||box&&box.subs||''),revealedMask=rawSkills.map(skill=>skill!=='—'),revealedSubskillCount=revealedMask.filter(Boolean).length;
+    const unopenedSubskillLevels=SLOT_LEVELS.filter((_level,index)=>!revealedMask[index]),route=allRounderIngredientRoute(box&&box.ingredients);
+    const channels=Object.fromEntries(['berry','ingredient','skill'].map(role=>[role,allRounderChannelScore(box,role,finalRecord,revealedMask,route)]));
+    const requestedFocus=String(box&&box.allRounderFocusRole||'auto'),explicitFocus=Object.hasOwn(ALL_ROUNDER_FOCUS_LABELS,requestedFocus)?requestedFocus:null;
+    const focusRole=explicitFocus||['berry','ingredient','skill'].sort((left,right)=>channels[right].adjustedScore-channels[left].adjustedScore)[0],selected=channels[focusRole];
+    const provisionalItems=[...new Set([
+      ...selected.provisionalItems,
+      ...(!route.complete&&focusRole==='ingredient'?['食材栏尚未全部开放，暂不扣路线系数']:[])
+    ])];
+    return {
+      model:'mythical-role-focus',score:selected.adjustedScore,focusRole,focusRoleLabel:selected.label,focusSelection:explicitFocus?'manual':'automatic-best-fit',channels,
+      revealedSubskillCount,unopenedSubskillLevels,subskillRaw:selected.subskillRaw,subskillRawBeforeClamp:selected.subskillRaw,subskillLegalMaximum:selected.subskillLegalMaximum,subskillLegalMaximumBuild:selected.subskillLegalMaximumBuild,
+      subskillScore:selected.score,subskillContribution:selected.adjustedScore,natureRaw:0,natureScore:0,natureContribution:0,fixedNature:true,natureNote:'幻之宝可梦性格固定，不参与可洗个体差异',
+      individualBeforePattern:selected.score,ingredientPattern:route.pattern,ingredientPatternCoefficient:route.coefficient,ingredientRouteComplete:route.complete,ingredientRouteScope:'ingredient-channel-only',
+      interactionMultiplier:selected.interactionMultiplier,interactionBonus:selected.interactionBonus,slots:selected.slots,provisional:provisionalItems.length>0,provisionalItems
+    };
+  }
+
   function individualScore(box,role,finalRecord){
     if(!['berry','ingredient','skill','all'].includes(role))return null;
+    if(role==='all')return allRounderIndividualScore(box,finalRecord);
     const scored=scoreSubskillSlots(box&&box.subskills||box&&box.subs||'',role,finalRecord),legalMaximum=legalSubskillMaximum(role,finalRecord);
     const subskillRawBeforeClamp=scored.raw,subskillRaw=round(clamp(subskillRawBeforeClamp)),subskillScore=round(clamp(subskillRawBeforeClamp/legalMaximum.raw*100)),subskillContribution=round(subskillScore*SUBSKILL_WEIGHT);
     const natureRaw=natureScoring.natureScore(role,box&&box.nature,['berry','all'].includes(role)?Number(finalRecord&&finalRecord.ingredientRate):undefined);
@@ -127,8 +172,8 @@
   return Object.freeze({
     weights:Object.freeze({species:SPECIES_WEIGHT,individual:INDIVIDUAL_WEIGHT,subskill:SUBSKILL_WEIGHT,nature:NATURE_WEIGHT}),
     naturePositiveBenchmark:NATURE_POSITIVE_BENCHMARK,slotLevels:SLOT_LEVELS,slotWeights:SLOT_WEIGHTS,
-    ingredientPatternCoefficients:INGREDIENT_PATTERN_COEFFICIENTS,legalSubskillMaxBuilds:LEGAL_SUBSKILL_MAX_BUILDS,
+    ingredientPatternCoefficients:INGREDIENT_PATTERN_COEFFICIENTS,legalSubskillMaxBuilds:LEGAL_SUBSKILL_MAX_BUILDS,allRounderFocusLabels:ALL_ROUNDER_FOCUS_LABELS,
     subskillFitTable:SUBSKILL_FIT,resourceSubskillFit:RESOURCE_SUBSKILL_FIT,helpSpeedReduction:HELP_SPEED_REDUCTION,probabilityBoost:PROBABILITY_BOOST,
-    round,clamp,splitSubskills,seedMaximizedSubskills,ingredientPattern,subskillFit,interactionBonus,scoreSubskillSlots,legalSubskillMaximum,individualScore
+    round,clamp,splitSubskills,seedMaximizedSubskills,ingredientPattern,subskillFit,interactionBonus,scoreSubskillSlots,legalSubskillMaximum,allRounderIngredientRoute,allRounderChannelScore,allRounderIndividualScore,individualScore
   });
 });

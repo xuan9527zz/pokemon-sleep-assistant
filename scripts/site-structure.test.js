@@ -52,6 +52,7 @@ assert.ok(html.includes("title.dataset.noIngredientIcons=''"), '食谱名称必�
 assert.ok(html.includes('value="pokedex-asc">图鉴编号顺序'), '盒子默认排序必须提供图鉴编号顺序');
 assert.ok(html.includes('data-k="pokedexId">图鉴'), '盒子表格第一列必须显示图鉴编号');
 assert.ok(html.includes('id="pokemonCollectionIntent"'), '个体编辑器必须允许收藏与实战同时标记');
+assert.ok(html.includes('id="pokemonAllRounderFocus"'), '梦幻与达克莱伊编辑器必须允许选择全能型评分定位');
 assert.ok(!html.includes('id="pokemonPriority"'), '手工培养建议控件应移除，统一使用动态重算');
 assert.ok(!html.includes('id="pokemonNote"'), '不再需要的个体备注控件应移除');
 assert.ok(!html.includes('<th>备注</th>'), '盒子列表不应再展示备注列');

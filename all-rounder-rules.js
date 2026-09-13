@@ -21,6 +21,13 @@
     {id:'berry-burst',label:'树果骤增',mainSkillId:21,ratePct:3.2,resource:'energy'}
   ]);
   const BY_ID=Object.freeze(Object.fromEntries(ALL_MIGHTY_OPTIONS.map(item=>[item.id,item])));
+  const FOCUS_OPTIONS=Object.freeze([
+    {id:'auto',label:'按面板自动选择'},
+    {id:'berry',label:'树果位'},
+    {id:'ingredient',label:'食材位'},
+    {id:'skill',label:'技能位'}
+  ]);
+  const FIXED_NATURES=Object.freeze({'151':'浮躁','491':'害羞'});
   const GUIDANCE=Object.freeze({
     metronome:{role:'随机工具位',team:'缺口不固定、能接受随机结果的队伍'},
     'energy-s-fixed':{role:'直接能量位',team:'需要稳定补充卡比兽能量的队伍'},
@@ -37,6 +44,8 @@
   });
   function isMew(mon){return String(mon&&mon.speciesId||'')==='151'||String(mon&&mon.finalFormId||'')==='151'||/梦幻|夢幻/.test(String(mon&&mon.name||''))}
   function isDarkrai(mon){return String(mon&&mon.speciesId||'')==='491'||String(mon&&mon.finalFormId||'')==='491'||/达克莱伊|達克萊伊/.test(String(mon&&mon.name||''))}
+  function fixedNature(mon){return isMew(mon)?FIXED_NATURES['151']:isDarkrai(mon)?FIXED_NATURES['491']:''}
+  function focusRole(mon){const value=String(mon&&mon.allRounderFocusRole||'auto');return FOCUS_OPTIONS.some(option=>option.id===value)?value:'auto'}
   function selectedId(mon){
     const stored=String(mon&&mon.versatileSkillId||'');if(BY_ID[stored])return stored;
     const label=String(mon&&(mon.main||mon.mainSkill)||'');return ALL_MIGHTY_OPTIONS.find(item=>label.includes(item.label))?.id||'metronome';
@@ -51,5 +60,5 @@
     if(isDarkrai(mon)){const nonDarkWarning='非恶属性队友会承受梦魇的活力代价';return {role:'恶属性即时能量位',team:'恶属性成员较多的长期队；混合队必须连同活力损失推演',build:`梦魇（能量填充M） · ${String(mon&&mon.ingredients||'食材栏未记录')}`,warning:nonDarkWarning}}
     return null;
   }
-  return Object.freeze({ALL_MIGHTY_OPTIONS,BY_ID,GUIDANCE,isMew,isDarkrai,selectedId,apply,assess});
+  return Object.freeze({ALL_MIGHTY_OPTIONS,BY_ID,FOCUS_OPTIONS,FIXED_NATURES,GUIDANCE,isMew,isDarkrai,fixedNature,focusRole,selectedId,apply,assess});
 });

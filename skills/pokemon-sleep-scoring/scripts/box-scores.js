@@ -270,7 +270,7 @@ function buildOutput(boxRows, records) {
     meta: {
       generatedAt: new Date().toISOString(),
       targetLevel: TARGET_LEVEL,
-      formula: '最终综合分=种族分×75%+个体分×25%；个体分=(副技能合法满分百分分×70%+性格理论百分分×30%)×食材手／全能型食材组合系数',
+      formula: '最终综合分=种族分×75%+个体分×25%；普通个体分=副技能70%+性格30%；梦幻／达克莱伊按已开放栏位最强定位评分，固定性格不计可洗差异，食材系数只作用于食材分支',
       speciesWeight: SPECIES_WEIGHT,
       individualWeight: INDIVIDUAL_WEIGHT,
       subskillWeight: SUBSKILL_WEIGHT,
@@ -327,7 +327,7 @@ function selfTest(boxRows, records) {
   if (legalMaximums.berry !== 66.7 || legalMaximums.ingredient !== 70 || legalMaximums.skill !== 70 || !(legalMaximums.all > 0)) {
     throw new Error(`副技能合法满分上限异常：${JSON.stringify(legalMaximums)}`);
   }
-  const ceilingScores = Object.fromEntries(['berry', 'ingredient', 'skill', 'all'].map(role => {
+  const ceilingScores = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => {
     const testBox = {
       name: role === 'berry' ? '雷丘' : role === 'ingredient' ? '耿鬼' : '沙奈朵',
       nature: '认真',
@@ -338,6 +338,13 @@ function selfTest(boxRows, records) {
   }));
   if (!Object.values(ceilingScores).every(score => score === 100)) {
     throw new Error(`合法最佳副技能组合没有归一化为100：${JSON.stringify(ceilingScores)}`);
+  }
+  const mythicalCeiling = individualScore({
+    name: '达克莱伊', nature: '害羞', subskills: '帮手奖励；树果数量S；帮忙速度M；—；—',
+    ingredients: '豆制肉×2／豆制肉×4／哞哞鲜奶×6'
+  }, 'all', ceilingRecord);
+  if (mythicalCeiling.score !== 100 || mythicalCeiling.focusRole !== 'berry' || mythicalCeiling.revealedSubskillCount !== 3) {
+    throw new Error(`幻之宝可梦开放栏位归一化异常：${JSON.stringify(mythicalCeiling)}`);
   }
   const berryExample = individualScore({
     name: '雷丘',

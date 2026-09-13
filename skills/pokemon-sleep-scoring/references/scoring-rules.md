@@ -39,7 +39,7 @@ Current legal benchmark builds:
 - Berry: Berry Finding S, Helping Bonus, Helping Speed M, Helping Speed S, Skill Trigger M.
 - Ingredient: Helping Bonus, Ingredient Finder S, Ingredient Finder M, Helping Speed M, Helping Speed S.
 - Skill: Helping Bonus, Skill Trigger S, Skill Trigger M, Helping Speed M, Helping Speed S.
-- All-rounder: Helping Bonus, Skill Trigger M, Helping Speed M, Berry Finding S, Ingredient Finder M.
+- The old equal-average all-rounder benchmark remains available only for historical diagnostics; it is not the current mythical individual denominator.
 
 Always derive the legal ceiling with `scoring-core.js`; never assume five copies of a best skill.
 
@@ -59,17 +59,19 @@ The executable values live only in `scoring-core.js`. Important confirmed anchor
 
 Resource skills are deliberately modest: Sleep EXP Bonus 20, Energy Recovery Bonus 12, Dream Shard Bonus 10, Research EXP Bonus 8.
 
-All-rounder subskill fit is the equal-weight average of the berry, ingredient and skill values for the same subskill. Its multiplicative interaction bonus is likewise the mean of the three role interactions. This deliberately rewards universally useful Helping Bonus and speed while still recognizing Berry Finding, Ingredient Finder and Skill Trigger without pretending that one output channel is the whole helper.
+For Mew and Darkrai, calculate three independent channel scores with the ordinary berry, ingredient and skill tables. Normalize each channel against the legal benchmark restricted to the same currently opened subskill slots. Unopened Eureka Seed slots are unknown potential, not zero-value subskills. Apply the ingredient-route coefficient only to the ingredient channel, then use the explicitly selected focus channel or, in automatic mode, the strongest adjusted channel. The tooltip must disclose all three channel scores and which one supplied the individual score.
 
 For berry specialists, Ingredient Finder is negative and must use the final form's ingredient rate. Helping Speed, role probability, and Berry Finding interactions are multiplicative.
 
 ## Nature
 
-Use `scripts/nature-scores.js`. Neutral is `0`, benefits are positive, penalties are negative. The best relevant nature is normalized to `100` before its 30% individual weight. Do not hide a baseline in the nature component.
+Use `scripts/nature-scores.js`. For ordinary helpers, neutral is `0`, benefits are positive, penalties are negative. The best relevant nature is normalized to `100` before its 30% individual weight. Do not hide a baseline in the nature component.
+
+Mew and Darkrai are exceptions because their Nature is fixed for every researcher and Eureka Seeds cannot reroll it. Preserve and display the fixed Nature, but do not reserve 30 individual points for an impossible better roll. Their mythical individual score is the selected channel's opened-slot subskill quality instead.
 
 ## Ingredient route
 
-Only ingredient specialists and all-rounders use this coefficient:
+Ingredient specialists use this coefficient on their individual score. All-rounders use it only on their ingredient channel:
 
 | Route | Coefficient |
 |---|---:|
@@ -89,7 +91,7 @@ These coefficients remain provisional display inputs. The course-derived selecti
 - Berry species: Lv.70 berry production 90% and main-skill synergy 10%. Production includes interval, ingredient-rate berry loss, base berry count and Lv.70 berry strength. Keep full-bag Sneaky Snacking as a separate scenario, never as the primary score.
 - Both roles use main-skill type fit 50%, trigger efficiency 40%, natural main-skill level 10%.
 - Skill species use the team-calibrated model described in `main-skill-models.md`.
-- All-rounder species use the shared skill-team slot anchor, but include their own ordinary berry/ingredient production and current main-skill variant. Their individual score remains a balanced three-role score rather than being treated as an ordinary skill specialist.
+- All-rounder species use the shared skill-team slot anchor, but include their own ordinary berry/ingredient production and current main-skill variant. Their individual score exposes separate berry, ingredient and skill channels so a specialized Eureka Seed build is not diluted by two roles it was not built to fill.
 
 ## Cultivation and retention separation
 

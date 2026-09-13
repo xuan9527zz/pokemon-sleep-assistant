@@ -37,6 +37,7 @@
     return {level:safeLevel,interval:formatInterval(interval),carry:Math.max(1,Math.round(carry)),speedReduction:speed};
   }
   function selectedIngredient(select,species,level){
+    if(select.value==='—')return null;
     const list=species.ingredients&&species.ingredients[level]||[],chosen=list.find(item=>String(item.id)===select.value)||list[0];
     return chosen||null;
   }
@@ -58,12 +59,13 @@
     const byId=new Map(pokemon.map(mon=>[String(mon.id),mon])),catalogById=new Map(catalog.pokemon.map(record=>[String(record.id),record]));
     const addButton=document.querySelector('#pokemonAddOpen'),recycleButton=document.querySelector('#pokemonRecycleOpen'),dialog=document.querySelector('#pokemonEditorDialog'),recycleDialog=document.querySelector('#pokemonRecycleDialog');
     if(!addButton||!dialog||!recycleDialog)return null;
-    const title=document.querySelector('#pokemonEditorTitle'),closeButton=document.querySelector('#pokemonEditorClose'),cancelButton=document.querySelector('#pokemonEditorCancel'),saveButton=document.querySelector('#pokemonEditorSave'),releaseButton=document.querySelector('#pokemonEditorRelease'),duplicateButton=document.querySelector('#pokemonEditorDuplicate'),message=document.querySelector('#pokemonEditorMessage'),speciesSearch=document.querySelector('#pokemonSpeciesSearch'),speciesSelect=document.querySelector('#pokemonSpecies'),finalWrap=document.querySelector('#pokemonFinalWrap'),finalSelect=document.querySelector('#pokemonFinal'),nicknameInput=document.querySelector('#pokemonNickname'),customNumberInput=document.querySelector('#pokemonCustomNumber'),levelInput=document.querySelector('#pokemonLevel'),shinyInput=document.querySelector('#pokemonShiny'),natureSelect=document.querySelector('#pokemonNature'),mainLevelSelect=document.querySelector('#pokemonMainLevel'),allMightyWrap=document.querySelector('#pokemonAllMightyWrap'),allMightySelect=document.querySelector('#pokemonAllMighty'),boxSelect=document.querySelector('#pokemonBox'),battleInput=document.querySelector('#pokemonBattleEligible'),collectionInput=document.querySelector('#pokemonCollectionIntent'),ingredientSelects=[1,30,60].map(level=>document.querySelector(`#pokemonIngredient${level}`)),subskillSelects=SUBSKILL_LEVELS.map(level=>document.querySelector(`#pokemonSubskill${level}`)),identityPreview=document.querySelector('#pokemonIdentityPreview'),scorePreview=document.querySelector('#pokemonScorePreview'),retentionPreview=document.querySelector('#pokemonRetentionPreview'),recycleList=document.querySelector('#pokemonRecycleList'),recycleClose=document.querySelector('#pokemonRecycleClose'),recycleCount=document.querySelector('#pokemonRecycleCount'),allRounder=root.POKEMON_SLEEP_ALL_ROUNDER_RULES;
+    const title=document.querySelector('#pokemonEditorTitle'),closeButton=document.querySelector('#pokemonEditorClose'),cancelButton=document.querySelector('#pokemonEditorCancel'),saveButton=document.querySelector('#pokemonEditorSave'),releaseButton=document.querySelector('#pokemonEditorRelease'),duplicateButton=document.querySelector('#pokemonEditorDuplicate'),message=document.querySelector('#pokemonEditorMessage'),speciesSearch=document.querySelector('#pokemonSpeciesSearch'),speciesSelect=document.querySelector('#pokemonSpecies'),finalWrap=document.querySelector('#pokemonFinalWrap'),finalSelect=document.querySelector('#pokemonFinal'),nicknameInput=document.querySelector('#pokemonNickname'),customNumberInput=document.querySelector('#pokemonCustomNumber'),levelInput=document.querySelector('#pokemonLevel'),shinyInput=document.querySelector('#pokemonShiny'),natureSelect=document.querySelector('#pokemonNature'),mainLevelSelect=document.querySelector('#pokemonMainLevel'),allMightyWrap=document.querySelector('#pokemonAllMightyWrap'),allMightySelect=document.querySelector('#pokemonAllMighty'),allRounderFocusWrap=document.querySelector('#pokemonAllRounderFocusWrap'),allRounderFocusSelect=document.querySelector('#pokemonAllRounderFocus'),boxSelect=document.querySelector('#pokemonBox'),battleInput=document.querySelector('#pokemonBattleEligible'),collectionInput=document.querySelector('#pokemonCollectionIntent'),ingredientSelects=[1,30,60].map(level=>document.querySelector(`#pokemonIngredient${level}`)),subskillSelects=SUBSKILL_LEVELS.map(level=>document.querySelector(`#pokemonSubskill${level}`)),identityPreview=document.querySelector('#pokemonIdentityPreview'),scorePreview=document.querySelector('#pokemonScorePreview'),retentionPreview=document.querySelector('#pokemonRetentionPreview'),recycleList=document.querySelector('#pokemonRecycleList'),recycleClose=document.querySelector('#pokemonRecycleClose'),recycleCount=document.querySelector('#pokemonRecycleCount'),allRounder=root.POKEMON_SLEEP_ALL_ROUNDER_RULES;
     let editingId=null,releaseArmed=false,purgeArmed=null;
 
     natureApi.natures.forEach(item=>natureSelect.append(option(item.name,item.name)));
     subskillSelects.forEach(select=>SUBSKILLS.forEach(skill=>select.append(option(skill,skill))));
     if(allMightySelect&&allRounder)allRounder.ALL_MIGHTY_OPTIONS.forEach(item=>allMightySelect.append(option(item.id,`${item.label}（技能率约 ${item.ratePct}%）`)));
+    if(allRounderFocusSelect&&allRounder)allRounder.FOCUS_OPTIONS.forEach(item=>allRounderFocusSelect.append(option(item.id,item.label)));
 
     function namedBoxes(){
       const stored=dataApi.readJson(dataApi.BOX_KEY,{}),names=boxApi.normalizeBoxNames(stored&&stored.boxes);
@@ -92,11 +94,12 @@
     }
     function renderIngredients(species,preferred=[]){
       [1,30,60].forEach((level,index)=>{
-        const select=ingredientSelects[index],items=species&&species.ingredients&&species.ingredients[level]||[];select.replaceChildren();
+        const select=ingredientSelects[index],items=species&&species.ingredients&&species.ingredients[level]||[],allowUnknown=species&&species.specialty==='all'&&level>1;select.replaceChildren();
+        if(allowUnknown)select.append(option('—','尚未开放'));
         items.forEach(item=>select.append(option(item.id,canonicalIngredient(item,ingredientApi))));
         const wanted=String(preferred[index]||'');
         const match=items.find(item=>canonicalIngredient(item,ingredientApi)===wanted||String(item.id)===wanted);
-        if(match)select.value=String(match.id);
+        if(wanted==='—'&&allowUnknown)select.value='—';else if(match)select.value=String(match.id);
         select.disabled=!items.length;
       });
     }
@@ -104,9 +107,12 @@
       const cap=mainSkillCap(species&&species.mainSkill&&species.mainSkill.name||''),value=clamp(Math.round(number(preferred)||number(species&&species.stage)||1),1,cap);mainLevelSelect.replaceChildren();
       for(let level=1;level<=cap;level++)mainLevelSelect.append(option(level,`Lv.${level}`));mainLevelSelect.value=String(value);
     }
-    function updateSpeciesFields({finalFormId,ingredients,mainLevel}={}){
+    function updateSpeciesFields({finalFormId,ingredients,mainLevel,nature,focusRole}={}){
       const species=currentSpecies();if(!species)return;
       if(allMightyWrap)allMightyWrap.hidden=String(species.id)!=='151';
+      if(allRounderFocusWrap)allRounderFocusWrap.hidden=species.specialty!=='all';
+      if(allRounderFocusSelect)allRounderFocusSelect.value=allRounder&&allRounder.focusRole({allRounderFocusRole:focusRole||allRounderFocusSelect.value})||'auto';
+      const fixedNature=allRounder&&allRounder.fixedNature(species);natureSelect.disabled=Boolean(fixedNature);natureSelect.title=fixedNature?'幻之宝可梦的性格固定，不参与可洗个体评分':'';natureSelect.value=fixedNature||nature||natureSelect.value;
       renderFinalOptions(species,finalFormId||finalSelect.value);renderIngredients(species,ingredients);renderMainLevels(species,mainLevel||mainLevelSelect.value);renderPreview();
     }
     function formSkills(){return subskillSelects.map(select=>select.value||'—')}
@@ -114,14 +120,14 @@
       const species=currentSpecies();if(!species)return null;
       const skills=formSkills(),stats=computedStats(species,levelInput.value,natureSelect.value,skills,natureApi),foods=[1,30,60].map((level,index)=>canonicalIngredient(selectedIngredient(ingredientSelects[index],species,level),ingredientApi)),mainLevel=Number(mainLevelSelect.value)||1,existing=editingId&&byId.get(editingId),state=dataApi.readAll();
       const id=existing?String(existing.id):String(state.meta.nextDisplayId),recordId=existing&&existing.recordId||dataApi.newRecordId(),createdAt=existing&&existing.createdAt||new Date().toISOString();
-      const base={id,recordId,speciesId:species.id,finalFormId:finalSelect.value||species.defaultFinalId,name:species.name,nickname:nicknameInput&&nicknameInput.value.trim()||'',customNumber:customNumberInput&&customNumberInput.value.trim()||'',sp:existing&&existing.sp||'',lv:String(stats.level),shiny:shinyInput.checked?'是':'否',ingredients:foods.join('／'),interval:stats.interval,inv:String(stats.carry),main:`${species.mainSkill.name} Lv.${mainLevel}`,subs:skills.join('；'),nature:natureSelect.value,priority:existing&&existing.priority||'按需求保留',note:existing&&existing.note||'',createdAt,updatedAt:new Date().toISOString()};
+      const base={id,recordId,speciesId:species.id,finalFormId:finalSelect.value||species.defaultFinalId,name:species.name,nickname:nicknameInput&&nicknameInput.value.trim()||'',customNumber:customNumberInput&&customNumberInput.value.trim()||'',sp:existing&&existing.sp||'',lv:String(stats.level),shiny:shinyInput.checked?'是':'否',ingredients:foods.join('／'),interval:stats.interval,inv:String(stats.carry),main:`${species.mainSkill.name} Lv.${mainLevel}`,subs:skills.join('；'),nature:natureSelect.value,allRounderFocusRole:species.specialty==='all'&&allRounderFocusSelect?allRounderFocusSelect.value:'',priority:existing&&existing.priority||'按需求保留',note:existing&&existing.note||'',createdAt,updatedAt:new Date().toISOString()};
       return allRounder&&allRounder.isMew(base)?allRounder.apply(base,allMightySelect&&allMightySelect.value||'metronome'):base;
     }
     function validateDraft(record){
       if(!record||!record.speciesId)return '请选择宝可梦。';
       const duplicates=formSkills().filter(skill=>skill!=='—').filter((skill,index,array)=>array.indexOf(skill)!==index);
       if(duplicates.length)return `副技能不能重复：${[...new Set(duplicates)].join('、')}。S 与 M 可以同时存在。`;
-      if(record.ingredients.split('／').some(item=>item==='—'))return '当前图鉴资料缺少这个形态的食材选项，暂时不能保存。';
+      if(record.ingredients.split('／').some(item=>item==='—')&&currentSpecies().specialty!=='all')return '当前图鉴资料缺少这个形态的食材选项，暂时不能保存。';
       return '';
     }
     function renderPreview(){
@@ -129,19 +135,20 @@
       const species=currentSpecies(),target=catalogById.get(String(record.finalFormId)),score=scoring.scorePokemon(record),role=ROLE_LABELS[target&&target.specialty||species.specialty]||'待核对',dynamic=root.POKEMON_SLEEP_ALL_ROUNDER_RULES&&root.POKEMON_SLEEP_ALL_ROUNDER_RULES.assess(record);
       identityPreview.textContent=`${species.name} · ${dynamic&&dynamic.role||role} · ${record.main} · 间隔 ${record.interval} · 持有 ${record.inv}`;
       scorePreview.replaceChildren();
-      const cards=Number.isFinite(score.finalScore)?[['综合分',score.finalScore.toFixed(1)],['种族分',score.speciesScore.toFixed(1)],['个体分',score.individualScore.toFixed(1)],['食材路线',score.individual.ingredientPattern==='不适用'?'不适用':`${score.individual.ingredientPattern} ×${score.individual.ingredientPatternCoefficient.toFixed(2)}`]]:dynamic?[['综合分','待定'],['动态定位',dynamic.role],['适合队伍',dynamic.team],['当前构筑',dynamic.build]]:[['综合分','待定'],['原因',score.status==='pending-all-rounder-formula'?'全能型公式尚未确认':'缺少种族评分'],['定位',role]];
+      const scoreDetail=score&&score.individual&&score.individual.model==='mythical-role-focus'?['评分定位',`${score.individual.focusRoleLabel}${score.individual.focusSelection==='automatic-best-fit'?'（自动）':''}`]:['食材路线',score.individual.ingredientPattern==='不适用'?'不适用':`${score.individual.ingredientPattern} ×${score.individual.ingredientPatternCoefficient.toFixed(2)}`];
+      const cards=Number.isFinite(score.finalScore)?[['综合分',score.finalScore.toFixed(1)],['种族分',score.speciesScore.toFixed(1)],['个体分',score.individualScore.toFixed(1)],scoreDetail]:dynamic?[['综合分','待定'],['动态定位',dynamic.role],['适合队伍',dynamic.team],['当前构筑',dynamic.build]]:[['综合分','待定'],['原因',score.status==='pending-all-rounder-formula'?'全能型公式尚未确认':'缺少种族评分'],['定位',role]];
       cards.forEach(([label,value])=>{const card=element('span','pokemon-score-preview-item');card.append(element('small','',label),element('strong','',value));scorePreview.append(card)});
       if(retentionPreview&&root.POKEMON_SLEEP_RETENTION_ADVISOR)root.POKEMON_SLEEP_RETENTION_ADVISOR.render(retentionPreview,record,pokemon,scoring);
       const error=validateDraft(record);message.hidden=!error;message.textContent=error;message.className='pokemon-editor-message warning';saveButton.disabled=Boolean(error);
     }
     function resetForm(){
-      editingId=null;releaseArmed=false;title.textContent='快速录入新个体';releaseButton.hidden=true;duplicateButton.hidden=true;releaseButton.textContent='放生到回收站';speciesSearch.value='';renderSpeciesOptions();if(nicknameInput)nicknameInput.value='';if(customNumberInput)customNumberInput.value='';levelInput.value='1';shinyInput.checked=false;natureSelect.value='认真';if(allMightySelect)allMightySelect.value='metronome';boxSelect.value='pending';battleInput.checked=true;collectionInput.checked=false;subskillSelects.forEach(select=>{select.value='—'});updateSpeciesFields();message.hidden=true;
+      editingId=null;releaseArmed=false;title.textContent='快速录入新个体';releaseButton.hidden=true;duplicateButton.hidden=true;releaseButton.textContent='放生到回收站';speciesSearch.value='';renderSpeciesOptions();if(nicknameInput)nicknameInput.value='';if(customNumberInput)customNumberInput.value='';levelInput.value='1';shinyInput.checked=false;natureSelect.value='认真';natureSelect.disabled=false;if(allMightySelect)allMightySelect.value='metronome';if(allRounderFocusSelect)allRounderFocusSelect.value='auto';boxSelect.value='pending';battleInput.checked=true;collectionInput.checked=false;subskillSelects.forEach(select=>{select.value='—'});updateSpeciesFields();message.hidden=true;
     }
     function openNew(){resetForm();showDialog(dialog);setTimeout(()=>speciesSearch.focus(),0)}
     function openFor(id){
       const mon=byId.get(String(id));if(!mon)return false;editingId=String(mon.id);releaseArmed=false;title.textContent=`编辑 #${mon.id} ${mon.name}`;releaseButton.hidden=false;duplicateButton.hidden=false;releaseButton.textContent='放生到回收站';speciesSearch.value='';
-      const species=inferSpecies(mon,catalog,scoring);renderSpeciesOptions(species&&species.id);if(species){speciesSelect.value=species.id;const currentFoods=String(mon.ingredients||'').split('／');updateSpeciesFields({finalFormId:mon.finalFormId||scoring.targetForPokemon(mon)?.id,ingredients:currentFoods,mainLevel:String(mon.main||'').match(/Lv\.(\d+)/)?.[1]})}
-      if(nicknameInput)nicknameInput.value=mon.nickname||'';if(customNumberInput)customNumberInput.value=mon.customNumber||'';levelInput.value=String(mon.lv||1);shinyInput.checked=mon.shiny==='是';natureSelect.value=natureName(mon.nature,natureApi);if(allMightySelect&&allRounder)allMightySelect.value=allRounder.selectedId(mon);boxSelect.value=mon.boxId||boxApi.defaultBoxId(mon);battleInput.checked=mon.battleEligible!==false;collectionInput.checked=Boolean(mon.collectionIntent);
+      const species=inferSpecies(mon,catalog,scoring);renderSpeciesOptions(species&&species.id);if(species){speciesSelect.value=species.id;const currentFoods=String(mon.ingredients||'').split('／');updateSpeciesFields({finalFormId:mon.finalFormId||scoring.targetForPokemon(mon)?.id,ingredients:currentFoods,mainLevel:String(mon.main||'').match(/Lv\.(\d+)/)?.[1],nature:natureName(mon.nature,natureApi),focusRole:mon.allRounderFocusRole})}
+      if(nicknameInput)nicknameInput.value=mon.nickname||'';if(customNumberInput)customNumberInput.value=mon.customNumber||'';levelInput.value=String(mon.lv||1);shinyInput.checked=mon.shiny==='是';natureSelect.value=allRounder&&allRounder.fixedNature(species)||natureName(mon.nature,natureApi);if(allMightySelect&&allRounder)allMightySelect.value=allRounder.selectedId(mon);if(allRounderFocusSelect&&allRounder)allRounderFocusSelect.value=allRounder.focusRole(mon);boxSelect.value=mon.boxId||boxApi.defaultBoxId(mon);battleInput.checked=mon.battleEligible!==false;collectionInput.checked=Boolean(mon.collectionIntent);
       const skills=String(mon.subs||'').split('；');subskillSelects.forEach((select,index)=>{select.value=SUBSKILLS.includes(skills[index])?skills[index]:'—'});renderPreview();showDialog(dialog);return true;
     }
     async function persistAndReload(){
@@ -177,7 +184,7 @@
     }
     function openRecycle(){renderRecycle();showDialog(recycleDialog)}
 
-    addButton.addEventListener('click',openNew);recycleButton.addEventListener('click',openRecycle);closeButton.addEventListener('click',()=>closeDialog(dialog));cancelButton.addEventListener('click',()=>closeDialog(dialog));saveButton.addEventListener('click',save);releaseButton.addEventListener('click',release);duplicateButton.addEventListener('click',duplicate);recycleClose.addEventListener('click',()=>closeDialog(recycleDialog));speciesSearch.addEventListener('input',()=>renderSpeciesOptions());speciesSelect.addEventListener('change',()=>updateSpeciesFields());finalSelect.addEventListener('change',renderPreview);shinyInput.addEventListener('change',()=>{if(shinyInput.checked)collectionInput.checked=true});[nicknameInput,customNumberInput,levelInput,shinyInput,natureSelect,mainLevelSelect,allMightySelect,boxSelect,battleInput,collectionInput,...ingredientSelects,...subskillSelects].filter(Boolean).forEach(control=>{control.addEventListener([nicknameInput,customNumberInput].includes(control)?'input':'change',renderPreview)});
+    addButton.addEventListener('click',openNew);recycleButton.addEventListener('click',openRecycle);closeButton.addEventListener('click',()=>closeDialog(dialog));cancelButton.addEventListener('click',()=>closeDialog(dialog));saveButton.addEventListener('click',save);releaseButton.addEventListener('click',release);duplicateButton.addEventListener('click',duplicate);recycleClose.addEventListener('click',()=>closeDialog(recycleDialog));speciesSearch.addEventListener('input',()=>renderSpeciesOptions());speciesSelect.addEventListener('change',()=>updateSpeciesFields());finalSelect.addEventListener('change',renderPreview);shinyInput.addEventListener('change',()=>{if(shinyInput.checked)collectionInput.checked=true});[nicknameInput,customNumberInput,levelInput,shinyInput,natureSelect,mainLevelSelect,allMightySelect,allRounderFocusSelect,boxSelect,battleInput,collectionInput,...ingredientSelects,...subskillSelects].filter(Boolean).forEach(control=>{control.addEventListener([nicknameInput,customNumberInput].includes(control)?'input':'change',renderPreview)});
     dialog.addEventListener('cancel',event=>{event.preventDefault();closeDialog(dialog)});dialog.addEventListener('click',event=>{if(event.target===dialog)closeDialog(dialog)});recycleDialog.addEventListener('cancel',event=>{event.preventDefault();closeDialog(recycleDialog)});recycleDialog.addEventListener('click',event=>{if(event.target===recycleDialog)closeDialog(recycleDialog)});document.addEventListener('pokemon-sleep:edit-pokemon',event=>openFor(event.detail&&event.detail.id));
     return {openNew,openFor,openRecycle,renderPreview};
   }

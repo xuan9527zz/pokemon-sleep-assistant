@@ -55,8 +55,9 @@ const berryBurstScore = dynamicScoring.scorePokemon(allRounderRules.apply(allRou
 assert.equal(metronomeScore.speciesScore, 64.9);
 assert.equal(healerScore.speciesScore, 84.3);
 assert.equal(berryBurstScore.speciesScore, 73.2);
-assert.equal(metronomeScore.individualScore, 70);
+assert.equal(metronomeScore.individualScore, 86.6);
 assert.equal(healerScore.individualScore, metronomeScore.individualScore, '切换十项全能只应改变物种技能场景，不应改写同一个体面板');
+assert.equal(dynamicScoring.scorePokemon({...allRounderRules.apply(allRounderPanel, 'metronome'),nature:'怕寂寞'}).individualScore,metronomeScore.individualScore,'幻之宝可梦固定性格不得制造不可达的个体分缺口');
 assert.ok([metronomeScore, healerScore, berryBurstScore].every(score => Number.isFinite(score.finalScore)));
 
 const darkraiScore = dynamicScoring.scorePokemon({
@@ -69,5 +70,49 @@ const darkraiScore = dynamicScoring.scorePokemon({
 assert.equal(darkraiScore.speciesScore, 77.3);
 assert.equal(darkraiScore.selectedAllRounderSkillId, 'nightmare');
 assert.ok(Number.isFinite(darkraiScore.finalScore));
+
+const darkraiBerryCore = dynamicScoring.scorePokemon({
+  id: 'darkrai-berry-core',
+  name: '达克莱伊',
+  speciesId: '491',
+  ingredients: '豆制肉×2／豆制肉×4／哞哞鲜奶×6',
+  subskills: '帮手奖励；树果数量S；帮忙速度M；—；—',
+  nature: '害羞',
+  main: '噩梦（能量填充M） Lv.1'
+});
+assert.equal(darkraiBerryCore.individual.focusRole, 'berry');
+assert.equal(darkraiBerryCore.individualScore, 100, '已开放的Lv.50毕业树果骨架应按同开放栏位合法上限归一化');
+assert.equal(darkraiBerryCore.finalScore, 83);
+assert.deepEqual(darkraiBerryCore.individual.unopenedSubskillLevels, [70, 80]);
+assert.equal(darkraiBerryCore.individual.channels.ingredient.routeCoefficient, .7);
+assert.equal(darkraiBerryCore.individual.channels.berry.routeCoefficient, 1, '食材路线不得给树果分支整体打折');
+
+const exportedDarkrai = dynamicScoring.scorePokemon({
+  id: '91',
+  name: '达克莱伊',
+  speciesId: '491',
+  finalFormId: '491',
+  ingredients: '豆制肉×2／豆制肉×4／哞哞鲜奶×6',
+  subs: '帮手奖励；树果数量S；帮忙速度M；食材概率S；—',
+  nature: '害羞',
+  main: '噩梦（能量填充M） Lv.1'
+});
+assert.equal(exportedDarkrai.individual.focusRole, 'berry');
+assert.equal(exportedDarkrai.individualScore, 84.1);
+assert.equal(exportedDarkrai.finalScore, 79);
+assert.equal(exportedDarkrai.individual.channels.ingredient.adjustedScore, 56.5);
+
+const partialMew = dynamicScoring.scorePokemon(allRounderRules.apply({
+  id: 'partial-mew',
+  name: '梦幻',
+  speciesId: '151',
+  ingredients: '特选蛋×2／火辣香草×4／—',
+  subskills: '技能等级M；持有上限S；—；—；—',
+  nature: '浮躁',
+  main: '十项全能 Lv.3'
+}, 'metronome'));
+assert.equal(partialMew.individual.ingredientPattern, 'AB?');
+assert.equal(partialMew.individual.ingredientPatternCoefficient, 1, '尚未开放的幻之宝可梦食材栏不得预判成ABC');
+assert.equal(partialMew.individual.revealedSubskillCount, 2);
 
 console.log('dynamic scoring tests passed (97/97 snapshot parity)');
