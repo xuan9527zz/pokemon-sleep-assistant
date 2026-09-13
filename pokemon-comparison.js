@@ -257,23 +257,39 @@
     return [resources.ingredientRange?`技能食材 ${resourceRange(resources.ingredientRange)}`:resources.ingredients?`技能食材 ${resources.ingredients.toFixed(1)}`:'',resources.potSlots?`扩锅 ${resources.potSlots.toFixed(1)} 格`:'',resources.tastyBonusPct?`大成功率 +${resources.tastyBonusPct.toFixed(1)}%`:'',resources.dreamShardRange?`碎片 ${resourceRange(resources.dreamShardRange,0)}`:resources.dreamShards?`碎片 ${Math.round(resources.dreamShards)}`:'',resources.candy?`糖果 ${resources.candy.toFixed(1)}`:'',resources.berryJuice?`树果汁 ${resources.berryJuice.toFixed(2)} 瓶`:'',resources.recovery?`全队活力 ${resources.recovery.toFixed(1)}`:''].filter(Boolean).join(' · ');
   }
 
+  function primarySkillBenefit(view){
+    const resources=view&&view.resources||{},rangeText=(value,digits=1)=>Array.isArray(value)?`${(Number(value[0])||0).toFixed(digits)}~${(Number(value[1])||0).toFixed(digits)}`:'';
+    if(Number(view&&view.skillEnergy)>0)return [Math.round(view.skillEnergy).toLocaleString('zh-CN'),'技能能量／24h'];
+    if(Number(resources.recovery)>0)return [Number(resources.recovery).toFixed(1),'全队活力／24h'];
+    if(resources.ingredientRange)return [rangeText(resources.ingredientRange),'技能食材／24h'];
+    if(Number(resources.ingredients)>0)return [Number(resources.ingredients).toFixed(1),'技能食材／24h'];
+    if(Number(resources.potSlots)>0)return [Number(resources.potSlots).toFixed(1),'扩锅格数／24h'];
+    if(Number(resources.tastyBonusPct)>0)return [`+${Number(resources.tastyBonusPct).toFixed(1)}%`,'大成功率收益'];
+    if(resources.dreamShardRange)return [rangeText(resources.dreamShardRange,0),'梦之碎片／24h'];
+    if(Number(resources.dreamShards)>0)return [Math.round(resources.dreamShards).toLocaleString('zh-CN'),'梦之碎片／24h'];
+    if(Number(resources.candy)>0)return [Number(resources.candy).toFixed(1),'队友糖果／24h'];
+    if(Number(resources.berryJuice)>0)return [Number(resources.berryJuice).toFixed(2),'树果汁／24h'];
+    return ['待核对','技能收益'];
+  }
+
   function renderProductionCard(doc,view,side,isLeader,teamPlanner,role='ingredient'){
     const card=element(doc,'article',`pokemon-production-card${isLeader?' is-leader':''}`),head=element(doc,'div','pokemon-production-card-head');
     const slotLabel=side==='left'?'个体 A':side==='right'?'个体 B':String(side||'对比个体');
     head.append(element(doc,'span','',`${slotLabel} · #${view.id}`),element(doc,'strong','',view.name));
     if(isLeader)head.append(element(doc,'b','','当前领先'));card.append(head);
     if(!view.valid){card.append(element(doc,'p','pokemon-production-error',view.message));return card}
-    const ingredient=view.ingredient||{mean:view.perDay,low:view.perDay,high:view.perDay},energy=view.energy||null,teamEnergy=view.teamEnergy||energy,formatRange=(value,digits=1)=>`${Number(value.low).toFixed(digits)}~${Number(value.high).toFixed(digits)}`,amount=element(doc,'div','pokemon-production-amount');
-    if(role==='berry')amount.append(element(doc,'strong','',energy?`${Math.round(energy.low).toLocaleString('zh-CN')}~${Math.round(energy.high).toLocaleString('zh-CN')}`:'—'),element(doc,'span','',`纯能量／24h（期望 ${Math.round(energy&&energy.mean||0).toLocaleString('zh-CN')}）`));
-    else if(role==='skill')amount.append(element(doc,'strong','',Number(view.triggers||0).toFixed(2)),element(doc,'span','',`次技能触发／24h · ${view.mainSkill||'主技能待核对'}`));
+    const resolvedRole=view.comparisonRole||role,ingredient=view.ingredient||{mean:view.perDay,low:view.perDay,high:view.perDay},energy=view.energy||null,teamEnergy=view.teamEnergy||energy,formatRange=(value,digits=1)=>`${Number(value.low).toFixed(digits)}~${Number(value.high).toFixed(digits)}`,amount=element(doc,'div','pokemon-production-amount');
+    if(resolvedRole==='berry')amount.append(element(doc,'strong','',energy?`${Math.round(energy.low).toLocaleString('zh-CN')}~${Math.round(energy.high).toLocaleString('zh-CN')}`:'—'),element(doc,'span','',`纯能量／24h（期望 ${Math.round(energy&&energy.mean||0).toLocaleString('zh-CN')}）`));
+    else if(resolvedRole==='skill')amount.append(element(doc,'strong','',Number(view.triggers||0).toFixed(2)),element(doc,'span','',`次技能触发／24h（期望） · ${view.mainSkill||'主技能待核对'}`));
     else amount.append(element(doc,'strong','',formatRange(ingredient)),element(doc,'span','',`个 ${view.targetIngredient}／24h（期望 ${ingredient.mean.toFixed(1)}）`));
     card.append(amount);
     const metrics=element(doc,'div','pokemon-production-metrics');
-    const metricRows=role==='berry'?[[view.berries.toFixed(1),'树果／24h'],[Math.round(view.berryEnergy).toLocaleString('zh-CN'),'树果能量'],[Math.round(view.skillEnergy).toLocaleString('zh-CN'),'技能能量'],[`${view.triggers.toFixed(2)} 次`,'技能触发']]:role==='skill'?[[energy?Math.round(energy.mean).toLocaleString('zh-CN'):'—','本体纯能量'],[teamEnergy?Math.round(teamEnergy.mean).toLocaleString('zh-CN'):'—',view.fullTeam?'五人纯能量':'单体纯能量'],[Math.round(view.skillEnergy).toLocaleString('zh-CN'),'可计能量收益'],[formatHours(view.collectionHours,teamPlanner),'点击收取间隔']]:[[energy?`${Math.round(energy.low).toLocaleString('zh-CN')}~${Math.round(energy.high).toLocaleString('zh-CN')}`:'—','纯能量／24h'],[`${(view.ingredientProbability*100).toFixed(1)}%`,'当前食材概率'],[formatHours(view.collectionHours,teamPlanner),'点击收取间隔'],[formatHours(view.fullHours,teamPlanner),'预计满仓']];
+    const skillBenefit=primarySkillBenefit(view),metricRows=resolvedRole==='berry'?[[view.berries.toFixed(1),'树果／24h'],[Math.round(view.berryEnergy).toLocaleString('zh-CN'),'树果能量'],[Math.round(view.skillEnergy).toLocaleString('zh-CN'),'技能能量'],[`${view.triggers.toFixed(2)} 次`,'技能触发']]:resolvedRole==='skill'?[[`${((view.skillProbability&&view.skillProbability.current||0)*100).toFixed(1)}%`,'当前技能概率'],skillBenefit,[teamEnergy?Math.round(teamEnergy.mean).toLocaleString('zh-CN'):'—',view.fullTeam?'五人纯能量':'单体纯能量'],[formatHours(view.collectionHours,teamPlanner),'点击收取间隔']]:[[energy?`${Math.round(energy.low).toLocaleString('zh-CN')}~${Math.round(energy.high).toLocaleString('zh-CN')}`:'—','纯能量／24h'],[`${(view.ingredientProbability*100).toFixed(1)}%`,'当前食材概率'],[formatHours(view.collectionHours,teamPlanner),'点击收取间隔'],[formatHours(view.fullHours,teamPlanner),'预计满仓']];
     metricRows.forEach(([value,label])=>{const item=element(doc,'div','');item.append(element(doc,'strong','',value),element(doc,'span','',label));metrics.append(item)});card.append(metrics);
-    if(role==='ingredient'){const slots=element(doc,'p','pokemon-production-slots'),unlocked=view.unlockedSlots.length?view.unlockedSlots.map(item=>`Lv.${item.unlockLevel}×${item.quantity}`).join('、'):'当前等级没有已解锁栏位',locked=view.lockedSlots.length?`；待解锁 ${view.lockedSlots.map(item=>`Lv.${item.unlockLevel}×${item.quantity}`).join('、')}`:'';slots.textContent=`目标食材栏：${unlocked}${locked}`;card.append(slots)}
-    if(view.audit){const resourceText=productionResourceText(view),skillBenefits=[view.skillEnergy>0?`直接技能能量 ${Math.round(view.skillEnergy).toLocaleString('zh-CN')}`:'',resourceText].filter(Boolean).join(' · '),lead=role==='skill'?`技能收益：${skillBenefits||'当前主技能没有可折算的独立收益；请结合五人纯能量变化判断'}`:`技能 ${view.triggers.toFixed(2)} 次／日${resourceText?` · ${resourceText}`:''}`;card.append(element(doc,'small','pokemon-production-note',`${lead} · 岛屿 +${view.audit.islandBonusPct}% · ${view.fullTeam?'实际五人联动':'单体估算'}`))}
-    if(view.rateProvisional)card.append(element(doc,'small','pokemon-production-note','该物种缺少已验证食材概率，当前使用暂定值。'));
+    if(resolvedRole==='ingredient'){const slots=element(doc,'p','pokemon-production-slots'),unlocked=view.unlockedSlots.length?view.unlockedSlots.map(item=>`Lv.${item.unlockLevel}×${item.quantity}`).join('、'):'当前等级没有已解锁栏位',locked=view.lockedSlots.length?`；待解锁 ${view.lockedSlots.map(item=>`Lv.${item.unlockLevel}×${item.quantity}`).join('、')}`:'';slots.textContent=`目标食材栏：${unlocked}${locked}`;card.append(slots)}
+    if(view.audit){const resourceText=productionResourceText(view),skillBenefits=[view.skillEnergy>0?`直接技能能量 ${Math.round(view.skillEnergy).toLocaleString('zh-CN')}`:'',resourceText].filter(Boolean).join(' · '),lead=resolvedRole==='skill'?`技能收益：${skillBenefits||'当前主技能没有可折算的独立收益；请结合五人纯能量变化判断'}`:`技能 ${view.triggers.toFixed(2)} 次／日${resourceText?` · ${resourceText}`:''}`;card.append(element(doc,'small','pokemon-production-note',`${lead} · 岛屿 +${view.audit.islandBonusPct}% · ${view.fullTeam?'实际五人联动':'单体估算'}`))}
+    if(resolvedRole==='skill'&&view.skillProbability&&view.skillProbability.provisional)card.append(element(doc,'small','pokemon-production-note','该物种缺少已验证技能概率，当前技能期望为暂定值。'));
+    else if(resolvedRole==='ingredient'&&view.rateProvisional)card.append(element(doc,'small','pokemon-production-note','该物种缺少已验证食材概率，当前使用暂定值。'));
     return card;
   }
 
@@ -323,18 +339,18 @@
       if(extraCandidatesRoot){extraCandidatesRoot.replaceChildren();extraIds.forEach(id=>{const mon=byId(id),chip=element(doc,'span','pokemon-production-extra-chip',`#${id} ${mon&&mon.nickname||mon&&mon.name||''}`),remove=element(doc,'button','','×');remove.type='button';remove.title='移出生产对比';remove.addEventListener('click',()=>{extraIds=extraIds.filter(value=>value!==id);render()});chip.append(remove);extraCandidatesRoot.append(chip)})}
       if(addCandidateButton)addCandidateButton.disabled=extraIds.length>=3||rolePool().length<=2;
       const result=currentProductionComparison(),modern=Array.isArray(result.rows),leaderId=modern&&result.leader?String(result.leader.id):null;productionResult.className=`pokemon-production-result ${leaderId?'left':result.leader}`;productionResult.replaceChildren();
-      const rows=modern?result.rows:[result.left,result.right].filter(Boolean),winner=modern&&result.leader,rankValue=view=>selectedRole==='berry'?Number(view.energy&&view.energy.mean)||0:selectedRole==='skill'?Number(view.triggers)||0:Number(view.ingredient&&view.ingredient.mean)||0,runner=modern?rows.filter(row=>row.valid&&String(row.id)!==leaderId).sort((a,b)=>rankValue(b)-rankValue(a))[0]:null,difference=winner&&runner?rankValue(winner)-rankValue(runner):0;
-      let title=result.title,detail=result.detail,scope=selectedRole==='berry'?'树果位 · 预期能量对比':selectedRole==='skill'?'技能手 · 触发与收益对比':`${targetIngredient||'目标食材'} · 食材手同条件对比`;
+      const rows=modern?result.rows:[result.left,result.right].filter(Boolean),comparisonRole=result.role||selectedRole,winner=modern&&result.leader,rankValue=view=>comparisonRole==='berry'?Number(view.energy&&view.energy.mean)||0:comparisonRole==='skill'?Number(view.triggers)||0:Number(view.ingredient&&view.ingredient.mean)||0,runner=modern?rows.filter(row=>row.valid&&String(row.id)!==leaderId).sort((a,b)=>rankValue(b)-rankValue(a))[0]:null,difference=winner&&runner?rankValue(winner)-rankValue(runner):0;
+      let title=result.title,detail=result.detail,scope=comparisonRole==='berry'?'树果位 · 预期能量对比':comparisonRole==='skill'?'技能手 · 技能概率、触发期望与收益':`${targetIngredient||'目标食材'} · 食材手同条件对比`;
       if(!rows.length){title=`盒内没有可比较的${selectedRole==='berry'?'树果位':selectedRole==='skill'?'技能手':'食材手'}`;detail='先录入或启用该定位的个体，再进行实战产出比较。'}
-      if(winner&&selectedRole==='ingredient'){title=`${winner.name}的${targetIngredient}期望产出最高`;detail=`24小时期望 ${winner.ingredient.mean.toFixed(1)} 个，常见波动约 ${winner.ingredient.low.toFixed(1)}~${winner.ingredient.high.toFixed(1)} 个${runner?`；比第二名期望多 ${difference.toFixed(1)} 个`:''}。`}
-      else if(winner&&selectedRole==='berry'){title=`${winner.name}的预期纯能量最高`;detail=`本体24小时期望 ${Math.round(winner.energy.mean).toLocaleString('zh-CN')} 纯能量，常见波动约 ${Math.round(winner.energy.low).toLocaleString('zh-CN')}~${Math.round(winner.energy.high).toLocaleString('zh-CN')}${runner?`；比第二名期望多 ${Math.round(difference).toLocaleString('zh-CN')}`:''}。`;scope='树果位 · 预期能量对比'}
-      else if(winner&&selectedRole==='skill'){title=`${winner.name}的预期触发次数最多`;detail=`24小时约 ${winner.triggers.toFixed(2)} 次${runner?`，比第二名多 ${difference.toFixed(2)} 次`:''}。卡片同时列出本体／五人纯能量及技能资源收益；不同资源不会强行折成同一种能量。`;scope='技能手 · 触发与收益对比'}
+      if(winner&&comparisonRole==='ingredient'){title=`${winner.name}的${targetIngredient}期望产出最高`;detail=`24小时期望 ${winner.ingredient.mean.toFixed(1)} 个，常见波动约 ${winner.ingredient.low.toFixed(1)}~${winner.ingredient.high.toFixed(1)} 个${runner?`；比第二名期望多 ${difference.toFixed(1)} 个`:''}。`}
+      else if(winner&&comparisonRole==='berry'){title=`${winner.name}的预期纯能量最高`;detail=`本体24小时期望 ${Math.round(winner.energy.mean).toLocaleString('zh-CN')} 纯能量，常见波动约 ${Math.round(winner.energy.low).toLocaleString('zh-CN')}~${Math.round(winner.energy.high).toLocaleString('zh-CN')}${runner?`；比第二名期望多 ${Math.round(difference).toLocaleString('zh-CN')}`:''}。`;scope='树果位 · 预期能量对比'}
+      else if(winner&&comparisonRole==='skill'){title=`${winner.name}的预期触发次数最多`;detail=`当前技能概率 ${((winner.skillProbability&&winner.skillProbability.current||0)*100).toFixed(1)}%，24小时约 ${winner.triggers.toFixed(2)} 次${runner?`，比第二名多 ${difference.toFixed(2)} 次`:''}。卡片同时列出对应技能收益；不同资源不会强行折成同一种能量。`;scope='技能手 · 技能概率、触发期望与收益'}
       const verdictBox=element(doc,'div','pokemon-production-verdict');verdictBox.append(element(doc,'span','',scope),element(doc,'h5','',title),element(doc,'p','',detail));productionResult.append(verdictBox);
-      const cards=element(doc,'div','pokemon-production-grid');rows.forEach((view,index)=>cards.append(renderProductionCard(doc,view,index===0?'left':index===1?'right':`个体 ${String.fromCharCode(65+index)}`,modern?String(view.id)===leaderId:result.leader===(index?'right':'left'),teamPlanner,selectedRole)));productionResult.append(cards);
+      const cards=element(doc,'div','pokemon-production-grid');rows.forEach((view,index)=>cards.append(renderProductionCard(doc,view,index===0?'left':index===1?'right':`个体 ${String.fromCharCode(65+index)}`,modern?String(view.id)===leaderId:result.leader===(index?'right':'left'),teamPlanner,comparisonRole)));productionResult.append(cards);
       const mew=rows.find(view=>view.valid&&/梦幻|夢幻/.test(view.speciesName||view.name||''));if(mew&&calculator&&typeof calculator.mewSkillScenarios==='function'){
         const original=byId(mew.id),scenarios=calculator.mewSkillScenarios(original,targetIngredient,productionOptions()).filter(row=>row.valid),energyRows=scenarios.filter(row=>['energy','help'].includes(row.skill.resource)),best=energyRows[0],advice=element(doc,'div','pokemon-production-skill-advice');advice.append(element(doc,'b','',`梦幻技能建议：纯卡比兽能量优先 ${best&&best.skill.label||'按队伍重算'}`),element(doc,'p','',`当前五人背景下，${best?`${best.skill.label}约 ${Math.round(best.energy.mean).toLocaleString('zh-CN')} 纯能量／日；`:''}树果骤增依赖队友树果价值，通常是纯能量强项，但全体治疗、食材、扩锅和大成功率属于不同资源，不能只按一个能量数值宣称绝对最优。`));productionResult.append(advice)
       }
-      productionResult.append(element(doc,'p','pokemon-production-disclosure','范围为模型的10%~90%常见波动近似；期望值用于长期比较。树果位按预期纯能量排序，树果骤增技能手归入树果位；技能手按触发次数突出显示，并把治疗、食材、扩锅、大成功率等收益保留为原单位。'));
+      productionResult.append(element(doc,'p','pokemon-production-disclosure','范围为模型的10%~90%常见波动近似；期望值用于长期比较。树果位按预期纯能量排序，树果骤增技能手归入树果位；技能手显示当前每次常规帮忙的技能概率，触发期望另计保底、持有与点击收取，并把治疗、食材、扩锅、大成功率等收益保留为原单位。'));
     }
     function render(){
       if(!mons.length){panel.hidden=false;verdict.className='pokemon-comparison-verdict empty';verdict.replaceChildren(element(doc,'strong','','盒子里还没有可比较的个体'),element(doc,'p','','先录入至少两只宝可梦，再回来进行并排比较。'));grid.replaceChildren();return}
@@ -348,9 +364,10 @@
       grid.replaceChildren();if(result.left)grid.append(renderCard(doc,result.left,'left',result.leader==='left'));if(result.right)grid.append(renderCard(doc,result.right,'right',result.leader==='right'));
     }
     function select(side,id){
-      const value=String(id||'');if(!byId(value))return false;
-      if(side==='left'){leftId=value;if(rightId===value){const alternate=mons.find(mon=>String(mon.id)!==value);rightId=String(alternate&&alternate.id||'')}}
-      else{rightId=value;if(leftId===value){const alternate=mons.find(mon=>String(mon.id)!==value);leftId=String(alternate&&alternate.id||'')}}
+      const value=String(id||''),chosen=byId(value);if(!chosen)return false;
+      const chosenRole=roleOf(chosen);if(chosenRole!==selectedRole){selectedRole=chosenRole;leftId='';rightId='';extraIds=[]}
+      if(side==='left'){leftId=value;if(rightId===value){const alternate=rolePool().find(mon=>String(mon.id)!==value);rightId=String(alternate&&alternate.id||'')}}
+      else{rightId=value;if(leftId===value){const alternate=rolePool().find(mon=>String(mon.id)!==value);leftId=String(alternate&&alternate.id||'')}}
       render();return true;
     }
     function openPicker(side){if(!picker||typeof picker.open!=='function')return;picker.open({title:`选择${roleSelect&&roleSelect.selectedOptions[0]?.textContent||'定位'}个体 ${side==='left'?'A':'B'}`,pokemon:rolePool(),allowCollection:true,selectedIds:[leftId,rightId].filter(Boolean),disabledIds:[side==='left'?rightId:leftId].filter(Boolean),onSelect:id=>select(side,id)})}

@@ -35,9 +35,11 @@ assert.ok(berryComparison.rows.every(row=>row.berries>0&&row.berryEnergy>0));
 
 const skillFrequent={...base,id:'sf',name:'技能甲',specialty:'skill',interval:'45:00',skillRatePct:8,main:'能量填充S Lv.1',mainSkillId:1};
 const skillRare={...base,id:'sr',name:'技能乙',specialty:'skill',interval:'45:00',skillRatePct:2,main:'能量填充S Lv.1',mainSkillId:1};
-const skillComparison=calculator.compareMany([skillRare,skillFrequent],'萌绿玉米',{role:'skill',teamPlanner:planner,production:{...production,sf:{ingredientRate:.2,baseBerryCount:1},sr:{ingredientRate:.2,baseBerryCount:1}},baselineTeam:supporters,goodCamp:true,energyProfile:'average'});
+const skillComparison=calculator.compareMany([skillRare,skillFrequent],'萌绿玉米',{teamPlanner:planner,production:{...production,sf:{ingredientRate:.2,baseBerryCount:1},sr:{ingredientRate:.2,baseBerryCount:1}},baselineTeam:supporters,goodCamp:true,energyProfile:'average'});
 assert.equal(skillComparison.leader.id,'sf','技能手应优先按预期触发次数排序');
 assert.ok(skillComparison.leader.triggers>skillComparison.rows.find(row=>row.id==='sr').triggers);
+assert.equal(skillComparison.role,'skill','同为技能手时应根据宝可梦定位自动采用技能口径');
+assert.ok(skillComparison.leader.skillProbability.current>skillComparison.rows.find(row=>row.id==='sr').skillProbability.current,'技能对比必须返回计入性格与副技能后的当前技能概率');
 assert.equal(calculator.comparisonRole(skillFrequent),'skill');
 assert.equal(calculator.comparisonRole({...skillFrequent,main:'树果骤增 Lv.6',mainSkillId:21}),'berry','树果骤增技能手必须归入树果位');
 assert.equal(calculator.comparisonRole({...skillFrequent,main:'流星群（树果骤增） Lv.6',mainSkillId:35}),'berry');
