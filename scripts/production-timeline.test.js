@@ -27,6 +27,12 @@ assert.ok(cleared.members[0].lostTriggers>0,'换队前不点击应清空已储�
 assert.equal(collected.members[0].lostTriggers,0,'换队前点击不应丢失技能');
 assert.ok(collected.members[0].triggers>cleared.members[0].triggers,'换队前点击应保留更多实际触发');
 
+const clearedAtEnd=timeline.simulate([helper('skill')],{durationHours:8,collectionHours:8,startEnergy:100,swapAtEnd:true,collectBeforeSwap:false});
+const collectedAtEnd=timeline.simulate([helper('skill')],{durationHours:8,collectionHours:8,startEnergy:100,swapAtEnd:true,collectBeforeSwap:true});
+assert.equal(clearedAtEnd.swapAtEnd,true);
+assert.ok(clearedAtEnd.totals.lostTriggers>0,'阶段结束换队且未点击时应清空待发动技能');
+assert.ok(collectedAtEnd.totals.triggers>clearedAtEnd.totals.triggers,'阶段结束换队前点击应收取待发动技能');
+
 const day=timeline.simulate([helper('berry')],{durationHours:24,collectionHours:4,startEnergy:100,sleepScore:100});
 assert.ok(day.members[0].stageMinutes['81-150']>0);
 assert.ok(day.members[0].stageMinutes['61-80']>0);

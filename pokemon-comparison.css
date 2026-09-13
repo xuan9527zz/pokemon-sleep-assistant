@@ -17,7 +17,7 @@
 .pokemon-production-head h4{margin:2px 0 3px;font-size:18px}
 .pokemon-production-head p{margin:0;color:var(--muted);font-size:12px}
 .pokemon-production-head>small{border-radius:999px;background:#e5f5ec;color:#176b47;padding:5px 9px;font-size:11px;font-weight:800;white-space:nowrap}
-.pokemon-production-controls{display:grid;grid-template-columns:1.15fr 1.35fr 1.1fr auto;gap:9px;align-items:end;margin-top:12px}
+.pokemon-production-controls{display:grid;grid-template-columns:.9fr 1.1fr 1.25fr 1.15fr auto;gap:9px;align-items:end;margin-top:12px}
 .pokemon-production-controls label>span{display:block;margin:0 0 5px;color:#496256;font-size:11px;font-weight:850}
 .pokemon-production-controls select{width:100%;min-height:40px;border:1px solid #c8d7cf;border-radius:9px;background:#fff;padding:7px 9px;color:var(--ink);font:inherit;font-size:12px}
 .pokemon-production-check{display:flex;align-items:center;gap:7px;min-height:40px;border:1px solid #c8d7cf;border-radius:9px;background:#fff;padding:7px 10px;cursor:pointer}

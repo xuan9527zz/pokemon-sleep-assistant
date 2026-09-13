@@ -40,6 +40,8 @@ assert.ok(html.includes('id="pokemonPickerDialog"'), '缺少可搜索的宝可�
 assert.ok(html.includes('id="selectionOddsTool"'), '盒子页缺少友情徽章与严选概率小工具');
 assert.ok(html.includes('id="selectionLockedGold"'), '严选概率工具缺少实际锁金格数');
 assert.ok(html.includes('id="selectionGraduationRole"'), '严选概率工具缺少本站毕业定位选择');
+assert.ok(html.includes('id="pokemonCompareRole"'), '个体生产对比缺少定位选择');
+assert.ok(html.includes('<option value="berry">树果位（含树果骤增）</option>'), '树果骤增技能手必须明确归入树果位对比');
 assert.ok(html.includes("title.dataset.noIngredientIcons=''"), '食谱名称必须显式禁止食材图标装饰');
 
 console.log(`site structure tests passed (${ids.length} ids, ${new Set(localRefs).size} local refs)`);

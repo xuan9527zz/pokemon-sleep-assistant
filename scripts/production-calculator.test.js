@@ -20,6 +20,28 @@ assert.equal(result.rows[0].fullTeam,true,'有四名共同背景队友时应运�
 assert.equal(result.rows[0].unlockedSlots.length,2,'生产卡片应保留目标食材的已解锁栏位供界面显示');
 assert.deepEqual(result.rows[0].lockedSlots,[]);
 assert.match(calculator.formatRange(result.rows[0].energy),/~/);
+assert.equal(result.role,'ingredient');
+assert.ok(result.rows[0].teamEnergy.mean>result.rows[0].energy.mean,'完整队伍对比应同时返回五人纯能量收益');
+const inactiveSupporter={...supporters[0],id:'inactive',battleEligible:false};
+const filteredTeam=calculator.comparisonTeam(candidates[0],[inactiveSupporter,...supporters],candidates.map(mon=>mon.id));
+assert.equal(filteredTeam.length,5,'仅收藏成员不应挤占多个体对比的共同队伍背景');
+assert.ok(filteredTeam.every(mon=>mon.battleEligible!==false));
+
+const berryFast={...base,id:'bf',name:'树果甲',specialty:'berry',interval:'40:00',ingredients:'特选苹果×1／特选苹果×2／特选苹果×4'};
+const berrySlow={...base,id:'bs',name:'树果乙',specialty:'berry',interval:'55:00',ingredients:'特选苹果×1／特选苹果×2／特选苹果×4'};
+const berryComparison=calculator.compareMany([berrySlow,berryFast],'特选苹果',{role:'berry',teamPlanner:planner,production:{...production,bf:{ingredientRate:.1,baseBerryCount:2},bs:{ingredientRate:.1,baseBerryCount:2}},baselineTeam:supporters,goodCamp:true,energyProfile:'average'});
+assert.equal(berryComparison.leader.id,'bf','树果位应按预期纯能量而不是食材数量排序');
+assert.ok(berryComparison.rows.every(row=>row.berries>0&&row.berryEnergy>0));
+
+const skillFrequent={...base,id:'sf',name:'技能甲',specialty:'skill',interval:'45:00',skillRatePct:8,main:'能量填充S Lv.1',mainSkillId:1};
+const skillRare={...base,id:'sr',name:'技能乙',specialty:'skill',interval:'45:00',skillRatePct:2,main:'能量填充S Lv.1',mainSkillId:1};
+const skillComparison=calculator.compareMany([skillRare,skillFrequent],'萌绿玉米',{role:'skill',teamPlanner:planner,production:{...production,sf:{ingredientRate:.2,baseBerryCount:1},sr:{ingredientRate:.2,baseBerryCount:1}},baselineTeam:supporters,goodCamp:true,energyProfile:'average'});
+assert.equal(skillComparison.leader.id,'sf','技能手应优先按预期触发次数排序');
+assert.ok(skillComparison.leader.triggers>skillComparison.rows.find(row=>row.id==='sr').triggers);
+assert.equal(calculator.comparisonRole(skillFrequent),'skill');
+assert.equal(calculator.comparisonRole({...skillFrequent,main:'树果骤增 Lv.6',mainSkillId:21}),'berry','树果骤增技能手必须归入树果位');
+assert.equal(calculator.comparisonRole({...skillFrequent,main:'流星群（树果骤增） Lv.6',mainSkillId:35}),'berry');
+assert.equal(calculator.comparisonRole(base),'ingredient');
 
 const cutter={...base,id:'h',name:'怪力钳测试',specialty:'skill',main:'怪力钳（食材精选S） Lv.7',mainSkillId:25};
 const cutterView=calculator.calculate(cutter,'萌绿玉米',{teamPlanner:planner,production:{...production,h:{ingredientRate:.2,baseBerryCount:1}},baselineTeam:supporters,goodCamp:true,energyProfile:'average'});

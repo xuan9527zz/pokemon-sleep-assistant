@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="./investment-planner.css?v=20260831-2">
 <link rel="stylesheet" href="./retention-advisor.css?v=20260901-1">
 <link rel="stylesheet" href="./cultivation-advisor.css?v=20260831-1">
-<link rel="stylesheet" href="./pokemon-comparison.css?v=20260901-1">
+<link rel="stylesheet" href="./pokemon-comparison.css?v=20260913-2">
 <link rel="stylesheet" href="./box-filter.css?v=20260902-1">
 <link rel="stylesheet" href="./personal-settings.css?v=20260910-1">
 <link rel="stylesheet" href="./pokemon-picker.css?v=20260911-2">
@@ -279,8 +279,9 @@
     <label class="pokemon-comparison-field"><span>个体 B</span><button class="pokemon-selection-button pokemon-comparison-picker" id="pokemonCompareRightPicker" type="button">选择个体 B</button><select id="pokemonCompareRight" hidden aria-hidden="true"></select></label>
   </div>
   <section class="pokemon-comparison-production" aria-labelledby="pokemonComparisonProductionTitle">
-    <div class="pokemon-production-head"><div><span>PRODUCTION CALCULATOR</span><h4 id="pokemonComparisonProductionTitle">目标食材与纯能量产出</h4><p>按当前等级、活力、露营券、岛屿加成和同一组队背景估算；结果同时给出期望与常见波动范围。</p></div><small>生产模型统一口径 · 最多五只</small></div>
+    <div class="pokemon-production-head"><div><span>PRODUCTION CALCULATOR</span><h4 id="pokemonComparisonProductionTitle">按定位比较实战产出</h4><p>食材手突出目标食材，树果位突出预期能量，技能手突出触发次数与实际收益；全部使用同一组队背景。</p></div><small>生产模型统一口径 · 最多五只</small></div>
     <div class="pokemon-production-controls">
+      <label for="pokemonCompareRole"><span>对比定位</span><select id="pokemonCompareRole"><option value="ingredient">食材手</option><option value="berry">树果位（含树果骤增）</option><option value="skill">技能手</option></select></label>
       <label for="pokemonCompareIngredient"><span>目标食材</span><select id="pokemonCompareIngredient"></select></label>
       <label for="pokemonCompareEnergy"><span>活力速度</span><select id="pokemonCompareEnergy"><option value="timeline">五档活力时间轴（推荐）</option><option value="average">日间平均（2.0×）</option><option value="steady">回复稳定／活力81以上（2.22×）</option><option value="low">低活力／活力2–40（1.52×）</option><option value="empty">无活力加速／活力0–1（1.0×）</option></select></label>
       <div class="pokemon-production-context"><span>共同队伍背景</span><strong>优先当前队伍，不足时从盒子补齐四名普通队友</strong></div>
@@ -406,8 +407,8 @@
 <script src="pokemon-scoring.js?v=20260901-2"></script>
 <script src="cultivation-advisor.js?v=20260831-1"></script>
 <script src="all-rounder-rules.js?v=20260913-1"></script>
-<script src="production-calculator.js?v=20260913-1"></script>
-<script src="pokemon-comparison.js?v=20260913-1"></script>
+<script src="production-calculator.js?v=20260913-3"></script>
+<script src="pokemon-comparison.js?v=20260913-4"></script>
 <script src="box-filter.js?v=20260902-1"></script>
 <script src="game-rules.js?v=20260911-1"></script>
 <script src="snorlax-energy.js?v=20260912-1"></script>
@@ -421,11 +422,11 @@
 <script src="personal-settings.js?v=20260911-1"></script>
 <script src="pokemon-picker.js?v=20260911-3"></script>
 <script src="cooking-success.js?v=20260912-1"></script>
-<script src="production-timeline.js?v=20260912-1"></script>
-<script src="team-planner.js?v=20260912-1"></script>
+<script src="production-timeline.js?v=20260913-2"></script>
+<script src="team-planner.js?v=20260913-2"></script>
 <script src="sleep-reward-curves.generated.js?v=20260911-2"></script>
 <script src="sleep-research-planner.js?v=20260911-3"></script>
-<script src="weekly-planner.js?v=20260912-2"></script>
+<script src="weekly-planner.js?v=20260913-2"></script>
 <script src="investment-planner.js?v=20260912-1"></script>
 <script src="retention-advisor.js?v=20260901-2"></script>
 <script src="pokemon-manager.js?v=20260912-1"></script>

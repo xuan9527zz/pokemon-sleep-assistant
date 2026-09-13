@@ -185,7 +185,7 @@
     if(useTimeline){
       const swapHours=Array.isArray(options.swapHours)?options.swapHours:Array.from({length:settings.teamSwapCount},(_value,index)=>settings.durationHours*(index+1)/(settings.teamSwapCount+1));
       const simulationMembers=members.map((member,index)=>({...member,skillProbability:rows[index].skillProbability,skillEffect:rows[index].complexSkill}));
-      timeline=productionTimeline.simulate(simulationMembers,{durationHours:settings.durationHours,collectionHours:settings.skillCollectionHours||members[0]?.collectionHours||4,startEnergy:settings.startEnergy,sleepScore:settings.sleepScore,swapHours,collectBeforeSwap:settings.collectBeforeSwap});
+      timeline=productionTimeline.simulate(simulationMembers,{durationHours:settings.durationHours,collectionHours:settings.skillCollectionHours||members[0]?.collectionHours||4,startEnergy:settings.startEnergy,sleepScore:settings.sleepScore,swapHours,swapAtEnd:options.swapAtEnd===true,collectBeforeSwap:settings.collectBeforeSwap});
       rows.forEach((row,index)=>{const simulated=timeline.members[index];row.helps=simulated.helps;row.normalHelps=simulated.normalHelps;row.sneakyHelps=simulated.sneakyHelps;row.triggers=simulated.triggers;row.lostTriggers=simulated.lostTriggers;row.energyStages=simulated.stageMinutes;row.endingEnergy=simulated.endingEnergy;row.averageHelpFactor=simulated.averageHelpFactor});
       if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
     }
