@@ -41,7 +41,7 @@ Latias and Latios are the only allowed two-Special pair and use separate final-f
 - Tasty Chance, Cooking Power-Up, Cooking Assist and Metronome: use weekly nonlinear cooking states, not flat value per trigger. Respect pot thresholds, surplus ingredients, Good Camp and caps.
 - Skill Copy: use the four actual teammate effects at the copier's level.
 - All-Mighty: expose and score every selectable output with its verified trigger-rate tier. Unknown bonus-Candy probability/value remains excluded and explicitly pending as a resource component; it no longer blocks the confirmed ordinary-production and selected-skill components from producing an all-rounder score.
-- Mythical all-rounder individual quality is separate from this species/team-output layer. Mew and Darkrai expose berry, ingredient and skill panel channels; the chosen focus changes the individual denominator, while Mew's selected All-Mighty skill and Darkrai's Nightmare scenario continue to determine the species score.
+- Mythical all-rounder individual quality is separate from this team-output layer. Mew and Darkrai expose berry, ingredient and skill panel channels; the chosen focus changes the individual denominator. Mew's selected All-Mighty skill and Darkrai's Nightmare scenario still change production calculations, while the hunt tier comes only from `species-tiers.js`.
 - Inventory affects trigger retention and two-trigger storage for skill specialists but receives no separate raw individual points.
 
 ## Selection-role boundary

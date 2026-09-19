@@ -6,7 +6,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const FILTER_KEYS=Object.freeze(['query','boxId','eligibility','shiny','specialty','cultivationTier']);
+  const FILTER_KEYS=Object.freeze(['query','boxId','eligibility','shiny','speciesTier','specialty','cultivationTier']);
 
   function values(input){
     const source=Array.isArray(input)?input:String(input||'').split(',');
@@ -19,6 +19,7 @@
       boxId:values(filters.boxId),
       eligibility:values(filters.eligibility),
       shiny:values(filters.shiny),
+      speciesTier:values(filters.speciesTier),
       specialty:values(filters.specialty),
       cultivationTier:values(filters.cultivationTier)
     };
@@ -27,7 +28,7 @@
   function searchableText(mon,isBattleEligible){
     return [
       mon&&mon.id,mon&&mon.pokedexId,mon&&mon.name,mon&&mon.nickname,mon&&mon.customNumber,
-      mon&&mon.boxName,mon&&mon.specialtyText,mon&&mon.ingredients,mon&&mon.main,mon&&mon.subs,
+      mon&&mon.boxName,mon&&mon.speciesTier&&`${mon.speciesTier}级`,mon&&mon.specialtyText,mon&&mon.ingredients,mon&&mon.main,mon&&mon.subs,
       mon&&mon.nature,mon&&mon.usageLabel,isBattleEligible(mon)?'参与实战':'暂不实战',mon&&mon.effectiveSubs,
       mon&&mon.cultivation&&mon.cultivation.label,mon&&mon.cultivation&&mon.cultivation.reason,
       mon&&mon.cultivation&&mon.cultivation.directSuperior&&mon.cultivation.directSuperior.name,
@@ -62,6 +63,7 @@
       includes(value.boxId,mon.boxId),
       eligibilityMatches(value.eligibility,status),
       includes(value.shiny,mon.shiny),
+      includes(value.speciesTier,mon.speciesTier),
       includes(value.specialty,mon.specialty),
       includes(value.cultivationTier,mon.cultivation&&mon.cultivation.tier)
     ];

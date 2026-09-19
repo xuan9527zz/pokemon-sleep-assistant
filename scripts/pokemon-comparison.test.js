@@ -8,7 +8,7 @@ function mon(overrides={}){
   return {
     id:'1',name:'测试个体',lv:'25',shiny:'否',boxName:'培养候选',specialty:'skill',specialtyLabel:'技能手',
     ingredients:'特选苹果／特选苹果／特选苹果',main:'活力全体疗愈S Lv.1',subs:'技能概率M；帮手奖励；帮忙速度M；持有上限L；睡眠EXP奖励',nature:'慎重',
-    scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',finalScore:80,speciesScore:84,individualScore:68,individual:{ingredientPattern:'不适用'}},
+    scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',speciesTier:'S',finalScore:68,individualScore:68,individual:{ingredientPattern:'不适用'}},
     minimumStandard:{status:'transition',label:'过渡使用',meetsMinimum:false,meetsGraduation:false,missing:['帮手奖励（正式奶妈毕业必需）'],effectiveGains:['技能概率M'],secondaryGains:[],routePattern:'不适用',courseNote:'',investmentLimit:'过渡投入'},
     cultivation:{tier:'stage',label:'阶段性培养',reason:'可以承担当前回复位。',nextAction:'先培养到关键等级。'},
     ...overrides
@@ -16,8 +16,8 @@ function mon(overrides={}){
 }
 
 {
-  const graduation=mon({id:'11',name:'毕业面板',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',finalScore:76,speciesScore:84,individualScore:52,individual:{ingredientPattern:'不适用'}},minimumStandard:{status:'graduation',label:'毕业候选',meetsMinimum:true,meetsGraduation:true,missing:[],effectiveGains:['技能概率M','帮手奖励','速度性格'],secondaryGains:[],routePattern:'不适用'}});
-  const highScoreTransition=mon({id:'12',name:'高分过渡',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',finalScore:86,speciesScore:84,individualScore:88,individual:{ingredientPattern:'不适用'}}});
+  const graduation=mon({id:'11',name:'毕业面板',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',speciesTier:'S',finalScore:52,individualScore:52,individual:{ingredientPattern:'不适用'}},minimumStandard:{status:'graduation',label:'毕业候选',meetsMinimum:true,meetsGraduation:true,missing:[],effectiveGains:['技能概率M','帮手奖励','速度性格'],secondaryGains:[],routePattern:'不适用'}});
+  const highScoreTransition=mon({id:'12',name:'高分过渡',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',speciesTier:'S',finalScore:88,individualScore:88,individual:{ingredientPattern:'不适用'}}});
   const result=comparison.comparePokemon(graduation,highScoreTransition);
   assert.strictEqual(result.sameFinalForm,true);
   assert.strictEqual(result.leader,'left','同最终形态应先按课程毕业资格比较');
@@ -26,23 +26,23 @@ function mon(overrides={}){
 }
 
 {
-  const left=mon({id:'21',name:'个体甲',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',finalScore:78,speciesScore:84,individualScore:60,individual:{ingredientPattern:'不适用'}}});
-  const right=mon({id:'22',name:'个体乙',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',finalScore:83,speciesScore:84,individualScore:80,individual:{ingredientPattern:'不适用'}}});
+  const left=mon({id:'21',name:'个体甲',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',speciesTier:'S',finalScore:60,individualScore:60,individual:{ingredientPattern:'不适用'}}});
+  const right=mon({id:'22',name:'个体乙',scoreBreakdown:{finalFormId:'282',finalFormNameZh:'沙奈朵',specialty:'skill',speciesTier:'S',finalScore:80,individualScore:80,individual:{ingredientPattern:'不适用'}}});
   const result=comparison.comparePokemon(left,right);
   assert.strictEqual(result.leader,'right','课程资格相同时应优先比较个体分');
   assert.strictEqual(result.basis,'individual');
-  assert.match(result.detail,/个体分比较/);
+  assert.match(result.detail,/个体质量比较/);
 }
 
 {
   const skill=mon({id:'31',name:'沙奈朵'});
-  const berry=mon({id:'32',name:'雷丘',specialty:'berry',specialtyLabel:'树果手',scoreBreakdown:{finalFormId:'26',finalFormNameZh:'雷丘',specialty:'berry',finalScore:91,speciesScore:96,individualScore:76,individual:{ingredientPattern:'不适用'}}});
+  const berry=mon({id:'32',name:'雷丘',specialty:'berry',specialtyLabel:'树果手',scoreBreakdown:{finalFormId:'26',finalFormNameZh:'雷丘',specialty:'berry',speciesTier:'S',finalScore:76,individualScore:76,individual:{ingredientPattern:'不适用'}}});
   const result=comparison.comparePokemon(skill,berry);
   assert.strictEqual(result.sameFinalForm,false);
   assert.strictEqual(result.leader,'none','不同最终形态不应给出直接胜负');
   assert.match(result.title,/不同最终形态/);
   assert.ok(result.warnings.some(text=>/不能据此直接互相替代/.test(text)));
-  assert.match(result.detail,/不能当作直接替换或放生依据/);
+  assert.match(result.detail,/不等于两只可以直接互相替换/);
 }
 
 {
@@ -54,8 +54,7 @@ function mon(overrides={}){
 
 {
   const view=comparison.viewModel(mon({scoreTotal:1,scoreSpecies:2,scoreIndividual:3}));
-  assert.strictEqual(view.totalScore,80,'对比页必须复用现有 scoreBreakdown，不能另算一套评分');
-  assert.strictEqual(view.speciesScore,84);
+  assert.strictEqual(view.speciesTier,'S','对比页必须复用现有 scoreBreakdown 梯级，不能另算一套评分');
   assert.strictEqual(view.individualScore,68);
 }
 

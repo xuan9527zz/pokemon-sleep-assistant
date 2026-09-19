@@ -19,9 +19,12 @@ assert.equal(rows.length, 97);
 rows.forEach(row => {
   const actual = dynamicScoring.scorePokemon(row);
   const expected = snapshot[row.id];
-  assert.equal(actual.speciesScore, expected.speciesScore, `species score #${row.id}`);
+  assert.equal(actual.speciesTier, expected.speciesTier, `species tier #${row.id}`);
   assert.equal(actual.individualScore, expected.individualScore, `individual score #${row.id}`);
   assert.equal(actual.finalScore, expected.finalScore, `final score #${row.id}`);
+  assert.equal(actual.finalScore, actual.individualScore, `percent score must be individual-only #${row.id}`);
+  assert.equal(Object.hasOwn(actual,'speciesScore'),false,`dynamic score must not expose species score #${row.id}`);
+  assert.equal(Object.hasOwn(expected,'speciesScore'),false,`snapshot must not expose species score #${row.id}`);
 });
 
 const bulbasaur = catalog.pokemon.find(record => record.id === '1');
@@ -38,6 +41,7 @@ const newScore = dynamicScoring.scorePokemon(newPokemon);
 assert.equal(newScore.finalFormId, '3');
 assert.equal(newScore.individual.subskillScore, 100);
 assert.equal(newScore.individual.ingredientPattern, 'AAA');
+assert.equal(newScore.speciesTier, 'S');
 assert.ok(Number.isFinite(newScore.finalScore));
 
 const allRounderPanel = {
@@ -52,9 +56,9 @@ const allRounderPanel = {
 const metronomeScore = dynamicScoring.scorePokemon(allRounderRules.apply(allRounderPanel, 'metronome'));
 const healerScore = dynamicScoring.scorePokemon(allRounderRules.apply(allRounderPanel, 'e4e'));
 const berryBurstScore = dynamicScoring.scorePokemon(allRounderRules.apply(allRounderPanel, 'berry-burst'));
-assert.equal(metronomeScore.speciesScore, 64.9);
-assert.equal(healerScore.speciesScore, 84.3);
-assert.equal(berryBurstScore.speciesScore, 73.2);
+assert.equal(metronomeScore.speciesTier, 'B');
+assert.equal(healerScore.speciesTier, 'B');
+assert.equal(berryBurstScore.speciesTier, 'S');
 assert.equal(metronomeScore.individualScore, 86.6);
 assert.equal(healerScore.individualScore, metronomeScore.individualScore, '切换十项全能只应改变物种技能场景，不应改写同一个体面板');
 assert.equal(dynamicScoring.scorePokemon({...allRounderRules.apply(allRounderPanel, 'metronome'),nature:'怕寂寞'}).individualScore,metronomeScore.individualScore,'幻之宝可梦固定性格不得制造不可达的个体分缺口');
@@ -67,7 +71,7 @@ const darkraiScore = dynamicScoring.scorePokemon({
   speciesId: '491',
   main: '噩梦（能量填充M）Lv.7'
 });
-assert.equal(darkraiScore.speciesScore, 77.3);
+assert.equal(darkraiScore.speciesTier, 'S');
 assert.equal(darkraiScore.selectedAllRounderSkillId, 'nightmare');
 assert.ok(Number.isFinite(darkraiScore.finalScore));
 
@@ -82,7 +86,7 @@ const darkraiBerryCore = dynamicScoring.scorePokemon({
 });
 assert.equal(darkraiBerryCore.individual.focusRole, 'berry');
 assert.equal(darkraiBerryCore.individualScore, 100, '已开放的Lv.50毕业树果骨架应按同开放栏位合法上限归一化');
-assert.equal(darkraiBerryCore.finalScore, 83);
+assert.equal(darkraiBerryCore.finalScore, 100);
 assert.deepEqual(darkraiBerryCore.individual.unopenedSubskillLevels, [70, 80]);
 assert.equal(darkraiBerryCore.individual.channels.ingredient.routeCoefficient, .7);
 assert.equal(darkraiBerryCore.individual.channels.berry.routeCoefficient, 1, '食材路线不得给树果分支整体打折');
@@ -99,7 +103,7 @@ const exportedDarkrai = dynamicScoring.scorePokemon({
 });
 assert.equal(exportedDarkrai.individual.focusRole, 'berry');
 assert.equal(exportedDarkrai.individualScore, 84.1);
-assert.equal(exportedDarkrai.finalScore, 79);
+assert.equal(exportedDarkrai.finalScore, 84.1);
 assert.equal(exportedDarkrai.individual.channels.ingredient.adjustedScore, 56.5);
 
 const partialMew = dynamicScoring.scorePokemon(allRounderRules.apply({

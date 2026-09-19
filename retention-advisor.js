@@ -1,10 +1,11 @@
 (function(root,factory){
   'use strict';
   const strategy=typeof module==='object'&&module.exports?require('./pokemon-strategy.js'):root.POKEMON_SLEEP_STRATEGY;
-  const api=factory(strategy);
+  const speciesTiers=typeof module==='object'&&module.exports?require('./skills/pokemon-sleep-scoring/scripts/species-tiers.js'):root.POKEMON_SLEEP_SPECIES_TIERS;
+  const api=factory(strategy,speciesTiers);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_RETENTION_ADVISOR=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(strategy){
+})(typeof globalThis!=='undefined'?globalThis:this,function(strategy,speciesTiers){
   'use strict';
 
   const SPECIAL_NAMES=new Set(['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊','超梦']);
@@ -20,7 +21,7 @@
     const rows=[candidate,...box.filter(mon=>!sameIdentity(mon,candidate))]
       .map(mon=>({mon,score:scoring.scorePokemon(mon)}))
       .filter(row=>finite(row.score.finalScore)&&predicate(row.score,row.mon))
-      .sort((a,b)=>Number(b.score.finalScore)-Number(a.score.finalScore)||Number(b.score.individualScore)-Number(a.score.individualScore)||String(a.mon.id).localeCompare(String(b.mon.id),'zh-CN',{numeric:true}));
+      .sort((a,b)=>speciesTiers.compare(a.score.speciesTier,b.score.speciesTier)||Number(b.score.individualScore)-Number(a.score.individualScore)||String(a.mon.id).localeCompare(String(b.mon.id),'zh-CN',{numeric:true}));
     const index=rows.findIndex(row=>sameIdentity(row.mon,candidate));
     return {rank:index<0?null:index+1,total:rows.length,best:rows.find(row=>!sameIdentity(row.mon,candidate))||null,rows};
   }
@@ -32,10 +33,10 @@
     const source=candidate||{},all=Array.isArray(box)?box:[],score=scoring.scorePokemon(source),limit=retentionLimit(source,score),special=limit===1,totalInGroup=score&&score.finalFormId?groupTotal(source,all,scoring,score):0;
     if(!finite(score.finalScore))return {
       verdict:special&&totalInGroup>1?'人工择一':'人工判断',tone:'manual',score,retentionLimit:limit,exceedsLimit:false,isLimitedSpecial:special,
-      reason:special&&totalInGroup>1?`同种特殊宝可梦只能保留 1 个实战席位；当前共有 ${totalInGroup} 个，但全能型公式尚未确认，请人工选出最好的一只。`:score.status==='pending-all-rounder-formula'?'全能型评分公式尚未确认，暂不自动给出去留结论。':'缺少可用的种族或个体评分。',
+      reason:special&&totalInGroup>1?`同种特殊宝可梦只能保留 1 个实战席位；当前共有 ${totalInGroup} 个，但个体质量尚未算出，请人工选出最好的一只。`:'缺少可用的物种梯级或个体质量。',
       sameSpecies:{rank:null,total:totalInGroup,best:null},sameRole:{rank:null,total:0,best:null},warnings:['系统只提示，不会自动放生；闪光收藏始终优先保留。']
     };
-    const sameSpecies=ranked(source,all,scoring,row=>row.finalFormId===score.finalFormId),sameRole=ranked(source,all,scoring,row=>row.specialty===score.specialty),speciesBest=sameSpecies.best,roleBest=sameRole.best,speciesDelta=speciesBest?round(score.finalScore-speciesBest.score.finalScore):null,roleDelta=roleBest?round(score.finalScore-roleBest.score.finalScore):null,shiny=String(source.shiny)==='是',exceedsLimit=Boolean(sameSpecies.rank&&sameSpecies.rank>limit),lowSpecies=Number(score.speciesScore)<38,lowIndividual=Number(score.individualScore)<38;
+    const sameSpecies=ranked(source,all,scoring,row=>row.finalFormId===score.finalFormId),sameRole=ranked(source,all,scoring,row=>row.specialty===score.specialty),speciesBest=sameSpecies.best,roleBest=sameRole.best,speciesDelta=speciesBest?round(score.individualScore-speciesBest.score.individualScore):null,roleDelta=roleBest?round(score.individualScore-roleBest.score.individualScore):null,shiny=String(source.shiny)==='是',exceedsLimit=Boolean(sameSpecies.rank&&sameSpecies.rank>limit),lowTier=score.speciesTier==='C',lowIndividual=Number(score.individualScore)<38;
     const strategicStandard=strategy&&score.strategy?strategy.minimumStandard(source,{finalId:score.finalFormId,specialty:score.specialty,strategicProfile:score.strategy}):null,route=ingredientRoute(source),topRoutes=new Set(sameSpecies.rows.slice(0,limit).filter(row=>!sameIdentity(row.mon,source)).map(row=>ingredientRoute(row.mon)).filter(Boolean)),uniqueStrategicRoute=Boolean(route&&!topRoutes.has(route)),strategicProtected=Boolean(strategicStandard&&strategicStandard.meetsMinimum&&(!exceedsLimit||uniqueStrategicRoute));
     let verdict='备用观察',tone='keep',reason=`当前位于同最终形态前 ${limit} 个实战席位内，建议先按用途保留。`;
 
@@ -52,13 +53,13 @@
     }else if(speciesBest&&speciesDelta>=-3){
       verdict='并列保留';tone='keep';reason=`与同最终形态最佳个体仅差 ${Math.abs(speciesDelta).toFixed(1)} 分，且仍在前 ${limit} 个席位内，适合作为不同食材路线、等级曲线或第二队选择。`;
     }else if(strategicProtected){
-      verdict='战略岗位保留';tone='keep';reason=`该个体达到“${score.strategy.role}”最低入盒线；机械综合分不是唯一依据，先作为${score.strategy.ingredient||'队伍'}岗位保留。`;
-    }else if(lowSpecies&&lowIndividual&&speciesBest&&speciesDelta<=-8){
-      verdict='放生候选';tone='release';reason=`种族分与个体分都偏低，且同最终形态已有高 ${Math.abs(speciesDelta).toFixed(1)} 分的个体。确认没有收藏或特殊路线用途后可放生。`;
-    }else if(lowSpecies&&lowIndividual&&roleBest&&roleDelta<=-15){
-      verdict='放生候选';tone='release';reason=`种族分与个体分都偏低，同定位最佳个体领先 ${Math.abs(roleDelta).toFixed(1)} 分；若没有稀缺食材、活动或收藏用途，可考虑放生。`;
-    }else if(Number(score.speciesScore)>=65&&Number(score.individualScore)>=50){
-      verdict='值得培养';tone='train';reason=`种族基础和个体配置都达到较好的培养区间，并处于同最终形态前 ${limit} 个席位。`;
+      verdict='战略岗位保留';tone='keep';reason=`该个体达到“${score.strategy.role}”最低入盒线；梯级不是唯一的队伍用途依据，先作为${score.strategy.ingredient||'队伍'}岗位保留。`;
+    }else if(lowTier&&lowIndividual&&speciesBest&&speciesDelta<=-8){
+      verdict='放生候选';tone='release';reason=`物种为默认 C 级、个体质量也偏低，且同最终形态已有高 ${Math.abs(speciesDelta).toFixed(1)} 分的个体。确认没有收藏或特殊路线用途后可放生。`;
+    }else if(lowTier&&lowIndividual&&roleBest&&roleDelta<=-15){
+      verdict='放生候选';tone='release';reason=`物种为默认 C 级、个体质量也偏低，同定位参考个体领先 ${Math.abs(roleDelta).toFixed(1)} 分；若没有稀缺食材、活动或收藏用途，可考虑放生。`;
+    }else if(['S','A'].includes(score.speciesTier)&&Number(score.individualScore)>=50){
+      verdict='值得培养';tone='train';reason=`物种为 ${score.speciesTier} 级且个体配置达到较好的培养区间，并处于同最终形态前 ${limit} 个席位。`;
     }else if(speciesBest&&speciesDelta<-3){
       verdict='同种备用';tone='keep';reason=`同最终形态已有更高分个体（领先 ${Math.abs(speciesDelta).toFixed(1)} 分），但当前仍在前 ${limit} 个席位内，可保留给多队或不同食材路线。`;
     }

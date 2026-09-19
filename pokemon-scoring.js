@@ -6,10 +6,11 @@
   const catalog=typeof module==='object'&&module.exports?require('./pokemon-catalog.generated.js'):root.POKEMON_SLEEP_CATALOG;
   const strategy=typeof module==='object'&&module.exports?require('./pokemon-strategy.js'):root.POKEMON_SLEEP_STRATEGY;
   const allRounder=typeof module==='object'&&module.exports?require('./all-rounder-rules.js'):root.POKEMON_SLEEP_ALL_ROUNDER_RULES;
-  const api=factory(core,catalog,strategy,allRounder);
+  const tiers=typeof module==='object'&&module.exports?require('./skills/pokemon-sleep-scoring/scripts/species-tiers.js'):root.POKEMON_SLEEP_SPECIES_TIERS;
+  const api=factory(core,catalog,strategy,allRounder,tiers);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_DYNAMIC_SCORING=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(core,catalog,strategy,allRounder){
+})(typeof globalThis!=='undefined'?globalThis:this,function(core,catalog,strategy,allRounder,tiers){
   'use strict';
 
   const LEGACY_SOURCE_IDS=Object.freeze({'皮卡丘（巫师帽）':'9001-1','皮卡丘（圣诞）':'9002','伊布（圣诞）':'9004','乌波（城都）':'194','乌波（帕底亚）':'7054','海豹球（节日）':'9006'});
@@ -40,12 +41,10 @@
     const target=targetForPokemon(mon);
     if(!target)return {id:String(mon&&mon.id||''),name:String(mon&&mon.name||''),finalScore:null,status:'missing-species-catalog'};
     const role=target.specialty,base={id:String(mon&&mon.id||''),name:String(mon&&mon.name||target.name),specialty:role,finalFormId:target.id,finalFormNameZh:target.name,routeReason:null,routeCandidates:null};
-    const catalogSource=catalog&&catalog.speciesScores&&catalog.speciesScores[target.id];
     const selectedAllRounderSkillId=role==='all'?(allRounder&&allRounder.isMew(mon)?allRounder.selectedId(mon):'nightmare'):null;
-    const source=role==='all'?(catalogSource&&catalogSource.variants&&catalogSource.variants[selectedAllRounderSkillId]):catalogSource;
-    if(!source||!Number.isFinite(source.score))return {...base,speciesScore:null,individualScore:null,finalScore:null,rank:null,status:'missing-species-score'};
-    const individual=core.individualScore(mon,role,target),speciesScore=source.score,finalScore=core.round(speciesScore*core.weights.species+individual.score*core.weights.individual);
-    return {...base,mechanicalSpeciesScore:Number.isFinite(source.mechanicalScore)?source.mechanicalScore:speciesScore,rawSpeciesScore:source.rawSpeciesScore??null,strategicRoleScore:source.strategicRoleScore??null,strategicBonus:source.strategicBonus||0,strategy:source.strategy||strategy&&strategy.SPECIES_ROLES[target.id]||null,speciesScore,speciesContribution:core.round(speciesScore*core.weights.species),speciesSource:role==='all'?catalogSource.source:source.source,speciesScenarios:source.scenarios||null,teamModel:source.teamModel||null,selectedAllRounderSkillId,selectedAllRounderSkillNameZh:role==='all'?source.selectedSkillNameZh:null,individualScore:individual.score,individualContribution:core.round(individual.score*core.weights.individual),individual,finalScore,rank:null,status:individual.provisional?'scored-with-provisional-subskill-bridges':'scored-confirmed-components'};
+    const tier=tiers.entryFor({...base,selectedAllRounderSkillId}),individual=core.individualScore(mon,role,target),finalScore=individual.score;
+    const selectedOption=role==='all'&&allRounder&&allRounder.BY_ID?allRounder.BY_ID[selectedAllRounderSkillId]:null;
+    return {...base,speciesTier:tier.tier,speciesTierCategory:tier.category,speciesTierListed:tier.listed,speciesTierSource:tier.source,strategy:strategy&&strategy.SPECIES_ROLES[target.id]||null,selectedAllRounderSkillId,selectedAllRounderSkillNameZh:role==='all'?(selectedOption&&selectedOption.label||'梦魇'):null,individualScore:individual.score,individual,finalScore,scoreModel:'species-tier-plus-individual-quality',rank:null,status:individual.provisional?'scored-with-provisional-subskill-bridges':'scored-confirmed-components'};
   }
 
   function speciesSearch(query){
@@ -54,5 +53,5 @@
     return rows.filter(record=>[record.id,record.name,record.sourceNameZh,record.nameEn].join(' ').toLowerCase().includes(normalized));
   }
 
-  return Object.freeze({...core,recordForPokemon,targetForPokemon,scorePokemon,speciesSearch,strategy});
+  return Object.freeze({...core,recordForPokemon,targetForPokemon,scorePokemon,speciesSearch,strategy,tiers});
 });

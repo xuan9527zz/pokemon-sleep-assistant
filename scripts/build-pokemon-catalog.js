@@ -7,6 +7,7 @@ const path = require('node:path');
 const speciesScoring = require('../skills/pokemon-sleep-scoring/scripts/species-scores.js');
 const skillSpeciesScoring = require('../skills/pokemon-sleep-scoring/scripts/skill-team-species-scores.js');
 const boxScoring = require('../skills/pokemon-sleep-scoring/scripts/box-scores.js');
+const speciesTiers = require('../skills/pokemon-sleep-scoring/scripts/species-tiers.js');
 const strategy = require('../pokemon-strategy.js');
 
 const projectRoot = path.resolve(__dirname, '..');
@@ -146,11 +147,10 @@ function finalOptions(id, trail = new Set()) {
 
 function bestFinal(options) {
   return [...options].sort((left, right) => {
-    const leftScore = speciesScores[left]?.score;
-    const rightScore = speciesScores[right]?.score;
-    const leftValue = Number.isFinite(leftScore) ? leftScore : -1;
-    const rightValue = Number.isFinite(rightScore) ? rightScore : -1;
-    return rightValue - leftValue || String(left).localeCompare(String(right), 'en', { numeric: true });
+    const leftRecord=byId.get(String(left)),rightRecord=byId.get(String(right));
+    const leftTier=speciesTiers.tierFor({finalFormId:left,name:leftRecord&&leftRecord.nameZh,specialty:leftRecord&&leftRecord.specialty});
+    const rightTier=speciesTiers.tierFor({finalFormId:right,name:rightRecord&&rightRecord.nameZh,specialty:rightRecord&&rightRecord.specialty});
+    return speciesTiers.compare(leftTier,rightTier) || String(left).localeCompare(String(right), 'en', { numeric: true });
   })[0] || null;
 }
 

@@ -7,7 +7,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(natureScoring){
   'use strict';
 
-  const SPECIES_WEIGHT=.75,INDIVIDUAL_WEIGHT=.25,SUBSKILL_WEIGHT=.7,NATURE_WEIGHT=.3,NATURE_POSITIVE_BENCHMARK=55.6;
+  const INDIVIDUAL_WEIGHT=1,SUBSKILL_WEIGHT=.7,NATURE_WEIGHT=.3,NATURE_POSITIVE_BENCHMARK=55.6;
   const SLOT_LEVELS=Object.freeze([10,25,50,70,80]);
   const SLOT_WEIGHTS=Object.freeze([.25,.25,.25,.15,.10]);
   const INGREDIENT_PATTERN_COEFFICIENTS=Object.freeze({AAA:1,ABB:.85,ABA:.80,AAB:.70,AAC:.70,ABC:.50});
@@ -170,7 +170,7 @@
   }
 
   return Object.freeze({
-    weights:Object.freeze({species:SPECIES_WEIGHT,individual:INDIVIDUAL_WEIGHT,subskill:SUBSKILL_WEIGHT,nature:NATURE_WEIGHT}),
+    weights:Object.freeze({individual:INDIVIDUAL_WEIGHT,subskill:SUBSKILL_WEIGHT,nature:NATURE_WEIGHT}),
     naturePositiveBenchmark:NATURE_POSITIVE_BENCHMARK,slotLevels:SLOT_LEVELS,slotWeights:SLOT_WEIGHTS,
     ingredientPatternCoefficients:INGREDIENT_PATTERN_COEFFICIENTS,legalSubskillMaxBuilds:LEGAL_SUBSKILL_MAX_BUILDS,allRounderFocusLabels:ALL_ROUNDER_FOCUS_LABELS,
     subskillFitTable:SUBSKILL_FIT,resourceSubskillFit:RESOURCE_SUBSKILL_FIT,helpSpeedReduction:HELP_SPEED_REDUCTION,probabilityBoost:PROBABILITY_BOOST,

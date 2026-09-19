@@ -77,7 +77,7 @@ Already consistent with the project:
 - ingredient-route quality multiplies only ingredient/all-rounder individual quality;
 - AAA already has the strongest route coefficient;
 - Ingredient Finder M is already the highest-valued ingredient subskill;
-- cultivation advice already distinguishes a mechanical score from strategic use and release safety.
+- cultivation advice distinguishes the user tier, individual quality, strategic use and release safety.
 
 Implemented in the executable selection and cultivation layers:
 
@@ -86,7 +86,7 @@ Implemented in the executable selection and cultivation layers:
 - treat Ingredient Finder M as the core strict-selection requirement;
 - accept Helping Bonus as one effective gain without requiring it on every rotating ingredient helper;
 - make the Lv.60 route decision explicit in cultivation advice and cap AAB/AAC investment at Lv.59;
-- prevent a high mechanical score from restoring core-cultivation status when the course route or panel does not graduate.
+- prevent a high tier or individual percentage from restoring core-cultivation status when the course route or panel does not graduate.
 
 Pending model decisions:
 

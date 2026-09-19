@@ -4,15 +4,15 @@
 
 Mechanical output is calculated from verified species data. Strategic-role evidence comes from the reviewed 2026-08-17 Bilibili guide image and is stored in project-root `pokemon-strategy.js`. Game8 is a qualitative cross-check. Never disguise a guide judgment as a verified base rate.
 
-## Strategic-role adjustment
+## Strategic-role annotation
 
-Use a bounded gap-filling adjustment:
+Historical production diagnostics may still calculate a bounded gap-filling adjustment:
 
 `bonus = clamp(target floor - mechanical score, 0, species max bonus)`
 
-Only verified scarce roles receive a target floor. Current examples include Flygon as the best avocado specialist and Toxicroak as the pure-oil specialist. Cramorant, Clodsire and Farfetch'd may receive smaller alternative-role adjustments. A helper such as Meowscarada that already has a healthy mechanical score receives no duplicate bonus.
+Only verified scarce roles receive a target floor. This value is retained for internal audit continuity; it is not a user-facing species score and cannot change the S/A/B/C tier. Current examples include Flygon as the best avocado specialist and Toxicroak as the pure-oil specialist.
 
-The tooltip must show mechanical score, role, reason, bonus and adjusted species score. Strategic value never changes the underlying production calculation.
+The tooltip should show the role and reason, and must state that the role does not change the user-maintained tier. Strategic value never changes the underlying production calculation.
 
 ## Helping Bonus
 
@@ -60,6 +60,6 @@ Display the best box individual, its individual score, minimum status and missin
 - Latias and Latios are separate groups and can coexist.
 - Shiny helpers default to collection and never receive an automatic release prompt.
 - If a rank-below-limit helper meets a strategic minimum and its ingredient route is not represented among retained higher-ranked copies, change the verdict to manual strategic review.
-- Within the limit, a helper meeting a scarce-role minimum is retained for that role even when the mechanical score is modest.
+- Within the limit, a helper meeting a scarce-role minimum is retained for that role even when its tier or individual quality is modest.
 - A fifth ordinary copy with the same already-covered route may still be a release candidate.
 - Never release automatically. Warn about investments, event limitation and collection intent.

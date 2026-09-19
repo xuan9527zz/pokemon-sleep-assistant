@@ -1,9 +1,10 @@
 (function(root,factory){
   'use strict';
-  const api=factory();
+  const speciesTiers=typeof module==='object'&&module.exports?require('./skills/pokemon-sleep-scoring/scripts/species-tiers.js'):root.POKEMON_SLEEP_SPECIES_TIERS;
+  const api=factory(speciesTiers);
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root)root.POKEMON_SLEEP_POKEMON_COMPARISON=api;
-})(typeof globalThis!=='undefined'?globalThis:this,function(){
+})(typeof globalThis!=='undefined'?globalThis:this,function(speciesTiers){
   'use strict';
 
   const STORAGE_KEY='pokemon-sleep-comparison-v1';
@@ -107,8 +108,7 @@
       finalFormName:finalFormName(mon),
       specialty,
       specialtyLabel:String(mon.specialtyLabel||ROLE_LABELS[specialty]||'待核对'),
-      totalScore:scoreOf(mon,'finalScore','scoreTotal'),
-      speciesScore:scoreOf(mon,'speciesScore','scoreSpecies'),
+      speciesTier:String(mon&&mon.scoreBreakdown&&mon.scoreBreakdown.speciesTier||mon&&mon.speciesTier||'C'),
       individualScore:scoreOf(mon,'individualScore','scoreIndividual'),
       mainSkill:String(mon.main||mon.mainSkill||'—'),
       nature:String(mon.nature||'—'),
@@ -155,21 +155,19 @@
     const sameFinalForm=Boolean(left.finalFormId&&left.finalFormId===right.finalFormId),sameSpecialty=left.specialty===right.specialty;
     const warnings=safetyWarnings(left,right,sameFinalForm);
     if(!sameFinalForm){
-      const scoreComparison=compareNumeric(left,right,'totalScore'),scoreText=scoreComparison===0?'两只综合分接近或尚有待定项':`${scoreComparison>0?left.name:right.name}的综合分更高`;
+      const tierComparison=speciesTiers.compare(left.speciesTier,right.speciesTier),tierText=tierComparison===0?`两只都为 ${left.speciesTier} 级`:`${tierComparison<0?left.name:right.name}的物种梯级更高`;
       return {
         left,right,leader:'none',sameFinalForm,sameSpecialty,basis:'different-final-form',warnings,
         title:'不同最终形态：按队伍岗位分别判断',
-        detail:`${scoreText}，但综合分包含各自的种族与岗位价值，只能作为资料展示，不能当作直接替换或放生依据。`
+        detail:`${tierText}；梯级只说明严选优先级，不等于两只可以直接互相替换或据此放生。`
       };
     }
     let comparison=left.course.rank-right.course.rank,basis='course';
     if(!comparison){comparison=compareNumeric(left,right,'individualScore');basis='individual';}
-    if(!comparison){comparison=compareNumeric(left,right,'totalScore');basis='total';}
     const leader=comparison>0?'left':comparison<0?'right':'tie',winner=leader==='left'?left:leader==='right'?right:null;
-    let detail='课程资格、个体分和综合分均无法拉开差距，可结合队伍缺口与已投入资源决定。';
+    let detail='课程资格和个体质量均无法拉开差距，可结合队伍缺口与已投入资源决定。';
     if(basis==='course'&&winner)detail=`课程资格优先：${left.name}为“${left.course.label}”，${right.name}为“${right.course.label}”。`;
-    else if(basis==='individual'&&winner)detail=`课程资格相同，按个体分比较：${left.name} ${formatScore(left.individualScore)}，${right.name} ${formatScore(right.individualScore)}。`;
-    else if(basis==='total'&&winner)detail=`课程资格与个体分接近，以综合分作最后参考：${left.name} ${formatScore(left.totalScore)}，${right.name} ${formatScore(right.totalScore)}。`;
+    else if(basis==='individual'&&winner)detail=`课程资格相同，按个体质量比较：${left.name} ${formatScore(left.individualScore)}，${right.name} ${formatScore(right.individualScore)}。`;
     return {
       left,right,leader,sameFinalForm,sameSpecialty,basis,warnings,
       title:winner?`${winner.name}更适合作为当前培养候选`:'两只个体暂时并列',detail
@@ -178,7 +176,7 @@
 
   function comparisonPriority(mon,strategy){
     const view=viewModel(mon,{strategy});
-    return [view.course.rank,view.individualScore===null?-1:view.individualScore,view.totalScore===null?-1:view.totalScore,-numberId(view.id)];
+    return [4-speciesTiers.order(view.speciesTier),view.course.rank,view.individualScore===null?-1:view.individualScore,-numberId(view.id)];
   }
   function comparePriority(a,b,strategy){
     const left=comparisonPriority(a,strategy),right=comparisonPriority(b,strategy);
@@ -206,6 +204,9 @@
   function renderScore(doc,label,value){
     const item=element(doc,'div','pokemon-comparison-score');item.append(element(doc,'span','',label),element(doc,'strong','',formatScore(value)));return item;
   }
+  function renderTier(doc,value){
+    const item=element(doc,'div','pokemon-comparison-score');item.append(element(doc,'span','','物种梯级'),element(doc,'strong','',`${value||'C'}级`));return item;
+  }
   function renderCard(doc,view,side,isLeader){
     const card=element(doc,'article',`pokemon-comparison-card${isLeader?' is-leader':''}`),head=element(doc,'div','pokemon-comparison-card-head'),identity=element(doc,'div','pokemon-comparison-identity'),badges=element(doc,'div','pokemon-comparison-badges');
     identity.append(element(doc,'span','pokemon-comparison-slot',`${side==='left'?'个体 A':'个体 B'} · #${view.id}`),element(doc,'h4','',view.name),element(doc,'p','',`${view.finalFormName} · Lv.${view.level} · ${view.boxName}`));
@@ -213,7 +214,7 @@
     if(view.shiny)badges.append(element(doc,'span','pokemon-comparison-badge shiny','闪光'));
     badges.append(element(doc,'span',`pokemon-comparison-badge role ${view.specialty}`,view.specialtyLabel));
     head.append(identity,badges);card.append(head);
-    const scores=element(doc,'div','pokemon-comparison-scores');scores.append(renderScore(doc,'综合分',view.totalScore),renderScore(doc,'种族分',view.speciesScore),renderScore(doc,'个体分',view.individualScore));card.append(scores);
+    const scores=element(doc,'div','pokemon-comparison-scores');scores.append(renderTier(doc,view.speciesTier),renderScore(doc,'个体质量',view.individualScore));card.append(scores);
 
     const decisions=element(doc,'div','pokemon-comparison-decisions'),course=element(doc,'section',`pokemon-comparison-decision course ${view.course.status}`),courseHead=element(doc,'div','pokemon-comparison-decision-head');
     courseHead.append(element(doc,'span','','课程严选'),element(doc,'strong','',view.course.label));course.append(courseHead);

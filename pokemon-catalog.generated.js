@@ -7,7 +7,7 @@
   'use strict';
   return Object.freeze({
   "meta": {
-    "generatedAt": "2026-09-13T12:12:50.921Z",
+    "generatedAt": "2026-09-19T18:36:34.581Z",
     "sourceUpdatedAt": "2026-08-23T20:32:34.939Z",
     "count": 247,
     "speciesScoreCount": 127,
@@ -20625,7 +20625,7 @@
         "849",
         "8001"
       ],
-      "defaultFinalId": "8001",
+      "defaultFinalId": "849",
       "mainSkill": {
         "id": 10,
         "name": "食材获取S",
@@ -25919,7 +25919,7 @@
         "role": "窝心洋芋专职",
         "ingredient": "窝心洋芋",
         "rank": "primary",
-        "reason": "土豆岗位明确，但现有机械种族分已经处于可培养区间，不额外补正。"
+        "reason": "土豆岗位明确；岗位说明不改变用户维护的物种梯级。"
       },
       "score": 69.9,
       "source": "ingredient-species-score"
@@ -26008,7 +26008,7 @@
         "role": "窝心洋芋替代",
         "ingredient": "窝心洋芋",
         "rank": "alternative",
-        "reason": "土豆替代路线；现有机械种族分已经足够，不额外补正。"
+        "reason": "土豆替代路线；是否严选仍以用户梯级与个体毕业状态判断。"
       },
       "score": 71.5,
       "source": "ingredient-species-score"

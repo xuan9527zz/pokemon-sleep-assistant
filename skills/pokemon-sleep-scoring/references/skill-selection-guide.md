@@ -94,7 +94,7 @@ The course recommends completing the relevant panel by Lv.50:
 
 ## Integration boundary
 
-Use this guide for selection labels, cultivation timing and role explanations. Continue to use [scoring-rules.md](scoring-rules.md), [main-skill-models.md](main-skill-models.md) and the shared scripts for mechanical scores and team output.
+Use this guide for selection labels, cultivation timing and role explanations. Continue to use [scoring-rules.md](scoring-rules.md), [main-skill-models.md](main-skill-models.md) and the shared scripts for individual quality and team output; species hunt priority comes only from `species-tiers.js`.
 
 The executable selection layer now implements the course split:
 

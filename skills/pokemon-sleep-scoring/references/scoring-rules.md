@@ -2,25 +2,26 @@
 
 ## Data flow
 
-The project has one score pipeline:
+The project has one evaluation pipeline:
 
-`verified species data -> mechanical species model -> bounded strategic adjustment -> shared individual core -> final score -> cultivation/retention advice`
+`selected final form -> user S/A/B/C tier + shared individual core + graduation rules -> cultivation/retention advice`
 
 - `scripts/scoring-core.js`: subskills, legal seed upgrades, slot timing, nature and ingredient route.
-- `scripts/species-scores.js`: berry, ingredient and skill species mechanics.
+- `scripts/species-tiers.js`: user-maintained species tier; unlisted final forms default to C.
+- `scripts/species-scores.js`: internal berry, ingredient and skill production diagnostics for team/island/event calculations, not a displayed species score.
 - `pokemon-strategy.js` at project root: strategic roles and guide minimums.
 - `scripts/box-scores.js`: final-form mapping and box snapshot.
 - Root `pokemon-scoring.js`: thin browser/Node adapter; it must not own another scoring table.
 
-## Final score
+## Displayed evaluation
 
-For berry, ingredient, skill and all-rounder helpers:
+For berry, ingredient, skill and all-rounder helpers, display three separate results:
 
-`final = adjusted species score × 75% + individual score × 25%`
+`species tier (S/A/B/C) + individual quality (0–100) + graduation status`
 
-The adjusted species score is the mechanical score plus any bounded strategic-role adjustment, clamped to 0–100. The tooltip must disclose the mechanical score, strategic adjustment, adjusted score, individual score and all components.
+Do not calculate or display a 75/25 combined percentage. `finalScore` remains only as a compatibility alias for `individualScore` in existing data consumers and must equal it exactly. Sorting by species strength uses tier order first, then individual quality.
 
-All-rounder species scores use the same positive team-slot output anchor as skill specialists. Their ordinary berry and ingredient production is added to the selected main-skill effect before the standard producer-slot opportunity cost is removed. Apply the same 50% cross-specialty role-gap compensation used by the skill model. Mew uses the currently selected All-Mighty option and that option's verified trigger-rate tier; Darkrai uses Nightmare with two non-Dark teammates as the catalog baseline. Unknown All-Mighty bonus-Candy value is excluded rather than making the whole score pending.
+The user tier table is authoritative for hunt priority. Any final form not listed there is C until the user changes it. Mew is dynamic: Berry Burst is S; every other selected All-Mighty skill is B. Production engines may still calculate ordinary production and main-skill effects for team planning, but those values do not mutate the tier.
 
 ## Individual score
 
@@ -81,18 +82,20 @@ Ingredient specialists use this coefficient on their individual score. All-round
 | AAB / AAC | 0.70 |
 | ABC or unlisted | 0.50 |
 
-This is a long-term Lv.70 route judgment. It changes individual quality, not species mechanics.
+This is a long-term Lv.70 route judgment. It changes individual quality, not the species tier.
 
 These coefficients remain provisional display inputs. The course-derived selection layer separately enforces route eligibility: AAB/AAC are Lv.30 workers with an Lv.59 investment ceiling, unverified ABB requires species production evidence, and a high numeric individual score cannot restore a long-term graduation or core-cultivation label.
 
-## Mechanical species models
+## Internal production models
 
 - Ingredient species: production 80%, final-form inventory 10%, main-skill synergy 10%. Production is ingredient-count efficiency 60% and base-strength efficiency 40%. Use the confirmed eight-hour unattended model and the evolved carry limit.
 - Berry species: Lv.70 berry production 90% and main-skill synergy 10%. Production includes interval, ingredient-rate berry loss, base berry count and Lv.70 berry strength. Keep full-bag Sneaky Snacking as a separate scenario, never as the primary score.
 - Both roles use main-skill type fit 50%, trigger efficiency 40%, natural main-skill level 10%.
 - Skill species use the team-calibrated model described in `main-skill-models.md`.
-- All-rounder species use the shared skill-team slot anchor, but include their own ordinary berry/ingredient production and current main-skill variant. Their individual score exposes separate berry, ingredient and skill channels so a specialized Eureka Seed build is not diluted by two roles it was not built to fill.
+- All-rounder production diagnostics use the shared skill-team slot anchor, but include their own ordinary berry/ingredient production and current main-skill variant. Their individual score exposes separate berry, ingredient and skill channels so a specialized Eureka Seed build is not diluted by two roles it was not built to fill.
+
+These models remain necessary for current-team production, island recommendations, and event simulation. They are diagnostics and calculators, not a user-facing species score and not an input to the individual percentage.
 
 ## Cultivation and retention separation
 
-Scores measure potential. Cultivation advice also considers account stage, strategic role, direct superiors, stability, operation cost, team fit and the course-derived Lv.50/Lv.60 qualification gate. Failing that gate caps the cultivation label without rewriting the score. Retention compares the same final form: ordinary helpers have four practical slots, limited special helpers one. Rank 5 or rank 2 respectively may become a release candidate only after the safeguards in `strategy-rules.md`.
+Tier measures hunt priority; individual quality measures the panel. Cultivation advice also considers account stage and the course-derived Lv.50/Lv.60 qualification gate. Failing that gate caps the cultivation label without rewriting the tier or individual quality. Retention compares the same final form: ordinary helpers have four practical slots, limited special helpers one. Rank 5 or rank 2 respectively may become a release candidate only after the safeguards in `strategy-rules.md`.
