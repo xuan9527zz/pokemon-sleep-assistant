@@ -23,7 +23,7 @@
   const COLLECTION_BOXES=new Set(['shiny']);
   const NON_BATTLE_BOXES=new Set(['retire']);
   const SPECIAL_NAMES=new Set(['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊','超梦']);
-  const BATTLE_TIERS=new Set(['core','stage','transition','niche']);
+  const BATTLE_TIERS=new Set(['core','recommended','stage','transition']);
   const UPGRADE_FAMILIES=Object.freeze([
     Object.freeze(['帮忙速度S','帮忙速度M']),
     Object.freeze(['食材概率S','食材概率M']),
@@ -95,7 +95,7 @@
     if(special)boxId='special';
     else if(collectionIntent&&!battleEligible)boxId='shiny';
     else if(tier==='core')boxId='main';
-    else if(tier==='stage')boxId='training';
+    else if(['recommended','stage'].includes(tier))boxId='training';
     else if(battleEligible&&mon&&mon.specialty==='ingredient')boxId='ingredient';
     else if(battleEligible&&['skill','all'].includes(mon&&mon.specialty))boxId='skill';
     else if(battleEligible)boxId='main';

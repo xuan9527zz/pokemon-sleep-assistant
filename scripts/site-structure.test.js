@@ -57,10 +57,12 @@ assert.ok(!html.includes('id="pokemonPriority"'), '手工培养建议控件应�
 assert.ok(!html.includes('id="pokemonNote"'), '不再需要的个体备注控件应移除');
 assert.ok(!html.includes('<th>备注</th>'), '盒子列表不应再展示备注列');
 assert.ok(html.includes('class="box-multi-filter" id="rf"'), '定位筛选必须支持同组多选');
-assert.ok(html.includes('class="box-multi-filter" id="tf"'), '盒子必须提供S/A/B/C梯级筛选');
-assert.ok(html.includes('value="tier-desc">梯级：S 到 C'), '盒子必须支持按梯级排序');
+assert.ok(!html.includes('class="box-multi-filter" id="tf"'), '盒子主筛选不应继续展示物种梯级筛选');
+assert.ok(!html.includes('class="box-multi-filter" id="ef"'), '盒子主筛选不应继续展示用途状态筛选');
+assert.ok(!html.includes('data-k="boxId">盒子与用途'), '盒子主列表不应继续展示盒子与用途列');
+assert.ok(!html.includes('value="tier-desc">梯级：S 到 C'), '盒子排序不应继续展示单独梯级排序');
 assert.ok(!html.includes('value="species-desc"'), '盒子不应继续暴露种族分排序');
-assert.ok(html.includes('value="both"><span>收藏＋实战</span>'), '筛选器必须支持收藏且可实战的组合状态');
+assert.ok(html.includes("pokemon-sleep:before-reload"), '个体保存前必须保留盒子筛选和滚动位置');
 assert.ok(html.indexOf('all-rounder-rules.js') < html.indexOf('pokemon-scoring.js'), '动态评分必须在全能型规则加载后初始化');
 assert.ok(html.indexOf('species-tiers.js') < html.indexOf('pokemon-scoring.js'), '动态评分必须在梯级表加载后初始化');
 

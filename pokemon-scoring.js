@@ -40,11 +40,11 @@
   function scorePokemon(mon){
     const target=targetForPokemon(mon);
     if(!target)return {id:String(mon&&mon.id||''),name:String(mon&&mon.name||''),finalScore:null,status:'missing-species-catalog'};
-    const role=target.specialty,base={id:String(mon&&mon.id||''),name:String(mon&&mon.name||target.name),specialty:role,finalFormId:target.id,finalFormNameZh:target.name,routeReason:null,routeCandidates:null};
+    const catalogRole=target.specialty,mainSkillId=Number(mon&&mon.mainSkillId||target.mainSkill&&target.mainSkill.id),berryBurst=catalogRole==='skill'&&core.berryBurstSkillIds&&core.berryBurstSkillIds.has(mainSkillId),role=berryBurst?'berry':catalogRole,evaluationRole=berryBurst?'berry-burst':catalogRole,base={id:String(mon&&mon.id||''),name:String(mon&&mon.name||target.name),specialty:role,catalogSpecialty:catalogRole,evaluationRole,berryBurst,finalFormId:target.id,finalFormNameZh:target.name,routeReason:null,routeCandidates:null};
     const selectedAllRounderSkillId=role==='all'?(allRounder&&allRounder.isMew(mon)?allRounder.selectedId(mon):'nightmare'):null;
-    const tier=tiers.entryFor({...base,selectedAllRounderSkillId}),individual=core.individualScore(mon,role,target),finalScore=individual.score;
+    const tier=tiers.entryFor({...base,selectedAllRounderSkillId}),individual=core.individualScore(mon,evaluationRole,target,{berryBurst}),finalScore=individual.score;
     const selectedOption=role==='all'&&allRounder&&allRounder.BY_ID?allRounder.BY_ID[selectedAllRounderSkillId]:null;
-    return {...base,speciesTier:tier.tier,speciesTierCategory:tier.category,speciesTierListed:tier.listed,speciesTierSource:tier.source,strategy:strategy&&strategy.SPECIES_ROLES[target.id]||null,selectedAllRounderSkillId,selectedAllRounderSkillNameZh:role==='all'?(selectedOption&&selectedOption.label||'梦魇'):null,individualScore:individual.score,individual,finalScore,scoreModel:'species-tier-plus-individual-quality',rank:null,status:individual.provisional?'scored-with-provisional-subskill-bridges':'scored-confirmed-components'};
+    return {...base,speciesTier:tier.tier,speciesTierCategory:tier.category,speciesTierListed:tier.listed,speciesTierSource:tier.source,strategy:strategy&&strategy.SPECIES_ROLES[target.id]||null,selectedAllRounderSkillId,selectedAllRounderSkillNameZh:catalogRole==='all'?(selectedOption&&selectedOption.label||'梦魇'):null,individualScore:individual.score,individualGrade:individual.grade,individual,finalScore,scoreModel:'species-tier-plus-blank-output-multiplier',rank:null,status:individual.provisional?'scored-with-provisional-components':'scored-confirmed-components'};
   }
 
   function speciesSearch(query){

@@ -135,8 +135,8 @@
       const species=currentSpecies(),target=catalogById.get(String(record.finalFormId)),score=scoring.scorePokemon(record),role=ROLE_LABELS[target&&target.specialty||species.specialty]||'待核对',dynamic=root.POKEMON_SLEEP_ALL_ROUNDER_RULES&&root.POKEMON_SLEEP_ALL_ROUNDER_RULES.assess(record);
       identityPreview.textContent=`${species.name} · ${dynamic&&dynamic.role||role} · ${record.main} · 间隔 ${record.interval} · 持有 ${record.inv}`;
       scorePreview.replaceChildren();
-      const scoreDetail=score&&score.individual&&score.individual.model==='mythical-role-focus'?['评分定位',`${score.individual.focusRoleLabel}${score.individual.focusSelection==='automatic-best-fit'?'（自动）':''}`]:['食材路线',score.individual.ingredientPattern==='不适用'?'不适用':`${score.individual.ingredientPattern} ×${score.individual.ingredientPatternCoefficient.toFixed(2)}`];
-      const cards=Number.isFinite(score.individualScore)?[['物种梯级',`${score.speciesTier}级`],['个体质量',score.individualScore.toFixed(1)],scoreDetail,['严选口径',score.speciesTierListed?'用户梯级表':'未列入，默认C']]:dynamic?[['物种梯级','C级'],['个体质量','待定'],['动态定位',dynamic.role],['当前构筑',dynamic.build]]:[['物种梯级','C级'],['个体质量','待定'],['原因','缺少个体面板数据'],['定位',role]];
+      const scoreDetail=score&&score.individual&&score.individual.model==='mythical-role-focus'?['评分定位',`${score.individual.focusRoleLabel}${score.individual.focusSelection==='automatic-best-fit'?'（自动）':''}`]:['食材路线',score&&score.individual&&score.individual.ingredientPattern!=='不适用'?`${score.individual.ingredientPattern} · ${score.individual.routeRule}`:'不适用'];
+      const cards=Number.isFinite(score.individualScore)?[['物种梯级',`${score.speciesTier}级`],['个体评价',`${score.individualGrade||score.individual.grade}级 · ×${score.individualScore.toFixed(2)}`],scoreDetail,['严选口径',score.speciesTierListed?'用户梯级表':'未列入，默认C']]:dynamic?[['物种梯级','C级'],['个体评价','待定'],['动态定位',dynamic.role],['当前构筑',dynamic.build]]:[['物种梯级','C级'],['个体评价','待定'],['原因','缺少个体面板数据'],['定位',role]];
       cards.forEach(([label,value])=>{const card=element('span','pokemon-score-preview-item');card.append(element('small','',label),element('strong','',value));scorePreview.append(card)});
       if(retentionPreview&&root.POKEMON_SLEEP_RETENTION_ADVISOR)root.POKEMON_SLEEP_RETENTION_ADVISOR.render(retentionPreview,record,pokemon,scoring);
       const error=validateDraft(record);message.hidden=!error;message.textContent=error;message.className='pokemon-editor-message warning';saveButton.disabled=Boolean(error);
@@ -152,6 +152,7 @@
       const skills=String(mon.subs||'').split('；');subskillSelects.forEach((select,index)=>{select.value=SUBSKILLS.includes(skills[index])?skills[index]:'—'});renderPreview();showDialog(dialog);return true;
     }
     async function persistAndReload(){
+      document.dispatchEvent(new CustomEvent('pokemon-sleep:before-reload',{detail:{pokemonId:editingId,reason:'pokemon-editor'}}));
       const controller=root.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER;
       if(controller&&typeof controller.saveNow==='function'){try{await controller.saveNow()}catch(_error){}}
       root.location.reload();

@@ -204,6 +204,7 @@
     skillNatureScores,
     berryNatureScoresByFinalForm,
     natureName,
+    natureModifiers,
     natureScore,
     natureTable,
     finalFormForBoxName,

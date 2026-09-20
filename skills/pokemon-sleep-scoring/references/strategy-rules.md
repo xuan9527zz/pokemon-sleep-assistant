@@ -1,65 +1,30 @@
-# Strategy, guide standards, and release safety
+# Strategy and box rules
 
-## Evidence layers
+## Separate layers
 
-Mechanical output is calculated from verified species data. Strategic-role evidence comes from the reviewed 2026-08-17 Bilibili guide image and is stored in project-root `pokemon-strategy.js`. Game8 is a qualitative cross-check. Never disguise a guide judgment as a verified base rate.
+- Species S/A/B/C is the user’s hunt-priority table.
+- Individual S/A/B/C comes from the role output multiplier.
+- Team, island and event calculators use actual production mechanics.
+- Cultivation/retention is the fixed species × individual matrix in [scoring-rules.md](scoring-rules.md).
 
-## Strategic-role annotation
+Strategic annotations may explain a role but never change species tier, individual multiplier or the cultivation matrix.
 
-Historical production diagnostics may still calculate a bounded gap-filling adjustment:
+## Helping Bonus in teams
 
-`bonus = clamp(target floor - mechanical score, 0, species max bonus)`
+For each helper, add its own Helping Speed reduction and `5% × unlocked Helping Bonus count in the team`, then cap combined subskill/team reduction at 35%. Speed Nature applies outside that cap. Do not multiply a completed score by a flat team percentage.
 
-Only verified scarce roles receive a target floor. This value is retained for internal audit continuity; it is not a user-facing species score and cannot change the S/A/B/C tier. Current examples include Flygon as the best avocado specialist and Toxicroak as the pure-oil specialist.
+## Release and collection
 
-The tooltip should show the role and reason, and must state that the role does not change the user-maintained tier. Strategic value never changes the underlying production calculation.
+Apply the base cultivation matrix first.
 
-## Helping Bonus
+- A shiny or limited helper with a useful base result keeps that result: e.g. shiny species-S/individual-S is Core.
+- Only a No-train base result branches: shiny or limited becomes Collection Protection; otherwise Release.
+- Existing level, candy/seed investment, box assignment, collection toggle and unique route do not block Release.
+- Missing or uncomputable evaluation becomes Manual Review.
+- The application never auto-deletes; Release is a filterable advice label only.
 
-Helping Bonus affects all five helpers and stacks across the team. It is a graduation requirement for guide-defined permanent support and berry-core roles, while remaining an optional effective gain for ordinary or short-deployment tool skill helpers.
+Do not reintroduce same-species seat limits, rank-five safeguards, direct-superior overrides, account-stage thresholds or “limited use” as final cultivation categories.
 
-For each member:
+## Main box presentation
 
-1. Calculate their unlocked Helping Speed reduction.
-2. Add `5% × number of unlocked Helping Bonus skills in the team`.
-3. Cap combined speed reduction at 35%.
-4. Convert interval to output with `(1 - own reduction) / (1 - combined reduction)`.
-
-Do not apply a flat `1 + 5% × count` multiplier to the finished team score. Helping Bonus contributes to both individual subskill quality and real team output; those are different views, not double-counting inside one formula.
-
-For strict berry-helper selection, also read the guide-derived team-context evidence in [berry-selection-guide.md](berry-selection-guide.md). In particular, Berry Finding S is the entry prerequisite, while the guide treats Helping Bonus as a long-term team-core requirement for conventional berry specialists, formal healers and Berry Burst helpers used in berry positions. A mature berry position should combine Berry Finding S, Helping Bonus and an effective personal speed gain; neither Berry Finding S + Helping Bonus without personal speed nor a fast Berry Finding S panel without Helping Bonus is the complete target. Do not declare Helping Speed S universally useless: calculate how much of its 7% remains before the 35% subskill/team cap for the actual lineup. Speed-up nature is applied outside that cap.
-
-## Lv.50 guide minimums
-
-- Berry: Berry Finding S within Lv.50 plus Helping Bonus, speed, or speed nature. Graduation requires Berry Finding S + Helping Bonus plus another effective speed gain. The course supports this three-part structure; the remaining implementation gap is that a speed subskill should count only to the extent that the planned team has room below the 35% cap.
-- Ingredient: actual Ingredient Finder M within Lv.50 plus another primary gain and the required ingredient route. Graduation is Ingredient Finder M plus any two additional effective gains; Helping Bonus is optional. AAA is the default long-term route, while only course-verified species-specific ABB exceptions may graduate.
-- Formal healer: Skill Trigger M within Lv.50 plus Helping Bonus and one more effective personal gain. A healer without Helping Bonus is a transition helper under the course's strict permanent-support standard, even when its personal trigger expectation is strong.
-- Ordinary or short-deployment tool skill helper: Skill Trigger M within Lv.50 plus any two additional effective gains. Helping Bonus is useful but not mandatory. Do not make a candidate wait until Lv.70 or Lv.80 to unlock Skill Trigger M merely because the eventual full panel is strong.
-- Berry-oriented skill helpers: Berry Finding S within Lv.50 plus team or personal-speed value; graduation requires Berry Finding S + Helping Bonus plus personal speed. Skill Trigger M cannot replace the personal-speed part of a Berry Burst helper used in a berry position. Direct-Energy helpers remain second-line berry substitutes rather than dedicated berry-hunt targets.
-
-These standards are hunt filters, not automatic numeric score overrides.
-
-For ingredient helpers, also read the course-derived route and panel evidence in [ingredient-selection-guide.md](ingredient-selection-guide.md). The executable selection layer now uses AAA as the default long-term route, limits ABB graduation to reviewed species examples, labels AAB/AAC as Lv.30 workers with an Lv.59 investment ceiling, and no longer requires Helping Bonus for ingredient graduation. The numeric route coefficients remain unchanged and provisional because the course does not provide replacement production factors.
-
-For skill helpers, read the course-derived role and panel evidence in [skill-selection-guide.md](skill-selection-guide.md). The executable selection layer now separates formal healers, ordinary helpers, short-deployment tools and Berry Burst berry positions. Formal healers require Helping Bonus; ordinary and tool helpers do not. Dedenne receives the documented 16-gauge compromise label, while ordinary easy-hunt two-gain panels remain transitional. These selection labels do not change the main-skill output coefficient.
-
-## Weekly hunt board
-
-For the selected island, show guide targets in this priority order:
-
-1. Missing role.
-2. Existing helper below the minimum.
-3. Existing helper meeting minimum but not graduation.
-4. Covered/graduation target.
-
-Display the best box individual, its individual score, minimum status and missing requirements. The island list, source note and strategy profiles all come from `pokemon-strategy.js`.
-
-## Release safety
-
-- Compare only the same scored final form. Ordinary practical limit is four; limited Special Pokémon practical limit is one.
-- Latias and Latios are separate groups and can coexist.
-- Shiny helpers default to collection and never receive an automatic release prompt.
-- If a rank-below-limit helper meets a strategic minimum and its ingredient route is not represented among retained higher-ranked copies, change the verdict to manual strategic review.
-- Within the limit, a helper meeting a scarce-role minimum is retained for that role even when its tier or individual quality is modest.
-- A fifth ordinary copy with the same already-covered route may still be a release candidate.
-- Never release automatically. Warn about investments, event limitation and collection intent.
+The main box filter exposes box, shiny, role and cultivation judgment. Do not re-add separate usage-state or species-tier filter groups. The main table/card list does not show the old “box and usage” column/tags. Editing a Pokémon must preserve all active filters, sorting, current page and scroll/row position across the save reload.

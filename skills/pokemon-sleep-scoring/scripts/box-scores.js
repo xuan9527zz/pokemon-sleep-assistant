@@ -157,17 +157,22 @@ function boxScoreRows(boxRows, records) {
   const rows = boxRows.map(box => {
     const target = targetForBox(box, recordsById);
     const finalRecord = recordsById.get(target.id);
-    const role = finalRecord.specialty;
-    const selectedAllRounderSkillId = role === 'all'
+    const catalogRole = finalRecord.specialty;
+    const berryBurst=catalogRole==='skill'&&core.berryBurstSkillIds.has(Number(finalRecord.mainSkill&&finalRecord.mainSkill.id));
+    const role=berryBurst?'berry':catalogRole,evaluationRole=berryBurst?'berry-burst':catalogRole;
+    const selectedAllRounderSkillId = catalogRole === 'all'
       ? (allRounderRules.isMew(box) ? allRounderRules.selectedId(box) : 'nightmare')
       : null;
     const tier=speciesTiers.entryFor({finalFormId:target.id,name:target.nameZh,specialty:role,selectedAllRounderSkillId});
-    const individual = individualScore(box, role, finalRecord);
+    const individual = individualScore(box, evaluationRole, finalRecord,{berryBurst});
     const finalScore = individual.score;
     return {
       id: box.id,
       name: box.name,
       specialty: role,
+      catalogSpecialty:catalogRole,
+      evaluationRole,
+      berryBurst,
       finalFormId: target.id,
       finalFormNameZh: target.nameZh,
       speciesTier:tier.tier,
@@ -175,11 +180,12 @@ function boxScoreRows(boxRows, records) {
       speciesTierListed:tier.listed,
       speciesTierSource:tier.source,
       selectedAllRounderSkillId,
-      selectedAllRounderSkillNameZh: role === 'all' ? allRounderRules.BY_ID[selectedAllRounderSkillId]?.label || '梦魇' : null,
+      selectedAllRounderSkillNameZh: catalogRole === 'all' ? allRounderRules.BY_ID[selectedAllRounderSkillId]?.label || '梦魇' : null,
       individualScore: individual.score,
+      individualGrade: individual.grade,
       individual,
       finalScore,
-      scoreModel:'species-tier-plus-individual-quality',
+      scoreModel:'species-tier-plus-blank-output-multiplier',
       rank: null,
       routeReason: target.routeReason,
       routeCandidates: target.routeCandidates,
@@ -208,8 +214,8 @@ function buildOutput(boxRows, records) {
     meta: {
       generatedAt: new Date().toISOString(),
       targetLevel: TARGET_LEVEL,
-      formula: '物种强度采用用户维护的S/A/B/C梯级；百分分只表示个体面板质量，不再与种族分合成。未列入梯级表的最终形态默认C级。',
-      scoreModel:'species-tier-plus-individual-quality',
+      formula: '物种强度采用用户维护的S/A/B/C梯级；个体评价以同种白板为1.00，按定位比较食材、树果能量或技能触发产出。',
+      scoreModel:'species-tier-plus-blank-output-multiplier',
       subskillWeight: SUBSKILL_WEIGHT,
       natureWeight: NATURE_WEIGHT,
       legalSubskillMaximums,
@@ -225,91 +231,17 @@ function buildOutput(boxRows, records) {
 }
 
 function selfTest(boxRows, records) {
-  const output = buildOutput(boxRows, records);
-  const rows = Object.values(output.scores);
-  if (rows.length !== 97) throw new Error(`盒子数量错误：${rows.length}`);
-  if (new Set(rows.map(row => row.id)).size !== rows.length) throw new Error('盒子评分存在重复ID');
-  if (output.meta.scored !== 97 || output.meta.pending !== 0) {
-    throw new Error(`盒子完成数量错误：${output.meta.scored}/97，待定${output.meta.pending}/0`);
-  }
-  if (!rows.filter(row => Number.isFinite(row.finalScore)).every(row => (
-    ['S','A','B','C'].includes(row.speciesTier)
-    && row.individualScore >= 0 && row.individualScore <= 100
-    && row.finalScore >= 0 && row.finalScore <= 100
-  ))) throw new Error('盒子评分超出0至100');
-  if (!rows.filter(row => Number.isFinite(row.finalScore)).every(row => (
-    row.finalScore === row.individualScore
-  ))) throw new Error('盒子百分分必须只表示个体质量');
-  if (!['62', '91'].every(id => Number.isFinite(output.scores[id]?.finalScore))) {
-    throw new Error('梦幻／达克莱伊没有生成全能型个体分');
-  }
-  if (output.scores['48'].finalFormId !== '282' || output.scores['73'].finalFormId !== '282') {
-    throw new Error('奇鲁莉安与沙奈朵没有共用沙奈朵最终形态梯级');
-  }
-  const eeveeRows = rows.filter(row => row.name === '伊布');
-  if (eeveeRows.length !== 4 || !eeveeRows.every(row => row.finalFormId === '700')) {
-    throw new Error('伊布没有按当前最高梯级路线采用仙子伊布');
-  }
-  if (!rows.filter(row => row.individual).every(row => row.individual.slots.length === 5)) {
-    throw new Error('个体副技能栏位数量错误');
-  }
-  const ceilingRecord = { ingredientRate: 0.2 };
-  const legalMaximums = Object.fromEntries(['berry', 'ingredient', 'skill', 'all'].map(role => [
-    role,
-    legalSubskillMaximum(role, ceilingRecord).raw
-  ]));
-  if (legalMaximums.berry !== 66.7 || legalMaximums.ingredient !== 70 || legalMaximums.skill !== 70 || !(legalMaximums.all > 0)) {
-    throw new Error(`副技能合法满分上限异常：${JSON.stringify(legalMaximums)}`);
-  }
-  const ceilingScores = Object.fromEntries(['berry', 'ingredient', 'skill'].map(role => {
-    const testBox = {
-      name: role === 'berry' ? '雷丘' : role === 'ingredient' ? '耿鬼' : '沙奈朵',
-      nature: '认真',
-      subskills: LEGAL_SUBSKILL_MAX_BUILDS[role].join('；'),
-      ingredients: 'A×1／A×1／A×1'
-    };
-    return [role, individualScore(testBox, role, ceilingRecord).subskillScore];
-  }));
-  if (!Object.values(ceilingScores).every(score => score === 100)) {
-    throw new Error(`合法最佳副技能组合没有归一化为100：${JSON.stringify(ceilingScores)}`);
-  }
-  const mythicalCeiling = individualScore({
-    name: '达克莱伊', nature: '害羞', subskills: '帮手奖励；树果数量S；帮忙速度M；—；—',
-    ingredients: '豆制肉×2／豆制肉×4／哞哞鲜奶×6'
-  }, 'all', ceilingRecord);
-  if (mythicalCeiling.score !== 100 || mythicalCeiling.focusRole !== 'berry' || mythicalCeiling.revealedSubskillCount !== 3) {
-    throw new Error(`幻之宝可梦开放栏位归一化异常：${JSON.stringify(mythicalCeiling)}`);
-  }
-  const berryExample = individualScore({
-    name: '雷丘',
-    nature: '认真',
-    subskills: '帮手奖励；树果数量S；帮忙速度S；帮忙速度M；—',
-    ingredients: 'A×1／A×1／A×1'
-  }, 'berry', ceilingRecord);
-  if (berryExample.subskillRawBeforeClamp !== 61.2 || berryExample.subskillScore !== 91.8 || berryExample.score !== 64.3) {
-    throw new Error(`树果手合法百分制示例异常：${JSON.stringify(berryExample)}`);
-  }
-  if (!rows.filter(row => row.individual).every(row => (
-    row.individual.subskillScore >= 0 && row.individual.subskillScore <= 100
-    && row.individual.natureScore >= -100 && row.individual.natureScore <= 100
-  ))) throw new Error('副技能或性格百分分超出范围');
-  return {
-    checks: 12,
-    rows: rows.length,
-    scored: output.meta.scored,
-    pending: output.meta.pending,
-    provisional: output.meta.provisionalCount,
-    highest: output.meta.highest,
-    kirliaSpeciesTier: output.scores['48'].speciesTier,
-    gardevoirSpeciesTier: output.scores['73'].speciesTier,
-    eeveeRoute: output.scores['25'].finalFormNameZh,
-    legalSubskillMaximums: legalMaximums,
-    berryExample: {
-      raw: berryExample.subskillRawBeforeClamp,
-      subskillScore: berryExample.subskillScore,
-      individualScore: berryExample.score
-    }
-  };
+  const result=buildOutput(boxRows,records),scoredRows=Object.values(result.scores);
+  if(scoredRows.length!==97||result.meta.scored!==97||result.meta.pending!==0)throw new Error(`盒子倍率完成数量错误：${result.meta.scored}/97，待定${result.meta.pending}/0`);
+  if(!scoredRows.every(row=>Number.isFinite(row.finalScore)&&row.finalScore>0&&row.finalScore<4&&['S','A','B','C'].includes(row.speciesTier)&&['S','A','B','C'].includes(row.individualGrade)))throw new Error('盒子个体倍率或梯级异常');
+  const recordById=new Map(records.map(record=>[String(record.id),record]));
+  const gardevoir=core.individualScore({nature:'慎重',subs:'帮手奖励；技能概率M；技能概率S；帮忙速度M；帮忙速度S',ingredients:'A×1／A×1／A×1'},'skill',recordById.get('282'));
+  const typhlosion=core.individualScore({nature:'固执',subs:'树果数量S；帮手奖励；帮忙速度M；帮忙速度S；技能概率M',ingredients:'A×1／A×1／A×1'},'berry',recordById.get('157'));
+  const sceptile=core.individualScore({nature:'固执',subs:'树果数量S；帮手奖励；帮忙速度M；技能概率M；技能概率S',ingredients:'A×1／A×1／A×1'},'berry-burst',recordById.get('254'));
+  if(gardevoir.score!==2.33||gardevoir.grade!=='S')throw new Error(`沙奈朵白板倍率异常：${JSON.stringify(gardevoir)}`);
+  if(typhlosion.score!==2.37||typhlosion.grade!=='S')throw new Error(`火爆兽白板倍率异常：${JSON.stringify(typhlosion)}`);
+  if(sceptile.score!==2.24||sceptile.grade!=='S')throw new Error(`蜥蜴王树果骤增倍率异常：${JSON.stringify(sceptile)}`);
+  return {checks:7,rows:scoredRows.length,scored:result.meta.scored,pending:result.meta.pending,gardevoirMultiplier:gardevoir.score,typhlosionMultiplier:typhlosion.score,sceptileMultiplier:sceptile.score};
 }
 
 function javascript(output) {

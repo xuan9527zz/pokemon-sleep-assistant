@@ -31,6 +31,8 @@
   const RESOURCE_SUBSKILL_FIT=Object.freeze({'睡眠EXP奖励':[20,'confirmed'],'活力恢复奖励':[12,'confirmed'],'梦之碎片奖励':[10,'confirmed'],'研究EXP奖励':[8,'confirmed'],'—':[0,'not-present']});
   const HELP_SPEED_REDUCTION=Object.freeze({'帮忙速度S':.07,'帮忙速度M':.14});
   const PROBABILITY_BOOST=Object.freeze({'食材概率S':.18,'食材概率M':.36,'技能概率S':.18,'技能概率M':.36});
+  const BERRY_BURST_SKILL_IDS=new Set([17,21,35]);
+  const ROLE_MULTIPLIER_CEILINGS=Object.freeze({berry:2.37,ingredient:2.60,skill:2.32,'berry-burst':2.24});
   const round=(value,digits=1)=>{const scale=10**digits;return Math.round((Number(value)+Number.EPSILON)*scale)/scale};
   const clamp=(value,min=0,max=100)=>Math.min(max,Math.max(min,value));
   const splitSubskills=value=>{const skills=(Array.isArray(value)?value:String(value||'').split('；')).slice(0,5);while(skills.length<5)skills.push('—');return skills};
@@ -148,25 +150,89 @@
       ...selected.provisionalItems,
       ...(!route.complete&&focusRole==='ingredient'?['食材栏尚未全部开放，暂不扣路线系数']:[])
     ])];
+    const hasHelpingBonus=rawSkills.includes('帮手奖励'),hasBerryFinding=rawSkills.includes('树果数量S'),mainSkillId=Number(finalRecord&&finalRecord.mainSkill&&finalRecord.mainSkill.id),berryBurst=focusRole==='berry'&&(BERRY_BURST_SKILL_IDS.has(mainSkillId)||/树果骤增/.test(String(box&&box.main||''))),modelRole=berryBurst?'berry-burst':focusRole;
+    const multiplier=round(1+selected.adjustedScore/100*((ROLE_MULTIPLIER_CEILINGS[modelRole]||2)-1),2),grade=gradeMultiplier(modelRole,multiplier,{hasHelpingBonus,hasBerryFinding,ingredientPattern:route.pattern});
     return {
-      model:'mythical-role-focus',score:selected.adjustedScore,focusRole,focusRoleLabel:selected.label,focusSelection:explicitFocus?'manual':'automatic-best-fit',channels,
+      model:'mythical-role-focus',score:multiplier,multiplier,currentMultiplier:multiplier,potentialMultiplier:multiplier,grade,qualityScore:selected.adjustedScore,focusRole,focusRoleLabel:selected.label,focusSelection:explicitFocus?'manual':'automatic-best-fit',channels,
       revealedSubskillCount,unopenedSubskillLevels,subskillRaw:selected.subskillRaw,subskillRawBeforeClamp:selected.subskillRaw,subskillLegalMaximum:selected.subskillLegalMaximum,subskillLegalMaximumBuild:selected.subskillLegalMaximumBuild,
       subskillScore:selected.score,subskillContribution:selected.adjustedScore,natureRaw:0,natureScore:0,natureContribution:0,fixedNature:true,natureNote:'幻之宝可梦性格固定，不参与可洗个体差异',
       individualBeforePattern:selected.score,ingredientPattern:route.pattern,ingredientPatternCoefficient:route.coefficient,ingredientRouteComplete:route.complete,ingredientRouteScope:'ingredient-channel-only',
-      interactionMultiplier:selected.interactionMultiplier,interactionBonus:selected.interactionBonus,slots:selected.slots,provisional:provisionalItems.length>0,provisionalItems
+      interactionMultiplier:selected.interactionMultiplier,interactionBonus:selected.interactionBonus,slots:selected.slots,hasHelpingBonus,hasBerryFinding,berryBurst,provisional:provisionalItems.length>0,provisionalItems
     };
   }
 
-  function individualScore(box,role,finalRecord){
-    if(!['berry','ingredient','skill','all'].includes(role))return null;
+  function skillSet(rawSkills,potential){
+    return (potential?seedMaximizedSubskills(rawSkills).map(slot=>slot.scoredSkill):splitSubskills(rawSkills));
+  }
+  function skillEffects(skills){
+    let speedReduction=0,ingredientBoost=0,skillBoost=0;
+    skills.forEach(skill=>{
+      if(skill==='帮手奖励')speedReduction+=.05;
+      speedReduction+=HELP_SPEED_REDUCTION[skill]||0;
+      if(skill.startsWith('食材概率'))ingredientBoost+=PROBABILITY_BOOST[skill]||0;
+      if(skill.startsWith('技能概率'))skillBoost+=PROBABILITY_BOOST[skill]||0;
+    });
+    return {speedReduction:Math.min(.35,speedReduction),ingredientBoost,skillBoost,hasHelpingBonus:skills.includes('帮手奖励'),hasBerryFinding:skills.includes('树果数量S')};
+  }
+  function effectiveSkillProbability(probability,pityCount){
+    const p=clamp(Number(probability)||0,0,.999999),pity=Math.max(1,Math.round(Number(pityCount)||1));
+    return p>0?p/(1-(1-p)**pity):0;
+  }
+  function berryBurstEquivalent(mainSkillId){
+    if(Number(mainSkillId)===17)return 21*(1+.186*2)+5*4*.625;
+    if(Number(mainSkillId)===35)return 58+5*4*.625;
+    return 30+5*4*.625;
+  }
+  function multiplierFor(role,skills,natureText,finalRecord){
+    const effects=skillEffects(skills),nature=natureScoring.natureModifiers(natureText||'认真'),baseIngredient=clamp(Number(finalRecord&&finalRecord.ingredientRate)||0,0,.999999),baseSkill=clamp((Number(finalRecord&&finalRecord.skillRatePct)||0)/100,0,.999999),baseBerries=Math.max(1,Number(finalRecord&&finalRecord.baseBerryCount)||1);
+    const speed=1/(nature.helpInterval*(1-effects.speedReduction)),ingredientProbability=clamp(baseIngredient*nature.ingredientChance*(1+effects.ingredientBoost),0,.999999);
+    if(role==='ingredient')return speed*(baseIngredient>0?ingredientProbability/baseIngredient:1);
+    if(role==='berry')return speed*((1-ingredientProbability)/(1-baseIngredient))*((baseBerries+(effects.hasBerryFinding?1:0))/baseBerries);
+    const pity=Math.max(1,Math.ceil(144000/Math.max(1,Number(finalRecord&&finalRecord.helpFrequencyBaseSec)||2400))),skillProbability=clamp(baseSkill*nature.skillChance*(1+effects.skillBoost),0,.999999),effective=effectiveSkillProbability(skillProbability,pity),blankEffective=effectiveSkillProbability(baseSkill,pity);
+    if(role==='skill')return speed*(blankEffective>0?effective/blankEffective:1);
+    if(role==='berry-burst'){
+      const burst=berryBurstEquivalent(finalRecord&&finalRecord.mainSkill&&finalRecord.mainSkill.id),candidate=(1-ingredientProbability)*(baseBerries+(effects.hasBerryFinding?1:0))+effective*burst,blank=(1-baseIngredient)*baseBerries+blankEffective*burst;
+      return speed*(blank>0?candidate/blank:1);
+    }
+    return 1;
+  }
+  function baseGrade(role,multiplier,hasHelpingBonus){
+    if(role==='ingredient'){
+      if(hasHelpingBonus)return multiplier>=1.9?'S':multiplier>=1.7?'A':multiplier>=1.6?'B':'C';
+      return multiplier>=2?'S':multiplier>=1.75?'A':multiplier>=1.63?'B':'C';
+    }
+    if(role==='berry-burst')return multiplier>=2?'S':multiplier>=1.85?'A':multiplier>=1.6?'B':'C';
+    if(role==='berry'){
+      if(hasHelpingBonus)return multiplier>=2?'S':multiplier>=1.84?'A':multiplier>=1.7?'B':'C';
+      return multiplier>=2?'A':multiplier>=1.84?'B':'C';
+    }
+    if(hasHelpingBonus)return multiplier>=2?'S':multiplier>=1.7?'A':multiplier>=1.6?'B':'C';
+    return multiplier>=1.84?'A':multiplier>=1.75?'B':'C';
+  }
+  function gradeMultiplier(role,multiplier,options={}){
+    if(['berry','berry-burst'].includes(role)&&!options.hasBerryFinding)return 'C';
+    let grade=baseGrade(role,Number(multiplier)||0,Boolean(options.hasHelpingBonus));
+    if(role==='ingredient'){
+      const pattern=String(options.ingredientPattern||'');
+      if(pattern==='ABB'&&['S','A'].includes(grade))grade='B';
+      else if(pattern&&pattern!=='AAA'&&pattern!=='ABB')grade='C';
+    }
+    return grade;
+  }
+  function outputMultiplierScore(box,role,finalRecord){
+    const rawSkills=box&&box.subskills||box&&box.subs||'',currentRawSkills=box&&box.effectiveSubs||rawSkills,currentSkills=skillSet(currentRawSkills,false),potentialSkills=skillSet(rawSkills,true),actualNature=box&&box.nature||'认真';
+    const currentMultiplier=multiplierFor(role,currentSkills,actualNature,finalRecord),potentialWithNature=multiplierFor(role,potentialSkills,actualNature,finalRecord),neutralPotential=multiplierFor(role,potentialSkills,'认真',finalRecord),potentialMultiplier=Math.max(potentialWithNature,neutralPotential),potentialEffects=skillEffects(potentialSkills),pattern=role==='ingredient'?ingredientPattern(box&&box.ingredients):'不适用',grade=gradeMultiplier(role,potentialMultiplier,{...potentialEffects,ingredientPattern:pattern});
+    return {
+      model:'blank-output-multiplier',score:round(potentialMultiplier,2),multiplier:round(potentialMultiplier,4),currentMultiplier:round(currentMultiplier,4),potentialMultiplier:round(potentialMultiplier,4),grade,role,hasHelpingBonus:potentialEffects.hasHelpingBonus,hasBerryFinding:potentialEffects.hasBerryFinding,
+      ingredientPattern:pattern,ingredientPatternCoefficient:pattern==='AAA'?1:pattern==='ABB'?.85:0,routeRule:role==='ingredient'?(pattern==='AAA'?'长期路线':pattern==='ABB'?'最高 B 级':'长期评价为 C 级'):'不适用',mintApplied:neutralPotential>potentialWithNature+1e-9,seedApplied:seedMaximizedSubskills(rawSkills).some(slot=>slot.seedUpgraded),currentSkills,potentialSkills,
+      reference:'同最终形态、同食材路线、同主技能等级、及时收菜；白板=1.00',provisional:false,provisionalItems:[]
+    };
+  }
+
+  function individualScore(box,role,finalRecord,options={}){
+    if(!['berry','ingredient','skill','berry-burst','all'].includes(role))return null;
     if(role==='all')return allRounderIndividualScore(box,finalRecord);
-    const scored=scoreSubskillSlots(box&&box.subskills||box&&box.subs||'',role,finalRecord),legalMaximum=legalSubskillMaximum(role,finalRecord);
-    const subskillRawBeforeClamp=scored.raw,subskillRaw=round(clamp(subskillRawBeforeClamp)),subskillScore=round(clamp(subskillRawBeforeClamp/legalMaximum.raw*100)),subskillContribution=round(subskillScore*SUBSKILL_WEIGHT);
-    const natureRaw=natureScoring.natureScore(role,box&&box.nature,['berry','all'].includes(role)?Number(finalRecord&&finalRecord.ingredientRate):undefined);
-    const natureScoreBeforeRound=clamp(natureRaw/NATURE_POSITIVE_BENCHMARK*100,-100,100),natureScore=round(natureScoreBeforeRound),natureContribution=round(natureScoreBeforeRound*NATURE_WEIGHT);
-    const routeRole=role==='ingredient'||role==='all',individualBeforePattern=round(clamp(subskillContribution+natureContribution)),pattern=routeRole?ingredientPattern(box&&box.ingredients):'不适用',patternCoefficient=routeRole?(INGREDIENT_PATTERN_COEFFICIENTS[pattern]??INGREDIENT_PATTERN_COEFFICIENTS.ABC):1,score=round(individualBeforePattern*patternCoefficient);
-    const provisionalItems=[...new Set([...scored.slots.filter(slot=>slot.fitStatus.startsWith('provisional')).map(slot=>slot.scoredSkill),...legalMaximum.provisionalItems.map(skill=>`合法满分基准：${skill}`)])];
-    return {score,subskillRaw,subskillRawBeforeClamp:round(subskillRawBeforeClamp),subskillLegalMaximum:legalMaximum.raw,subskillLegalMaximumBuild:legalMaximum.build,subskillScore,subskillContribution,natureRaw,natureScore,natureContribution,individualBeforePattern,ingredientPattern:pattern,ingredientPatternCoefficient:patternCoefficient,interactionMultiplier:scored.interaction.multiplier,interactionBonus:scored.interaction.score,slots:scored.slots,provisional:provisionalItems.length>0,provisionalItems};
+    return outputMultiplierScore(box,role,finalRecord,options);
   }
 
   return Object.freeze({
@@ -174,6 +240,7 @@
     naturePositiveBenchmark:NATURE_POSITIVE_BENCHMARK,slotLevels:SLOT_LEVELS,slotWeights:SLOT_WEIGHTS,
     ingredientPatternCoefficients:INGREDIENT_PATTERN_COEFFICIENTS,legalSubskillMaxBuilds:LEGAL_SUBSKILL_MAX_BUILDS,allRounderFocusLabels:ALL_ROUNDER_FOCUS_LABELS,
     subskillFitTable:SUBSKILL_FIT,resourceSubskillFit:RESOURCE_SUBSKILL_FIT,helpSpeedReduction:HELP_SPEED_REDUCTION,probabilityBoost:PROBABILITY_BOOST,
-    round,clamp,splitSubskills,seedMaximizedSubskills,ingredientPattern,subskillFit,interactionBonus,scoreSubskillSlots,legalSubskillMaximum,allRounderIngredientRoute,allRounderChannelScore,allRounderIndividualScore,individualScore
+    berryBurstSkillIds:BERRY_BURST_SKILL_IDS,roleMultiplierCeilings:ROLE_MULTIPLIER_CEILINGS,
+    round,clamp,splitSubskills,seedMaximizedSubskills,ingredientPattern,subskillFit,interactionBonus,scoreSubskillSlots,legalSubskillMaximum,allRounderIngredientRoute,allRounderChannelScore,allRounderIndividualScore,skillEffects,effectiveSkillProbability,berryBurstEquivalent,multiplierFor,gradeMultiplier,outputMultiplierScore,individualScore
   });
 });
