@@ -390,7 +390,7 @@
         if(record.boxId!==activeBox)return false;
         if(mode!=='all'&&usageStatus(record)!==mode)return false;
         const lv10=effectiveSubskills(mon)[0]||'—';
-        return !query||['#'+(mon.pokedexId||''),'个体#'+mon.id,mon.name,mon.nickname,mon.customNumber,mon.shiny,mon.usageLabel,lv10].join(' ').toLowerCase().includes(query);
+        return !query||['#'+(mon.pokedexId||''),'个体#'+mon.id,mon.name,mon.nickname,mon.shiny,mon.usageLabel,lv10].join(' ').toLowerCase().includes(query);
       }).sort(function(a,b){return Number(a.pokedexId||a.speciesId||Number.MAX_SAFE_INTEGER)-Number(b.pokedexId||b.speciesId||Number.MAX_SAFE_INTEGER)||Number(a.id)-Number(b.id)});
     }
     function renderTabs(){
@@ -429,7 +429,7 @@
         card.addEventListener('click',function(){toggleSelected(mon.id)});
         const head=element('span','box-manager-card-head');
         head.append(element('span','box-manager-card-number','图鉴 #'+String(mon.pokedexId||mon.speciesId||'?').padStart(3,'0')+' · 个体 #'+mon.id),element('span','box-manager-card-check',pressed?'✓':''));
-        const name=element('strong','',mon.nickname||mon.name);if(mon.nickname)name.title=mon.name;if(mon.customNumber)name.append(element('small','box-manager-custom-number',' · '+mon.customNumber));
+        const name=element('strong','',mon.nickname||mon.name);if(mon.nickname)name.title=mon.name;
         const badges=element('span','box-manager-card-badges');
         if(mon.shiny==='是')badges.append(element('span','shiny','★ 闪光'));
         badges.append(element('span','box-manager-usage '+usage.status,usage.label));

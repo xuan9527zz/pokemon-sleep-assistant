@@ -63,6 +63,32 @@ assert.ok(actualState.intervalSec < 3000,'实际速度S→M应缩短当前间隔
 assert.strictEqual(actualState.inventory,26,'实际持有S→M应在原始持有上限上增加6');
 assert.deepStrictEqual(levels.unlockedSubskills(actualUpgrade,30),['帮忙速度M','持有上限M']);
 
+const evolutionCatalog = {pokemon:[
+  {id:'1',name:'妙蛙种子',stage:1,helpFrequencyBaseSec:4400,carryLimitBase:11,defaultFinalId:'3',finalOptions:['3'],mainSkill:{name:'食材获取S'},evolution:{next:[{id:'2'}]}},
+  {id:'2',name:'妙蛙草',stage:2,helpFrequencyBaseSec:3300,carryLimitBase:14,defaultFinalId:'3',finalOptions:['3'],mainSkill:{name:'食材获取S'},evolution:{next:[{id:'3'}]}},
+  {id:'3',name:'妙蛙花',stage:3,helpFrequencyBaseSec:2800,carryLimitBase:17,defaultFinalId:'3',finalOptions:['3'],mainSkill:{name:'食材获取S'},evolution:{next:[]}},
+  {id:'133',name:'伊布',stage:1,helpFrequencyBaseSec:3700,carryLimitBase:12,defaultFinalId:'700',finalOptions:['134','700'],mainSkill:{name:'食材获取S'},evolution:{next:[{id:'134'},{id:'700'}]}},
+  {id:'134',name:'水伊布',stage:2,helpFrequencyBaseSec:3100,carryLimitBase:13,defaultFinalId:'134',finalOptions:['134'],mainSkill:{name:'食材获取S'},evolution:{next:[]}},
+  {id:'700',name:'仙子伊布',stage:2,helpFrequencyBaseSec:2600,carryLimitBase:15,defaultFinalId:'700',finalOptions:['700'],mainSkill:{name:'活力全体疗愈S'},evolution:{next:[]}}
+]};
+const bulbasaur={id:'e1',recordId:'record-e1',speciesId:'1',finalFormId:'3',name:'妙蛙种子',lv:'12',interval:'1:00:00',inv:'11',main:'食材获取S Lv.1',subs:'—；—；—；—；—',nature:'认真'};
+assert.strictEqual(levels.evolutionTarget(bulbasaur,evolutionCatalog).target.name,'妙蛙草');
+const ivysaur=levels.evolutionRecord(bulbasaur,evolutionCatalog,'2026-09-21T00:00:00.000Z');
+assert.strictEqual(ivysaur.speciesId,'2');
+assert.strictEqual(ivysaur.name,'妙蛙草');
+assert.strictEqual(ivysaur.finalFormId,'3');
+assert.strictEqual(ivysaur.main,'食材获取S Lv.2');
+assert.strictEqual(ivysaur.interval,'45:00');
+assert.strictEqual(ivysaur.inv,'19');
+const venusaurEvolution=levels.evolutionRecord(ivysaur,evolutionCatalog);
+assert.strictEqual(venusaurEvolution.name,'妙蛙花');
+assert.strictEqual(venusaurEvolution.main,'食材获取S Lv.3');
+assert.strictEqual(venusaurEvolution.inv,'27');
+assert.strictEqual(levels.evolutionRecord(venusaurEvolution,evolutionCatalog),null);
+const eevee={...bulbasaur,speciesId:'133',finalFormId:'700',name:'伊布',interval:'1:01:40',inv:'12'};
+assert.strictEqual(levels.evolutionTarget(eevee,evolutionCatalog).target.name,'仙子伊布','分支进化必须遵循已选择的最终形态');
+assert.strictEqual(levels.evolutionRecord(eevee,evolutionCatalog).main,'活力全体疗愈S Lv.2');
+
 const html = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf8');
 const rawMatch = html.match(/const raw=`([\s\S]*?)`;\s*const cols=/);
 assert.ok(rawMatch, '应能读取盒子原始数据');

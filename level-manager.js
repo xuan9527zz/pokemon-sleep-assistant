@@ -40,6 +40,40 @@
     return hours?`${hours}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`:`${minutes}:${String(seconds).padStart(2,'0')}`;
   }
 
+  function mainSkillCap(name){
+    if(/梦之碎片获取S|波导弹|十项全能/.test(String(name||'')))return 8;
+    if(/帮手支援S|能量填充[SM]|蓄力|噩梦|食材获取S|食材精选S|料理强化S|料理辅助S/.test(String(name||'')))return 7;
+    return 6;
+  }
+
+  function catalogRows(catalog){return catalog&&Array.isArray(catalog.pokemon)?catalog.pokemon:Array.isArray(catalog)?catalog:[]}
+
+  function speciesForPokemon(mon,catalog){
+    const rows=catalogRows(catalog),speciesId=String(mon&&mon.speciesId||'');
+    return rows.find(record=>String(record.id)===speciesId)||rows.find(record=>record.name===String(mon&&mon.name||''))||null;
+  }
+
+  function evolutionTarget(mon,catalog){
+    const rows=catalogRows(catalog),current=speciesForPokemon(mon,catalog),next=current&&current.evolution&&Array.isArray(current.evolution.next)?current.evolution.next:[];
+    if(!current||!next.length)return null;
+    const byId=new Map(rows.map(record=>[String(record.id),record])),candidates=next.map(item=>byId.get(String(item.id))).filter(Boolean);
+    if(!candidates.length)return null;
+    const desired=String(mon&&mon.finalFormId||current.defaultFinalId||'');
+    const target=candidates.find(record=>String(record.id)===desired)||candidates.find(record=>(record.finalOptions||[]).map(String).includes(desired))||(candidates.length===1?candidates[0]:null);
+    if(!target)return null;
+    const targetFinals=(target.finalOptions||[]).map(String),finalFormId=targetFinals.includes(desired)?desired:String(target.defaultFinalId||targetFinals[0]||target.id);
+    return {current,target,finalFormId};
+  }
+
+  function evolutionRecord(mon,catalog,updatedAt=new Date().toISOString()){
+    const route=evolutionTarget(mon,catalog);if(!route)return null;
+    const {current,target,finalFormId}=route,currentInterval=parseInterval(mon&&mon.interval),currentCarry=Number(mon&&mon.inv);
+    const oldMainLevel=Math.max(1,Number(String(mon&&mon.main||'').match(/Lv\.(\d+)/)?.[1])||Number(current.stage)||1),skillName=String(target.mainSkill&&target.mainSkill.name||String(mon&&mon.main||'').replace(/\s*Lv\.\d+.*$/,'')),mainLevel=Math.min(mainSkillCap(skillName),oldMainLevel+1);
+    const currentBase=Number(current.helpFrequencyBaseSec),targetBase=Number(target.helpFrequencyBaseSec),interval=Number.isFinite(currentInterval)&&currentBase>0&&targetBase>0?formatInterval(currentInterval*targetBase/currentBase):String(mon&&mon.interval||'');
+    const carryGain=(Number(target.carryLimitBase)||0)-(Number(current.carryLimitBase)||0)+5,inventory=Number.isFinite(currentCarry)?Math.max(1,Math.round(currentCarry+carryGain)):String(mon&&mon.inv||'');
+    return {...mon,speciesId:String(target.id),finalFormId,name:target.name,interval,inv:String(inventory),main:`${skillName} Lv.${mainLevel}`,updatedAt};
+  }
+
   function captureBaseline(mon){
     if(!mon||typeof mon!=='object')return null;
     if(baselineByPokemon.has(mon))return baselineByPokemon.get(mon);
@@ -174,7 +208,7 @@
     return node;
   }
 
-  function mount({pokemon,initialState,onChange}={}){
+  function mount({pokemon,initialState,onChange,catalog=root&&root.POKEMON_SLEEP_CATALOG,dataApi=root&&root.POKEMON_SLEEP_DATA}={}){
     if(typeof document==='undefined')return null;
     const mons=Array.isArray(pokemon)?pokemon:[];
     const byId=new Map(mons.map(mon=>[String(mon.id),mon]));
@@ -239,7 +273,7 @@
         if(scope==='priority'&&mon.priority!=='重点培养')return false;
         if(scope==='recent'&&!overrides[mon.id]?.updatedAt)return false;
         const lv10=String(mon.effectiveSubs||mon.subs||'').split('；')[0]||'—';
-        return !query||[`#${mon.id}`,mon.id,mon.name,mon.nickname,mon.customNumber,mon.shiny,mon.priority,lv10].join(' ').toLowerCase().includes(query);
+        return !query||[`#${mon.id}`,mon.id,mon.name,mon.nickname,mon.shiny,mon.priority,lv10].join(' ').toLowerCase().includes(query);
       });
       if(scope==='recent')rows.sort((a,b)=>String(overrides[b.id]?.updatedAt||'').localeCompare(String(overrides[a.id]?.updatedAt||''))||Number(a.id)-Number(b.id));
       else rows.sort((a,b)=>Number(a.id)-Number(b.id));
@@ -255,7 +289,7 @@
 
     function renderRow(mon){
       const row=element('article',`level-manager-row${drafts.has(mon.id)?' changed':''}`),identity=element('div','level-manager-identity');
-      const nameLine=element('div','level-manager-name'),number=element('span','level-manager-number',`#${mon.id}${mon.customNumber?` · ${mon.customNumber}`:''}`),name=element('strong','pokemon-name-text',mon.nickname||mon.name);if(mon.nickname)name.title=mon.name;
+      const nameLine=element('div','level-manager-name'),number=element('span','level-manager-number',`#${mon.id}`),name=element('strong','pokemon-name-text',mon.nickname||mon.name);if(mon.nickname)name.title=mon.name;
       nameLine.append(number,name);
       if(mon.shiny==='是')nameLine.append(element('span','level-manager-shiny','★ 闪光'));
       const lv10=String(mon.effectiveSubs||mon.subs||'').split('；')[0]||'—';
@@ -265,6 +299,10 @@
       input.setAttribute('aria-label',`${mon.name}新等级`);
       input.addEventListener('change',()=>{if(!String(input.value).trim()){input.value=String(draftLevel(mon));return}setDraft(mon,input.value)});
       controls.append(levelButton('−1',-1,mon),input,levelButton('+1',1,mon),levelButton('+5',5,mon));
+      const route=singleId&&dataApi&&evolutionTarget(mon,catalog);
+      if(route){
+        const evolveButton=element('button','level-manager-evolve',`进化为 ${route.target.name}`);evolveButton.type='button';evolveButton.addEventListener('click',()=>evolve(mon));controls.append(evolveButton);
+      }
       const result=element('small','level-manager-result');
       if(drafts.has(mon.id)){
         const state=calculateLevelState(mon,drafts.get(mon.id)),base=Number(mon.lv),newUnlocks=state.unlockedSubskills.filter(skill=>!unlockedSubskills(mon,base).includes(skill));
@@ -305,6 +343,16 @@
     function persist(){
       const levelsOk=writeJson(storage,STORAGE_KEY,overrides),historyOk=writeJson(storage,HISTORY_KEY,history);
       return levelsOk&&historyOk;
+    }
+
+    function evolve(mon){
+      const beforeLevel=Number(mon.lv),nextLevel=draftLevel(mon),levelState=nextLevel===beforeLevel?null:calculateLevelState(mon,nextLevel),source=levelState?{...mon,lv:String(levelState.level),interval:levelState.interval,inv:String(levelState.inventory)}:mon,record=evolutionRecord(source,catalog);
+      if(!record||!dataApi||typeof dataApi.upsertPokemon!=='function')return;
+      const fromSpeciesId=String(mon.speciesId||''),fromName=mon.name,mainBefore=mon.main,result=dataApi.upsertPokemon(record,{boxId:mon.boxId||'pending',battleEligible:mon.battleEligible!==false,collectionIntent:Boolean(mon.collectionIntent)});
+      if(!result||!result.record){messageRoot.hidden=false;messageRoot.textContent='进化保存失败，请稍后重试。';return}
+      Object.assign(mon,result.record);baselineByPokemon.delete(mon);captureBaseline(mon);delete overrides[mon.id];drafts.delete(mon.id);history=history.filter(entry=>![...entry.before,...entry.after].some(item=>item.id===mon.id));
+      const persisted=persist();title.textContent=`更新 #${mon.id} ${mon.name}等级`;renderList();messageRoot.hidden=false;messageRoot.textContent=`已进化为 ${mon.name}，主技能升至 ${mon.main.match(/Lv\.\d+/)?.[0]||'下一等级'}${persisted?'':'；浏览器未开放本地存储，刷新后可能失效'}`;
+      if(typeof onChange==='function')onChange([{id:mon.id,type:'evolution',fromSpeciesId,toSpeciesId:mon.speciesId,fromName,toName:mon.name,before:beforeLevel,after:Number(mon.lv),mainBefore,mainAfter:mon.main}],{source:'evolution'});
     }
 
     function saveDrafts(){
@@ -355,7 +403,7 @@
 
   return {
     MIN_LEVEL,MAX_LEVEL,SUBSKILL_LEVELS,STORAGE_KEY,HISTORY_KEY,MAX_HISTORY,
-    normalizeLevel,clampLevel,parseInterval,formatInterval,captureBaseline,levelSpeedFactor,
+    normalizeLevel,clampLevel,parseInterval,formatInterval,mainSkillCap,catalogRows,speciesForPokemon,evolutionTarget,evolutionRecord,captureBaseline,levelSpeedFactor,
     unlockedSubskills,helpingSpeedReduction,inventoryBonus,calculateLevelState,applyLevel,
     normalizeOverrides,normalizeHistory,applyOverrides,applyStored,mount
   };

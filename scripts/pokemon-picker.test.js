@@ -9,7 +9,7 @@ const catalog={pokemon:[{id:'bear',name:'童偶熊',pokedexId:759}]};
 const mon={id:'60',speciesId:'bear',name:'童偶熊',nickname:'玉米熊',customNumber:'A-07',boxName:'食材盒',ingredients:'萌绿玉米×2',subs:'食材概率M'};
 
 assert.strictEqual(picker.displayName(mon),'玉米熊');
-assert.ok(picker.searchableText(mon).includes('a-07'));
+assert.ok(!picker.searchableText(mon).includes('a-07'),'废弃的自定义编号不应再参与搜索');
 assert.ok(picker.searchableText(mon).includes('萌绿玉米'));
 assert.ok(picker.iconUrl(mon,catalog).endsWith('/bear.png'));
 assert.ok(picker.iconUrl({speciesId:'9006',name:'海豹球（节日）'},{pokemon:[{id:'9006',name:'海豹球（佳节）',pokedexId:9006}]}).endsWith('/9006.png'),'特殊活动形态应使用本地独立图标');

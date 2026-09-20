@@ -16,18 +16,26 @@
 .box-management-state.inactive{color:#7a8494}
 .box-management-edit{width:max-content;border:0;background:none;color:#6045ad;padding:0;font:inherit;font-size:10px;font-weight:850;cursor:pointer}
 .box-management-edit:hover{text-decoration:underline}
-.box-page-table table{min-width:1300px!important}
+.box-page-table table{min-width:1360px!important}
 .box-page-table th:nth-child(1){width:64px!important}
-.box-page-table th:nth-child(2){width:90px!important}
+.box-page-table th:nth-child(2){width:150px!important}
 .box-page-table th:nth-child(3){width:105px!important}
-.box-page-table th:nth-child(4){width:92px!important}
-.box-page-table th:nth-child(5){width:92px!important}
-.box-page-table th:nth-child(6){width:68px!important}
-.box-page-table th:nth-child(7){width:150px!important}
+.box-page-table th:nth-child(4){width:82px!important}
+.box-page-table th:nth-child(5){width:98px!important}
+.box-page-table th:nth-child(6){width:84px!important}
+.box-page-table th:nth-child(7){width:162px!important}
 .box-page-table th:nth-child(8){width:115px!important}
-.box-page-table th:nth-child(9){width:195px!important}
-.box-page-table th:nth-child(10){width:115px!important}
-.box-page-table th:nth-child(11){width:94px!important}
+.box-page-table th:nth-child(9){width:150px!important}
+.box-page-table th:nth-child(10){width:105px!important}
+.box-page-table th:nth-child(11){width:125px!important}
+.box-page-table th:nth-child(4),.box-page-table th:nth-child(5),.box-page-table td.score-cell{text-align:center}
+.score-cell .score-badge{justify-items:center;text-align:center}
+.pokemon-name-cell .box-mon-identity>span:last-child{white-space:normal;line-height:1.35;overflow-wrap:anywhere}
+.nature-cell{white-space:normal}
+.nature-lines{display:grid;gap:5px}
+.nature-lines span{display:block;font-size:inherit;font-weight:inherit;line-height:inherit}
+.nature-lines .nature-up{color:#147347}
+.nature-lines .nature-down{color:#b44750}
 .actual-subskill{display:block}
 .actual-subskill-note{display:block;margin-top:1px;color:#7653bd;font-size:10px;font-weight:800}
 .main-skill-current>span{display:block}

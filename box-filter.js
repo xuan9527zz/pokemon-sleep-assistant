@@ -27,7 +27,7 @@
 
   function searchableText(mon,isBattleEligible){
     return [
-      mon&&mon.id,mon&&mon.pokedexId,mon&&mon.name,mon&&mon.nickname,mon&&mon.customNumber,
+      mon&&mon.id,mon&&mon.pokedexId,mon&&mon.name,mon&&mon.nickname,
       mon&&mon.boxName,mon&&mon.speciesTier&&`${mon.speciesTier}级`,mon&&mon.specialtyText,mon&&mon.ingredients,mon&&mon.main,mon&&mon.subs,
       mon&&mon.nature,mon&&mon.usageLabel,isBattleEligible(mon)?'参与实战':'暂不实战',mon&&mon.effectiveSubs,
       mon&&mon.cultivation&&mon.cultivation.label,mon&&mon.cultivation&&mon.cultivation.reason,

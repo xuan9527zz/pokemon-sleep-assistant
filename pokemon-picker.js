@@ -38,7 +38,7 @@
     return /^[\w-]+$/.test(speciesId)?`./assets/pokemon/${speciesId}.${extension}`:'';
   }
   function displayName(mon){return String(mon&&mon.nickname||'').trim()||String(mon&&mon.name||'未命名')}
-  function searchableText(mon){return normalize([mon.id,`#${mon.id}`,mon.name,mon.nickname,mon.customNumber,mon.boxName,mon.specialtyLabel,ROLE_LABELS[mon.specialty],mon.ingredients,mon.subs,mon.note].join(' '))}
+  function searchableText(mon){return normalize([mon.id,`#${mon.id}`,mon.name,mon.nickname,mon.boxName,mon.specialtyLabel,ROLE_LABELS[mon.specialty],mon.ingredients,mon.subs,mon.note].join(' '))}
   function createIcon(mon,{catalog,size='medium',document:doc=(root&&root.document)}={}){
     if(!doc)return null;const wrap=doc.createElement('span');wrap.className=`pokemon-sprite pokemon-sprite-${size}`;wrap.setAttribute('aria-hidden','true');const url=iconUrl(mon,catalog);
     if(url){const img=doc.createElement('img');img.src=url;img.alt='';img.loading='lazy';img.addEventListener('error',()=>{img.remove();wrap.textContent=String(mon&&mon.name||'?').slice(0,1)});wrap.append(img)}else wrap.textContent=String(mon&&mon.name||'?').slice(0,1);return wrap;

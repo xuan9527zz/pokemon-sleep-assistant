@@ -1,0 +1,17 @@
+.level-manager-evolve {
+  grid-column: 1 / -1;
+  min-height: 36px;
+  border: 1px solid #16754b;
+  border-radius: 9px;
+  background: #eaf8f0;
+  color: #12643f;
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.level-manager-evolve:hover {
+  background: #dff4e8;
+}
