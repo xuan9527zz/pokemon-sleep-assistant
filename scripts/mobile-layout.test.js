@@ -8,6 +8,7 @@ const projectRoot = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(projectRoot, 'mobile.css'), 'utf8');
 const weeklyCss = fs.readFileSync(path.join(projectRoot, 'weekly-planner.css'), 'utf8');
+const tierGuideCss = fs.readFileSync(path.join(projectRoot, 'species-tier-guide.css'), 'utf8');
 
 assert.ok(html.includes('href="./mobile.css'), '首页应加载移动端样式');
 assert.ok(html.includes('viewport-fit=cover'), 'iPhone安全区域适配缺失');
@@ -35,6 +36,7 @@ assert.ok(css.includes('.box-page-table{display:none!important}'), '手机端应
 assert.ok(css.includes('.mobile-box-list{display:grid'), '手机端应显示卡片列表');
 assert.ok(css.includes('.box-manager-dialog{width:100vw;height:100vh;height:100dvh'), '盒子管理应使用手机全屏界面');
 assert.ok(css.includes('.level-manager-dialog{width:100vw;height:100vh;height:100dvh'), '等级管理应使用手机全屏界面');
+assert.ok(tierGuideCss.includes('.species-tier-guide-dialog{width:100vw;height:100vh;height:100dvh'), '梯度图鉴应在手机使用全屏弹窗');
 assert.ok(css.includes('min-height:44px'), '主要触控控件应至少44px高');
 assert.ok(css.includes('input,select,textarea{font-size:16px!important}'), 'iOS输入控件应避免聚焦时自动放大');
 assert.ok(css.includes('@media(min-width:398px) and (max-width:406px)'), '缺少iPhone 16 Pro 402pt宽度专项规则');

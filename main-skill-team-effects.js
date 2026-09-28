@@ -168,7 +168,7 @@
     if(kind==='nightmare'){
       const recoveryByIndex=rows.map(row=>Number(row.mon&&row.mon.typeId)===NIGHTMARE.darkTypeId?0:-NIGHTMARE.nonDarkRecoveryPenalty),nonDark=recoveryByIndex.filter(value=>value<0).length;effect.recoveryByIndex=recoveryByIndex;effect.teamRecoveryPerUse=sum(recoveryByIndex);effect.productiveRecoveryPerUse=effect.teamRecoveryPerUse;effect.detail=`纯能量由噩梦本体计入；${nonDark} 名非恶属性队友各损失 ${NIGHTMARE.nonDarkRecoveryPenalty} 活力`;return effect;
     }
-    if(kind==='berry-zone'){effect.detail='精神击破的直接能量已计入；树果领域跨换队、跨日累积到 24% 上限';effect.pendingComponents.push('树果领域的整周芒芒果动态增益尚未折算进单日队伍能量');return effect}
+    if(kind==='berry-zone'){effect.detail='精神击破直接能量已计入；树果领域跨换队、跨日累积到 24%，整周增益请在本周作战台按实际上场顺序计算';return effect}
     if(kind==='ingredient-magnet'){effect.ingredientsPerUse=levelAt(INGREDIENT_MAGNET.countByLevel,safeLevel,INGREDIENT_MAGNET.maxLevel);effect.detail=`随机食材 ${effect.ingredientsPerUse} 个／次`;return effect}
     if(kind==='ingredient-draw'){effect.ingredientsPerUse=levelAt(INGREDIENT_DRAW.countByLevel,safeLevel,INGREDIENT_DRAW.maxLevel);effect.detail=`指定食材 ${effect.ingredientsPerUse} 个／次`;return effect}
     if(kind==='super-luck'){

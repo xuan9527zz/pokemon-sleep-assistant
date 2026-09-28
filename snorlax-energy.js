@@ -36,6 +36,7 @@
   const NIGHTMARE=Object.freeze({1:2640,2:3753,3:5178,4:7149,5:9870,6:13638,7:18515});
   const AURA_SPHERE=Object.freeze({1:200,2:285,3:393,4:542,5:748,6:1033,7:1501,8:2042});
   const PSYSTRIKE=Object.freeze({1:1408,2:2002,3:2762,4:3813,5:5264,6:7274});
+  const BERRY_ZONE=Object.freeze({maxPct:24,incrementPctByLevel:Object.freeze({1:.6,2:.8,3:1,4:1.2,5:1.6,6:2})});
   // Recipe level bonus percentages for Lv.1–70. The level bonus is rounded
   // against the recipe's Lv.1 strength before the area bonus is applied.
   const RECIPE_LEVEL_BONUS_PCT=Object.freeze([
@@ -138,8 +139,10 @@
     return {supported:true,kind,level:safeLevel,baseEnergy,actualEnergy};
   }
 
+  function berryZoneIncrementPct(level=1){return Number(BERRY_ZONE.incrementPctByLevel[clamp(Math.round(level),1,6)])||0}
+
   return Object.freeze({
-    BERRY_BASE_STRENGTH,ENERGY_CHARGE_S_FIXED,ENERGY_CHARGE_S_RANDOM,ENERGY_CHARGE_M,STOCKPILE,NIGHTMARE,AURA_SPHERE,PSYSTRIKE,RECIPE_LEVEL_BONUS_PCT,
-    berryStrengthAtLevel,percentageMultiplier,applyPercentageBonus,normalizeRecipeLevel,recipeLevelBonusPct,recipeLevelFromBonusPct,recipeStrengthAtLevel,recipeFinalEnergy,expectedRandomEnergy,expectedStockpileEnergy,directEnergyPerUse
+    BERRY_BASE_STRENGTH,ENERGY_CHARGE_S_FIXED,ENERGY_CHARGE_S_RANDOM,ENERGY_CHARGE_M,STOCKPILE,NIGHTMARE,AURA_SPHERE,PSYSTRIKE,BERRY_ZONE,RECIPE_LEVEL_BONUS_PCT,
+    berryStrengthAtLevel,percentageMultiplier,applyPercentageBonus,normalizeRecipeLevel,recipeLevelBonusPct,recipeLevelFromBonusPct,recipeStrengthAtLevel,recipeFinalEnergy,expectedRandomEnergy,expectedStockpileEnergy,directEnergyPerUse,berryZoneIncrementPct
   });
 });

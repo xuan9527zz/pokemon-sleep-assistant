@@ -59,7 +59,8 @@ assert.equal(effects.kindFor('精神击破（树果领域）',40),'berry-zone');
 const berryZone=effects.effectPerUse(0,rows([{id:40,name:'精神击破（树果领域）'}]),'berry-zone',6);
 assert.equal(berryZone.supported,true);
 assert.equal(berryZone.energyPerUse,0,'精神击破直接能量由能量模块统一结算，队伍效果不可重复计算');
-assert.ok(berryZone.pendingComponents.some(item=>item.includes('整周芒芒果动态增益')),'树果领域跨日动态收益必须明确保留待建模标记');
+assert.equal(berryZone.pendingComponents.length,0,'树果领域整周模型完成后不应继续显示待建模标记');
+assert.ok(berryZone.detail.includes('本周作战台'),'单队计算应引导到能处理跨队持续状态的整周模型');
 
 const resources=effects.effectPerUse(0,rows([{id:11,name:'料理强化S'}]),'cooking-power',7);
 assert.equal(resources.potSlotsPerUse,31);

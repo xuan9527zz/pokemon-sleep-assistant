@@ -24,6 +24,9 @@ assert.strictEqual(energy.recipeFinalEnergy({baseEnergy:1000,level:60,islandBonu
 assert.strictEqual(energy.directEnergyPerUse('能量填充M Lv.7', 2, 7, 60).actualEnergy, 10973);
 assert.ok(Math.abs(energy.directEnergyPerUse('能量填充S（随机）Lv.7', 5, 7, 0).baseEnergy - 4015.5) < .1);
 assert.equal(energy.directEnergyPerUse('精神击破（树果领域）Lv.6',40,6,0).baseEnergy,7274);
+assert.equal(energy.berryZoneIncrementPct(1),.6);
+assert.equal(energy.berryZoneIncrementPct(6),2);
+assert.equal(energy.BERRY_ZONE.maxPct,24);
 assert.ok(Math.abs(energy.directEnergyPerUse('蓄力（能量填充S）Lv.7', 16, 7, 0).baseEnergy - 4948) < 1);
 assert.strictEqual(energy.directEnergyPerUse('活力全体疗愈S Lv.6', 8, 6, 60).supported, false);
 

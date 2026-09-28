@@ -25,6 +25,18 @@ assert.equal(shifts.segments.some(segment=>segment.kind==='prepare'),true);
 assert.equal(shifts.segments.some(segment=>segment.kind==='tasty'),true);
 assert.equal(shifts.segments.some(segment=>segment.kind==='output'),true);
 assert.equal(shifts.segments.every((segment,index)=>index===0||segment.start>=shifts.segments[index-1].end),true,'换队表的时间段不能互相重叠');
+const zoneShifts=weekly.buildShiftSchedule(monday,24,4,0,0,6);
+assert.equal(zoneShifts.segments[0].kind,'berry-zone','超梦驻场必须固定排在周初');
+const zoneTimeline=weekly.simulateBerryZoneStages([
+  {kind:'berry-zone',hours:12,triggers:6,magoBerryEnergy:10000},
+  {kind:'output',hours:156,triggers:0,magoBerryEnergy:100000}
+],10,24,2);
+assert.equal(zoneTimeline.endPct,22);
+assert.equal(Math.round(zoneTimeline.bonusEnergy),23600,'领域应在超梦驻场期按平均层数、换下后按持续层数计算');
+const cappedZone=weekly.simulateBerryZoneStages([{kind:'berry-zone',hours:24,triggers:20,magoBerryEnergy:10000}],0,24,2);
+assert.equal(cappedZone.endPct,24);
+assert.equal(cappedZone.capReached,true);
+assert.ok(cappedZone.bonusEnergy<2400,'驻场中途才满层时不能把全段都按24%计算');
 
 const normalized=weekly.normalizeState({recipeType:'坏数据',activityKey:'bad',islandIndex:99,mealGoal:80,weekKey:'2026-08-31',completedMeals:['d0-m0','bad'],penaltyLines:{'萌绿之岛':19563553}},['特选苹果'],9,monday);
 assert.equal(normalized.recipeType,'咖喱／浓汤');
@@ -33,7 +45,7 @@ assert.equal(normalized.mealGoal,21);
 assert.deepEqual(normalized.completedMeals,['d0-m0']);
 assert.equal(normalized.goodCamp,false,'旧版单一好露营券开关迁移后不应误算为准备周当前采集增益');
 assert.equal(normalized.eventGoodCamp,true);
-assert.equal(normalized.schemaVersion,11);
+assert.equal(normalized.schemaVersion,12);
 assert.equal(normalized.simulationDays,7);
 assert.equal(normalized.simulationAutoTasty,true);
 assert.equal(normalized.simulationTastyTarget,70);
@@ -53,7 +65,9 @@ assert.equal(migratedSleepEnergy.currentSnorlaxStrength,5000000,'旧版睡前能
 assert.equal(Object.hasOwn(migratedSleepEnergy,'bedtimeSnorlaxStrength'),false,'迁移后不再保留第二个能量输入');
 const nextWeek=weekly.normalizeState(normalized,['特选苹果'],9,new Date(2026,8,7,12,0,0));
 assert.deepEqual(nextWeek.completedMeals,[]);
-assert.equal(nextWeek.lastCooked,null);
+assert.deepEqual(nextWeek.mealHistory,[]);
+assert.equal(nextWeek.berryZoneEnabled,false);
+assert.equal(nextWeek.recipeRecommendationMode,'energy');
 
 const recipes = [
   {id:1,name:'小料理',type:'沙拉',energy:1000,total:10,ingredients:[{name:'特选苹果',amount:10}]},
@@ -75,6 +89,10 @@ assert.equal(notCooked.ok,false);
 assert.deepEqual(notCooked.inventory,{'特选苹果':19},'库存不足时不得部分扣料');
 assert.deepEqual(weekly.recipeCompletionPatch({'特选苹果':8},lockedRecipe,{recipeLevels:{'1':20}}),{ingredientStock:{'特选苹果':8},recipeLevels:{'1':20,'4':1}},'首次做未解锁食谱时应同时登记为Lv.1');
 assert.deepEqual(weekly.recipeCompletionPatch({'特选苹果':8},recipes[0],{recipeLevels:{'1':20}}),{ingredientStock:{'特选苹果':8}},'已解锁食谱不应重置现有等级');
+assert.deepEqual(weekly.restoreRecipeIngredients({'特选苹果':5},{'特选苹果':20},800),{ok:true,inventory:{'特选苹果':25},restored:{'特选苹果':20},overflow:0},'撤销料理必须原样退回食材');
+assert.equal(weekly.restoreRecipeIngredients({'特选苹果':790},{'特选苹果':20},800).ok,false,'撤销不得静默突破仓库硬上限');
+assert.deepEqual(weekly.recipeUndoPatch({'特选苹果':25},{recipeId:'4',previousRecipeLevel:0},{recipeLevels:{'1':20,'4':1}}),{ingredientStock:{'特选苹果':25},recipeLevels:{'1':20}},'撤销首次料理必须恢复为未解锁');
+assert.deepEqual(weekly.rankRecipeRecommendations([...recipes,lockedRecipe],'沙拉',25,{'特选苹果':25},recipe=>recipe.energy,{mode:'unlock',isUnlocked:recipe=>recipe.id!==4}).map(row=>row.recipe.id),[4,2,1],'解锁优先模式应把可做的未解锁食谱放到最前');
 assert.equal(weekly.ACTIVITY_PROFILES.snapshot.archived,true);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.ingredientHelpBonus,1);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.skillTriggerMultiplier,1.5);
@@ -188,6 +206,18 @@ assert.ok(outputOnlyStage&&outputOnlyStage.breakdown,'活动周最终阶段必�
 const directOutput=teamPlanner.calculateTeam(outputOnlyStage.team,common.production,{goodCamp:true,energyProfile:'timeline',memberModifier:weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.cooking125,true),durationHours:outputOnlyStage.hours,islandBonusPct:50,islandProfile:'lapis',favoriteBerries:islandContext.berries,startEnergy:100,sleepScore:100,skillCollectionHours:4,collectBeforeSwap:true,exWeeklyEffect:'none'});
 assert.deepEqual(outputOnlyStage.breakdown,weekly.teamBreakdown(directOutput),'同一五人和同一设置在当前队伍与活动推演中必须逐项完全一致');
 assert.ok(Math.abs(cookingSimulation.ingredientRows[0].produced-(outputOnlyStage.breakdown.ingredients['特选苹果']||0))<.11,'活动周食材结算必须采用精确阶段结果，而不是早期线性估算');
+const mewtwo={...box[0],id:'mewtwo-box',name:'超梦',nickname:'测试超梦',speciesId:'150',finalFormId:'150',specialty:'skill',specialtyLabel:'技能手',berry:'芒芒果',berryId:11,lv:'70',interval:'38:20',catalogHelpFrequencyBaseSec:2300,inv:'24',ingredientRate:.16,skillRatePct:2.9,mainSkillId:40,main:'精神击破（树果领域）Lv.6',ingredients:'萌绿大豆×1／萌绿玉米×2／窝心洋芋×3',subs:'技能概率M；帮忙速度M；技能概率S；帮手奖励；持有上限L',nature:'慎重：技能↑ 食材↓'};
+const zoneSimulation=weekly.simulateActivityWeek({...common,pokemon:[...box,mewtwo],isSpecialPokemon:id=>id==='mewtwo-box'||special(box.find(mon=>String(mon.id)===String(id))||{}),activity:weekly.ACTIVITY_PROFILES.normal,targetRecipe:recipes[0],days:7,mealGoal:1,inventory:{'特选苹果':20},recipeEnergy:()=>1000,autoTasty:false,berryZoneEnabled:true,berryZoneMewtwoId:'mewtwo-box',berryZoneStartPct:0,berryZoneDeployHours:72,berryZoneAutoSwap:true});
+assert.equal(zoneSimulation.berryZone.enabled,true);
+assert.equal(zoneSimulation.stages[0].kind,'berry-zone');
+assert.ok(zoneSimulation.berryZone.expectedTriggers>0);
+assert.ok(zoneSimulation.berryZone.zoneBonusEnergy>0);
+assert.ok(zoneSimulation.berryZone.endPct<=24);
+assert.ok(zoneSimulation.stages.reduce((total,stage)=>total+stage.hours,0)<=168.01,'超梦驻场必须占用整周时长，不能额外叠加');
+const persistedZoneSimulation=weekly.simulateActivityWeek({...common,activity:weekly.ACTIVITY_PROFILES.normal,targetRecipe:recipes[0],days:1,mealGoal:1,inventory:{'特选苹果':20},recipeEnergy:()=>1000,autoTasty:false,berryZoneEnabled:true,berryZoneStartPct:12});
+assert.equal(persistedZoneSimulation.berryZone.enabled,true,'换下超梦后应允许只计算已有领域');
+assert.equal(persistedZoneSimulation.stages.some(stage=>stage.kind==='berry-zone'),false);
+assert.equal(persistedZoneSimulation.berryZone.endPct,12);
 const eventContext={...islandContext,island:{name:'萌绿之岛',kind:'普通岛'},berries:['金枕果','莓莓果','樱子果']};
 const eventSimulation=weekly.simulateActivityWeek({...common,context:eventContext,activity:weekly.ACTIVITY_PROFILES.mewtwo1,targetRecipe:recipes[0],days:1,mealGoal:1,inventory:{'特选苹果':20},recipeEnergy:()=>1000,islandBonusPct:35,islandProfile:'none',autoTasty:false});
 const eventStage=eventSimulation.stages.find(stage=>stage.kind==='output'),eventTeam=eventStage.team.map(mon=>({...mon,inv:String((Number(mon.inv)||0)+weekly.ACTIVITY_PROFILES.mewtwo1.carryBonus)})),eventSettings=eventSimulation.teamSettings;

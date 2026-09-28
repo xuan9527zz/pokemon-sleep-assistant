@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="./level-manager.css?v=20260921-1">
 <link rel="stylesheet" href="./level-manager-evolution.css?v=20260921-1">
 <link rel="stylesheet" href="./box-manager.css?v=20260921-4">
+<link rel="stylesheet" href="./species-tier-guide.css?v=20260929-1">
 <link rel="stylesheet" href="./pokemon-manager.css?v=20260921-1">
 <link rel="stylesheet" href="./cloud-sync.css?v=20260831-1">
 <link rel="stylesheet" href="./weekly-planner.css?v=20260913-4">
@@ -109,7 +110,7 @@
     <div class="weekly-berries" id="weeklyBerries" hidden></div>
   </div>
   <details class="weekly-settings" id="weeklyActivityTools"><summary>高级设置：道具与锅容量</summary><div class="weekly-settings-grid"><div class="weekly-field"><label for="weeklyPot">永久锅容量（同步个人设置）</label><input id="weeklyPot" type="number" min="1" max="81" inputmode="numeric" value="81" disabled></div><label class="weekly-check"><input id="weeklyGoodCamp" type="checkbox"><span>本周已启用好露营券（影响当前采集）</span></label><label class="weekly-check"><input id="weeklyEventGoodCamp" type="checkbox" checked><span>活动周计划启用好露营券（影响目标锅）</span></label><label class="weekly-check"><input id="weeklyTravelTicket" type="checkbox" checked><span>备有移动营地券（首日重抽料理）</span></label></div></details>
-  <details class="weekly-settings weekly-simulation-settings" open><summary>活动周完整推演器</summary><div class="weekly-simulation-controls"><div class="weekly-field"><label for="weeklySimulationDays">推演时长（1–14天）</label><input id="weeklySimulationDays" type="number" min="1" max="14" inputmode="numeric" value="7"></div><label class="weekly-check"><input id="weeklySimulationAutoTasty" type="checkbox" checked><span>允许推演器自动安排爆锅队（料理成功 S）</span></label><div class="weekly-field"><label for="weeklySimulationTastyTarget">爆锅目标加成（0–70%）</label><input id="weeklySimulationTastyTarget" type="number" min="0" max="70" step="1" inputmode="numeric" value="70"></div><div class="weekly-field"><label for="weeklySkillCollectionHours">点击收取间隔</label><select id="weeklySkillCollectionHours"><option value="1">1 小时</option><option value="2">2 小时</option><option value="4" selected>4 小时</option><option value="8">8 小时</option><option value="12">12 小时</option></select></div><label class="weekly-check"><input id="weeklyCollectBeforeSwitch" type="checkbox" checked><span>每次换队前先点击收取技能</span></label><div class="weekly-field"><label for="weeklyExEffect">EX 本周追加效果</label><select id="weeklyExEffect"><option value="none">非 EX／尚未选择</option><option value="berry">树果能量强化</option><option value="ingredient">食材帮忙＋1</option><option value="skill">主技能触发率×1.25</option></select></div><p>读取上方目标食谱／餐数、个人库存、岛屿与食谱等级；生产按五档活力逐 10 分钟推进。技能会储存到专长上限，只有点击才结算；换队前不收取会清空待触发技能。</p></div></details>
+  <details class="weekly-settings weekly-simulation-settings" open><summary>活动周完整推演器</summary><div class="weekly-simulation-controls"><div class="weekly-field"><label for="weeklySimulationDays">推演时长（1–14天）</label><input id="weeklySimulationDays" type="number" min="1" max="14" inputmode="numeric" value="7"></div><label class="weekly-check"><input id="weeklySimulationAutoTasty" type="checkbox" checked><span>允许推演器自动安排爆锅队（料理成功 S）</span></label><div class="weekly-field"><label for="weeklySimulationTastyTarget">爆锅目标加成（0–70%）</label><input id="weeklySimulationTastyTarget" type="number" min="0" max="70" step="1" inputmode="numeric" value="70"></div><div class="weekly-field"><label for="weeklySkillCollectionHours">点击收取间隔</label><select id="weeklySkillCollectionHours"><option value="1">1 小时</option><option value="2">2 小时</option><option value="4" selected>4 小时</option><option value="8">8 小时</option><option value="12">12 小时</option></select></div><label class="weekly-check"><input id="weeklyCollectBeforeSwitch" type="checkbox" checked><span>每次换队前先点击收取技能</span></label><div class="weekly-field"><label for="weeklyExEffect">EX 本周追加效果</label><select id="weeklyExEffect"><option value="none">非 EX／尚未选择</option><option value="berry">树果能量强化</option><option value="ingredient">食材帮忙＋1</option><option value="skill">主技能触发率×1.25</option></select></div><details class="weekly-berry-zone-settings"><summary>可选：超梦“树果领域”整周模型</summary><div class="weekly-berry-zone-controls"><label class="weekly-check"><input id="weeklyBerryZoneEnabled" type="checkbox"><span>把超梦安排在周初叠加芒芒果领域</span></label><div class="weekly-field"><label for="weeklyBerryZoneMewtwo">使用的超梦个体</label><select id="weeklyBerryZoneMewtwo"></select></div><div class="weekly-field"><label for="weeklyBerryZoneStart">周初已有领域（0–24%）</label><input id="weeklyBerryZoneStart" type="number" min="0" max="24" step="0.1" value="0"></div><div class="weekly-field"><label for="weeklyBerryZoneHours">最多驻场小时</label><input id="weeklyBerryZoneHours" type="number" min="0.5" max="168" step="0.5" value="72"></div><label class="weekly-check"><input id="weeklyBerryZoneAutoSwap" type="checkbox" checked><span>期望满层后自动换成常规队</span></label><p>按所选超梦的技能等级、触发率、收取间隔与实际队友计算；精神击破直接能量、驻场机会成本、芒芒果后续增益和换队后持续效果都会进入总数。</p></div></details><p>读取上方目标食谱／餐数、个人库存、岛屿与食谱等级；生产按五档活力逐 10 分钟推进。技能会储存到专长上限，只有点击才结算；换队前不收取会清空待触发技能。</p></div></details>
   <details class="weekly-settings weekly-sleep-settings"><summary>睡眠方案优化器</summary><div class="weekly-sleep-settings-grid"><div class="weekly-field"><label for="weeklyCurrentStrength">当前卡比兽能量</label><input id="weeklyCurrentStrength" type="number" min="0" max="999999999" step="1000" inputmode="numeric" value="0"></div><div class="weekly-field"><label for="weeklySleepType">研究睡眠类型</label><select id="weeklySleepType"><option value="balanced">综合平均</option><option value="dozing">浅浅入梦</option><option value="snoozing">安然入睡</option><option value="slumbering">深深入眠</option></select></div><div class="weekly-field"><label for="weeklySleepObjective">优化目标</label><select id="weeklySleepObjective"><option value="combined">梦之碎片＋研究EXP</option><option value="spawns">遇见总数</option><option value="shards">梦之碎片</option><option value="researchExp">研究EXP</option><option value="pokemon">指定宝可梦出现</option><option value="candy">指定进化系糖果</option></select></div><div class="weekly-field weekly-sleep-target-field" id="weeklySleepTargetField" hidden><label for="weeklySleepTargetSelect">指定宝可梦</label><select id="weeklySleepTargetSelect"></select><span>本周严选快捷选择</span><div id="weeklySleepTarget" class="weekly-sleep-targets" role="group" aria-label="本周严选目标"></div></div><p class="weekly-sleep-help">奖励目标会结合本岛收益减速线判断是否需要分睡；指定宝可梦和糖果目标会直接比较一次睡满与 18＋82 到 99＋1 的全部方案，不受惩罚线限制。下方严选卡片仍可一键带入。</p></div></details>
   <div class="weekly-inventory" id="weeklyInventory" hidden></div>
   <div class="weekly-save-line"><span class="weekly-save-stamp" id="weeklySaveStamp">设置与进度会自动保存并同步云端</span></div>
@@ -165,21 +166,7 @@
     <section class="current-team-saves" aria-labelledby="currentTeamSavesTitle"><div class="current-team-saves-head"><div><span>队伍收藏</span><h3 id="currentTeamSavesTitle">已保存队伍 <small id="currentTeamSavedCount">0／10</small></h3><p>保存五只个体及当前活力、好露营券设置；登录后会随盒子一起同步。</p></div><button id="currentTeamSave" type="button">保存当前队伍</button></div><p class="current-team-save-message" id="currentTeamSaveMessage" role="status" hidden></p><div class="current-team-saved-list" id="currentTeamSavedList"></div></section>
   </div></div></dialog>
 </section>
-<section class="panel event-guide" aria-labelledby="eventGuideTitle" data-page="events" hidden>
-  <div class="guide-head"><div><h2 id="eventGuideTitle">近期活动｜当前加成与收尾</h2><p>优先显示正在生效的好眠日，同时保留超梦活动的兑换截止时间和永久资料。</p></div><span class="guide-stamp">官方公告快照 · 2026-09-28</span></div>
-  <div class="event-current"><span id="currentEventStatus"><b>当前：</b>第 39 回好眠日前后夜进行中，持续至 9 月 29 日 03:59。</span><a id="currentEventLink" href="https://www.pokemonsleep.net/news/343430323231373034343933343635363034/" target="_blank" rel="noreferrer">好眠日公告</a></div>
-  <div class="event-overview">
-    <article class="event-block"><span class="event-step-no">01 · 当前倒计时</span><h3>第 39 回好眠日</h3><div class="event-countdown-state" id="eventCountdownState">距离前后夜结束</div><div class="event-countdown" id="eventCountdown"><div class="event-time"><b>--</b><span>天</span></div><div class="event-time"><b>--</b><span>小时</span></div><div class="event-time"><b>--</b><span>分钟</span></div><div class="event-time"><b>--</b><span>秒</span></div></div><div class="event-date">9 月 26 日 04:00—9 月 29 日 03:59 · 全部岛屿</div></article>
-    <article class="event-block"><span class="event-step-no">02 · 今日加成</span><h3>9 月 28 日｜满月后一夜</h3><div class="event-badges"><span class="event-badge area">全部岛屿</span><span class="event-badge">睡意之力 ×1.5</span><span class="event-badge">帮手睡眠 EXP ×2</span><span class="event-badge">睡眠点数＋500</span></div><ul class="event-facts"><li>更容易遇见尚未登录的睡姿；皮宝宝、皮皮与皮可西有机会闪光出现。</li><li>9 月 27 日满月夜才是睡意之力 ×2、帮手睡眠 EXP ×3、睡眠点数＋1000；当前前后夜不再套用这组数字。</li><li>本次没有料理、食材或帮忙速度加成；作战台只在睡眠方案中套用 ×1.5。</li></ul></article>
-  </div>
-  <article class="event-block event-mewtwo-wrap"><span class="event-step-no">03 · 新增图鉴资料</span><div class="event-mewtwo-profile"><img src="./assets/pokemon/150.png" alt="超梦"><div><h3>#150 超梦</h3><div class="event-badges"><span class="event-badge">技能手</span><span class="event-badge">芒芒果</span><span class="event-badge">安然入睡</span><span class="event-badge area">特殊宝可梦</span></div><p class="focus-line">基准帮忙 2300 秒，持有上限 24，食材率 16.0%，技能率 2.9%。食材为萌绿大豆（1／2／4）、萌绿玉米（Lv.30 ×2／Lv.60 ×3）与窝心洋芋（Lv.60 ×3）。</p></div></div><ul class="event-facts"><li>主技能「精神击破（树果领域）」Lv.1—6 直接能量为 1,408／2,002／2,762／3,813／5,264／7,274。</li><li>每次触发还会增强芒芒果，换队不消失、换岛才清除，累计上限 24%。本站已计直接能量；整周动态领域收益仍单独标注，不伪造静态分。</li><li>可常驻遇见于萌绿之岛、萌绿之岛 EX 与天青沙滩 EX；依旧受“队伍只能编入 1 只特殊宝可梦”限制。</li></ul></article>
-  <div class="event-plan">
-    <article class="event-block"><span class="event-step-no">04 · 今夜</span><h3>好眠日收官</h3><ol><li><strong>睡满优先：</strong>利用 ×1.5 睡意之力和帮手睡眠 EXP ×2；要不要分睡交给本周作战台按目标比较。</li><li><strong>闪光机会：</strong>想收藏皮宝宝进化系时，不需为了追活动效果改去特定岛屿。</li></ol></article>
-    <article class="event-block"><span class="event-step-no">05 · 活动收尾</span><h3>超梦兑换所</h3><ol><li><strong>10 月 1 日 03:59 前：</strong>用完超梦 DNA，优先确认超梦熏香、超梦饼干与限购种子。</li><li><strong>10 月 3 日 19:00：</strong>剩余超梦饼干自动转换为超级沙布蕾；超梦熏香可继续使用。</li></ol></article>
-    <article class="event-block"><span class="event-step-no">06 · 永久内容</span><h3>超梦后续培养</h3><ol><li><strong>图鉴已并入：</strong>新建或导入超梦个体后，会读取技能手面板与你指定的幻之／传说 B 梯级。</li><li><strong>组队思路：</strong>先触发树果领域后可换下超梦，再用芒芒果主产手放大持续收益；注意特殊宝可梦队伍名额。</li></ol></article>
-  </div>
-  <div class="event-sources">官方资料：<a href="https://www.pokemonsleep.net/news/343430323231373034343933343635363034/" target="_blank" rel="noreferrer">第 39 回好眠日</a>、<a href="https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/" target="_blank" rel="noreferrer">超梦活动与兑换截止</a>、<a href="https://www.pokemonsleep.net/en/news/343333373536323134383333313834373731/" target="_blank" rel="noreferrer">超梦登场公告</a>。概率与技能等级表为社区研究快照：<a href="https://wikiwiki.jp/poke_sleep/%E3%83%9F%E3%83%A5%E3%82%A6%E3%83%84%E3%83%BC" target="_blank" rel="noreferrer">超梦验证页</a>。</div>
-</section>
+<section class="panel event-guide" id="eventGuide" aria-labelledby="eventGuideTitle" data-page="events" hidden></section>
 <section class="panel island-guide" aria-labelledby="islandGuideTitle" data-page="islands" hidden>
   <div class="guide-head"><div><h2 id="islandGuideTitle">岛屿攻略｜当前盒子推荐</h2><p>按当前盒子动态生成：默认 1 个全体回复位＋4 个产能位；非回复技能手与特殊宝可梦必须通过预计产能比较才能进入主队。</p></div><span class="guide-stamp">9 个岛屿 · 数据快照 2026-08-23</span></div>
   <div class="island-tabs" id="islandTabs" role="tablist" aria-label="选择岛屿"></div>
@@ -210,7 +197,14 @@
   <div class="recipe-grid" id="recipeGrid" aria-live="polite"></div>
   <div class="guide-sources">食谱数据参考：<a href="https://pks.raenonx.cc/zh/meal" target="_blank" rel="noreferrer">RaenonX 食谱一览</a>，并参考 <a href="https://game8.jp/pokemonsleep/542649" target="_blank" rel="noreferrer">新版 Game8 食谱列表</a>交叉核对。网页使用本地数据文件，离线打开也能查询。</div>
 </section>
-<section class="panel box-page-head" data-page="box" aria-labelledby="boxPageTitle"><div><h2 id="boxPageTitle">宝可梦盒子</h2><p>搜索、筛选并比较当前盒子个体；点击表头可切换排序。</p></div><button id="pokemonComparisonOpen" type="button">双个体对比</button></section>
+<section class="panel box-page-head" data-page="box" aria-labelledby="boxPageTitle"><div><h2 id="boxPageTitle">宝可梦盒子</h2><p>搜索、筛选并比较当前盒子个体；点击表头可切换排序。</p></div><div class="box-page-head-actions"><button id="speciesTierGuideOpen" type="button">查看梯度图鉴</button><button id="pokemonComparisonOpen" type="button">双个体对比</button></div></section>
+<dialog class="species-tier-guide-dialog" id="speciesTierGuideDialog" aria-labelledby="speciesTierGuideTitle">
+  <div class="species-tier-guide-shell">
+    <header class="species-tier-guide-head"><div><span>SPECIES TIER DEX</span><h2 id="speciesTierGuideTitle">梯度图鉴</h2><p>按定位查看当前严选梯级。这里评价种族是否值得继续投入沙布雷，不替代个体质量、食材路线或培养判断；未单独列出的最终形态默认 C 级。</p></div><button class="species-tier-guide-close" id="speciesTierGuideClose" type="button" aria-label="关闭梯度图鉴">×</button></header>
+    <div><div class="species-tier-guide-intro" aria-label="梯级说明"><span class="tier-s">S｜主要严选</span><span class="tier-a">A｜按需求严选</span><span class="tier-b">B｜现有优秀个体可用</span><span class="tier-c">C｜不主动严选</span></div><nav class="species-tier-guide-tabs" id="speciesTierGuideTabs" role="tablist" aria-label="梯度图鉴定位"></nav></div>
+    <div class="species-tier-guide-content" id="speciesTierGuideContent" aria-live="polite"></div>
+  </div>
+</dialog>
 <section class="panel pokemon-data-toolbar" aria-labelledby="pokemonDataToolbarTitle" data-settings-move hidden>
   <div class="pokemon-data-toolbar-copy"><span>个体资料</span><h3 id="pokemonDataToolbarTitle">快速录入、即时评分与放生管理</h3><p>选择种类后自动带出定位、主技能与合法食材；只需填写等级、食材栏、副技能和性格。</p></div>
   <div class="pokemon-data-toolbar-actions"><button class="primary" id="pokemonAddOpen" type="button">＋ 录入新个体</button><button id="investmentPlannerOpen" type="button">培养投资计算器</button><button class="recycle" id="pokemonRecycleOpen" type="button">回收站</button></div>
@@ -372,12 +366,14 @@
 <script src="level-manager.js?v=20260921-1"></script>
 <script src="personal-settings.js?v=20260911-1"></script>
 <script src="pokemon-picker.js?v=20260921-1"></script>
+<script src="species-tier-guide.js?v=20260929-1"></script>
 <script src="cooking-success.js?v=20260912-1"></script>
 <script src="production-timeline.js?v=20260913-2"></script>
 <script src="team-planner.js?v=20260913-2"></script>
 <script src="sleep-reward-curves.generated.js?v=20260911-2"></script>
 <script src="sleep-research-planner.js?v=20260911-3"></script>
-<script src="weekly-planner.js?v=20260913-6"></script>
+<script src="events-data.js?v=20260929-1"></script>
+<script src="weekly-planner.js?v=20260929-1"></script>
 <script src="investment-planner.js?v=20260912-1"></script>
 <script src="retention-advisor.js?v=20260901-2"></script>
 <script src="pokemon-manager.js?v=20260921-1"></script>
@@ -497,20 +493,8 @@ const storedLevelState=window.POKEMON_SLEEP_LEVELS.applyStored(data);
 const ADVISOR_PREFERENCES_KEY=window.POKEMON_SLEEP_DATA.ADVISOR_PREFERENCES_KEY;
 const storedAdvisorPreferences=window.POKEMON_SLEEP_DATA.readJson(ADVISOR_PREFERENCES_KEY,{accountStage:'mature'});
 let activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(storedAdvisorPreferences.accountStage).id;
-const nextEventStart=new Date(2026,8,26,4,0,0),nextEventEnd=new Date(2026,8,29,4,0,0),mewtwoExchangeEnd=new Date(2026,9,1,4,0,0),mewtwoBiscuitConversion=new Date(2026,9,3,19,0,0);
-function updateEventCountdown(){
-  const now=new Date(),before=now<nextEventStart,during=now>=nextEventStart&&now<nextEventEnd,exchange=now>=nextEventEnd&&now<mewtwoExchangeEnd,conversion=now>=mewtwoExchangeEnd&&now<mewtwoBiscuitConversion,target=before?nextEventStart:during?nextEventEnd:exchange?mewtwoExchangeEnd:conversion?mewtwoBiscuitConversion:now;
-  const remaining=Math.max(0,target-now),days=Math.floor(remaining/86400000),hours=Math.floor(remaining%86400000/3600000),minutes=Math.floor(remaining%3600000/60000),seconds=Math.floor(remaining%60000/1000);
-  document.querySelector('#eventCountdownState').textContent=before?'距离好眠日开始':during?'好眠日进行中 · 距离结束':exchange?'好眠日已结束 · 距超梦兑换所关闭':conversion?'兑换所已关闭 · 距超梦饼干转换':'本轮活动已全部收尾';
-  const currentStatus=document.querySelector('#currentEventStatus'),currentLink=document.querySelector('#currentEventLink');
-  if(before){currentStatus.innerHTML='<b>即将开始：</b>第 39 回好眠日将在 9 月 26 日 04:00 开始。';currentLink.href='https://www.pokemonsleep.net/news/343430323231373034343933343635363034/';currentLink.textContent='好眠日公告'}
-  else if(during){currentStatus.innerHTML='<b>当前：</b>第 39 回好眠日进行中；前后夜为睡意之力 ×1.5、帮手睡眠 EXP ×2、睡眠点数＋500。';currentLink.href='https://www.pokemonsleep.net/news/343430323231373034343933343635363034/';currentLink.textContent='好眠日公告'}
-  else if(exchange){currentStatus.innerHTML='<b>收尾：</b>好眠日已结束；超梦活动兑换所仍开放至 10 月 1 日 03:59。';currentLink.href='https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/';currentLink.textContent='超梦兑换说明'}
-  else if(conversion){currentStatus.innerHTML='<b>提醒：</b>超梦兑换所已关闭；剩余超梦饼干将在 10 月 3 日 19:00 转为超级沙布蕾。';currentLink.href='https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/';currentLink.textContent='转换说明'}
-  else{currentStatus.innerHTML='<b>最近：</b>第 39 回好眠日与超梦活动兑换期已结束。';currentLink.href='https://www.pokemonsleep.net/news/343430323231373034343933343635363034/';currentLink.textContent='最近活动公告'}
-  const values=[days,hours,minutes,seconds];[...document.querySelector('#eventCountdown').children].forEach((box,index)=>{box.querySelector('b').textContent=String(values[index]).padStart(2,'0')});
-}
-updateEventCountdown();setInterval(updateEventCountdown,1000);
+window.POKEMON_SLEEP_EVENTS.renderEventGuide(document,document.querySelector('#eventGuide'));
+setInterval(()=>window.POKEMON_SLEEP_EVENTS.updateEventCountdown(document),1000);
 const specialtyLabels={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手'};
 const firstIngredient=value=>value.split('／')[0].replace(/×\d+$/,'');
 function mainSkillEffect(main){
@@ -584,7 +568,7 @@ const unclassifiedSpecies=[...new Set(data.filter(mon=>mon.specialty==='unknown'
 let sortKey='pokedexId',dir=1;
 const sortableScoreKeys=new Set(['scoreIndividual','speciesTierRank','cultivationRank']);
 const tbody=document.querySelector('tbody'),mobileBoxList=document.querySelector('#mobileBoxList'),mobileFilterToggle=document.querySelector('#mobileFilterToggle'),q=document.querySelector('#q'),bf=document.querySelector('#bf'),sf=document.querySelector('#sf'),rf=document.querySelector('#rf'),pf=document.querySelector('#pf'),sortSelect=document.querySelector('#sortSelect'),accountStage=document.querySelector('#accountStage'),advisorStageDescription=document.querySelector('#advisorStageDescription');
-let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null,personalSettingsController=null,pokemonPickerController=null,selectionOddsController=null;
+let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null,personalSettingsController=null,pokemonPickerController=null,speciesTierGuideController=null,selectionOddsController=null;
 const isBattleEligible=mon=>Boolean(mon&&mon.battleEligible!==false);
 const usageStatus=mon=>window.POKEMON_SLEEP_BOX_MANAGER.usageStatus(mon);
 function selectedFilterValues(root){return [...root.querySelectorAll('input[type="checkbox"]:checked')].map(input=>input.value)}
@@ -1059,6 +1043,7 @@ function handlePersonalSettingsChange(state,type){
 const shiny=data.filter(r=>r.shiny==='是').length;
 document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;document.querySelector('.app-nav [data-page-target="box"] small').textContent=`${data.length} 只个体整理`;
 pokemonPickerController=window.POKEMON_SLEEP_POKEMON_PICKER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG});window.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER=pokemonPickerController;
+speciesTierGuideController=window.POKEMON_SLEEP_SPECIES_TIER_GUIDE.mount({catalog:window.POKEMON_SLEEP_CATALOG,tiers:window.POKEMON_SLEEP_SPECIES_TIERS,picker:pokemonPickerController});
 selectionOddsController=window.POKEMON_SLEEP_SELECTION_ODDS.mount();
 personalSettingsController=window.POKEMON_SLEEP_PERSONAL_SETTINGS.mount({ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),recipes:recipeData,islands:islandData,activityProfiles:window.POKEMON_SLEEP_WEEKLY_PLANNER.ACTIVITY_PROFILES,onChange:handlePersonalSettingsChange});window.POKEMON_SLEEP_PERSONAL_SETTINGS_CONTROLLER=personalSettingsController;
 if(personalSettingsController){activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(personalSettingsController.getState().accountStage).id;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;refreshCultivationAdvice()}

@@ -17,7 +17,7 @@
 
   const SUBSKILL_LEVELS=[10,25,50,70,80];
   const MAX_SAVED_TEAMS=10;
-  const SPECIAL_NAMES=new Set(['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊']);
+  const SPECIAL_NAMES=new Set(['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊','超梦']);
   const ROLE_LABELS={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手',unknown:'待核对'};
   const ENERGY_PROFILES={
     timeline:{factor:2,label:'五档活力时间轴（推荐）'},
