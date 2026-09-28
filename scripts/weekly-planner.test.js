@@ -33,7 +33,7 @@ assert.equal(normalized.mealGoal,21);
 assert.deepEqual(normalized.completedMeals,['d0-m0']);
 assert.equal(normalized.goodCamp,false,'旧版单一好露营券开关迁移后不应误算为准备周当前采集增益');
 assert.equal(normalized.eventGoodCamp,true);
-assert.equal(normalized.schemaVersion,10);
+assert.equal(normalized.schemaVersion,11);
 assert.equal(normalized.simulationDays,7);
 assert.equal(normalized.simulationAutoTasty,true);
 assert.equal(normalized.simulationTastyTarget,70);
@@ -53,6 +53,7 @@ assert.equal(migratedSleepEnergy.currentSnorlaxStrength,5000000,'旧版睡前能
 assert.equal(Object.hasOwn(migratedSleepEnergy,'bedtimeSnorlaxStrength'),false,'迁移后不再保留第二个能量输入');
 const nextWeek=weekly.normalizeState(normalized,['特选苹果'],9,new Date(2026,8,7,12,0,0));
 assert.deepEqual(nextWeek.completedMeals,[]);
+assert.equal(nextWeek.lastCooked,null);
 
 const recipes = [
   {id:1,name:'小料理',type:'沙拉',energy:1000,total:10,ingredients:[{name:'特选苹果',amount:10}]},
@@ -62,10 +63,22 @@ const recipes = [
 assert.equal(weekly.chooseTargetRecipe(recipes,'沙拉',15,{},{}).id,1);
 assert.equal(weekly.chooseTargetRecipe(recipes,'沙拉',25,{'特选苹果':60},{'特选苹果':100}).id,2);
 assert.equal(weekly.recipeRows(recipes,'沙拉',25,recipe=>recipe.id===1?5000:3000)[0].id,1,'食谱等级换算后的能量应参与排序');
+assert.deepEqual(weekly.cookableRecipeRows(recipes,'沙拉',25,{'特选苹果':15}).map(recipe=>recipe.id),[1],'只能推荐库存足够完整制作的食谱');
+assert.deepEqual(weekly.cookableRecipeRows(recipes,'沙拉',15,{'特选苹果':100}).map(recipe=>recipe.id),[1],'当前锅容量必须限制推荐');
+const lockedRecipe={id:4,name:'未解锁苹果料理',type:'沙拉',energy:6000,total:5,ingredients:[{name:'特选苹果',amount:5}]};
+assert.deepEqual(weekly.cookableRecipeRows([...recipes,lockedRecipe],'沙拉',25,{'特选苹果':15},recipe=>recipe.id===4?recipe.energy:0).map(recipe=>recipe.id),[4],'未解锁料理应能按Lv.1能量进入下一餐推荐');
+const cooked=weekly.consumeRecipeIngredients({'特选苹果':25,'萌绿玉米':4},recipes[1]);
+assert.equal(cooked.ok,true);
+assert.deepEqual(cooked.inventory,{'特选苹果':5,'萌绿玉米':4},'勾选做菜只扣除固定配方食材');
+const notCooked=weekly.consumeRecipeIngredients({'特选苹果':19},recipes[1]);
+assert.equal(notCooked.ok,false);
+assert.deepEqual(notCooked.inventory,{'特选苹果':19},'库存不足时不得部分扣料');
 assert.equal(weekly.ACTIVITY_PROFILES.snapshot.archived,true);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.ingredientHelpBonus,1);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.skillTriggerMultiplier,1.5);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo2.sleepDrowsyPowerMultiplier,1.3);
+assert.equal(weekly.ACTIVITY_PROFILES.mewtwo2.archived,true);
+assert.equal(weekly.ACTIVITY_PROFILES.goodSleep39.universalSleepMultiplier,1.5);
 assert.equal(weekly.ACTIVITY_PROFILES.cooking125.cookingEnergyMultiplier,1.25);
 assert.equal(weekly.WEEK_MODE_VIEWS.normal.showSimulation,false);
 assert.equal(weekly.WEEK_MODE_VIEWS.preparation.showRoutes,true);
@@ -75,6 +88,7 @@ assert.equal(weekly.WEEK_MODE_VIEWS.preparation.showHunt,true);
 assert.equal(weekly.WEEK_MODE_VIEWS.event.showHunt,true);
 assert.equal(weekly.calculateDrowsyPower(200000,50,1.1),11000000);
 assert.deepEqual(weekly.sleepMultiplierForTeam(weekly.ACTIVITY_PROFILES.mewtwo1,[{name:'梦幻'}],true),{multiplier:1.1,active:true,matched:'梦幻',required:['梦幻','超梦']});
+assert.deepEqual(weekly.sleepMultiplierForTeam(weekly.ACTIVITY_PROFILES.goodSleep39,[],true),{multiplier:1.5,active:true,matched:'全队',required:[]});
 assert.equal(weekly.sleepMultiplierForTeam(weekly.ACTIVITY_PROFILES.mewtwo1,[{name:'梦幻'}],false).multiplier,1,'非活动岛不能套用活动睡意之力倍率');
 const singleSleep=weekly.calculateSleepPlan({area:'萌绿之岛',currentStrength:100000,bedtimeStrength:150000,sleepType:'balanced',objective:'combined'});
 assert.equal(singleSleep.recommendation,'single');
@@ -89,7 +103,7 @@ assert.equal(oneInputSleep.bedtimeStrength,5000000,'只输入当前能量时应�
 assert.deepEqual(weekly.applyActivityContext({island:{name:'萌绿之岛'},berries:['金枕果','芒芒果','莓莓果']},weekly.ACTIVITY_PROFILES.mewtwo1).berries,['芒芒果','金枕果','莓莓果']);
 assert.equal(weekly.activityApplies(weekly.ACTIVITY_PROFILES.mewtwo1,{island:{name:'宝蓝湖畔'}}),false);
 assert.equal(weekly.activityApplies(weekly.ACTIVITY_PROFILES.cooking125,{island:{name:'宝蓝湖畔'}}),true,'未限制岛屿的活动配置应能通用于所有岛屿');
-assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.mewtwo1,true)({berry:'芒芒果'}),{ingredientHelpBonus:1,skillTriggerMultiplier:1.5,mainSkillLevelBonus:2,label:'超梦登场活动·第1周'});
+assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.mewtwo1,true)({berry:'芒芒果'}),{ingredientHelpBonus:1,skillTriggerMultiplier:1.5,mainSkillLevelBonus:2,label:'超梦登场活动·第1周（已结束）'});
 assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.mewtwo1,false)({berry:'芒芒果'}),{});
 const mergedRoutes=weekly.mergeTargetRecipes([
   {id:'salad',name:'沙拉A',type:'沙拉',ingredients:[{name:'特选苹果',amount:10},{name:'萌绿玉米',amount:5}]},

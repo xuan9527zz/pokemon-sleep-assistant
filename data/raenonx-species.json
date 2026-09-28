@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-23T20:32:34.939Z",
+  "generatedAt": "2026-09-28T12:24:00.319Z",
   "source": {
     "provider": "RaenonX Pokémon Sleep Wiki",
     "pokedexUrl": "https://pks.raenonx.cc/en/pokedex",
     "ratesUrl": "https://pks.raenonx.cc/en/stats/base-rates",
     "mainSkillVerificationUrl": "https://wikiwiki.jp/poke_sleep/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3%E3%81%AE%E4%B8%80%E8%A6%A7/%E3%83%A1%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%AD%E3%83%AB%E5%88%A5",
-    "note": "Ingredient and skill rates are RaenonX research estimates, not official in-game disclosures. Every main skill is cross-checked against the current Japanese verification list before export.",
+    "note": "Ingredient and skill rates are RaenonX research estimates, not official in-game disclosures. Main skills are cross-checked against the current Japanese verification list; explicitly listed preview records may instead use an official announcement and retain null/unsettled production rates.",
     "corrections": [
       {
         "pokemonId": "122",
@@ -708,7 +708,8 @@
         "reason": "RaenonX Pokémon record exposes mainSkillId 13; the current verification list maps this Pokémon to canonical main-skill id 14.",
         "source": "https://wikiwiki.jp/poke_sleep/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3%E3%81%AE%E4%B8%80%E8%A6%A7/%E3%83%A1%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%AD%E3%83%AB%E5%88%A5"
       }
-    ]
+    ],
+    "officialPreviewOverrides": []
   },
   "comparisonPolicy": {
     "targetLevel": 70,
@@ -717,13 +718,17 @@
     "scoringWeightsFinalized": false
   },
   "counts": {
-    "all": 247,
-    "finalEvolutions": 127,
+    "all": 248,
+    "calculationReady": 248,
+    "previews": 0,
+    "finalEvolutions": 128,
     "missingRates": 0,
-    "verifiedMainSkills": 247,
-    "mainSkillCorrections": 50
+    "verifiedMainSkills": 248,
+    "mainSkillCorrections": 50,
+    "officialMainSkillOverrides": 0
   },
   "failures": [],
+  "previews": [],
   "pokemon": [
     {
       "id": "1",
@@ -7754,6 +7759,102 @@
       "isFinalEvolution": true
     },
     {
+      "id": "150",
+      "pokedexId": 150,
+      "basePokedexId": 150,
+      "nameEn": "Mewtwo",
+      "nameZh": "超夢",
+      "patternId": 1,
+      "patternI18nId": "1",
+      "typeId": 11,
+      "sleepTypeId": 1,
+      "specialty": "skill",
+      "berryId": 11,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2300,
+      "carryLimitBase": 24,
+      "carryLimitRaisedFromFirstStage": 24,
+      "friendshipPoints": 30,
+      "expType": 3,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "previous": null,
+        "next": [],
+        "lineId": 150
+      },
+      "mainSkill": {
+        "id": 40,
+        "nameEn": "Psystrike (Berry Zone)",
+        "nameZh": "精神击破（树果领域）",
+        "nameJa": "サイコブレイク (きのみゾーン)",
+        "source": "raenonxVerified",
+        "raenonxMainSkillId": 40
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 15,
+            "code": "A",
+            "quantity": 1,
+            "combinationProbability": 1,
+            "nameEn": "Greengrass Soybeans",
+            "nameZh": "萌綠大豆"
+          }
+        ],
+        "30": [
+          {
+            "id": 15,
+            "code": "A",
+            "quantity": 2,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Greengrass Soybeans",
+            "nameZh": "萌綠大豆"
+          },
+          {
+            "id": 16,
+            "code": "B",
+            "quantity": 2,
+            "combinationProbability": 0.6666666666666666,
+            "nameEn": "Greengrass Corn",
+            "nameZh": "萌綠玉米"
+          }
+        ],
+        "60": [
+          {
+            "id": 15,
+            "code": "A",
+            "quantity": 4,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Greengrass Soybeans",
+            "nameZh": "萌綠大豆"
+          },
+          {
+            "id": 16,
+            "code": "B",
+            "quantity": 3,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Greengrass Corn",
+            "nameZh": "萌綠玉米"
+          },
+          {
+            "id": 4,
+            "code": "C",
+            "quantity": 3,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Soft Potato",
+            "nameZh": "窩心洋芋"
+          }
+        ]
+      },
+      "ingredientRate": 0.16,
+      "skillRatePct": 2.9,
+      "rateSampleCount": 8,
+      "rateSettled": true,
+      "releasedAt": "2026-09-14T07:00:00.000",
+      "isFinalEvolution": true
+    },
+    {
       "id": "151",
       "pokedexId": 151,
       "basePokedexId": 151,
@@ -7787,34 +7888,9 @@
         "raenonxMainSkillId": 34
       },
       "ingredients": {
-        "1": [
-          {"id": 1, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Large Leek", "nameZh": "粗枝大蔥"},
-          {"id": 3, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Fancy Egg", "nameZh": "特選蛋"},
-          {"id": 6, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Fiery Herb", "nameZh": "火辣香草"},
-          {"id": 7, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Bean Sausage", "nameZh": "豆製肉"},
-          {"id": 10, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Pure Oil", "nameZh": "純粹油"},
-          {"id": 15, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Greengrass Soybeans", "nameZh": "萌綠大豆"},
-          {"id": 19, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Plump Avocado", "nameZh": "嫩亮酪梨"}
-        ],
-        "30": [
-          {"id": 1, "code": "?", "quantity": 3, "combinationProbability": "$NaN", "nameEn": "Large Leek", "nameZh": "粗枝大蔥"},
-          {"id": 3, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Fancy Egg", "nameZh": "特選蛋"},
-          {"id": 6, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Fiery Herb", "nameZh": "火辣香草"},
-          {"id": 7, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Bean Sausage", "nameZh": "豆製肉"},
-          {"id": 10, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Pure Oil", "nameZh": "純粹油"},
-          {"id": 15, "code": "?", "quantity": 5, "combinationProbability": "$NaN", "nameEn": "Greengrass Soybeans", "nameZh": "萌綠大豆"},
-          {"id": 19, "code": "?", "quantity": 3, "combinationProbability": "$NaN", "nameEn": "Plump Avocado", "nameZh": "嫩亮酪梨"}
-        ],
-        "60": [
-          {"id": 1, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Large Leek", "nameZh": "粗枝大蔥"},
-          {"id": 3, "code": "?", "quantity": 6, "combinationProbability": "$NaN", "nameEn": "Fancy Egg", "nameZh": "特選蛋"},
-          {"id": 6, "code": "?", "quantity": 5, "combinationProbability": "$NaN", "nameEn": "Fiery Herb", "nameZh": "火辣香草"},
-          {"id": 7, "code": "?", "quantity": 7, "combinationProbability": "$NaN", "nameEn": "Bean Sausage", "nameZh": "豆製肉"},
-          {"id": 10, "code": "?", "quantity": 6, "combinationProbability": "$NaN", "nameEn": "Pure Oil", "nameZh": "純粹油"},
-          {"id": 15, "code": "?", "quantity": 7, "combinationProbability": "$NaN", "nameEn": "Greengrass Soybeans", "nameZh": "萌綠大豆"},
-          {"id": 19, "code": "?", "quantity": 4, "combinationProbability": "$NaN", "nameEn": "Plump Avocado", "nameZh": "嫩亮酪梨"},
-          {"id": 14, "code": "?", "quantity": 2, "combinationProbability": "$NaN", "nameEn": "Slowpoke Tail", "nameZh": "美味尾巴"}
-        ]
+        "1": [],
+        "30": [],
+        "60": []
       },
       "ingredientRate": 0.2,
       "skillRatePct": 4,
@@ -24756,7 +24832,7 @@
       "skillRatePct": 1.6,
       "rateSampleCount": 31,
       "rateSettled": true,
-      "releasedAt": null,
+      "releasedAt": "2026-08-17T07:00:00.000",
       "isFinalEvolution": false
     },
     {
@@ -24866,7 +24942,7 @@
       "skillRatePct": 1.8,
       "rateSampleCount": 24,
       "rateSettled": true,
-      "releasedAt": null,
+      "releasedAt": "2026-08-17T07:00:00.000",
       "isFinalEvolution": false
     },
     {
@@ -24962,7 +25038,7 @@
       "skillRatePct": 2,
       "rateSampleCount": 10,
       "rateSettled": true,
-      "releasedAt": null,
+      "releasedAt": "2026-08-17T07:00:00.000",
       "isFinalEvolution": true
     },
     {
@@ -26350,7 +26426,7 @@
       "skillRatePct": 1.8,
       "rateSampleCount": 10,
       "rateSettled": true,
-      "releasedAt": null,
+      "releasedAt": "2026-08-17T07:00:00.000",
       "isFinalEvolution": true
     }
   ]

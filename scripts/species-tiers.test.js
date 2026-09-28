@@ -20,12 +20,16 @@ assert.equal(tiers.entryFor({finalFormId:'181',specialty:'skill'}).tier,'C','未
 assert.equal(tiers.entryFor({finalFormId:'491',specialty:'all'}).tier,'S','达克莱伊应为特殊S');
 assert.equal(tiers.entryFor({finalFormId:'245',specialty:'skill'}).tier,'A','水君应为特殊A');
 assert.equal(tiers.entryFor({finalFormId:'381',specialty:'skill'}).tier,'B','拉帝欧斯应为特殊B');
-assert.equal(tiers.entryFor({name:'超梦'}).tier,'B','未进入图鉴的超梦也应保留特殊B定义');
+assert.equal(tiers.entryFor({finalFormId:'150',name:'超梦',specialty:'skill'}).tier,'B','超梦进入图鉴后应沿用特殊B定义');
 assert.equal(tiers.entryFor({finalFormId:'151',selectedAllRounderSkillId:'berry-burst'}).tier,'S','树果骤增梦幻应为S');
 assert.equal(tiers.entryFor({finalFormId:'151',selectedAllRounderSkillId:'e4e'}).tier,'B','其他技能梦幻应为B');
 
 const inherited=scoring.scorePokemon({name:'海豹球',speciesId:'363',ingredients:'纯粹油×1／纯粹油×2／纯粹油×4',subskills:'树果数量S；帮手奖励；帮忙速度M；帮忙速度S；技能概率M',nature:'认真'});
 assert.equal(inherited.finalFormId,'365');
 assert.equal(inherited.speciesTier,'S','未进化个体应继承选定最终形态梯级');
+
+const mewtwo=scoring.scorePokemon({name:'超梦',speciesId:'150',ingredients:'萌绿大豆×1／萌绿玉米×2／窝心洋芋×3',subskills:'技能概率M；技能概率S；帮手奖励；帮忙速度M；帮忙速度S',nature:'认真'});
+assert.equal(mewtwo.finalFormId,'150');
+assert.equal(mewtwo.speciesTier,'B');
 
 console.log('species tier tests passed (user list, Mew variants, default C and evolution inheritance)');

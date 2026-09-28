@@ -30,12 +30,14 @@ const ingredientNames = Object.freeze({
 
 const ingredientRows = speciesScoring.ingredientProductionRows(records);
 const berryRows = speciesScoring.berryProductionRows(records);
-const skillRows = skillSpeciesScoring.skillTeamSpeciesScoreRows(records, {
+const pendingTeamModelRecords = records.filter(record => Number(record.mainSkill?.id) === 40);
+const teamModeledRecords = records.filter(record => Number(record.mainSkill?.id) !== 40);
+const skillRows = skillSpeciesScoring.skillTeamSpeciesScoreRows(teamModeledRecords, {
   collectionIntervalHours: 4,
   ingredientAvailability: 0.5,
   goodCamp: true
 });
-const allRounderRows = speciesScoring.allRounderSpeciesRankingRows(records);
+const allRounderRows = speciesScoring.allRounderSpeciesRankingRows(teamModeledRecords);
 
 const speciesScores = {};
 ingredientRows.forEach(row => {
@@ -84,6 +86,21 @@ skillRows.forEach(row => {
       operationScore: row.operationScore,
       versatilityScore: row.versatilityScore,
       scoringStatus: row.scoringStatus
+    }
+  };
+});
+pendingTeamModelRecords.forEach(record => {
+  speciesScores[String(record.id)] = {
+    specialty: String(record.specialty || 'skill'),
+    mechanicalScore: null,
+    strategicRoleScore: null,
+    strategicBonus: 0,
+    strategy: strategy.SPECIES_ROLES[String(record.id)] || null,
+    score: null,
+    source: 'manual-tier-only-pending-berry-zone-team-model',
+    teamModel: {
+      role: '特殊额外技能位',
+      scoringStatus: 'pending-cross-day-persistent-berry-zone-model'
     }
   };
 });

@@ -57,15 +57,15 @@
   const KIND_BY_ID=Object.freeze({
     4:'energizing-cheer',7:'charge-energy',8:'e4e',9:'helping-support',15:'helper-boost',17:'disguise-berry-burst',
     3:'dream-shard',6:'dream-shard-random',10:'ingredient-magnet',11:'cooking-power',13:'metronome',14:'tasty-chance',18:'moonlight',19:'skill-copy',20:'skill-copy',21:'berry-burst',22:'crescent-prayer',23:'nightmare',24:'super-luck',25:'hyper-cutter',26:'plus',27:'minus',28:'ingredient-draw',29:'present',30:'nuzzle',31:'cooking-assist',32:'berry-juice',
-    34:'heal-pulse',35:'meteor-shower',36:'aura-sphere'
+    34:'heal-pulse',35:'meteor-shower',36:'aura-sphere',40:'berry-zone'
   });
   const LABELS=Object.freeze({
     'energizing-cheer':'活力疗愈S','charge-energy':'活力填充S','e4e':'活力全体疗愈S','helping-support':'帮手支援S',
     'helper-boost':'帮手加速','disguise-berry-burst':'画皮（树果骤增）','moonlight':'月光','skill-copy':'技能复制',
     'berry-burst':'树果骤增','crescent-prayer':'新月祈祷','nuzzle':'蹭蹭脸颊','berry-juice':'树果汁','heal-pulse':'治愈波动',
-    'meteor-shower':'流星群（树果骤增）','metronome':'挥指','nightmare':'噩梦','ingredient-magnet':'食材获取S','ingredient-draw':'食材精选S','super-luck':'超幸运（食材精选S）','hyper-cutter':'怪力钳（食材精选S）','plus':'正电（食材获取S）','minus':'负电（料理强化S）','present':'礼物（食材获取S）','cooking-power':'料理强化S','tasty-chance':'料理成功S','dream-shard':'梦之碎片获取S','dream-shard-random':'梦之碎片获取S（浮动）','aura-sphere':'波导弹（梦之碎片获取S）','cooking-assist':'料理辅助S'
+    'meteor-shower':'流星群（树果骤增）','metronome':'挥指','nightmare':'噩梦','ingredient-magnet':'食材获取S','ingredient-draw':'食材精选S','super-luck':'超幸运（食材精选S）','hyper-cutter':'怪力钳（食材精选S）','plus':'正电（食材获取S）','minus':'负电（料理强化S）','present':'礼物（食材获取S）','cooking-power':'料理强化S','tasty-chance':'料理成功S','dream-shard':'梦之碎片获取S','dream-shard-random':'梦之碎片获取S（浮动）','aura-sphere':'波导弹（梦之碎片获取S）','berry-zone':'精神击破（树果领域）','cooking-assist':'料理辅助S'
   });
-  const FAMILY_PATTERN=/活力全体疗愈|活力疗愈|活力填充|月光|蹭蹭脸颊|树果汁|治愈波动|帮手支援|帮手加速|树果骤增|流星群|新月祈祷|技能复制|变身|模仿|挥指|噩梦|食材获取|食材精选|超幸运|怪力钳|正电|负电|礼物|料理强化|料理成功|梦之碎片|波导弹|料理辅助/;
+  const FAMILY_PATTERN=/活力全体疗愈|活力疗愈|活力填充|月光|蹭蹭脸颊|树果汁|治愈波动|帮手支援|帮手加速|树果骤增|流星群|树果领域|精神击破|新月祈祷|技能复制|变身|模仿|挥指|噩梦|食材获取|食材精选|超幸运|怪力钳|正电|负电|礼物|料理强化|料理成功|梦之碎片|波导弹|料理辅助/;
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number(value)||0));
   const sum=values=>values.reduce((total,value)=>total+(Number(value)||0),0);
   const levelAt=(table,level,maxLevel)=>Number(table[clamp(Math.round(level),1,maxLevel)])||0;
@@ -83,6 +83,7 @@
     if(/挥指/.test(label))return 'metronome';
     if(/变身|模仿|技能复制/.test(label))return 'skill-copy';
     if(/流星群/.test(label))return 'meteor-shower';
+    if(/精神击破|树果领域/.test(label))return 'berry-zone';
     if(/画皮/.test(label))return 'disguise-berry-burst';
     if(/树果骤增/.test(label))return 'berry-burst';
     if(/帮手加速/.test(label))return 'helper-boost';
@@ -167,6 +168,7 @@
     if(kind==='nightmare'){
       const recoveryByIndex=rows.map(row=>Number(row.mon&&row.mon.typeId)===NIGHTMARE.darkTypeId?0:-NIGHTMARE.nonDarkRecoveryPenalty),nonDark=recoveryByIndex.filter(value=>value<0).length;effect.recoveryByIndex=recoveryByIndex;effect.teamRecoveryPerUse=sum(recoveryByIndex);effect.productiveRecoveryPerUse=effect.teamRecoveryPerUse;effect.detail=`纯能量由噩梦本体计入；${nonDark} 名非恶属性队友各损失 ${NIGHTMARE.nonDarkRecoveryPenalty} 活力`;return effect;
     }
+    if(kind==='berry-zone'){effect.detail='精神击破的直接能量已计入；树果领域跨换队、跨日累积到 24% 上限';effect.pendingComponents.push('树果领域的整周芒芒果动态增益尚未折算进单日队伍能量');return effect}
     if(kind==='ingredient-magnet'){effect.ingredientsPerUse=levelAt(INGREDIENT_MAGNET.countByLevel,safeLevel,INGREDIENT_MAGNET.maxLevel);effect.detail=`随机食材 ${effect.ingredientsPerUse} 个／次`;return effect}
     if(kind==='ingredient-draw'){effect.ingredientsPerUse=levelAt(INGREDIENT_DRAW.countByLevel,safeLevel,INGREDIENT_DRAW.maxLevel);effect.detail=`指定食材 ${effect.ingredientsPerUse} 个／次`;return effect}
     if(kind==='super-luck'){

@@ -7,10 +7,10 @@
   'use strict';
   return Object.freeze({
   "meta": {
-    "generatedAt": "2026-09-19T18:36:34.581Z",
-    "sourceUpdatedAt": "2026-08-23T20:32:34.939Z",
-    "count": 247,
-    "speciesScoreCount": 127,
+    "generatedAt": "2026-09-28T12:30:06.746Z",
+    "sourceUpdatedAt": "2026-09-28T12:24:00.319Z",
+    "count": 248,
+    "speciesScoreCount": 128,
     "collectionProfile": "Lv.70; skill and all-rounder species use shared team-slot output anchors; skill species use 4-hour collection, Good Camp, 50% extra-ingredient availability"
   },
   "pokemon": [
@@ -6440,6 +6440,91 @@
       }
     },
     {
+      "id": "150",
+      "pokedexId": 150,
+      "name": "超梦",
+      "sourceNameZh": "超夢",
+      "nameEn": "Mewtwo",
+      "specialty": "skill",
+      "typeId": 11,
+      "berryId": 11,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2300,
+      "carryLimitBase": 24,
+      "carryLimitRaisedFromFirstStage": 24,
+      "ingredientRate": 0.16,
+      "skillRatePct": 2.9,
+      "expType": 3,
+      "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 0,
+        "lineId": "150",
+        "previous": null,
+        "next": []
+      },
+      "isFinalEvolution": true,
+      "finalOptions": [
+        "150"
+      ],
+      "defaultFinalId": "150",
+      "mainSkill": {
+        "id": 40,
+        "name": "精神击破（树果领域）",
+        "nameEn": "Psystrike (Berry Zone)"
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 15,
+            "code": "A",
+            "quantity": 1,
+            "name": "萌绿大豆",
+            "nameEn": "Greengrass Soybeans"
+          }
+        ],
+        "30": [
+          {
+            "id": 15,
+            "code": "A",
+            "quantity": 2,
+            "name": "萌绿大豆",
+            "nameEn": "Greengrass Soybeans"
+          },
+          {
+            "id": 16,
+            "code": "B",
+            "quantity": 2,
+            "name": "萌绿玉米",
+            "nameEn": "Greengrass Corn"
+          }
+        ],
+        "60": [
+          {
+            "id": 15,
+            "code": "A",
+            "quantity": 4,
+            "name": "萌绿大豆",
+            "nameEn": "Greengrass Soybeans"
+          },
+          {
+            "id": 16,
+            "code": "B",
+            "quantity": 3,
+            "name": "萌绿玉米",
+            "nameEn": "Greengrass Corn"
+          },
+          {
+            "id": 4,
+            "code": "C",
+            "quantity": 3,
+            "name": "窝心洋芋",
+            "nameEn": "Soft Potato"
+          }
+        ]
+      }
+    },
+    {
       "id": "151",
       "pokedexId": 151,
       "name": "梦幻",
@@ -6474,166 +6559,9 @@
         "nameEn": "Versatile"
       },
       "ingredients": {
-        "1": [
-          {
-            "id": 1,
-            "code": "?",
-            "quantity": 2,
-            "name": "粗枝大葱",
-            "nameEn": "Large Leek"
-          },
-          {
-            "id": 3,
-            "code": "?",
-            "quantity": 2,
-            "name": "特选蛋",
-            "nameEn": "Fancy Egg"
-          },
-          {
-            "id": 6,
-            "code": "?",
-            "quantity": 2,
-            "name": "火辣香草",
-            "nameEn": "Fiery Herb"
-          },
-          {
-            "id": 7,
-            "code": "?",
-            "quantity": 2,
-            "name": "豆制肉",
-            "nameEn": "Bean Sausage"
-          },
-          {
-            "id": 10,
-            "code": "?",
-            "quantity": 2,
-            "name": "纯粹油",
-            "nameEn": "Pure Oil"
-          },
-          {
-            "id": 15,
-            "code": "?",
-            "quantity": 2,
-            "name": "萌绿大豆",
-            "nameEn": "Greengrass Soybeans"
-          },
-          {
-            "id": 19,
-            "code": "?",
-            "quantity": 2,
-            "name": "嫩亮酪梨",
-            "nameEn": "Plump Avocado"
-          }
-        ],
-        "30": [
-          {
-            "id": 1,
-            "code": "?",
-            "quantity": 3,
-            "name": "粗枝大葱",
-            "nameEn": "Large Leek"
-          },
-          {
-            "id": 3,
-            "code": "?",
-            "quantity": 4,
-            "name": "特选蛋",
-            "nameEn": "Fancy Egg"
-          },
-          {
-            "id": 6,
-            "code": "?",
-            "quantity": 4,
-            "name": "火辣香草",
-            "nameEn": "Fiery Herb"
-          },
-          {
-            "id": 7,
-            "code": "?",
-            "quantity": 4,
-            "name": "豆制肉",
-            "nameEn": "Bean Sausage"
-          },
-          {
-            "id": 10,
-            "code": "?",
-            "quantity": 4,
-            "name": "纯粹油",
-            "nameEn": "Pure Oil"
-          },
-          {
-            "id": 15,
-            "code": "?",
-            "quantity": 5,
-            "name": "萌绿大豆",
-            "nameEn": "Greengrass Soybeans"
-          },
-          {
-            "id": 19,
-            "code": "?",
-            "quantity": 3,
-            "name": "嫩亮酪梨",
-            "nameEn": "Plump Avocado"
-          }
-        ],
-        "60": [
-          {
-            "id": 1,
-            "code": "?",
-            "quantity": 4,
-            "name": "粗枝大葱",
-            "nameEn": "Large Leek"
-          },
-          {
-            "id": 3,
-            "code": "?",
-            "quantity": 6,
-            "name": "特选蛋",
-            "nameEn": "Fancy Egg"
-          },
-          {
-            "id": 6,
-            "code": "?",
-            "quantity": 5,
-            "name": "火辣香草",
-            "nameEn": "Fiery Herb"
-          },
-          {
-            "id": 7,
-            "code": "?",
-            "quantity": 7,
-            "name": "豆制肉",
-            "nameEn": "Bean Sausage"
-          },
-          {
-            "id": 10,
-            "code": "?",
-            "quantity": 6,
-            "name": "纯粹油",
-            "nameEn": "Pure Oil"
-          },
-          {
-            "id": 15,
-            "code": "?",
-            "quantity": 7,
-            "name": "萌绿大豆",
-            "nameEn": "Greengrass Soybeans"
-          },
-          {
-            "id": 19,
-            "code": "?",
-            "quantity": 4,
-            "name": "嫩亮酪梨",
-            "nameEn": "Plump Avocado"
-          },
-          {
-            "id": 14,
-            "code": "?",
-            "quantity": 2,
-            "name": "美味尾巴",
-            "nameEn": "Slowpoke Tail"
-          }
-        ]
+        "1": [],
+        "30": [],
+        "60": []
       }
     },
     {
@@ -24058,6 +23986,19 @@
       },
       "score": 92.2,
       "source": "ingredient-species-score"
+    },
+    "150": {
+      "specialty": "skill",
+      "mechanicalScore": null,
+      "strategicRoleScore": null,
+      "strategicBonus": 0,
+      "strategy": null,
+      "score": null,
+      "source": "manual-tier-only-pending-berry-zone-team-model",
+      "teamModel": {
+        "role": "特殊额外技能位",
+        "scoringStatus": "pending-cross-day-persistent-berry-zone-model"
+      }
     },
     "151": {
       "specialty": "all",

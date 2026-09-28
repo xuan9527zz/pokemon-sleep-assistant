@@ -56,6 +56,9 @@
 <style>
 .recipe-controls{grid-template-columns:minmax(220px,1.6fr) minmax(190px,1fr) minmax(160px,1fr) minmax(180px,.9fr) auto}.recipe-controls .recipe-ingredient-filter{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;font:inherit}.recipe-ingredient-filter{position:relative}.recipe-ingredient-filter summary{display:flex;align-items:center;min-height:40px;padding:8px 11px;cursor:pointer;font-weight:750}.recipe-ingredient-options{position:absolute;z-index:12;top:calc(100% + 6px);left:0;display:grid;width:min(460px,85vw);grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:320px;overflow:auto;border:1px solid #d6dde7;border-radius:12px;background:#fff;padding:9px;box-shadow:0 14px 35px #10182824}.recipe-controls .recipe-ingredient-option{display:flex;align-items:center;justify-content:flex-start;gap:7px;min-height:38px;border-color:#e2e7ee;background:#fff;color:#354052;text-align:left}.recipe-controls .recipe-ingredient-option.active{border-color:#6850b4;background:#f1edff;color:#54349c}.recipe-card.is-uncooked{border-style:dashed}.recipe-card-badges{display:flex;align-items:flex-end;flex-direction:column;gap:5px}.recipe-status{display:inline-flex;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}.recipe-status.cooked{background:#e7f8ef;color:#147347}.recipe-status.uncooked{background:#fff3d8;color:#8b5b00}.recipe-card-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px}.recipe-card-actions .recipe-source{margin-top:0}@media(max-width:1050px){.recipe-controls{grid-template-columns:1fr 1fr}}@media(max-width:520px){.recipe-ingredient-options{position:fixed;inset:auto 10px 78px;width:auto;max-height:55dvh;grid-template-columns:1fr}}
 </style>
+<style>
+.event-mewtwo-wrap{margin-top:12px}.event-mewtwo-profile{display:flex;align-items:center;gap:16px}.event-mewtwo-profile>img{width:92px;height:92px;object-fit:contain;border-radius:18px;background:#f3efff;padding:8px}.event-mewtwo-profile>div{min-width:0}.event-mewtwo-profile h3{margin:0}@media(max-width:600px){.event-mewtwo-profile{align-items:flex-start}.event-mewtwo-profile>img{width:72px;height:72px}}
+</style>
 <link rel="stylesheet" href="./mobile.css?v=20260913-1">
 </head>
 <body><main class="wrap">
@@ -163,70 +166,19 @@
   </div></div></dialog>
 </section>
 <section class="panel event-guide" aria-labelledby="eventGuideTitle" data-page="events" hidden>
-  <div class="guide-head"><div><h2 id="eventGuideTitle">近期活动周｜盒子专属计划</h2><p>当前活动、下次倒计时、队伍与前中后准备会一起显示。</p></div><span class="guide-stamp">官方公告快照 · 2026-09-10</span></div>
-  <div class="event-current"><span id="currentEventStatus"><b>准备周：</b>梦幻拍照活动与领奖期均已结束；请为 9 月 14 日开始的超梦活动储备资源。</span><a id="currentEventLink" href="https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/" target="_blank" rel="noreferrer">超梦活动公告</a></div>
+  <div class="guide-head"><div><h2 id="eventGuideTitle">近期活动｜当前加成与收尾</h2><p>优先显示正在生效的好眠日，同时保留超梦活动的兑换截止时间和永久资料。</p></div><span class="guide-stamp">官方公告快照 · 2026-09-28</span></div>
+  <div class="event-current"><span id="currentEventStatus"><b>当前：</b>第 39 回好眠日前后夜进行中，持续至 9 月 29 日 03:59。</span><a id="currentEventLink" href="https://www.pokemonsleep.net/news/343430323231373034343933343635363034/" target="_blank" rel="noreferrer">好眠日公告</a></div>
   <div class="event-overview">
-    <article class="event-block">
-      <span class="event-step-no">01 · 下次活动倒计时</span>
-      <h3>超梦登场活动</h3>
-      <div class="event-countdown-state" id="eventCountdownState">距离活动开始</div>
-      <div class="event-countdown" id="eventCountdown"><div class="event-time"><b>--</b><span>天</span></div><div class="event-time"><b>--</b><span>小时</span></div><div class="event-time"><b>--</b><span>分钟</span></div><div class="event-time"><b>--</b><span>秒</span></div></div>
-      <div class="event-date">9 月 14 日 04:00—9 月 28 日 03:59 · 萌绿之岛／萌绿之岛 EX</div>
-    </article>
-    <article class="event-block">
-      <span class="event-step-no">02 · 活动资讯</span>
-      <h3>活动重点与奖励</h3>
-      <div class="event-badges"><span class="event-badge area">仅萌绿／萌绿 EX</span><span class="event-badge">梦幻或超梦睡眠 ×1.1</span><span class="event-badge">超能力系技能率 ×1.5</span><span class="event-badge">超能力系食材＋1</span></div>
-      <ul class="event-facts">
-        <li>活动期间只能选择萌绿之岛或萌绿之岛 EX；芒芒果固定成为一种喜爱树果，另外两种随机。</li>
-        <li>全程：梦幻或超梦随队睡眠时睡意之力 ×1.1；超能力系主技能触发率 ×1.5，每次食材帮忙额外获得 1 个食材。</li>
-        <li>普通树果帮忙有机会带回“特大芒芒果”：梦幻／超梦数量最多，其次为超能力系；树果数量S不增加该数量，偷吃时也不会获得。</li>
-        <li>第 1 周全员持有上限＋8、超能力系主技能等级＋2；第 2 周提高到＋15／＋5，超梦随队睡眠时睡意之力改为 ×1.3。</li>
-        <li>每天第一次睡眠研究可获得超梦 DNA；超能力系睡眠研究给得更多。活动兑换所开放至 10 月 1 日 03:59。</li>
-        <li>超梦饼干增加 6 点亲密度；剩余饼干会在 10 月 3 日 19:00 后转为超级沙布蕾。超梦熏香活动后仍可使用，但同种熏香只能持有 1 个。</li>
-      </ul>
-    </article>
+    <article class="event-block"><span class="event-step-no">01 · 当前倒计时</span><h3>第 39 回好眠日</h3><div class="event-countdown-state" id="eventCountdownState">距离前后夜结束</div><div class="event-countdown" id="eventCountdown"><div class="event-time"><b>--</b><span>天</span></div><div class="event-time"><b>--</b><span>小时</span></div><div class="event-time"><b>--</b><span>分钟</span></div><div class="event-time"><b>--</b><span>秒</span></div></div><div class="event-date">9 月 26 日 04:00—9 月 29 日 03:59 · 全部岛屿</div></article>
+    <article class="event-block"><span class="event-step-no">02 · 今日加成</span><h3>9 月 28 日｜满月后一夜</h3><div class="event-badges"><span class="event-badge area">全部岛屿</span><span class="event-badge">睡意之力 ×1.5</span><span class="event-badge">帮手睡眠 EXP ×2</span><span class="event-badge">睡眠点数＋500</span></div><ul class="event-facts"><li>更容易遇见尚未登录的睡姿；皮宝宝、皮皮与皮可西有机会闪光出现。</li><li>9 月 27 日满月夜才是睡意之力 ×2、帮手睡眠 EXP ×3、睡眠点数＋1000；当前前后夜不再套用这组数字。</li><li>本次没有料理、食材或帮忙速度加成；作战台只在睡眠方案中套用 ×1.5。</li></ul></article>
   </div>
-  <article class="event-block event-team-wrap">
-    <span class="event-step-no">03 · 推荐活动周队伍</span>
-    <h3>萌绿之岛／EX｜超梦活动预备队</h3>
-    <p class="focus-line">优先保留梦幻的随队睡眠加成、超能力系技能倍率与稳定治疗；另外两格再按当周随机喜爱树果和目标料理调整。点击成员可跳转到个体表。</p>
-    <div class="event-badges"><span class="event-badge">特殊宝可梦 1／1：#62 梦幻</span><span class="event-badge area">#90 克雷色利亚不能与梦幻同队</span></div>
-    <div class="event-team-grid" id="eventTeam"></div>
-  </article>
+  <article class="event-block event-mewtwo-wrap"><span class="event-step-no">03 · 新增图鉴资料</span><div class="event-mewtwo-profile"><img src="./assets/pokemon/150.png" alt="超梦"><div><h3>#150 超梦</h3><div class="event-badges"><span class="event-badge">技能手</span><span class="event-badge">芒芒果</span><span class="event-badge">安然入睡</span><span class="event-badge area">特殊宝可梦</span></div><p class="focus-line">基准帮忙 2300 秒，持有上限 24，食材率 16.0%，技能率 2.9%。食材为萌绿大豆（1／2／4）、萌绿玉米（Lv.30 ×2／Lv.60 ×3）与窝心洋芋（Lv.60 ×3）。</p></div></div><ul class="event-facts"><li>主技能「精神击破（树果领域）」Lv.1—6 直接能量为 1,408／2,002／2,762／3,813／5,264／7,274。</li><li>每次触发还会增强芒芒果，换队不消失、换岛才清除，累计上限 24%。本站已计直接能量；整周动态领域收益仍单独标注，不伪造静态分。</li><li>可常驻遇见于萌绿之岛、萌绿之岛 EX 与天青沙滩 EX；依旧受“队伍只能编入 1 只特殊宝可梦”限制。</li></ul></article>
   <div class="event-plan">
-    <article class="event-block">
-      <span class="event-step-no">04 · 活动周前准备</span>
-      <h3>9 月 7—14 日</h3>
-      <ol>
-        <li><strong>确定岛屿：</strong>活动周只能去萌绿之岛或萌绿之岛 EX；根据账号能稳定达到的等级选择，不要误去其他岛。</li>
-        <li><strong>准备队伍：</strong>优先 #62 梦幻、#73 沙奈朵、#39 太阳伊布；梦幻和 #90 克雷色利亚都可培养，但特殊宝可梦规则下同队只能选一个。</li>
-        <li><strong>保存资源：</strong>保留好露营券、超梦饼干用的一般饼干预算与熏香栏位；梦幻育成礼物可在 11 月 9 日前领取。</li>
-        <li><strong>食材：</strong>本活动没有通用料理能量倍率；超能力系会多拿食材，所以按目标食谱预留仓库空间，不要在活动开始前塞满 800 格。</li>
-      </ol>
-    </article>
-    <article class="event-block">
-      <span class="event-step-no">05 · 活动周该做些什么</span>
-      <h3>第 1 周 · 9 月 14—21 日</h3>
-      <ol>
-        <li><strong>睡眠编队：</strong>睡前确保梦幻在队中以取得 ×1.1；若活动中捕获超梦，也可由超梦提供相同倍率。</li>
-        <li><strong>第一段睡眠优先：</strong>超梦 DNA 只在每天第一次睡眠研究发放；第二段睡眠只计算个人睡意之力。</li>
-        <li><strong>超能力系：</strong>利用技能率 ×1.5、食材帮忙＋1、主技能等级＋2；全员持有＋8 会延长收菜间隔，但仍需避免食材手长时间满包。</li>
-        <li><strong>超梦不会首轮吃饱：</strong>每天第一次点心时间可更稳定投喂；先看亲密度和饼干库存，再决定是否使用超梦熏香。</li>
-      </ol>
-    </article>
-    <article class="event-block">
-      <span class="event-step-no">06 · 第 2 周与兑换</span>
-      <h3>9 月 21—28 日</h3>
-      <ol>
-        <li><strong>倍率升级：</strong>全员持有＋15、超能力系主技能等级＋5；超梦随队睡眠时睡意之力 ×1.3（与 ×1.1 取较高值，不叠乘）。</li>
-        <li><strong>继续第一段睡眠拿 DNA：</strong>活动睡意之力等级会从第 1 周继承；第 2 周可继续解锁更高等级和奖励。</li>
-        <li><strong>兑换优先级：</strong>先保证超梦熏香与超梦饼干，再按库存考虑主技能种子等；商店于 10 月 1 日 03:59 关闭。</li>
-        <li><strong>永久内容：</strong>9 月 14 日 15:00 起，超梦会长期出现在萌绿、萌绿 EX 与天青 EX；主技能“精神击破（树果领域）”形成持续到换岛的芒芒果能量领域。</li>
-      </ol>
-    </article>
+    <article class="event-block"><span class="event-step-no">04 · 今夜</span><h3>好眠日收官</h3><ol><li><strong>睡满优先：</strong>利用 ×1.5 睡意之力和帮手睡眠 EXP ×2；要不要分睡交给本周作战台按目标比较。</li><li><strong>闪光机会：</strong>想收藏皮宝宝进化系时，不需为了追活动效果改去特定岛屿。</li></ol></article>
+    <article class="event-block"><span class="event-step-no">05 · 活动收尾</span><h3>超梦兑换所</h3><ol><li><strong>10 月 1 日 03:59 前：</strong>用完超梦 DNA，优先确认超梦熏香、超梦饼干与限购种子。</li><li><strong>10 月 3 日 19:00：</strong>剩余超梦饼干自动转换为超级沙布蕾；超梦熏香可继续使用。</li></ol></article>
+    <article class="event-block"><span class="event-step-no">06 · 永久内容</span><h3>超梦后续培养</h3><ol><li><strong>图鉴已并入：</strong>新建或导入超梦个体后，会读取技能手面板与你指定的幻之／传说 B 梯级。</li><li><strong>组队思路：</strong>先触发树果领域后可换下超梦，再用芒芒果主产手放大持续收益；注意特殊宝可梦队伍名额。</li></ol></article>
   </div>
-  <div class="event-sources">官方资料：<a href="https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/" target="_blank" rel="noreferrer">超梦登场活动完整公告</a>、<a href="https://www.pokemonsleep.net/en/news/343333373536323134383333313834373731/" target="_blank" rel="noreferrer">超梦与精神击破详情</a>、<a href="https://www.pokemonsleep.net/en/news/343431333739343830363430393436313737/" target="_blank" rel="noreferrer">Ver.3.8.0 活动规则补充</a>、<a href="https://www.pokemonsleep.net/en/news/343330313931393335303937393239373331/" target="_blank" rel="noreferrer">梦幻育成礼物</a>。</div>
+  <div class="event-sources">官方资料：<a href="https://www.pokemonsleep.net/news/343430323231373034343933343635363034/" target="_blank" rel="noreferrer">第 39 回好眠日</a>、<a href="https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/" target="_blank" rel="noreferrer">超梦活动与兑换截止</a>、<a href="https://www.pokemonsleep.net/en/news/343333373536323134383333313834373731/" target="_blank" rel="noreferrer">超梦登场公告</a>。概率与技能等级表为社区研究快照：<a href="https://wikiwiki.jp/poke_sleep/%E3%83%9F%E3%83%A5%E3%82%A6%E3%83%84%E3%83%BC" target="_blank" rel="noreferrer">超梦验证页</a>。</div>
 </section>
 <section class="panel island-guide" aria-labelledby="islandGuideTitle" data-page="islands" hidden>
   <div class="guide-head"><div><h2 id="islandGuideTitle">岛屿攻略｜当前盒子推荐</h2><p>按当前盒子动态生成：默认 1 个全体回复位＋4 个产能位；非回复技能手与特殊宝可梦必须通过预计产能比较才能进入主队。</p></div><span class="guide-stamp">9 个岛屿 · 数据快照 2026-08-23</span></div>
@@ -545,15 +497,17 @@ const storedLevelState=window.POKEMON_SLEEP_LEVELS.applyStored(data);
 const ADVISOR_PREFERENCES_KEY=window.POKEMON_SLEEP_DATA.ADVISOR_PREFERENCES_KEY;
 const storedAdvisorPreferences=window.POKEMON_SLEEP_DATA.readJson(ADVISOR_PREFERENCES_KEY,{accountStage:'mature'});
 let activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(storedAdvisorPreferences.accountStage).id;
-const nextEventStart=new Date(2026,8,14,4,0,0),nextEventEnd=new Date(2026,8,28,4,0,0);
+const nextEventStart=new Date(2026,8,26,4,0,0),nextEventEnd=new Date(2026,8,29,4,0,0),mewtwoExchangeEnd=new Date(2026,9,1,4,0,0),mewtwoBiscuitConversion=new Date(2026,9,3,19,0,0);
 function updateEventCountdown(){
-  const now=new Date(),before=now<nextEventStart,during=now>=nextEventStart&&now<nextEventEnd,target=before?nextEventStart:nextEventEnd;
+  const now=new Date(),before=now<nextEventStart,during=now>=nextEventStart&&now<nextEventEnd,exchange=now>=nextEventEnd&&now<mewtwoExchangeEnd,conversion=now>=mewtwoExchangeEnd&&now<mewtwoBiscuitConversion,target=before?nextEventStart:during?nextEventEnd:exchange?mewtwoExchangeEnd:conversion?mewtwoBiscuitConversion:now;
   const remaining=Math.max(0,target-now),days=Math.floor(remaining/86400000),hours=Math.floor(remaining%86400000/3600000),minutes=Math.floor(remaining%3600000/60000),seconds=Math.floor(remaining%60000/1000);
-  document.querySelector('#eventCountdownState').textContent=before?'距离活动开始':during?'活动进行中 · 距离结束':'活动已结束 · 等待下一次资料更新';
+  document.querySelector('#eventCountdownState').textContent=before?'距离好眠日开始':during?'好眠日进行中 · 距离结束':exchange?'好眠日已结束 · 距超梦兑换所关闭':conversion?'兑换所已关闭 · 距超梦饼干转换':'本轮活动已全部收尾';
   const currentStatus=document.querySelector('#currentEventStatus'),currentLink=document.querySelector('#currentEventLink');
-  if(before){currentStatus.innerHTML='<b>准备周：</b>梦幻拍照活动与领奖期均已结束；请为 9 月 14 日开始的超梦活动储备资源。';currentLink.href='https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/';currentLink.textContent='超梦活动公告'}
-  else if(during){currentStatus.innerHTML='<b>当前：</b>超梦登场活动进行中；请在本周计划页选择对应第1周或第2周活动档案。';currentLink.href='https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/';currentLink.textContent='当前活动公告'}
-  else{currentStatus.innerHTML='<b>最近：</b>超梦登场活动已经结束；等待下一次官方活动资料更新。';currentLink.href='https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/';currentLink.textContent='活动公告'}
+  if(before){currentStatus.innerHTML='<b>即将开始：</b>第 39 回好眠日将在 9 月 26 日 04:00 开始。';currentLink.href='https://www.pokemonsleep.net/news/343430323231373034343933343635363034/';currentLink.textContent='好眠日公告'}
+  else if(during){currentStatus.innerHTML='<b>当前：</b>第 39 回好眠日进行中；前后夜为睡意之力 ×1.5、帮手睡眠 EXP ×2、睡眠点数＋500。';currentLink.href='https://www.pokemonsleep.net/news/343430323231373034343933343635363034/';currentLink.textContent='好眠日公告'}
+  else if(exchange){currentStatus.innerHTML='<b>收尾：</b>好眠日已结束；超梦活动兑换所仍开放至 10 月 1 日 03:59。';currentLink.href='https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/';currentLink.textContent='超梦兑换说明'}
+  else if(conversion){currentStatus.innerHTML='<b>提醒：</b>超梦兑换所已关闭；剩余超梦饼干将在 10 月 3 日 19:00 转为超级沙布蕾。';currentLink.href='https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/';currentLink.textContent='转换说明'}
+  else{currentStatus.innerHTML='<b>最近：</b>第 39 回好眠日与超梦活动兑换期已结束。';currentLink.href='https://www.pokemonsleep.net/news/343430323231373034343933343635363034/';currentLink.textContent='最近活动公告'}
   const values=[days,hours,minutes,seconds];[...document.querySelector('#eventCountdown').children].forEach((box,index)=>{box.querySelector('b').textContent=String(values[index]).padStart(2,'0')});
 }
 updateEventCountdown();setInterval(updateEventCountdown,1000);
@@ -928,7 +882,7 @@ function renderBerryPicker(island,index){
 }
 const eventTeamData=[[71,'主输出／萌绿适应位','高速树果数量S；若未命中随机喜爱树果，可按当周配置替换'],[73,'全体治疗／超能力','活动技能率 ×1.5、主技能等级提升，维持整队全天产能'],[39,'技能输出／超能力','活动技能率与主技能等级双加成，同时享受超能力系食材＋1'],[1,'食材支援／萌绿适应位','帮手奖励并提供甜甜蜜与好眠番茄；按目标食谱保留仓库空间'],[62,'唯一特殊位／超能力','随队睡眠提供睡意之力 ×1.1，并获得最高档特大芒芒果数量']];
 function eventTeamBackups(){const context=islandContext(islandData[4],4);return data.filter(isBattleEligible).sort((a,b)=>individualProductionScore(b,context)-individualProductionScore(a,context)).map(mon=>[mon.id,'盒子实战替补','原推荐成员被设为仅收藏，按宝蓝湖畔当前产能自动补位'])}
-function renderEventTeam(){const root=document.querySelector('#eventTeam'),safeTeam=buildRuleSafeTeam(eventTeamData,eventTeamBackups());root.dataset.specialCount=countSpecialPokemon(safeTeam);root.replaceChildren(...safeTeam.map(([id,role,reason],index)=>{const mon=monById(id),slot=document.createElement('div');slot.className='event-team-mon';const pos=document.createElement('span');pos.className='event-step-no';pos.textContent='位置 '+(index+1);const meta=document.createElement('small');meta.className='event-team-role';meta.textContent=mon?'Lv.'+mon.lv+' · '+role:role;const why=document.createElement('span');why.className='event-team-reason';why.textContent=reason;slot.append(pos,monButton(id));if(mon)slot.append(specialtyBadge(mon,true));slot.append(meta,why);return slot}))}
+function renderEventTeam(){const root=document.querySelector('#eventTeam');if(!root)return;const safeTeam=buildRuleSafeTeam(eventTeamData,eventTeamBackups());root.dataset.specialCount=countSpecialPokemon(safeTeam);root.replaceChildren(...safeTeam.map(([id,role,reason],index)=>{const mon=monById(id),slot=document.createElement('div');slot.className='event-team-mon';const pos=document.createElement('span');pos.className='event-step-no';pos.textContent='位置 '+(index+1);const meta=document.createElement('small');meta.className='event-team-role';meta.textContent=mon?'Lv.'+mon.lv+' · '+role:role;const why=document.createElement('span');why.className='event-team-reason';why.textContent=reason;slot.append(pos,monButton(id));if(mon)slot.append(specialtyBadge(mon,true));slot.append(meta,why);return slot}))}
 ingredientRecommendationGrid.addEventListener('click',event=>{const mon=event.target.closest('[data-mon]');if(mon)focusMon(mon.dataset.mon)});
 const islandTabs=document.querySelector('#islandTabs');
 islandData.forEach((island,i)=>{const b=document.createElement('button');b.type='button';b.className='island-tab';b.role='tab';b.textContent=island.name;b.addEventListener('click',()=>renderIsland(i));islandTabs.append(b)});
@@ -1114,7 +1068,7 @@ boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initia
 pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});
 teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,recipes:recipeData,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING,investmentPlanner:window.POKEMON_SLEEP_INVESTMENT_PLANNER,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);weeklyPlannerController?.render()}});
 pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,calculator:window.POKEMON_SLEEP_PRODUCTION_CALCULATOR,profile:personalSettingsController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
-weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy});
+weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy});
 investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});
 cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;
 refreshBoxFilterOptions();refreshBoxStats();render();decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});restoreBoxViewState();

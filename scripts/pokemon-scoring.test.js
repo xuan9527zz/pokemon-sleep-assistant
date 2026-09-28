@@ -44,6 +44,15 @@ assert.equal(weakAbb.individualGrade,'C');
 const noHbSkill=scoring.scorePokemon({name:'沙奈朵',speciesId:'282',nature:'慎重',ingredients:'特选苹果×1／特选苹果×2／特选苹果×4',subs:'技能概率M；技能概率S；帮忙速度M；帮忙速度S；技能等级M'});
 assert.notEqual(noHbSkill.individualGrade,'S','无帮手奖励的技能手不能进入S');
 
+const mewtwoRecord=scoring.recordForPokemon({name:'超梦',speciesId:'150'});
+assert.equal(mewtwoRecord.id,'150','超梦必须进入正式图鉴，而不是只保留梯级占位');
+assert.equal(mewtwoRecord.specialty,'skill');
+assert.equal(mewtwoRecord.mainSkill.id,40);
+const mewtwo=scoring.scorePokemon({name:'超梦',speciesId:'150',nature:'认真',ingredients:'萌绿大豆×1／萌绿玉米×2／窝心洋芋×3',subs:'技能概率M；技能概率S；帮手奖励；帮忙速度M；帮忙速度S'});
+assert.equal(mewtwo.speciesTier,'B','超梦沿用用户确认的幻之宝可梦B级梯级');
+assert.equal(mewtwo.specialty,'skill');
+assert.ok(Number.isFinite(mewtwo.individualScore));
+
 const panel={id:'mew',name:'梦幻',speciesId:'151',ingredients:'特选蛋×2／特选蛋×4／特选蛋×6',subskills:'帮手奖励；技能概率M；帮忙速度M；树果数量S；食材概率M',nature:'浮躁',main:'十项全能 Lv.8'};
 const mew=scoring.scorePokemon(allRounder.apply(panel,'berry-burst'));
 assert.equal(mew.speciesTier,'S');

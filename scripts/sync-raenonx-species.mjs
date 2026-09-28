@@ -100,6 +100,7 @@ const NORMALIZED_WIKI_SKILL_TO_ID = Object.freeze({
   'いやしのはどうげんきエールs': 34,
   'りゅうせいぐんきのみバースト': 35,
   'はどうだんゆめのかけらゲットs': 36,
+  'サイコブレイクきのみゾーン': 40,
 });
 
 const args = new Map(
@@ -478,8 +479,9 @@ async function runSelfTest() {
   if (checks.darkraiMainSkillName !== 'Nightmare (Charge Strength M)') {
     throw new Error('Darkrai main-skill name correction missing');
   }
-  if (checks.mewtwoMainSkillId !== 40 || checks.mewtwoMainSkillSource !== 'officialPreview') {
-    throw new Error('Mewtwo official preview main-skill verification missing');
+  if (checks.mewtwoMainSkillId !== 40
+      || !['officialPreview', 'raenonxVerified', 'verifiedWikiOverride'].includes(checks.mewtwoMainSkillSource)) {
+    throw new Error('Mewtwo main-skill verification missing');
   }
   if (checks.latiasMainSkillId !== 34) throw new Error('Latias main-skill correction missing');
   if (checks.latiosMainSkillId !== 35) throw new Error('Latios main-skill correction missing');

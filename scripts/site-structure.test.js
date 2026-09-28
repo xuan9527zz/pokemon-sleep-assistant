@@ -32,10 +32,12 @@ assert.ok(html.includes('id="profileIngredientStock"'), '个人设置缺少共�
 assert.ok(html.includes('id="profileRecipeList"'), '个人设置缺少逐食谱加成与完成状态');
 assert.ok(html.includes('id="profileRecipeBulk" type="number" min="0" max="70"'), '食谱等级输入必须允许0表示未做过，并限制到Lv.70');
 assert.ok(!html.includes('data-recipe-cooked'), '食谱是否做过不应保留独立开关');
-assert.ok(html.includes('recipeEnergy:plannedRecipeEnergy'), '本周计划不得推荐食谱等级为0的未解锁料理');
-assert.ok(html.includes('官方公告快照 · 2026-09-10'), '活动页资料快照未更新');
+assert.ok(html.includes('recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy'), '本周目标应继续使用已解锁食谱，下一餐推荐则必须允许按Lv.1评估未解锁料理');
+assert.ok(html.includes('官方公告快照 · 2026-09-28'), '活动页资料快照未更新');
 assert.ok(!html.includes('梦幻迷你拍照惊喜任务进行中'), '活动页仍把已经结束的梦幻拍照活动显示为进行中');
-assert.ok(html.includes('超能力系主技能触发率 ×1.5'), '活动页缺少超梦活动的技能触发率细节');
+assert.ok(html.includes('第 39 回好眠日'), '活动页缺少当前好眠日');
+assert.ok(html.includes('10 月 1 日 03:59'), '活动页缺少超梦兑换所截止时间');
+assert.ok(html.includes('src="./assets/pokemon/150.png"'), '活动页缺少超梦本地图鉴资料');
 assert.ok(html.includes('id="recipeIngredient" multiple'), '食谱页必须支持多食材交集筛选');
 assert.ok(html.includes('id="recipeCookedFilter"'), '食谱页缺少未做过筛选');
 assert.ok(html.includes('id="currentTeamDrawer"'), '当前队伍缺少切换侧栏');
