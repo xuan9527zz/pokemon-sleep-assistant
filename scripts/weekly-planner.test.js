@@ -73,6 +73,8 @@ assert.deepEqual(cooked.inventory,{'特选苹果':5,'萌绿玉米':4},'勾选做
 const notCooked=weekly.consumeRecipeIngredients({'特选苹果':19},recipes[1]);
 assert.equal(notCooked.ok,false);
 assert.deepEqual(notCooked.inventory,{'特选苹果':19},'库存不足时不得部分扣料');
+assert.deepEqual(weekly.recipeCompletionPatch({'特选苹果':8},lockedRecipe,{recipeLevels:{'1':20}}),{ingredientStock:{'特选苹果':8},recipeLevels:{'1':20,'4':1}},'首次做未解锁食谱时应同时登记为Lv.1');
+assert.deepEqual(weekly.recipeCompletionPatch({'特选苹果':8},recipes[0],{recipeLevels:{'1':20}}),{ingredientStock:{'特选苹果':8}},'已解锁食谱不应重置现有等级');
 assert.equal(weekly.ACTIVITY_PROFILES.snapshot.archived,true);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.ingredientHelpBonus,1);
 assert.equal(weekly.ACTIVITY_PROFILES.mewtwo1.skillTriggerMultiplier,1.5);
