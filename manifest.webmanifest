@@ -1,0 +1,40 @@
+{
+  "id": "./",
+  "name": "Pokémon Sleep 助手",
+  "short_name": "Sleep 助手",
+  "description": "盒子评价、队伍产出、本周计划、食谱与活动资料工具。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./#box",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#f4f7fb",
+  "theme_color": "#116b42",
+  "categories": ["utilities", "games"],
+  "icons": [
+    {
+      "src": "./assets/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {"name": "宝可梦盒子", "short_name": "盒子", "url": "./#box"},
+    {"name": "当前队伍", "short_name": "队伍", "url": "./#team"},
+    {"name": "本周作战", "short_name": "本周", "url": "./#weekly"}
+  ]
+}

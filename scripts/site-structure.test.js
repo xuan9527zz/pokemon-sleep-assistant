@@ -11,6 +11,7 @@ const pokemonManagerSource = fs.readFileSync(path.join(projectRoot, 'pokemon-man
 const levelManagerSource = fs.readFileSync(path.join(projectRoot, 'level-manager.js'), 'utf8');
 const pokemonManagerCss = fs.readFileSync(path.join(projectRoot, 'pokemon-manager.css'), 'utf8');
 const eventsSource = fs.readFileSync(path.join(projectRoot, 'events-data.js'), 'utf8');
+const pwaSource = fs.readFileSync(path.join(projectRoot, 'pwa.js'), 'utf8');
 const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
 const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
 assert.deepStrictEqual(duplicateIds, [], `存在重复 id：${duplicateIds.join('、')}`);
@@ -28,6 +29,12 @@ assert.ok(!html.includes('id="currentTeamIslandBonus"'), '当前队伍页不应�
 assert.ok(html.includes('id="currentTeamDuration"'), '当前队伍页缺少纯能量计算时长输入');
 assert.ok(!html.includes('id="recipeLevelBonus"'), '食谱页不应再保留单一全局等级加成输入');
 assert.ok(html.includes('id="personalSettingsDialog"'), '缺少统一个人设置侧栏');
+assert.ok(html.includes('rel="manifest" href="./manifest.webmanifest"'), '页面缺少PWA应用清单');
+assert.ok(html.includes('rel="apple-touch-icon" sizes="180x180"'), '页面缺少iPhone主屏幕图标');
+assert.ok(html.includes('id="pwaInstallOpen"')&&html.includes('id="pwaInstallDialog"'), '页面缺少PWA安装入口与iPhone安装说明');
+assert.ok(html.includes('src="pwa.js')&&html.includes('href="./pwa.css'), '页面缺少PWA运行时或样式');
+assert.ok(html.includes('POKEMON_SLEEP_PWA.mount()'), '页面没有初始化PWA安装与更新控制器');
+assert.ok(pwaSource.includes("serviceWorker.register('./service-worker.js',{scope:'./'})"), 'PWA运行时缺少相对路径Service Worker注册');
 assert.ok(html.includes('id="profileIslandBonuses"'), '个人设置缺少岛屿加成资料');
 assert.ok(html.includes('id="profileIngredientStock"'), '个人设置缺少共用食材库存');
 assert.ok(html.includes('id="profileRecipeList"'), '个人设置缺少逐食谱加成与完成状态');

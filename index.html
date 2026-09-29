@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#116b42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sleep 助手">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/app-icon-180.png">
+<link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./team-planner.css?v=20260912-1">
 <link rel="stylesheet" href="./ingredients.css?v=20260908-1">
 <link rel="stylesheet" href="./level-manager.css?v=20260921-1">
@@ -22,6 +28,7 @@
 <link rel="stylesheet" href="./personal-settings.css?v=20260910-1">
 <link rel="stylesheet" href="./pokemon-picker.css?v=20260911-2">
 <link rel="stylesheet" href="./selection-odds.css?v=20260912-1">
+<link rel="stylesheet" href="./pwa.css?v=20260929-1">
 <title>Pokemon Sleep 助手</title>
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--ink:#18212f;--muted:#667085;--line:#dfe5ee;--green:#19b96b;--gold:#f3ad24;--blue:#2386e8;--red:#e85151}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}.wrap{max-width:1500px;margin:auto;padding:24px}.hero{background:linear-gradient(135deg,#116b42,#24c778);color:#fff;padding:26px;border-radius:18px;box-shadow:0 10px 30px #0b5d3830}.hero h1{margin:0 0 6px;font-size:28px}.hero p{margin:0;opacity:.9}.stats{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:12px;margin:16px 0}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px #1018280c}.stat{padding:15px}.stat b{display:block;font-size:25px}.stat span{color:var(--muted)}.panel{padding:15px}.filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(6,minmax(130px,1fr)) auto;gap:10px}.filters input,.filters select,.filters button{width:100%;min-height:42px;border:1px solid #cfd6e2;border-radius:10px;background:#fff;padding:8px 11px;font:inherit}.filters button{background:#18212f;color:#fff;cursor:pointer}.meta{color:var(--muted);margin:12px 2px}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 4px 14px #1018280c}table{width:100%;border-collapse:separate;border-spacing:0;min-width:1640px}th,td{padding:10px 11px;border-bottom:1px solid #edf0f5;text-align:left;vertical-align:top}th{position:sticky;top:0;z-index:2;background:#eef7f2;color:#185b3c;white-space:nowrap}tbody tr:hover{background:#fbfdfc}.shiny{display:inline-block;background:#fff3cd;color:#7b5200;border:1px solid #f4cf70;border-radius:999px;padding:1px 8px;font-weight:700}.normal{color:#7a8494}.tag{display:inline-block;border-radius:999px;padding:2px 8px;font-weight:700;white-space:nowrap}.high{background:#dcfce7;color:#08743d}.use{background:#dbeafe;color:#165ca9}.collect{background:#fef3c7;color:#8a5800}.keep{background:#eef2f6;color:#4f5c6d}.nowrap{white-space:nowrap}.muted{color:var(--muted)}footer{color:var(--muted);padding:18px 2px}.hide{display:none}@media(max-width:800px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.hero h1{font-size:22px}}@media print{body{background:#fff}.hero{box-shadow:none}.filters{display:none}.wrap{max-width:none;padding:0}.tablebox{box-shadow:none;overflow:visible}table{min-width:0;font-size:9px}th,td{padding:4px}.stats{grid-template-columns:repeat(5,1fr)}}
@@ -63,7 +70,15 @@
 <link rel="stylesheet" href="./mobile.css?v=20260913-1">
 </head>
 <body><main class="wrap">
-<section class="hero"><h1>Pokemon Sleep｜宝可梦助手</h1><p>盒子、队伍、本周计划、岛屿、料理与活动资料集中管理；登录后可在不同设备继续使用同一份数据。</p><button class="settings-launch" id="personalSettingsOpen" type="button" aria-label="打开个人设置" title="个人设置">⚙</button></section>
+<section class="hero"><h1>Pokemon Sleep｜宝可梦助手</h1><p>盒子、队伍、本周计划、岛屿、料理与活动资料集中管理；登录后可在不同设备继续使用同一份数据。</p><button class="pwa-install-launch" id="pwaInstallOpen" type="button" hidden>安装 App</button><button class="settings-launch" id="personalSettingsOpen" type="button" aria-label="打开个人设置" title="个人设置">⚙</button></section>
+<dialog class="pwa-install-dialog" id="pwaInstallDialog" aria-labelledby="pwaInstallTitle">
+  <div class="pwa-install-shell">
+    <header class="pwa-install-head"><div class="pwa-install-brand"><img src="./assets/app-icon-192.png" alt=""><div><span>INSTALLABLE WEB APP</span><h2 id="pwaInstallTitle">安装 Sleep 助手</h2></div></div><button class="pwa-install-close" id="pwaInstallClose" type="button" aria-label="关闭安装说明">×</button></header>
+    <div class="pwa-install-body"><div class="pwa-install-status" id="pwaInstallStatus"><strong>正在检查安装状态</strong><span>请稍候。</span></div><ol class="pwa-install-steps" id="pwaInstallSteps"><li>点击浏览器工具栏中的“分享”按钮</li><li>向下找到并选择“添加到主屏幕”</li><li>确认名称后点击右上角“添加”</li></ol><button class="pwa-native-install" id="pwaNativeInstall" type="button" hidden>立即安装</button></div>
+  </div>
+</dialog>
+<div class="pwa-toast pwa-offline-toast" id="pwaOfflineToast" role="status" hidden><span>当前处于离线状态，正在使用设备中的本地资料。</span></div>
+<div class="pwa-toast" id="pwaUpdateToast" role="status" hidden><span>新版本已经准备好。</span><button id="pwaUpdateApply" type="button">刷新更新</button></div>
 <nav class="app-nav" aria-label="主要功能">
   <a href="#box" data-page-target="box"><span class="app-nav-icon">盒</span><span class="app-nav-copy"><b>盒子</b><small>97 只个体整理</small></span></a>
   <a href="#team" data-page-target="team"><span class="app-nav-icon">队</span><span class="app-nav-copy"><b>当前队伍</b><small>食材与收菜时间</small></span></a>
@@ -367,6 +382,7 @@
 <script src="personal-settings.js?v=20260911-1"></script>
 <script src="pokemon-picker.js?v=20260921-1"></script>
 <script src="species-tier-guide.js?v=20260929-1"></script>
+<script src="pwa.js?v=20260929-1"></script>
 <script src="cooking-success.js?v=20260912-1"></script>
 <script src="production-timeline.js?v=20260913-2"></script>
 <script src="team-planner.js?v=20260913-2"></script>
@@ -568,7 +584,7 @@ const unclassifiedSpecies=[...new Set(data.filter(mon=>mon.specialty==='unknown'
 let sortKey='pokedexId',dir=1;
 const sortableScoreKeys=new Set(['scoreIndividual','speciesTierRank','cultivationRank']);
 const tbody=document.querySelector('tbody'),mobileBoxList=document.querySelector('#mobileBoxList'),mobileFilterToggle=document.querySelector('#mobileFilterToggle'),q=document.querySelector('#q'),bf=document.querySelector('#bf'),sf=document.querySelector('#sf'),rf=document.querySelector('#rf'),pf=document.querySelector('#pf'),sortSelect=document.querySelector('#sortSelect'),accountStage=document.querySelector('#accountStage'),advisorStageDescription=document.querySelector('#advisorStageDescription');
-let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null,personalSettingsController=null,pokemonPickerController=null,speciesTierGuideController=null,selectionOddsController=null;
+let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null,personalSettingsController=null,pokemonPickerController=null,speciesTierGuideController=null,pwaController=null,selectionOddsController=null;
 const isBattleEligible=mon=>Boolean(mon&&mon.battleEligible!==false);
 const usageStatus=mon=>window.POKEMON_SLEEP_BOX_MANAGER.usageStatus(mon);
 function selectedFilterValues(root){return [...root.querySelectorAll('input[type="checkbox"]:checked')].map(input=>input.value)}
@@ -1044,6 +1060,7 @@ const shiny=data.filter(r=>r.shiny==='是').length;
 document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;document.querySelector('.app-nav [data-page-target="box"] small').textContent=`${data.length} 只个体整理`;
 pokemonPickerController=window.POKEMON_SLEEP_POKEMON_PICKER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG});window.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER=pokemonPickerController;
 speciesTierGuideController=window.POKEMON_SLEEP_SPECIES_TIER_GUIDE.mount({catalog:window.POKEMON_SLEEP_CATALOG,tiers:window.POKEMON_SLEEP_SPECIES_TIERS,picker:pokemonPickerController});
+pwaController=window.POKEMON_SLEEP_PWA.mount();
 selectionOddsController=window.POKEMON_SLEEP_SELECTION_ODDS.mount();
 personalSettingsController=window.POKEMON_SLEEP_PERSONAL_SETTINGS.mount({ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),recipes:recipeData,islands:islandData,activityProfiles:window.POKEMON_SLEEP_WEEKLY_PLANNER.ACTIVITY_PROFILES,onChange:handlePersonalSettingsChange});window.POKEMON_SLEEP_PERSONAL_SETTINGS_CONTROLLER=personalSettingsController;
 if(personalSettingsController){activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(personalSettingsController.getState().accountStage).id;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;refreshCultivationAdvice()}
