@@ -35,6 +35,10 @@ assert.ok(html.includes('id="pwaInstallOpen"')&&html.includes('id="pwaInstallDia
 assert.ok(html.includes('src="pwa.js')&&html.includes('href="./pwa.css'), '页面缺少PWA运行时或样式');
 assert.ok(html.includes('POKEMON_SLEEP_PWA.mount()'), '页面没有初始化PWA安装与更新控制器');
 assert.ok(!html.includes('renderIsland(0);'), '首页不应预先计算隐藏的岛屿推荐');
+assert.ok(!html.includes('data-page-target="islands"'), '岛屿推荐不应保留独立主导航');
+assert.ok(html.includes('id="weeklyIslandDetails" data-page="weekly"'), '详细岛屿队伍对照应归入本周作战');
+assert.ok(html.includes("location.hash==='#islands'?'weekly'"), '旧岛屿链接应转到本周作战');
+assert.ok(html.includes("if(page==='weekly'&&legacyIslandLink)document.querySelector('#weeklyIslandDetails').open=true"), '旧岛屿链接应自动展开迁移后的内容');
 assert.ok(html.includes("if(page==='weekly'){const ready=Boolean(weeklyPlannerController);ensureWeeklyPlanner()"), '本周作战应在首次打开时初始化');
 assert.ok(html.includes("weekMode!=='preparation')ensureSleepCurves()"), '备料周不应预先下载睡眠优化曲线');
 assert.ok(html.includes('calculateMember(mon,currentProduction.byBoxId[mon.id]'), '岛屿单体排序应使用共用生产模型');
@@ -51,7 +55,7 @@ assert.ok(!html.includes('data-recipe-cooked'), '食谱是否做过不应保留�
 assert.ok(html.includes('recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy'), '本周目标应继续使用已解锁食谱，下一餐推荐则必须允许按Lv.1评估未解锁料理');
 assert.ok(html.includes('src="events-data.js'), '活动页和本周作战缺少统一活动数据源');
 assert.ok(html.includes('id="eventGuide"')&&html.includes('POKEMON_SLEEP_EVENTS.renderEventGuide'), '活动页必须由统一数据源渲染');
-assert.ok(eventsSource.includes("updatedAt:'2026-09-28'"), '活动页资料快照未更新');
+assert.ok(eventsSource.includes("updatedAt:'2026-09-29'")&&eventsSource.includes('cookingWeek3:'), '活动页资料快照或下期料理周公告未更新');
 assert.ok(!eventsSource.includes('梦幻迷你拍照惊喜任务进行中'), '活动数据仍把已经结束的梦幻拍照活动显示为进行中');
 assert.ok(eventsSource.includes('第 39 回好眠日'), '活动数据缺少当前好眠日');
 assert.ok(eventsSource.includes('10 月 1 日 03:59'), '活动数据缺少超梦兑换所截止时间');

@@ -207,5 +207,20 @@ assert.ok(Math.abs(tastyPlan.outcome.critProbability-.8)<1e-12);
 
 const suggested=planner.suggestEnergyTeams([...potMons,{...stufful,id:'suggest-extra'}],{}, {goodCamp:false,energyProfile:'average',islandProfile:'lapis'});
 assert.strictEqual(suggested.burst.team.length,5);
+assert.equal(suggested.availableCount,6);
+assert.ok(suggested.evaluated>0&&suggested.evaluated<=6);
+const sameRecommendation=planner.recommendationDifference({result:{energy:{totalEnergy:1000}}},{valid:true,selectedCount:5,energy:{totalEnergy:1000}});
+assert.equal(sameRecommendation.delta,0);
+assert.match(sameRecommendation.text,/持平/);
+const betterRecommendation=planner.recommendationDifference({result:{energy:{totalEnergy:1200}}},{valid:true,selectedCount:5,energy:{totalEnergy:1000}});
+assert.equal(betterRecommendation.percent,20);
+assert.match(betterRecommendation.text,/高 200/);
+const worseRecommendation=planner.recommendationDifference({result:{energy:{totalEnergy:800}}},{valid:true,selectedCount:5,energy:{totalEnergy:1000}});
+assert.match(worseRecommendation.text,/低 200/);
+assert.equal(planner.recommendationDifference({result:{energy:{totalEnergy:1000}}},null).comparable,false);
+const composition=planner.recommendationComposition(suggested.burst,suggested.burst.result);
+assert.match(composition,/候选／当前/);
+assert.match(composition,/帮手奖励/);
+assert.match(planner.recommendationComposition(suggested.burst,null),/候选构成/);
 
 console.log('team-planner tests passed');

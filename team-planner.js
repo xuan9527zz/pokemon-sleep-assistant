@@ -438,13 +438,30 @@
       return {mon,score:report.valid?report.energy.totalEnergy:-Infinity};
     }).sort((a,b)=>b.score-a.score),healers=ranked.filter(item=>isFullTeamHealer(item.mon)).slice(0,3),bonus=ranked.filter(item=>unlockedSubskills(item.mon).includes('帮手奖励')).slice(0,4),pool=[];
     [...ranked.slice(0,poolSize),...healers,...bonus].forEach(item=>{if(item&&!pool.some(row=>row.mon.id===item.mon.id)&&pool.length<18)pool.push(item)});
-    let burst=null,stable=null;forEachCombination(pool.map(item=>item.mon),5,team=>{
+    let burst=null,stable=null,evaluated=0;forEachCombination(pool.map(item=>item.mon),5,team=>{
       const result=calculateTeam(team,productionByBoxId,options);if(!result.valid)return;
+      evaluated++;
       const candidate={team,result,energy:result.energy.totalEnergy};
       if(!burst||candidate.energy>burst.energy)burst=candidate;
       if(team.some(isFullTeamHealer)&&(!stable||candidate.energy>stable.energy))stable=candidate;
     });
-    return {burst,stable,poolSize:pool.length,evaluated:pool.length>=5?Math.round(pool.length*(pool.length-1)*(pool.length-2)*(pool.length-3)*(pool.length-4)/120):0};
+    return {burst,stable,poolSize:pool.length,availableCount:eligible.length,evaluated};
+  }
+
+  function recommendationDifference(candidate,current){
+    if(!candidate||!candidate.result)return null;
+    if(!current||!current.valid||current.selectedCount!==5)return {comparable:false,text:'当前队伍未满五只或不符合编队规则，暂时无法比较。'};
+    const baseline=Number(current.energy&&current.energy.totalEnergy)||0,proposed=Number(candidate.result.energy&&candidate.result.energy.totalEnergy)||0,delta=proposed-baseline,percent=baseline>0?Math.abs(delta)/baseline*100:0;
+    if(Math.abs(delta)<.5)return {comparable:true,delta:0,percent:0,text:`与当前队伍基本持平（当前 ${Math.round(baseline).toLocaleString('zh-CN')} 纯能量）。`};
+    return {comparable:true,delta,percent,text:`比当前队伍${delta>0?'高':'低'} ${Math.round(Math.abs(delta)).toLocaleString('zh-CN')} 纯能量（${delta>0?'+':'−'}${percent.toFixed(1)}%）；当前 ${Math.round(baseline).toLocaleString('zh-CN')}。`};
+  }
+
+  function recommendationComposition(candidate,current){
+    function summary(result,team){
+      return {favorite:(result.energy.members||[]).filter(member=>member.favorite).length,bonus:result.helpingBonusCount||0,healer:(team||[]).filter(isFullTeamHealer).length};
+    }
+    const proposed=summary(candidate.result,candidate.team),baseline=current&&current.valid&&current.selectedCount===5?summary(current,current.members.map(member=>member.mon)):null;
+    return baseline?`构成对照（候选／当前）：命中喜爱树果 ${proposed.favorite}／${baseline.favorite} 位、已解锁帮手奖励 ${proposed.bonus}／${baseline.bonus} 个、全体回复 ${proposed.healer}／${baseline.healer} 位。以上是队伍构成，不单独代表能量增益。`:`候选构成：命中喜爱树果 ${proposed.favorite} 位、已解锁帮手奖励 ${proposed.bonus} 个、全体回复 ${proposed.healer} 位。`;
   }
 
   function potSlotsPerTrigger(mon,skillLevel){
@@ -818,11 +835,11 @@
       });
     }
 
-    function appendMiniTeam(rootNode,title,candidate,actionLabel='应用这套队伍'){
+    function appendMiniTeam(rootNode,title,candidate,actionLabel='应用这套队伍',comparisonText=''){
       if(!candidate||!candidate.team||!candidate.team.length)return;
       const card=element('article','team-tool-team'),head=element('div','team-tool-team-head'),copy=element('div','');copy.append(element('strong','',title),element('small','',`${Math.round(candidate.result.energy.totalEnergy).toLocaleString('zh-CN')} 纯能量／${number(candidate.result.energy.durationHours,1)}小时`));head.append(copy);
       const apply=element('button','',actionLabel);apply.type='button';apply.addEventListener('click',()=>{selected=candidate.team.map(mon=>String(mon.id));saveSelection();render();showSaveMessage(`已应用“${title}”。`)});head.append(apply);card.append(head);
-      const members=element('div','team-tool-members'),pickerController=pokemonPicker||globalThis.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER;candidate.team.forEach(mon=>{const item=element('span',''),label=element('b','',mon.nickname||mon.name);if(pickerController&&typeof pickerController.createIcon==='function')item.append(pickerController.createIcon(mon,{size:'small'}));item.append(label);members.append(item)});card.append(members);rootNode.append(card);
+      const members=element('div','team-tool-members'),pickerController=pokemonPicker||globalThis.POKEMON_SLEEP_POKEMON_PICKER_CONTROLLER;candidate.team.forEach(mon=>{const item=element('span',''),label=element('b','',mon.nickname||mon.name);if(pickerController&&typeof pickerController.createIcon==='function')item.append(pickerController.createIcon(mon,{size:'small'}));item.append(label);members.append(item)});card.append(members);if(comparisonText)card.append(element('p','team-recommendation-delta',comparisonText));rootNode.append(card);
     }
 
     function renderScenario(){
@@ -834,9 +851,22 @@
       const changes=element('div','team-scenario-members');report.members.forEach(row=>{const line=element('span','');line.textContent=row.ok?`#${row.mon.id} ${row.report.source.name} Lv.${row.report.before.level} → ${row.report.targetSpecies.name} Lv.${row.report.after.level} · 主技能 Lv.${row.report.mainSkill.current}→${row.report.mainSkill.target}`:`#${row.mon.id} ${row.mon.name}：资料不足，保持当前状态`;changes.append(line)});card.append(changes);scenarioRoot.append(card);
     }
 
+    let suggestionRequestId=0;
     function renderSuggestions(){
-      if(!suggestRoot)return;suggestRoot.replaceChildren();suggestRoot.append(element('p','team-tool-empty','正在组合盒内候选……'));
-      setTimeout(()=>{const report=suggestEnergyTeams(mons,productionByBoxId,teamOptions());suggestRoot.replaceChildren();if(!report.burst){suggestRoot.append(element('p','team-tool-empty','盒内可上场个体不足五只。'));return}appendMiniTeam(suggestRoot,'岛屿纯能量',report.burst);if(report.stable&&report.stable.team.map(mon=>mon.id).join('|')!==report.burst.team.map(mon=>mon.id).join('|'))appendMiniTeam(suggestRoot,'保留全体治疗',report.stable);else if(report.stable)suggestRoot.append(element('p','team-tool-note','纯能量建议已经包含全体治疗，不再重复显示第二套。'));suggestRoot.append(element('p','team-tool-note',`从 ${report.poolSize} 只高产与队伍增益候选中验算 ${report.evaluated.toLocaleString('zh-CN')} 个组合；不会改写现有严选评分。`))},20);
+      if(!suggestRoot)return;const requestId=++suggestionRequestId;suggestRoot.replaceChildren();suggestRoot.append(element('p','team-tool-empty','正在组合盒内候选……'));
+      setTimeout(()=>{
+        if(requestId!==suggestionRequestId)return;
+        const options=teamOptions(),report=suggestEnergyTeams(mons,productionByBoxId,options),currentMembers=selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),current=currentMembers.length===5?calculateTeam(currentMembers,productionByBoxId,options):null;
+        suggestRoot.replaceChildren();
+        if(!report.burst){suggestRoot.append(element('p','team-tool-empty','盒内可上场个体不足五只，暂时无法生成五人队候选。'));return}
+        const personal=profile&&typeof profile.getState==='function'?profile.getState():null,island=personal&&personalSettings&&personalSettings.island?personalSettings.island(personal):null;
+        const conditions=[island&&island.label||'当前岛屿',`岛屿加成 +${number(options.islandBonusPct||0,0)}%`,`${number(options.durationHours||24,1)} 小时`,options.goodCamp?'好露营券':'无露营券',`每 ${options.skillCollectionHours||4} 小时点击收取`,ENERGY_PROFILES[options.energyProfile]?.label||'五档活力',options.favoriteBerries&&options.favoriteBerries.length?`喜爱树果：${options.favoriteBerries.join('／')}`:''].filter(Boolean).join(' · ');
+        suggestRoot.append(element('p','team-recommendation-context',`同条件比较：${conditions}。仅比较纯能量，不计普通食材的料理收益。`));
+        appendMiniTeam(suggestRoot,'纯能量较高的候选',report.burst,'应用这套队伍',`${recommendationDifference(report.burst,current).text} ${recommendationComposition(report.burst,current)}`);
+        if(report.stable&&report.stable.team.map(mon=>mon.id).join('|')!==report.burst.team.map(mon=>mon.id).join('|'))appendMiniTeam(suggestRoot,'保留全体治疗的候选',report.stable,'应用这套队伍',`${recommendationDifference(report.stable,current).text} ${recommendationComposition(report.stable,current)}`);
+        else if(report.stable)suggestRoot.append(element('p','team-tool-note','纯能量候选已经包含全体治疗，不重复显示第二套。'));
+        suggestRoot.append(element('p','team-tool-note',`从盒内 ${report.availableCount} 只可上场个体中，先筛出 ${report.poolSize} 只高产、全体治疗或帮手奖励候选，再验算其中 ${report.evaluated.toLocaleString('zh-CN')} 个合法五人组合。这是候选池内较优方案，不保证全盒子绝对最优，也不改变个体严选评分。`));
+      },20);
     }
 
     function renderTasty(){
@@ -872,6 +902,7 @@
     }
 
     function render(){
+      if(suggestRoot&&suggestRoot.childElementCount){suggestionRequestId++;suggestRoot.replaceChildren(element('p','team-tool-empty','队伍或计算条件已变化，请重新生成候选。'))}
       const personal=profile&&typeof profile.getState==='function'?profile.getState():null,selectedIsland=personal&&personalSettings&&personalSettings.island?personalSettings.island(personal):null;syncExControls(selectedIsland);
       updatePickers();
       const team=selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean);
@@ -901,5 +932,5 @@
     return {render,refresh,renderScenario,renderSuggestions,renderTasty,getTeam:()=>selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),calculate:()=>calculateTeam(selected.map(id=>mons.find(mon=>mon.id===id)).filter(Boolean),productionByBoxId,teamOptions())};
   }
 
-  return {ENERGY_PROFILES,ISLAND_PROFILES,DEFAULT_ENERGY_SETTINGS,SPECIAL_NAMES,MAX_SAVED_TEAMS,POT_SKILL_SLOTS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,skillProbability,normalizeEnergySettings,calculateEnergyBreakdown,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateMember,calculateTeam,isFullTeamHealer,suggestEnergyTeams,potSlotsPerTrigger,potOutputForResult,suggestPotTeam,calculatePotDeployment,tastyBonusPerTrigger,tastyOutputForResult,suggestTastyTeam,calculateTastyDeployment,projectPokemon,calculateProjectedTeam,formatHours,mount};
+  return {ENERGY_PROFILES,ISLAND_PROFILES,DEFAULT_ENERGY_SETTINGS,SPECIAL_NAMES,MAX_SAVED_TEAMS,POT_SKILL_SLOTS,parseInterval,parseIngredientSlots,unlockedSubskills,ingredientProbability,skillProbability,normalizeEnergySettings,calculateEnergyBreakdown,validateSpecialTeam,validateBattleTeam,cleanMemberIds,sameLineup,normalizeSavedTeams,upsertSavedTeam,helpingSpeedReduction,helpingBonusOutputMultiplier,calculateMember,calculateTeam,isFullTeamHealer,suggestEnergyTeams,recommendationDifference,recommendationComposition,potSlotsPerTrigger,potOutputForResult,suggestPotTeam,calculatePotDeployment,tastyBonusPerTrigger,tastyOutputForResult,suggestTastyTeam,calculateTastyDeployment,projectPokemon,calculateProjectedTeam,formatHours,mount};
 });

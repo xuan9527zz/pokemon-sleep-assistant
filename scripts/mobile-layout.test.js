@@ -29,7 +29,7 @@ assert.strictEqual(
   '手机样式在断点外只能隐藏新增的手机专用控件'
 );
 assert.ok(css.includes('.app-nav{position:fixed;inset:auto 0 0'), '手机导航应固定在底部');
-assert.ok(css.includes('grid-template-columns:repeat(6,minmax(0,1fr))'), '手机底部导航应容纳六个主页面');
+assert.ok(css.includes('grid-template-columns:repeat(5,minmax(0,1fr))'), '手机底部导航应容纳五个主页面');
 assert.ok(html.includes('data-page-target="weekly"'), '手机和桌面导航都应包含本周计划页');
 assert.ok(css.includes('html,body{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}'), '页面根节点必须阻止iOS整页横向偏移');
 assert.ok(css.includes('.wrap{width:100%;max-width:100%'), '手机主容器必须限制在视口宽度内');
@@ -46,7 +46,7 @@ assert.ok(css.includes('@media(min-width:398px) and (max-width:406px)'), '缺少
 assert.ok(css.includes('@media(orientation:landscape) and (max-height:500px)'), '缺少iPhone横屏规则');
 assert.ok(css.includes('env(safe-area-inset-top)'), '灵动岛顶部安全区域未处理');
 assert.ok(css.includes('env(safe-area-inset-bottom)'), '底部Home指示条安全区域未处理');
-assert.ok(css.includes('.island-guide{overflow-x:hidden}'), '岛屿页外层必须阻止内容撑宽整页');
+assert.ok(css.includes('.island-guide{overflow-x:hidden}'), '本周作战内的岛屿队伍对照必须阻止内容撑宽整页');
 assert.ok(css.includes('.team-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))'), '手机岛屿队伍应在页面内使用两列网格');
 assert.ok(!css.includes('.team-grid,.event-team-grid{display:flex!important'), '岛屿队伍不得继续复用横向滑动布局');
 assert.ok(css.includes('.weekly-planner{width:100%;max-width:100%;overflow:hidden}'), '本周计划外层必须限制在手机视口内');

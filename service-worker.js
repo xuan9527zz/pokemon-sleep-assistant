@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_VERSION='pokemon-sleep-assistant-v5';
+const CACHE_VERSION='pokemon-sleep-assistant-v7';
 const APP_SHELL=[
   './',
   './index.html',
