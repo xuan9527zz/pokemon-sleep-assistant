@@ -14,9 +14,8 @@
   const LEVEL_HISTORY_KEY='pokemon-sleep-level-history-v1';
   const CURRENT_TEAM_KEY='pokemon-sleep-current-team-v1';
   const SAVED_TEAMS_KEY='pokemon-sleep-saved-teams-v1';
-  const ADVISOR_PREFERENCES_KEY='pokemon-sleep-advisor-preferences-v1';
   const RECYCLE_DAYS=30;
-  const CANONICAL_FIELDS=Object.freeze(['id','recordId','speciesId','finalFormId','name','nickname','customNumber','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note','createdAt','updatedAt']);
+  const CANONICAL_FIELDS=Object.freeze(['id','recordId','speciesId','finalFormId','name','nickname','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','createdAt','updatedAt']);
 
   function storage(){try{return root&&root.localStorage||null}catch(_error){return null}}
   function readJson(key,fallback,target=storage()){
@@ -41,7 +40,6 @@
       finalFormId:normalizeId(source.finalFormId),
       name:String(source.name||''),
       nickname:String(source.nickname||'').trim().slice(0,24),
-      customNumber:String(source.customNumber||'').trim().slice(0,16),
       sp:String(source.sp||''),
       lv:String(source.lv||source.level||1),
       shiny:source.shiny==='是'||source.shiny===true?'是':'否',
@@ -52,7 +50,6 @@
       subs:String(source.subs||source.subskills||''),
       nature:String(source.nature||'认真'),
       priority:String(source.priority||'按需求保留'),
-      note:String(source.note||''),
       createdAt:createdAt||now(),
       updatedAt:String(source.updatedAt||createdAt||now())
     };
@@ -155,5 +152,5 @@
   function daysRemaining(expiresAt){return Math.max(0,Math.ceil((new Date(expiresAt).getTime()-Date.now())/86400000))}
   function newRecordId(){return uid()}
 
-  return Object.freeze({POKEMON_KEY,RECYCLE_KEY,META_KEY,BOX_KEY,LEVEL_KEY,LEVEL_HISTORY_KEY,CURRENT_TEAM_KEY,SAVED_TEAMS_KEY,ADVISOR_PREFERENCES_KEY,RECYCLE_DAYS,CANONICAL_FIELDS,readJson,writeJson,normalizeRecord,canonicalRecord,normalizePokemon,normalizeRecycle,normalizeMeta,load,readAll,saveAll,nextDisplayId,upsertPokemon,removeRelations,releasePokemon,restorePokemon,purgePokemon,daysRemaining,newRecordId,emit,clone});
+  return Object.freeze({POKEMON_KEY,RECYCLE_KEY,META_KEY,BOX_KEY,LEVEL_KEY,LEVEL_HISTORY_KEY,CURRENT_TEAM_KEY,SAVED_TEAMS_KEY,RECYCLE_DAYS,CANONICAL_FIELDS,readJson,writeJson,normalizeRecord,canonicalRecord,normalizePokemon,normalizeRecycle,normalizeMeta,load,readAll,saveAll,nextDisplayId,upsertPokemon,removeRelations,releasePokemon,restorePokemon,purgePokemon,daysRemaining,newRecordId,emit,clone});
 });

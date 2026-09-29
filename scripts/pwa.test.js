@@ -26,7 +26,10 @@ appShellPaths.filter(item=>item!=='./').forEach(item=>{
 });
 assert.ok(worker.includes("url.origin!==self.location.origin"),'Service Worker不得缓存Supabase等站外请求');
 assert.ok(worker.includes("request.mode==='navigate'"),'Service Worker缺少离线页面回退');
-assert.ok(worker.includes("'./sleep-reward-curves.generated.js'"),'离线应用壳缺少核心研究数据');
+assert.ok(!appShellPaths.includes('./sleep-reward-curves.generated.js'),'大型研究曲线应在打开本周作战时才缓存');
+const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+assert.ok(html.includes('function ensureSleepCurves()'),'缺少睡眠曲线按需加载入口');
+assert.ok(!html.includes('<script src="sleep-reward-curves.generated.js'),'首页不得预载大型研究曲线');
 assert.deepEqual(pwa.statusFor({standalone:true,online:false}).kind,'installed');
 assert.deepEqual(pwa.statusFor({ios:true}).kind,'ios');
 assert.deepEqual(pwa.statusFor({installable:true}).kind,'installable');

@@ -4,11 +4,8 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const speciesScoring = require('../skills/pokemon-sleep-scoring/scripts/species-scores.js');
-const skillSpeciesScoring = require('../skills/pokemon-sleep-scoring/scripts/skill-team-species-scores.js');
 const boxScoring = require('../skills/pokemon-sleep-scoring/scripts/box-scores.js');
 const speciesTiers = require('../skills/pokemon-sleep-scoring/scripts/species-tiers.js');
-const strategy = require('../pokemon-strategy.js');
 
 const projectRoot = path.resolve(__dirname, '..');
 const sourcePath = path.join(projectRoot, 'data', 'raenonx-species.json');
@@ -26,128 +23,6 @@ const ingredientNames = Object.freeze({
   6: '火辣香草', 7: '豆制肉', 8: '哞哞鲜奶', 9: '甜甜蜜', 10: '纯粹油',
   11: '暖暖姜', 12: '好眠番茄', 13: '放松可可', 14: '美味尾巴', 15: '萌绿大豆',
   16: '萌绿玉米', 17: '醒脑咖啡豆', 18: '沉甸甸南瓜', 19: '嫩亮酪梨'
-});
-
-const ingredientRows = speciesScoring.ingredientProductionRows(records);
-const berryRows = speciesScoring.berryProductionRows(records);
-const pendingTeamModelRecords = records.filter(record => Number(record.mainSkill?.id) === 40);
-const teamModeledRecords = records.filter(record => Number(record.mainSkill?.id) !== 40);
-const skillRows = skillSpeciesScoring.skillTeamSpeciesScoreRows(teamModeledRecords, {
-  collectionIntervalHours: 4,
-  ingredientAvailability: 0.5,
-  goodCamp: true
-});
-const allRounderRows = speciesScoring.allRounderSpeciesRankingRows(teamModeledRecords);
-
-const speciesScores = {};
-ingredientRows.forEach(row => {
-  const strategic = strategy.strategicAdjustment(row.id, row.speciesScore);
-  speciesScores[String(row.id)] = {
-    specialty: 'ingredient',
-    mechanicalScore: strategic.mechanicalScore,
-    strategicRoleScore: strategic.strategicRoleScore,
-    strategicBonus: strategic.strategicBonus,
-    strategy: strategic.profile,
-    score: strategic.adjustedScore,
-    source: strategic.strategicBonus > 0 ? 'ingredient-mechanical-plus-strategic-role' : 'ingredient-species-score'
-  };
-});
-berryRows.forEach(row => {
-  const strategic = strategy.strategicAdjustment(row.id, row.speciesScore);
-  speciesScores[String(row.id)] = {
-    specialty: 'berry',
-    mechanicalScore: strategic.mechanicalScore,
-    strategicRoleScore: strategic.strategicRoleScore,
-    strategicBonus: strategic.strategicBonus,
-    strategy: strategic.profile,
-    score: strategic.adjustedScore,
-    source: 'berry-species-score',
-    scenarios: row.berryScenarios
-  };
-});
-skillRows.forEach(row => {
-  const strategic = strategy.strategicAdjustment(row.id, row.finalSpeciesScore);
-  speciesScores[String(row.id)] = {
-    specialty: 'skill',
-    mechanicalScore: strategic.mechanicalScore,
-    strategicRoleScore: strategic.strategicRoleScore,
-    strategicBonus: strategic.strategicBonus,
-    strategy: strategic.profile,
-    score: strategic.adjustedScore,
-    source: 'team-calibrated-final-species-score',
-    teamModel: {
-      role: row.role,
-      sourceType: row.sourceType,
-      islandNameZh: row.islandNameZh,
-      candidateTeam: row.candidateTeam,
-      baselineTeam: row.baselineTeam,
-      yieldCoefficient: row.yieldCoefficient,
-      stabilityScore: row.stabilityScore,
-      operationScore: row.operationScore,
-      versatilityScore: row.versatilityScore,
-      scoringStatus: row.scoringStatus
-    }
-  };
-});
-pendingTeamModelRecords.forEach(record => {
-  speciesScores[String(record.id)] = {
-    specialty: String(record.specialty || 'skill'),
-    mechanicalScore: null,
-    strategicRoleScore: null,
-    strategicBonus: 0,
-    strategy: strategy.SPECIES_ROLES[String(record.id)] || null,
-    score: null,
-    source: 'manual-tier-only-pending-berry-zone-team-model',
-    teamModel: {
-      role: '特殊额外技能位',
-      scoringStatus: 'pending-cross-day-persistent-berry-zone-model'
-    }
-  };
-});
-const allRounderRowsById = Map.groupBy
-  ? Map.groupBy(allRounderRows, row => String(row.id))
-  : allRounderRows.reduce((groups, row) => {
-      const id = String(row.id);
-      if (!groups.has(id)) groups.set(id, []);
-      groups.get(id).push(row);
-      return groups;
-    }, new Map());
-allRounderRowsById.forEach((rows, id) => {
-  const variants = Object.fromEntries(rows.map(row => {
-    const mechanicalScore = skillSpeciesScoring.roleCalibratedSpeciesScore(row.speciesScore);
-    const strategic = strategy.strategicAdjustment(id, mechanicalScore);
-    return [row.selectedSkillId, {
-      selectedSkillId: row.selectedSkillId,
-      selectedSkillNameZh: row.selectedSkillNameZh,
-      rawSpeciesScore: row.speciesScore,
-      mechanicalScore: strategic.mechanicalScore,
-      strategicRoleScore: strategic.strategicRoleScore,
-      strategicBonus: strategic.strategicBonus,
-      strategy: strategic.profile,
-      score: strategic.adjustedScore,
-      teamModel: {
-        role: row.speciesScoreRole,
-        selectedSkillId: row.selectedSkillId,
-        selectedSkillNameZh: row.selectedSkillNameZh,
-        ordinaryBaseEnergyPerDay: row.ordinaryBaseEnergyPerDay,
-        slotAdjustedOutputIndex: row.slotAdjustedOutputIndex,
-        normalizedOutputScore: row.normalizedOutputScore,
-        stabilityScore: row.stabilityScore,
-        operationScore: row.operationScore,
-        versatilityScore: row.versatilityScore,
-        scoringStatus: row.speciesScoreStatus
-      }
-    }];
-  }));
-  const defaultVariantId = id === '151' ? 'metronome' : 'nightmare';
-  const selected = variants[defaultVariantId] || Object.values(variants)[0];
-  speciesScores[id] = {
-    specialty: 'all',
-    ...selected,
-    defaultVariantId,
-    variants,
-    source: 'balanced-all-rounder-team-slot-score'
-  };
 });
 
 function finalOptions(id, trail = new Set()) {
@@ -240,11 +115,9 @@ const output = {
     generatedAt: new Date().toISOString(),
     sourceUpdatedAt: source.generatedAt || source.source?.generatedAt || null,
     count: catalog.length,
-    speciesScoreCount: Object.keys(speciesScores).length,
-    collectionProfile: 'Lv.70; skill and all-rounder species use shared team-slot output anchors; skill species use 4-hour collection, Good Camp, 50% extra-ingredient availability'
+    sourceKind: 'species-mechanics-and-evolution'
   },
   pokemon: catalog,
-  speciesScores,
   existingNameTargets
 };
 

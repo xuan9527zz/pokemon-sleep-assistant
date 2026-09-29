@@ -34,6 +34,11 @@ assert.ok(html.includes('rel="apple-touch-icon" sizes="180x180"'), '页面缺少
 assert.ok(html.includes('id="pwaInstallOpen"')&&html.includes('id="pwaInstallDialog"'), '页面缺少PWA安装入口与iPhone安装说明');
 assert.ok(html.includes('src="pwa.js')&&html.includes('href="./pwa.css'), '页面缺少PWA运行时或样式');
 assert.ok(html.includes('POKEMON_SLEEP_PWA.mount()'), '页面没有初始化PWA安装与更新控制器');
+assert.ok(!html.includes('renderIsland(0);'), '首页不应预先计算隐藏的岛屿推荐');
+assert.ok(html.includes("if(page==='weekly'){const ready=Boolean(weeklyPlannerController);ensureWeeklyPlanner()"), '本周作战应在首次打开时初始化');
+assert.ok(html.includes("weekMode!=='preparation')ensureSleepCurves()"), '备料周不应预先下载睡眠优化曲线');
+assert.ok(html.includes('calculateMember(mon,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId[mon.id]'), '岛屿单体排序应使用共用生产模型');
+assert.ok(html.includes('calculateTeam(members,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId'), '普通岛和 EX 岛应使用共用五人队模型');
 assert.ok(pwaSource.includes("serviceWorker.register('./service-worker.js',{scope:'./'})"), 'PWA运行时缺少相对路径Service Worker注册');
 assert.ok(html.includes('id="profileIslandBonuses"'), '个人设置缺少岛屿加成资料');
 assert.ok(html.includes('id="profileIngredientStock"'), '个人设置缺少共用食材库存');

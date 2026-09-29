@@ -7,11 +7,6 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(catalog){
   'use strict';
 
-  const ACCOUNT_STAGES=Object.freeze({
-    starter:Object.freeze({id:'starter',label:'新手起步',description:'培养判断统一按物种梯级 × 个体梯级矩阵计算，账号阶段不再改变结论。'}),
-    forming:Object.freeze({id:'forming',label:'队伍成型',description:'培养判断统一按物种梯级 × 个体梯级矩阵计算，账号阶段不再改变结论。'}),
-    mature:Object.freeze({id:'mature',label:'成熟补强',description:'培养判断统一按物种梯级 × 个体梯级矩阵计算，账号阶段不再改变结论。'})
-  });
   const TIERS=Object.freeze({
     core:Object.freeze({id:'core',label:'核心培养',tone:'core',sort:70,nextAction:'可以作为长期核心投入糖果与稀缺资源。'}),
     recommended:Object.freeze({id:'recommended',label:'推荐培养',tone:'recommended',sort:60,nextAction:'达到推荐培养组合，可按队伍需求投入。'}),
@@ -32,7 +27,6 @@
   const byId=new Map((catalog&&catalog.pokemon||[]).map(record=>[String(record.id),record]));
   const finite=value=>value!==null&&value!==''&&value!==undefined&&Number.isFinite(Number(value));
   const tier=id=>TIERS[id]||TIERS.manual;
-  const stageProfile=id=>ACCOUNT_STAGES[id]||ACCOUNT_STAGES.mature;
 
   function scoreFor(mon,override){return override||mon&&mon.scoreBreakdown||null}
   function finalFormId(mon,score){
@@ -55,23 +49,23 @@
   }
   function result(tierId,fields={}){
     const definition=tier(tierId);
-    return {tier:tierId,label:definition.label,tone:definition.tone,sort:definition.sort,nextAction:definition.nextAction,reason:fields.reason||'',details:fields.details||[],directSuperior:null,exception:'',evidence:'用户确认的物种梯级 × 个体梯级培养矩阵',accountStage:stageProfile(fields.accountStage),teamModel:null};
+    return {tier:tierId,label:definition.label,tone:definition.tone,sort:definition.sort,nextAction:definition.nextAction,reason:fields.reason||'',details:fields.details||[],directSuperior:null,exception:'',evidence:'用户确认的物种梯级 × 个体梯级培养矩阵',teamModel:null};
   }
   function assess(mon,_box,options={}){
     const score=scoreFor(mon,options.score),speciesGrade=String(score&&score.speciesTier||''),individual=individualGrade(score);
-    if(!MATRIX[speciesGrade]||!individual)return result('manual',{accountStage:options.accountStage,reason:'缺少可用的物种梯级或个体梯级，暂时不能自动判断。'});
+    if(!MATRIX[speciesGrade]||!individual)return result('manual',{reason:'缺少可用的物种梯级或个体梯级，暂时不能自动判断。'});
     const base=MATRIX[speciesGrade][individual],shiny=String(mon&&mon.shiny)==='是',limited=isLimited(mon,score),details=[`物种 ${speciesGrade} 级 × 个体 ${individual} 级。`];
-    if(base!=='no-train')return result(base,{accountStage:options.accountStage,reason:`基础判断矩阵给出“${tier(base).label}”；闪光、限定和已有投入都不覆盖这条实战结论。`,details});
+    if(base!=='no-train')return result(base,{reason:`基础判断矩阵给出“${tier(base).label}”；闪光、限定和已有投入都不覆盖这条实战结论。`,details});
     if(shiny||limited){
       details.push(shiny?'基础判断为暂不培养，但闪光个体进入收藏保护。':'基础判断为暂不培养，但限定个体进入收藏保护。');
-      return result('collection',{accountStage:options.accountStage,reason:`基础矩阵不建议培养；${shiny?'闪光':'限定'}属性触发收藏保护。`,details});
+      return result('collection',{reason:`基础矩阵不建议培养；${shiny?'闪光':'限定'}属性触发收藏保护。`,details});
     }
     details.push('已有投入、盒子分类和独特路线不改变放生判断。');
-    return result('release',{accountStage:options.accountStage,reason:'基础矩阵为暂不培养，且不属于闪光或限定收藏保护范围。',details});
+    return result('release',{reason:'基础矩阵为暂不培养，且不属于闪光或限定收藏保护范围。',details});
   }
   function explanation(value){
     return [value.label,value.reason,...value.details,`建议动作：${value.nextAction}`,'这是去留建议标签；网站不会自动放生或删除任何宝可梦。'].filter(Boolean).join('\n');
   }
 
-  return Object.freeze({ACCOUNT_STAGES,TIERS,MATRIX,LIMITED_NAMES,stageProfile,finalFormId,individualGrade,isLimited,assess,explanation});
+  return Object.freeze({TIERS,MATRIX,LIMITED_NAMES,finalFormId,individualGrade,isLimited,assess,explanation});
 });

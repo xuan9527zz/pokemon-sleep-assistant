@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_VERSION='pokemon-sleep-assistant-v1';
+const CACHE_VERSION='pokemon-sleep-assistant-v3';
 const APP_SHELL=[
   './',
   './index.html',
@@ -19,7 +19,7 @@ const APP_SHELL=[
   './pokemon-scoring.js','./pokemon-strategy.js','./production-calculator.js','./production-timeline.js','./recipes.js',
   './retention-advisor.css','./retention-advisor.js','./selection-odds.css','./selection-odds.js',
   './skills/pokemon-sleep-scoring/scripts/nature-scores.js','./skills/pokemon-sleep-scoring/scripts/scoring-core.js','./skills/pokemon-sleep-scoring/scripts/species-tiers.js',
-  './sleep-research-planner.js','./sleep-reward-curves.generated.js','./snorlax-energy.js','./species-tier-guide.css','./species-tier-guide.js',
+  './sleep-research-planner.js','./snorlax-energy.js','./species-tier-guide.css','./species-tier-guide.js',
   './supabase-config.js','./team-planner.css','./team-planner.js','./team-production.generated.js','./weekly-planner.css','./weekly-planner.js',
   './pwa.css','./pwa.js',
   './assets/ingredients/apple.png','./assets/ingredients/avocado.webp','./assets/ingredients/bean-meat.png','./assets/ingredients/cacao.png',

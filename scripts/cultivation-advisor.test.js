@@ -29,7 +29,6 @@ assert.equal(tier('C','C',{lv:70,boxId:'main',priority:'重点培养'}),'release
 assert.equal(tier('C','C',{ingredients:'A／B／C'}),'release','独特路线不得单独覆盖基础矩阵');
 assert.equal(advisor.assess({name:'缺资料'},[]).tier,'manual');
 assert.match(advisor.explanation(advisor.assess(mon('C','C'),[])),/不会自动放生或删除/);
-assert.equal(advisor.stageProfile('starter').id,'starter');
-assert.match(advisor.stageProfile('starter').description,/不再改变结论/);
+assert.equal('stageProfile' in advisor,false,'无效的账号阶段接口应删除');
 
 console.log('cultivation advisor tests passed (fixed matrix and collection protection)');

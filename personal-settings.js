@@ -47,7 +47,6 @@
   function defaults(ingredients=[]){
     return {
       schemaVersion:4,
-      accountStage:'mature',
       currentIsland:'green',
       weekMode:'preparation',
       activityKey:'normal',
@@ -63,7 +62,6 @@
   }
   function normalizeState(value,{ingredients=[],recipes=[],activityProfiles={}}={}){
     const base=defaults(ingredients),source=value&&typeof value==='object'?value:{},validRecipeIds=new Set(recipeIds(recipes));
-    const accountStage=['starter','forming','mature'].includes(source.accountStage)?source.accountStage:base.accountStage;
     const currentIsland=ISLANDS.some(island=>island.key===source.currentIsland)?source.currentIsland:base.currentIsland;
     const weekMode=Object.hasOwn(WEEK_MODES,source.weekMode)?source.weekMode:base.weekMode;
     const activityKey=Object.hasOwn(activityProfiles,source.activityKey)?source.activityKey:(Object.hasOwn(activityProfiles,'normal')?'normal':String(source.activityKey||base.activityKey));
@@ -77,14 +75,13 @@
     });
     legacyCookedIds.forEach(id=>{if((!validRecipeIds.size||validRecipeIds.has(id))&&!recipeLevels[id])recipeLevels[id]=1});
     const sleepStyleCount=clamp(Math.round(source.sleepStyleCount),0,9999),sleepStyleGoal=SLEEP_STYLE_GOALS.includes(Number(source.sleepStyleGoal))?Number(source.sleepStyleGoal):LIMITS.sleepStyleGoal,permanentPot=clamp(Math.round(source.permanentPot||base.permanentPot),1,LIMITS.permanentPot);
-    const normalized={...base,...source,schemaVersion:4,accountStage,currentIsland,weekMode,activityKey,islandBonuses,recipeLevels,permanentPot,sleepStyleCount,sleepStyleGoal,ingredientStock:normalizeInventory(source.ingredientStock,ingredients),inventoryLimit:INVENTORY_LIMIT,updatedAt:String(source.updatedAt||'')};
-    delete normalized.recipeBonuses;delete normalized.cookedRecipeIds;return normalized;
+    const normalized={...base,...source,schemaVersion:4,currentIsland,weekMode,activityKey,islandBonuses,recipeLevels,permanentPot,sleepStyleCount,sleepStyleGoal,ingredientStock:normalizeInventory(source.ingredientStock,ingredients),inventoryLimit:INVENTORY_LIMIT,updatedAt:String(source.updatedAt||'')};
+    delete normalized.accountStage;delete normalized.recipeBonuses;delete normalized.cookedRecipeIds;return normalized;
   }
   function migrate(storage,context={}){
     const stored=readJson(storage,STORAGE_KEY,null);
-    if(stored){const normalized=normalizeState(stored,context);if(Number(stored.schemaVersion)!==4||Object.hasOwn(stored,'recipeBonuses')||Object.hasOwn(stored,'cookedRecipeIds'))writeJson(storage,STORAGE_KEY,normalized);return normalized}
-    const base=defaults(context.ingredients),weekly=readJson(storage,'pokemon-sleep-weekly-plan-v1',{}),team=readJson(storage,'pokemon-sleep-team-energy-settings-v1',{}),advisor=readJson(storage,'pokemon-sleep-advisor-preferences-v1',{}),oldRecipeBonus=clamp(readJson(storage,'pokemon-sleep-recipe-level-bonus-v1',0),0,200);
-    if(advisor.accountStage)base.accountStage=advisor.accountStage;
+    if(stored){const normalized=normalizeState(stored,context);if(Number(stored.schemaVersion)!==4||Object.hasOwn(stored,'accountStage')||Object.hasOwn(stored,'recipeBonuses')||Object.hasOwn(stored,'cookedRecipeIds'))writeJson(storage,STORAGE_KEY,normalized);return normalized}
+    const base=defaults(context.ingredients),weekly=readJson(storage,'pokemon-sleep-weekly-plan-v1',{}),team=readJson(storage,'pokemon-sleep-team-energy-settings-v1',{}),oldRecipeBonus=clamp(readJson(storage,'pokemon-sleep-recipe-level-bonus-v1',0),0,200);
     if(weekly.inventory)base.ingredientStock=weekly.inventory;
     if(Number.isInteger(Number(weekly.islandIndex))&&context.islands&&context.islands[Number(weekly.islandIndex)]){
       const label=context.islands[Number(weekly.islandIndex)].name,match=ISLANDS.find(island=>island.label===label);if(match)base.currentIsland=match.key;
@@ -110,11 +107,10 @@
     const storage=options.storage||browserStorage(),context={ingredients:options.ingredients||[],recipes:options.recipes||[],islands:options.islands||[],activityProfiles:options.activityProfiles||{}},dialog=document.querySelector('#personalSettingsDialog');
     if(!dialog)return null;
     let state=migrate(storage,context),recipeQuery='',recipeStatus='all';
-    const openButton=document.querySelector('#personalSettingsOpen'),closeButton=document.querySelector('#personalSettingsClose'),islandSelect=document.querySelector('#profileCurrentIsland'),weekSelect=document.querySelector('#profileWeekMode'),activitySelect=document.querySelector('#profileActivity'),islandRoot=document.querySelector('#profileIslandBonuses'),stockRoot=document.querySelector('#profileIngredientStock'),stockTotal=document.querySelector('#profileStockTotal'),recipeSearch=document.querySelector('#profileRecipeSearch'),recipeFilter=document.querySelector('#profileRecipeFilter'),recipeRoot=document.querySelector('#profileRecipeList'),bulkInput=document.querySelector('#profileRecipeBulk'),bulkApply=document.querySelector('#profileRecipeBulkApply'),message=document.querySelector('#profileSettingsMessage'),toolsRoot=document.querySelector('#personalSettingsTools'),accountStage=document.querySelector('#accountStage'),potInput=document.querySelector('#profilePermanentPot'),sleepCountInput=document.querySelector('#profileSleepStyleCount'),sleepGoalSelect=document.querySelector('#profileSleepStyleGoal'),rulesRoot=document.querySelector('#profileRulesStatus');
+    const openButton=document.querySelector('#personalSettingsOpen'),closeButton=document.querySelector('#personalSettingsClose'),islandSelect=document.querySelector('#profileCurrentIsland'),weekSelect=document.querySelector('#profileWeekMode'),activitySelect=document.querySelector('#profileActivity'),islandRoot=document.querySelector('#profileIslandBonuses'),stockRoot=document.querySelector('#profileIngredientStock'),stockTotal=document.querySelector('#profileStockTotal'),recipeSearch=document.querySelector('#profileRecipeSearch'),recipeFilter=document.querySelector('#profileRecipeFilter'),recipeRoot=document.querySelector('#profileRecipeList'),bulkInput=document.querySelector('#profileRecipeBulk'),bulkApply=document.querySelector('#profileRecipeBulkApply'),message=document.querySelector('#profileSettingsMessage'),toolsRoot=document.querySelector('#personalSettingsTools'),potInput=document.querySelector('#profilePermanentPot'),sleepCountInput=document.querySelector('#profileSleepStyleCount'),sleepGoalSelect=document.querySelector('#profileSleepStyleGoal'),rulesRoot=document.querySelector('#profileRulesStatus');
     document.querySelectorAll('[data-settings-move]').forEach(node=>{node.hidden=false;toolsRoot&&toolsRoot.append(node)});
     function emit(type){
       state.updatedAt=new Date().toISOString();writeJson(storage,STORAGE_KEY,state);
-      if(accountStage)writeJson(storage,'pokemon-sleep-advisor-preferences-v1',{accountStage:state.accountStage});
       if(root&&typeof root.dispatchEvent==='function'&&typeof root.CustomEvent==='function'){
         root.dispatchEvent(new root.CustomEvent('pokemon-sleep:personal-settings-change',{detail:{type,state:clone(state)}}));
         root.dispatchEvent(new root.CustomEvent('pokemon-sleep:local-change',{detail:{source:'personal-settings',type}}));
@@ -140,7 +136,7 @@
       if(islandSelect){islandSelect.replaceChildren();ISLANDS.forEach(item=>{const option=document.createElement('option');option.value=item.key;option.textContent=item.label;islandSelect.append(option)});islandSelect.value=state.currentIsland}
       if(weekSelect){weekSelect.replaceChildren();Object.entries(WEEK_MODES).forEach(([key,item])=>{const option=document.createElement('option');option.value=key;option.textContent=item.label;weekSelect.append(option)});weekSelect.value=state.weekMode}
       if(activitySelect){activitySelect.replaceChildren();Object.entries(context.activityProfiles).forEach(([key,item])=>{const option=document.createElement('option');option.value=key;option.textContent=item.label;activitySelect.append(option)});activitySelect.value=state.activityKey;activitySelect.closest('.profile-field')?.classList.toggle('is-muted',state.weekMode!=='event')}
-      if(accountStage)accountStage.value=state.accountStage;renderIslandBonuses();renderStock();renderRecipes();
+      renderIslandBonuses();renderStock();renderRecipes();
       if(potInput)potInput.value=String(state.permanentPot);if(sleepCountInput)sleepCountInput.value=String(state.sleepStyleCount);
       if(sleepGoalSelect){sleepGoalSelect.replaceChildren();SLEEP_STYLE_GOALS.forEach(goal=>{const option=document.createElement('option');option.value=String(goal);option.textContent=`${goal} 种`;sleepGoalSelect.append(option)});sleepGoalSelect.value=String(state.sleepStyleGoal)}
       if(rulesRoot&&gameRules){const status=gameRules.freshness(),caps=gameRules.LIMITS;rulesRoot.dataset.stale=status.stale?'true':'false';rulesRoot.innerHTML=`<strong>${status.stale?'规则快照需要复核':'规则快照在有效期内'}</strong><span>游戏 Ver.${status.gameVersion} · 核对于 ${status.verifiedAt}</span><small>个体/食谱 Lv.${caps.helperLevel} · 岛屿 ${caps.areaBonusPct}% · 永久锅 ${caps.permanentPot} · 食材 ${caps.ingredientPocket} · 盒子 ${caps.pokemonBox}</small>`}
@@ -148,7 +144,6 @@
     islandSelect?.addEventListener('change',()=>{state.currentIsland=islandSelect.value;emit('current-island')});
     weekSelect?.addEventListener('change',()=>{state.weekMode=weekSelect.value;render();emit('week-mode')});
     activitySelect?.addEventListener('change',()=>{state.activityKey=activitySelect.value;emit('activity')});
-    accountStage?.addEventListener('change',()=>{state.accountStage=['starter','forming','mature'].includes(accountStage.value)?accountStage.value:'mature';emit('account-stage')});
     potInput?.addEventListener('change',()=>{state.permanentPot=clamp(Math.round(potInput.value),1,LIMITS.permanentPot);potInput.value=String(state.permanentPot);emit('permanent-pot')});
     sleepCountInput?.addEventListener('change',()=>{state.sleepStyleCount=clamp(Math.round(sleepCountInput.value),0,9999);sleepCountInput.value=String(state.sleepStyleCount);emit('sleep-style-progress')});
     sleepGoalSelect?.addEventListener('change',()=>{state.sleepStyleGoal=SLEEP_STYLE_GOALS.includes(Number(sleepGoalSelect.value))?Number(sleepGoalSelect.value):LIMITS.sleepStyleGoal;emit('sleep-style-progress')});

@@ -6,6 +6,7 @@
   if(root)root.POKEMON_SLEEP_RESEARCH_PLANNER=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(curves){
   'use strict';
+  function setCurves(nextCurves){curves=nextCurves&&Array.isArray(nextCurves.areas)?nextCurves:null;return Boolean(curves)}
 
   const SLEEP_TYPES=Object.freeze({balanced:'综合平均',dozing:'浅浅入梦',snoozing:'安然入睡',slumbering:'深深入眠'});
   const OBJECTIVES=Object.freeze({combined:'梦之碎片＋研究EXP',shards:'梦之碎片',researchExp:'研究EXP',spawns:'遇见总数',pokemon:'严选目标出现',candy:'目标进化系糖果'});
@@ -152,5 +153,5 @@
   }
   function datasetInfo(){return curves?{datasetId:curves.datasetId,generatedAt:curves.generatedAt,algorithmVersion:curves.algorithmVersion,source:curves.source,sourcePage:curves.sourcePage}:null}
 
-  return Object.freeze({SLEEP_TYPES,OBJECTIVES,TARGET_OBJECTIVES,AREA_ALIASES,areaFor,rankFor,spawnCountFor,segmentFor,targetDefinition,targetDefinitions,targetSegmentFor,targetInfo,interpolate,calculateDrowsyPower,rawResearch,rawTarget,applyResearchDayRules,applyTargetDayRules,durationForScore,evaluatePlan,evaluateTargetPlan,compareSleepPlans,compareTargetSleepPlans,rewardAtEnergy,marginalReturn,slowdownReference,datasetInfo});
+  return Object.freeze({SLEEP_TYPES,OBJECTIVES,TARGET_OBJECTIVES,AREA_ALIASES,setCurves,areaFor,rankFor,spawnCountFor,segmentFor,targetDefinition,targetDefinitions,targetSegmentFor,targetInfo,interpolate,calculateDrowsyPower,rawResearch,rawTarget,applyResearchDayRules,applyTargetDayRules,durationForScore,evaluatePlan,evaluateTargetPlan,compareSleepPlans,compareTargetSleepPlans,rewardAtEnergy,marginalReturn,slowdownReference,datasetInfo});
 });

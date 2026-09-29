@@ -18,10 +18,9 @@
     currentTeam:'pokemon-sleep-current-team-v1',
     savedTeams:'pokemon-sleep-saved-teams-v1',
     weeklyPlan:'pokemon-sleep-weekly-plan-v1',
-    personalSettings:'pokemon-sleep-personal-settings-v1',
-    advisorPreferences:'pokemon-sleep-advisor-preferences-v1'
+    personalSettings:'pokemon-sleep-personal-settings-v1'
   });
-  const FALLBACKS=Object.freeze({pokemon:[],recycleBin:[],dataMeta:{},boxManagement:{},levelOverrides:{},levelHistory:[],currentTeam:[],savedTeams:[],weeklyPlan:{},personalSettings:{},advisorPreferences:{accountStage:'mature'}});
+  const FALLBACKS=Object.freeze({pokemon:[],recycleBin:[],dataMeta:{},boxManagement:{},levelOverrides:{},levelHistory:[],currentTeam:[],savedTeams:[],weeklyPlan:{},personalSettings:{}});
   function storage(){try{return root&&root.localStorage||null}catch(_error){return null}}
   function readJson(key,fallback,target=storage()){try{const raw=target&&target.getItem(key);return raw?JSON.parse(raw):fallback}catch(_error){return fallback}}
   function writeJson(key,value,target=storage()){try{target.setItem(key,JSON.stringify(value));return true}catch(_error){return false}}
@@ -44,6 +43,14 @@
   }
   function collectState(target=storage()){
     const data={};Object.entries(STATE_KEYS).forEach(([name,key])=>{data[name]=readJson(key,FALLBACKS[name],target)});
+    for(const name of ['pokemon','recycleBin'])if(Array.isArray(data[name]))data[name]=data[name].map(record=>{
+      if(!record||typeof record!=='object')return record;
+      const clean={...record};delete clean.customNumber;delete clean.note;
+      if(name==='recycleBin'&&clean.pokemon&&typeof clean.pokemon==='object'){
+        clean.pokemon={...clean.pokemon};delete clean.pokemon.customNumber;delete clean.pokemon.note;
+      }
+      return clean;
+    });
     return {schemaVersion:1,updatedAt:clock(target),data};
   }
   function applyState(state,target=storage()){
@@ -62,18 +69,28 @@
     return message||'云端同步失败，请稍后重试。';
   }
   function newer(left,right){return new Date(left||0).getTime()>=new Date(right||0).getTime()}
+  function parseEmailProof(value,configUrl){
+    const proof=String(value||'').trim();
+    if(/^\d{6}$/.test(proof))return {kind:'code',token:proof};
+    let link,project;
+    try{link=new URL(proof);project=new URL(configUrl)}catch(_error){return null}
+    if(link.protocol!=='https:'||link.origin!==project.origin||link.pathname!=='/auth/v1/verify')return null;
+    const token=link.searchParams.get('token_hash')||link.searchParams.get('token'),type=link.searchParams.get('type');
+    if(!token||!['magiclink','email','signup'].includes(type))return null;
+    return {kind:'link',token,type};
+  }
 
   function mount(options={}){
     if(typeof document==='undefined')return null;
     const config=options.config||root.POKEMON_SLEEP_SUPABASE_CONFIG,supabaseGlobal=options.supabase||root.supabase;
-    const status=document.querySelector('#cloudSyncStatus'),emailInput=document.querySelector('#cloudEmail'),loginButton=document.querySelector('#cloudLogin'),logoutButton=document.querySelector('#cloudLogout'),identity=document.querySelector('#cloudIdentity'),panel=document.querySelector('#cloudSyncPanel');
-    if(!status||!emailInput||!loginButton||!logoutButton||!config||!supabaseGlobal||typeof supabaseGlobal.createClient!=='function')return null;
+    const status=document.querySelector('#cloudSyncStatus'),emailInput=document.querySelector('#cloudEmail'),loginButton=document.querySelector('#cloudLogin'),proofInput=document.querySelector('#cloudProof'),verifyButton=document.querySelector('#cloudVerify'),logoutButton=document.querySelector('#cloudLogout'),identity=document.querySelector('#cloudIdentity'),panel=document.querySelector('#cloudSyncPanel');
+    if(!status||!emailInput||!loginButton||!proofInput||!verifyButton||!logoutButton||!config||!supabaseGlobal||typeof supabaseGlobal.createClient!=='function')return null;
     const client=supabaseGlobal.createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}),table=config.table||'user_state';
     let session=null,revision=0,syncing=false,dirty=false,timer=null,lastError='';
     function setStatus(text,type='idle'){status.textContent=text;status.dataset.state=type;panel.dataset.state=type}
     function renderAuth(){
-      const user=session&&session.user,email=user&&user.email||'';identity.textContent=user?`已登录：${email}`:'未登录 · 当前使用本机缓存';emailInput.hidden=Boolean(user);loginButton.hidden=Boolean(user);logoutButton.hidden=!user;
-      if(!user&&!lastError)setStatus('登录后会自动同步并长期保持会话','idle');
+      const user=session&&session.user,email=user&&user.email||'';identity.textContent=user?`已登录：${email}`:'未登录 · 当前使用本机缓存';emailInput.hidden=Boolean(user);loginButton.hidden=Boolean(user);proofInput.hidden=Boolean(user);verifyButton.hidden=Boolean(user);logoutButton.hidden=!user;
+      if(!user&&!lastError)setStatus('在此粘贴邮件链接登录，避免跳往 Safari；登录后自动同步','idle');
     }
     function saveMeta(stateHash,cloudUpdatedAt){writeJson(META_KEY,{userId:session.user.id,revision,lastSyncedHash:stateHash,cloudUpdatedAt:cloudUpdatedAt||new Date().toISOString()})}
     async function fetchRow(){
@@ -135,22 +152,37 @@
       const email=emailInput.value.trim();if(!email||!email.includes('@')){setStatus('请输入有效邮箱地址','warning');emailInput.focus();return}
       if(root.location.protocol!=='https:'&&root.location.hostname!=='localhost'){setStatus('邮箱登录请在 GitHub Pages 在线网址中使用；本地文件仍可正常使用本机数据。','warning');return}
       loginButton.disabled=true;setStatus('正在发送登录邮件…','saving');
-      const redirectTo=`${root.location.origin}${root.location.pathname}`.replace(/index\.html$/,'');
-      const result=await client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});loginButton.disabled=false;
-      if(result.error){lastError=errorMessage(result.error);setStatus(lastError,'error');return}
-      setStatus('登录邮件已发送；点击邮件中的链接即可完成登录','sent');
+      try{
+        const redirectTo=`${root.location.origin}${root.location.pathname}`.replace(/index\.html$/,'');
+        const result=await client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});
+        if(result.error){lastError=errorMessage(result.error);setStatus(lastError,'error');return}
+        lastError='';renderAuth();setStatus('请复制邮件中的完整链接，回到此处粘贴；若邮件提供 6 位验证码，也可直接输入。','sent');proofInput.focus();
+      }finally{loginButton.disabled=false}
+    }
+    async function verifyEmailProof(){
+      const proof=parseEmailProof(proofInput.value,config.url);
+      if(!proof){setStatus('请输入邮件中的 6 位验证码，或粘贴来自本站 Supabase 项目的完整登录链接。','warning');proofInput.focus();return}
+      if(proof.kind==='code'&&!emailInput.value.trim()){setStatus('请先填写接收验证码的邮箱。','warning');emailInput.focus();return}
+      verifyButton.disabled=true;setStatus('正在验证邮件…','saving');
+      try{
+        const credentials=proof.kind==='code'?{email:emailInput.value.trim(),token:proof.token,type:'email'}:{token_hash:proof.token,type:'email'};
+        const result=await client.auth.verifyOtp(credentials);
+        if(result.error){proofInput.value='';lastError=errorMessage(result.error);setStatus(`验证失败：${lastError}。若链接已在 Safari 打开，请重新发送邮件并先复制新链接。`,'error');return}
+        proofInput.value='';lastError='';handleSession(result.data&&result.data.session||null);
+        if(session)setStatus('登录成功，正在同步云端数据…','saving');
+      }finally{verifyButton.disabled=false;renderAuth()}
     }
     async function signOut(){logoutButton.disabled=true;const result=await client.auth.signOut();logoutButton.disabled=false;if(result.error){setStatus(errorMessage(result.error),'error');return}session=null;revision=0;renderAuth();setStatus('已退出；本机缓存仍保留','idle')}
     function handleSession(nextSession){
       const previousId=session&&session.user&&session.user.id;session=nextSession;renderAuth();
       if(session&&session.user&&session.user.id!==previousId){revision=normalizeMeta(readJson(META_KEY,{})).userId===session.user.id?normalizeMeta(readJson(META_KEY,{})).revision:0;initialSync()}
     }
-    loginButton.addEventListener('click',()=>sendMagicLink().catch(error=>setStatus(errorMessage(error),'error')));emailInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();sendMagicLink().catch(error=>setStatus(errorMessage(error),'error'))}});logoutButton.addEventListener('click',()=>signOut().catch(error=>setStatus(errorMessage(error),'error')));root.addEventListener('pokemon-sleep:local-change',scheduleSave);root.addEventListener('online',()=>{if(dirty&&session)saveNow().catch(()=>{})});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty&&session)saveNow().catch(()=>{})});
+    loginButton.addEventListener('click',()=>sendMagicLink().catch(error=>setStatus(errorMessage(error),'error')));emailInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();sendMagicLink().catch(error=>setStatus(errorMessage(error),'error'))}});verifyButton.addEventListener('click',()=>verifyEmailProof().catch(error=>setStatus(errorMessage(error),'error')));proofInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();verifyEmailProof().catch(error=>setStatus(errorMessage(error),'error'))}});logoutButton.addEventListener('click',()=>signOut().catch(error=>setStatus(errorMessage(error),'error')));root.addEventListener('pokemon-sleep:local-change',scheduleSave);root.addEventListener('online',()=>{if(dirty&&session)saveNow().catch(()=>{})});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty&&session)saveNow().catch(()=>{})});
     client.auth.onAuthStateChange((_event,nextSession)=>setTimeout(()=>handleSession(nextSession),0));
     client.auth.getSession().then(({data,error})=>{if(error){setStatus(errorMessage(error),'error');return}handleSession(data.session)});
     renderAuth();
     return {client,getSession:()=>session,collectState,markDirty:scheduleSave,saveNow,syncNow:initialSync,signOut};
   }
 
-  return Object.freeze({META_KEY,CLOCK_KEY,STATE_KEYS,FALLBACKS,stableString,hashState,collectState,applyState,normalizeMeta,errorMessage,mount});
+  return Object.freeze({META_KEY,CLOCK_KEY,STATE_KEYS,FALLBACKS,stableString,hashState,collectState,applyState,normalizeMeta,errorMessage,parseEmailProof,mount});
 });

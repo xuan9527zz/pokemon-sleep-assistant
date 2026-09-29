@@ -95,7 +95,7 @@
         <label class="profile-field"><span>当前岛屿</span><select id="profileCurrentIsland"></select></label>
         <label class="profile-field"><span>本周类型</span><select id="profileWeekMode"></select></label>
         <label class="profile-field"><span>活动效果</span><select id="profileActivity"></select></label>
-      </div><div class="advisor-stage-panel" aria-labelledby="advisorStageTitle"><div class="advisor-stage-copy"><strong id="advisorStageTitle">培养判断使用统一矩阵</strong><span id="advisorStageDescription">物种梯级 × 个体梯级决定培养结论；账号阶段不再改变判断。</span></div><div class="advisor-stage-control"><label for="accountStage">账号阶段（仅保留个人资料）</label><select id="accountStage"><option value="starter">新手起步</option><option value="forming">队伍成型</option><option value="mature">成熟补强</option></select></div></div></section>
+      </div></section>
       <section class="profile-settings-card"><h3>账号进度</h3><p>睡姿图鉴与永久锅容量属于个人资料，扩锅判断和后续睡姿补全都会从这里读取。</p><div class="profile-settings-grid">
         <label class="profile-field"><span>已登记睡姿</span><input id="profileSleepStyleCount" type="number" min="0" max="9999" step="1" inputmode="numeric" value="0"></label>
         <label class="profile-field"><span>当前图鉴目标</span><select id="profileSleepStyleGoal"></select></label>
@@ -111,8 +111,8 @@
   </div>
 </dialog>
 <section class="cloud-sync-panel" id="cloudSyncPanel" aria-label="云端同步" data-settings-move hidden>
-  <div class="cloud-sync-copy"><span>CLOUD SAVE</span><strong id="cloudIdentity">未登录 · 当前使用本机缓存</strong><span class="cloud-sync-status" id="cloudSyncStatus" role="status">登录后会自动同步并长期保持会话</span></div>
-  <div class="cloud-sync-actions"><input id="cloudEmail" type="email" inputmode="email" autocomplete="email" placeholder="输入邮箱接收登录链接" aria-label="登录邮箱"><button id="cloudLogin" type="button">发送登录邮件</button><button class="secondary" id="cloudLogout" type="button" hidden>退出登录</button></div>
+  <div class="cloud-sync-copy"><span>CLOUD SAVE</span><strong id="cloudIdentity">未登录 · 当前使用本机缓存</strong><span class="cloud-sync-status" id="cloudSyncStatus" role="status">在此粘贴邮件链接登录，避免跳往 Safari；登录后自动同步</span></div>
+  <div class="cloud-sync-actions"><input id="cloudEmail" type="email" inputmode="email" autocomplete="email" placeholder="输入邮箱接收登录链接" aria-label="登录邮箱"><button id="cloudLogin" type="button">发送登录邮件</button><input id="cloudProof" type="text" inputmode="text" autocomplete="one-time-code" placeholder="粘贴邮件链接或输入 6 位验证码" aria-label="邮件登录链接或验证码" hidden><button class="secondary" id="cloudVerify" type="button" hidden>在此完成登录</button><button class="secondary" id="cloudLogout" type="button" hidden>退出登录</button></div>
 </section>
 <section class="panel weekly-planner" id="weeklyPlanner" data-page="weekly" hidden aria-labelledby="weeklyPlannerTitle">
   <div class="guide-head"><div><h2 id="weeklyPlannerTitle">本周作战台｜这周先做什么</h2><p>按当前岛屿与周类型，切换本岛培养、活动备料或活动周完整推演。</p></div><span class="guide-stamp">当前盒子 · 自动保存</span></div>
@@ -187,9 +187,9 @@
   <div class="island-tabs" id="islandTabs" role="tablist" aria-label="选择岛屿"></div>
   <div class="island-summary">
     <article class="island-card" aria-live="polite"><h3 id="islandName"></h3><div class="island-badges" id="islandBadges"></div><p class="focus-line" id="islandFocus"></p><section class="berry-picker" id="islandBerryPicker" hidden><div class="berry-picker-head"><div><strong id="islandBerryPickerTitle"></strong><span>选择本周游戏内显示的三种树果</span></div></div><div class="berry-controls" id="islandBerryControls"></div><p class="berry-picker-note" id="islandBerryPickerNote"></p></section><div class="rank-list" id="islandRanking"></div></article>
-    <article class="island-card" aria-live="polite"><div class="team-result-head"><h3 id="islandTeamTitle">主推荐队伍</h3><span class="team-score" id="islandTeamScore"></span></div><p class="focus-line">点击宝可梦名称可在盒子中定位。普通岛沿用盒内产能指数；EX 岛改用与当前队伍、本周推演相同的 24 小时生产模型。</p><div class="team-grid" id="islandTeam"></div><p class="team-comparison" id="islandTeamComparison"></p><details class="team-alternate" id="islandAlternate"><summary id="islandAlternateTitle"></summary><div class="team-grid" id="islandAlternateTeam"></div><p class="team-alternate-note" id="islandAlternateNote"></p></details><details class="team-alternate" id="islandFixedSpecial" hidden><summary id="islandFixedSpecialTitle">理论特殊队固定对照</summary><div class="fixed-special-grid"><div class="fixed-special-side candidate"><span>特殊队</span><strong id="fixedSpecialCandidate"></strong><small id="fixedSpecialCandidateOutput"></small></div><div class="fixed-special-side"><span>无特殊基准队</span><strong id="fixedSpecialBaseline"></strong><small id="fixedSpecialBaselineOutput"></small></div></div><p class="fixed-special-gain" id="fixedSpecialGain"></p><p class="team-alternate-note" id="fixedSpecialMechanics"></p><p class="team-alternate-note">理论口径：Lv.70 最终形态、中性且无副技能、4 小时收菜；沙奈朵与特殊宝可梦按满级主技能，树果手按自然主技能等级。采用露营券活动料理档案的固定等效收益，不是会处理活力溢出与随机波动的精确周能量模拟。</p></details><p class="team-note" id="islandNote"></p><p class="team-method">EX 精确口径：萌绿 EX 主树果帮忙间隔 ×0.90、主技能等级＋1、未命中 ×1.15；天青 EX 主树果间隔 ×0.80、持有上限＋5、未命中 ×1.35；副树果不附带主树果专属加成。每周树果／食材／技能追加效果由选择器决定，五档活力、储存技能、点击收取和完整五人联动统一进入计算。</p></article>
+    <article class="island-card" aria-live="polite"><div class="team-result-head"><h3 id="islandTeamTitle">主推荐队伍</h3><span class="team-score" id="islandTeamScore"></span></div><p class="focus-line">点击宝可梦名称可在盒子中定位。普通岛与 EX 岛均使用当前队伍、本周推演共用的 24 小时生产模型。</p><div class="team-grid" id="islandTeam"></div><p class="team-comparison" id="islandTeamComparison"></p><details class="team-alternate" id="islandAlternate"><summary id="islandAlternateTitle"></summary><div class="team-grid" id="islandAlternateTeam"></div><p class="team-alternate-note" id="islandAlternateNote"></p></details><details class="team-alternate" id="islandFixedSpecial" hidden><summary id="islandFixedSpecialTitle">理论特殊队固定对照</summary><div class="fixed-special-grid"><div class="fixed-special-side candidate"><span>特殊队</span><strong id="fixedSpecialCandidate"></strong><small id="fixedSpecialCandidateOutput"></small></div><div class="fixed-special-side"><span>无特殊基准队</span><strong id="fixedSpecialBaseline"></strong><small id="fixedSpecialBaselineOutput"></small></div></div><p class="fixed-special-gain" id="fixedSpecialGain"></p><p class="team-alternate-note" id="fixedSpecialMechanics"></p><p class="team-alternate-note">理论口径：Lv.70 最终形态、中性且无副技能、4 小时收菜；沙奈朵与特殊宝可梦按满级主技能，树果手按自然主技能等级。采用露营券活动料理档案的固定等效收益，不是会处理活力溢出与随机波动的精确周能量模拟。</p></details><p class="team-note" id="islandNote"></p><p class="team-method">EX 精确口径：萌绿 EX 主树果帮忙间隔 ×0.90、主技能等级＋1、未命中 ×1.15；天青 EX 主树果间隔 ×0.80、持有上限＋5、未命中 ×1.35；副树果不附带主树果专属加成。每周树果／食材／技能追加效果由选择器决定，五档活力、储存技能、点击收取和完整五人联动统一进入计算。</p></article>
   </div>
-  <div class="guide-sources">参考：<a href="https://hackmd.io/@raenonx-pokemon-sleep/BksDK5NeZe" target="_blank" rel="noreferrer">RaenonX 队伍构成说明</a>、<a href="https://pks.raenonx.cc/zh/team/analysis" target="_blank" rel="noreferrer">RaenonX 队伍分析</a>、<a href="https://game8.jp/pokemonsleep/546887" target="_blank" rel="noreferrer">新版 Game8 岛屿最强编成</a>、<a href="https://www.pokemonsleep.net/en/news/323932383138363132393037393333363937/" target="_blank" rel="noreferrer">官方 EX 主／副树果规则</a>及<a href="https://www.pokemonsleep.net/en/news/343031343531353932353834323635373331/" target="_blank" rel="noreferrer">拉帝双子编队例外</a>。网页指数只用于本盒子内方案排序；精确料理与技能期望请再用 RaenonX 队伍分析复核。</div>
+  <div class="guide-sources">参考：<a href="https://hackmd.io/@raenonx-pokemon-sleep/BksDK5NeZe" target="_blank" rel="noreferrer">RaenonX 队伍构成说明</a>、<a href="https://pks.raenonx.cc/zh/team/analysis" target="_blank" rel="noreferrer">RaenonX 队伍分析</a>、<a href="https://game8.jp/pokemonsleep/546887" target="_blank" rel="noreferrer">新版 Game8 岛屿最强编成</a>、<a href="https://www.pokemonsleep.net/en/news/323932383138363132393037393333363937/" target="_blank" rel="noreferrer">官方 EX 主／副树果规则</a>及<a href="https://www.pokemonsleep.net/en/news/343031343531353932353834323635373331/" target="_blank" rel="noreferrer">拉帝双子编队例外</a>。本页能量用于当前盒子方案排序；精确料理与技能期望请再用 RaenonX 队伍分析复核。</div>
 </section>
 <section class="panel recipe-guide" aria-labelledby="recipeGuideTitle" data-page="recipes" hidden>
   <div class="guide-head"><div><h2 id="recipeGuideTitle">食谱查询｜当前能量、系数与食材</h2><p>各食谱的等级加成与完成进度统一读取个人设置；额外填锅与大成功倍率仍不计。</p></div><button class="guide-stamp recipe-settings-open" id="recipeSettingsOpen" type="button">个人食谱设置</button></div>
@@ -386,7 +386,6 @@
 <script src="cooking-success.js?v=20260912-1"></script>
 <script src="production-timeline.js?v=20260913-2"></script>
 <script src="team-planner.js?v=20260913-2"></script>
-<script src="sleep-reward-curves.generated.js?v=20260911-2"></script>
 <script src="sleep-research-planner.js?v=20260911-3"></script>
 <script src="events-data.js?v=20260929-1"></script>
 <script src="weekly-planner.js?v=20260929-1"></script>
@@ -506,9 +505,6 @@ let data=userPokemonState.pokemon;
 data.forEach(mon=>{mon.ingredients=normalizePokemonIngredients(mon.ingredients)});
 const storedBoxState=window.POKEMON_SLEEP_BOX_MANAGER.applyStored(data);
 const storedLevelState=window.POKEMON_SLEEP_LEVELS.applyStored(data);
-const ADVISOR_PREFERENCES_KEY=window.POKEMON_SLEEP_DATA.ADVISOR_PREFERENCES_KEY;
-const storedAdvisorPreferences=window.POKEMON_SLEEP_DATA.readJson(ADVISOR_PREFERENCES_KEY,{accountStage:'mature'});
-let activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(storedAdvisorPreferences.accountStage).id;
 window.POKEMON_SLEEP_EVENTS.renderEventGuide(document,document.querySelector('#eventGuide'));
 setInterval(()=>window.POKEMON_SLEEP_EVENTS.updateEventCountdown(document),1000);
 const specialtyLabels={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手'};
@@ -576,14 +572,14 @@ function updateCurrentLevelEvaluation(mon){
   mon.minimumStandard=window.POKEMON_SLEEP_STRATEGY?.minimumStandard(mon,{finalId:mon.scoreBreakdown.finalFormId,specialty:mon.scoreBreakdown.specialty,strategicProfile:mon.scoreBreakdown.strategy})||null;
 }
 data.forEach(mon=>{addSpecialty(mon);updateCurrentLevelEvaluation(mon)});
-function refreshCultivationAdvice(){data.forEach(mon=>{mon.cultivation=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.assess(mon,data,{accountStage:activeAccountStage});mon.cultivationRank=mon.cultivation.sort})}
+function refreshCultivationAdvice(){data.forEach(mon=>{mon.cultivation=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.assess(mon,data);mon.cultivationRank=mon.cultivation.sort})}
 refreshCultivationAdvice();
 const usageMigration=window.POKEMON_SLEEP_BOX_MANAGER.recalculateUsageState(data,storedBoxState.state);
 if(usageMigration.changed){storedBoxState.state=usageMigration.state;window.POKEMON_SLEEP_BOX_MANAGER.applyState(data,storedBoxState.state);window.POKEMON_SLEEP_BOX_MANAGER.saveState(storedBoxState.state);refreshCultivationAdvice()}
 const unclassifiedSpecies=[...new Set(data.filter(mon=>mon.specialty==='unknown').map(mon=>mon.name))];if(unclassifiedSpecies.length)console.warn('尚未分类的宝可梦定位：',unclassifiedSpecies);
 let sortKey='pokedexId',dir=1;
 const sortableScoreKeys=new Set(['scoreIndividual','speciesTierRank','cultivationRank']);
-const tbody=document.querySelector('tbody'),mobileBoxList=document.querySelector('#mobileBoxList'),mobileFilterToggle=document.querySelector('#mobileFilterToggle'),q=document.querySelector('#q'),bf=document.querySelector('#bf'),sf=document.querySelector('#sf'),rf=document.querySelector('#rf'),pf=document.querySelector('#pf'),sortSelect=document.querySelector('#sortSelect'),accountStage=document.querySelector('#accountStage'),advisorStageDescription=document.querySelector('#advisorStageDescription');
+const tbody=document.querySelector('tbody'),mobileBoxList=document.querySelector('#mobileBoxList'),mobileFilterToggle=document.querySelector('#mobileFilterToggle'),q=document.querySelector('#q'),bf=document.querySelector('#bf'),sf=document.querySelector('#sf'),rf=document.querySelector('#rf'),pf=document.querySelector('#pf'),sortSelect=document.querySelector('#sortSelect');
 let boxManagerController=null,levelManagerController=null,teamPlannerController=null,pokemonManagerController=null,pokemonComparisonController=null,weeklyPlannerController=null,investmentPlannerController=null,cloudSyncController=null,personalSettingsController=null,pokemonPickerController=null,speciesTierGuideController=null,pwaController=null,selectionOddsController=null;
 const isBattleEligible=mon=>Boolean(mon&&mon.battleEligible!==false);
 const usageStatus=mon=>window.POKEMON_SLEEP_BOX_MANAGER.usageStatus(mon);
@@ -641,12 +637,27 @@ function restoreBoxViewState(){
 document.addEventListener('pokemon-sleep:before-reload',event=>captureBoxViewState(event.detail||{}));
 const pageNames={box:'盒子',team:'当前队伍',weekly:'本周计划',islands:'岛屿推荐',recipes:'料理食谱',events:'活动资讯'};
 const pageFromHash=()=>Object.hasOwn(pageNames,location.hash.slice(1))?location.hash.slice(1):'box';
+let sleepCurvesLoad=null;
+function ensureSleepCurves(){
+  const planner=window.POKEMON_SLEEP_RESEARCH_PLANNER;
+  if(planner.datasetInfo())return Promise.resolve();
+  if(sleepCurvesLoad)return sleepCurvesLoad;
+  sleepCurvesLoad=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');script.src='sleep-reward-curves.generated.js?v=20260929-1';script.async=true;
+    script.onload=()=>{if(planner.setCurves(window.POKEMON_SLEEP_REWARD_CURVES))resolve();else{script.remove();reject(new Error('睡眠曲线数据无效'))}};
+    script.onerror=()=>{script.remove();reject(new Error('睡眠曲线下载失败'))};
+    document.head.append(script);
+  }).then(()=>{if(document.querySelector('[data-page="weekly"]')?.hidden===false)weeklyPlannerController?.render()},error=>{sleepCurvesLoad=null;if(document.querySelector('[data-page="weekly"]')?.hidden===false)weeklyPlannerController?.render();throw error});
+  return sleepCurvesLoad;
+}
 function showPage(page,{push=false,replace=false,scroll=true}={}){
   if(!Object.hasOwn(pageNames,page))page='box';
   document.querySelectorAll('[data-page]').forEach(section=>{const active=section.dataset.page===page;section.hidden=!active;section.setAttribute('aria-hidden',active?'false':'true')});
   document.querySelectorAll('[data-page-target]').forEach(link=>{const active=link.dataset.pageTarget===page;link.classList.toggle('active',active);if(active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current')});
   const hash=`#${page}`;if(push&&location.hash!==hash)history.pushState({page},'',hash);else if(replace&&location.hash!==hash)history.replaceState({page},'',hash);
   document.title=`${pageNames[page]}｜Pokemon Sleep 助手`;
+  if(page==='weekly'){const ready=Boolean(weeklyPlannerController);ensureWeeklyPlanner();if(ready)weeklyPlannerController.render();if(personalSettingsController?.getState().weekMode!=='preparation')ensureSleepCurves().catch(()=>{})}
+  if(page==='islands'&&!islandRendered)renderIsland(activeIslandIndex);
   if(scroll){const mobile=window.matchMedia?.('(max-width:720px), (max-height:500px) and (max-width:950px) and (pointer:coarse)').matches,target=mobile?document.querySelector(`[data-page="${page}"]:not([hidden])`):document.querySelector('.app-nav');target?.scrollIntoView({behavior:'smooth',block:'start'})}
 }
 document.querySelector('.app-nav').addEventListener('click',event=>{const link=event.target.closest('[data-page-target]');if(!link)return;event.preventDefault();showPage(link.dataset.pageTarget,{push:true})});
@@ -686,8 +697,7 @@ function ingredientCandidate(mon,ingredient){
   if(mon.nature.includes('速度↑')){traitScore+=18;traits.push('性格速度↑')}if(mon.nature.includes('速度↓'))traitScore-=18;
   const strategy=mon.scoreBreakdown?.strategy,strategicMatch=strategy?.ingredient===ingredient;
   const tierWeight=({S:100,A:75,B:50,C:25}[mon.speciesTier]||25)*50,individualWeight=(Number(mon.scoreIndividual)||50)*12,strategicWeight=strategicMatch?2500:0;
-  const productionBase=Number(mon.sp)>0?Number(mon.sp)*(Number(mon.levelOutputMultiplier)||1):estimatedProductionBase(mon);
-  const score=(current.length?100000:0)+rate*10000+productionBase/3+lv*7+traitScore+tierWeight+individualWeight+strategicWeight-(current.length?0:(next?.unlock||60)*100);
+  const score=(current.length?100000:0)+rate*10000+lv*7+traitScore+tierWeight+individualWeight+strategicWeight-(current.length?0:(next?.unlock||60)*100);
   return {mon,matching,current,next,traits,score,strategicMatch,strategy};
 }
 function renderIngredientRecommendations(ingredient){
@@ -762,15 +772,15 @@ document.querySelector('#recipeReset').addEventListener('click',()=>{activeRecip
 document.querySelector('#ingredientRecommendationClear').addEventListener('click',()=>{selectedRecipeIngredients.clear();activeIngredientRecommendation='';syncRecipeIngredientControls();renderRecipes()});
 document.querySelector('#recipeSettingsOpen').addEventListener('click',()=>personalSettingsController?.open());
 const islandData=[
-  {name:'萌绿之岛',kind:'普通岛',berryMode:'normal-random',defaultBerries:['金枕果','苹野果','莓莓果'],types:'每周随机 3 种',berries:'随机树果',focus:'选择本周三种喜爱树果后，排序和队伍会按当前盒子自动重算；三种树果在普通岛上地位相同。',rank:[[71,'高等级高速，树果骤增与树果数量S兼顾'],[63,'高等级高速树果手，帮手奖励覆盖全队'],[4,'最高练度食材手，牛奶产量稳定'],[92,'Lv.6 全体治疗，全天队伍核心'],[78,'高等级树果数量S，泛用产能强'],[73,'第二套 Lv.6 全体治疗选择'],[1,'蜂蜜与番茄食材位，带帮手奖励'],[79,'帮手奖励树果位']],team:[[71,'主输出／树果骤增'],[63,'树果输出／全队加速'],[4,'牛奶食材核心'],[1,'蜂蜜与番茄食材'],[92,'全体活力治疗']],note:'三种喜爱树果会使对应树果能量翻倍；选择器用于比较当前盒子在本周组合下的主队。'},
-  {name:'天青沙滩',kind:'普通岛',types:'水／飞行／妖精',berries:'橙橙果／椰木果／桃桃果',focus:'水箭龟承担主食材，仙子伊布保活；水君联动水系，蓝鳄负责对应树果，沼跃鱼提供料理成功率。',rank:[[4,'高等级水系食材核心，牛奶产量优秀'],[92,'妖精系治疗核心，帮手奖励＋速度M'],[68,'水系帮手加速，当前主技能等级更高'],[95,'妖精系玉米食材，当前等级较完整'],[47,'水系料理成功S，速度M＋帮手奖励'],[57,'飞行系技能手／树果骤增，新版评级优于波克基斯'],[32,'水系食材获取，补牛奶和可可'],[34,'水系树果手，建议优先进化大力鳄']],team:[[4,'牛奶食材核心'],[92,'全体活力治疗'],[68,'水系帮手加速'],[47,'料理成功率／帮手奖励'],[34,'对应树果输出']],note:'#34 蓝鳄目前等级偏低，但它是盒内天青最明确的树果位；未进化或产能不足时，先换成 #95 花疗环环或 #57 勇士雄鹰。#86 波克基斯仅作为需要挥指娱乐性时的备用。'},
-  {name:'灰褐洞窟',kind:'普通岛',types:'火／地面／岩石',berries:'苹野果／勿花果／文柚果',focus:'火爆兽作为主树果手，隆隆岩和沙漠蜻蜓覆盖大豆、马铃薯及牛油果，炎帝提供火系联动。',rank:[[63,'本盒最成熟的对应树果输出'],[17,'岩石系食材手，帮手奖励＋双食材概率'],[74,'地面系食材手，速度双加成'],[43,'火系帮手加速，适合围绕火爆兽建队'],[37,'岩石系技能输出，可作临时替补'],[15,'火系帮手支援，练度提高后可强化炎帝联动'],[72,'火系树果数量S，长期培养价值高'],[22,'地面系速度M，低成本过渡']],team:[[63,'火系树果主输出'],[17,'大豆／马铃薯食材'],[74,'地面系食材／速度位'],[43,'火系帮手加速'],[92,'全体活力治疗']],note:'炎帝的收益随火系成员增加而提高。#15 风速狗或 #72 火稚鸡练成后，可按料理库存替换沙漠蜻蜓，组成更偏火系的队伍。'},
-  {name:'白花雪原',kind:'普通岛',types:'冰／一般／恶',berries:'柿仔果／莓莓果／异奇果',focus:'以卡比兽能量为目标时，四只成熟帝牙海狮全部命中莓莓果且都是树果手，应与一个全体回复手组成主队。',rank:[[78,'树果数量S，当前雪原第一输出'],[79,'树果数量S＋帮手奖励，团队价值最高'],[77,'树果数量S＋速度M'],[76,'对应树果手，明显高于非产能锅位'],[84,'恶系树果手兼料理成功S'],[87,'冰系料理强化，甜品周按锅需求换入'],[7,'一般系树果手，低等级过渡'],[42,'恶系帮手奖励潜力，需继续培养']],team:[[78,'冰系树果主输出'],[79,'冰系树果／帮手奖励'],[77,'冰系树果／速度位'],[76,'第四树果输出'],[92,'全体活力治疗']],note:'已改为 #76／#77／#78／#79 四只帝牙海狮＋#92 回复手。只有料理缺锅容量时，才临时用 #87 冰伊布替换第四只帝牙海狮；那是料理功能队，不是最高树果能量队。'},
-  {name:'宝蓝湖畔',kind:'普通岛',types:'草／超能力／格斗',berries:'金枕果／芒芒果／樱子果',focus:'蜥蜴王负责主输出，沙奈朵治疗，妙蛙花补蜂蜜与番茄；太阳伊布和克雷色利亚组成技能产能。',rank:[[71,'高等级草系核心，树果数量S＋双速度'],[73,'超能力系 Lv.6 全体治疗'],[1,'草系食材手，蜂蜜／番茄覆盖面好'],[39,'超能力系能量填充M，帮手奖励＋技能概率M'],[90,'超能力系新月祈祷Lv.2，当前练度最佳'],[89,'技能性格＋速度S，可作为第二克雷色利亚'],[23,'超能力系食材与技能复制'],[94,'格斗系玉米食材，值得为湖畔培养']],team:[[71,'草系主输出'],[73,'全体活力治疗'],[1,'蜂蜜／番茄食材'],[39,'能量填充M输出'],[90,'新月祈祷支援']],note:'需要大量玉米时，用 #94 或 #60 童偶熊替换太阳伊布；两只童偶熊目前等级偏低，先把其中一只集中培养即可。'},
-  {name:'黄金发电厂',kind:'普通岛',types:'电／幽灵／钢',berries:'萄葡果／墨莓果／靛莓果',focus:'雷公带雷丘与电龙形成三电联动，骨纹巨声鳄负责苹果食材，仙子伊布稳定全队活力。',rank:[[97,'幽灵系食材核心，当前等级与帮手奖励突出'],[85,'钢系料理强化，双速度副技能'],[66,'电系帮手加速核心'],[10,'电系树果手，速度快'],[36,'电系能量填充M，树果数量S潜力'],[19,'钢系料理强化与帮手奖励'],[61,'钢系食材手，双速度潜力'],[54,'幽灵系技能位，低等级过渡']],team:[[66,'电系帮手加速'],[10,'电系树果输出'],[36,'电系技能输出'],[97,'苹果食材／帮手奖励'],[92,'全体活力治疗']],note:'需要扩大锅容量时，用 #85 自爆磁怪替换电龙；雷公在三只电系同场时更适合作为常驻支援。'},
-  {name:'琥珀溪谷',kind:'普通岛',types:'毒／虫／龙',berries:'零余果／木子果／番荔果',focus:'快龙供应香草，巴大蝶负责虫系树果；拉帝亚斯与拉帝欧斯利用永久编队例外同队，互相强化主技能，再配全体治疗。',rank:[[33,'高等级龙系香草食材核心'],[5,'成熟虫系树果手，食材获取Lv.7'],[80,'当前更成熟的拉帝亚斯，速度与技能兼顾'],[81,'与拉帝亚斯同队时强化自己的树果产量'],[50,'龙系技能位，主技能Lv.4'],[24,'虫系蜂蜜／苹果食材手'],[49,'毒系树果数量S潜力'],[65,'毒系可可食材潜力，建议进化土王']],team:[[33,'龙系香草食材'],[5,'虫系树果输出'],[80,'拉帝双子／强化额外帮手'],[81,'拉帝双子／强化自身树果'],[92,'全体活力治疗']],note:'#80 拉帝亚斯＋#81 拉帝欧斯是特殊宝可梦的永久同队例外：拉帝亚斯的治愈波动会获得更多额外帮手，拉帝欧斯的流星群会增加自身获得的树果。活动期曾有的睡意之力 ×1.3 不属于常驻加成。'},
-  {name:'萌绿之岛 EX',kind:'EX',berryMode:'expert',defaultBerries:['金枕果','苹野果','莓莓果'],types:'主树果任意／副树果随机',berries:'1 主＋2 副',focus:'选择本周主树果与两个副树果后动态重算；主树果比副树果获得更多 EX 加成，完全不命中的个体还会受到帮助间隔惩罚。',rank:[[71,'全盒顶级速度与树果数量S'],[63,'成熟高速树果手＋帮手奖励'],[4,'最高练度食材产能'],[92,'EX 稳定运行所需的主治疗'],[78,'高等级树果数量S'],[73,'第二治疗方案，适合规则克制时切换'],[1,'帮手奖励食材位'],[79,'帮手奖励树果位']],team:[[71,'主输出／规则适配'],[63,'高速树果输出'],[4,'稳定食材供给'],[78,'第二树果输出'],[92,'全体活力治疗']],note:'选择器已区分主树果和两个副树果；每周随机追加的技能等级、食材或料理效果仍需结合游戏内公告微调。'},
-  {name:'天青沙滩 EX',kind:'EX',berryMode:'cyan-expert',defaultBerries:['橙橙果','桃桃果','椰木果'],types:'主树果水／妖精／飞行之一',berries:'1 主＋2 随机副',focus:'主树果只会从橙橙果、桃桃果、椰木果中产生，两个副树果可从其余 17 种中随机产生；选择后动态重算当前盒子的组合。',rank:[[4,'高等级水系食材核心'],[92,'高等级妖精系全体治疗'],[68,'水系帮手加速，当前主技能等级较高'],[95,'妖精系玉米食材，当前等级较完整'],[47,'水系料理成功S，速度M＋帮手奖励'],[57,'飞行系树果骤增，可作对应属性输出'],[32,'水系食材获取补给'],[34,'水系树果手，进化后优先级会明显上升']],team:[[4,'牛奶食材核心'],[92,'全体活力治疗'],[68,'水系帮手加速'],[95,'玉米／可可食材'],[47,'料理成功率／帮手奖励']],note:'天青 EX 不是固定水／妖精／飞行三树果：只有主树果限定在三者中，两个副树果仍是全类型随机。'}
+  {name:'萌绿之岛',kind:'普通岛',berryMode:'normal-random',defaultBerries:['金枕果','苹野果','莓莓果'],types:'每周随机 3 种',berries:'随机树果',focus:'选择本周三种喜爱树果后，排序和队伍会按当前盒子自动重算；三种树果在普通岛上地位相同。',note:'三种喜爱树果会使对应树果能量翻倍；选择器用于比较当前盒子在本周组合下的主队。'},
+  {name:'天青沙滩',kind:'普通岛',types:'水／飞行／妖精',berries:'橙橙果／椰木果／桃桃果',focus:'水箭龟承担主食材，仙子伊布保活；水君联动水系，蓝鳄负责对应树果，沼跃鱼提供料理成功率。',note:'#34 蓝鳄目前等级偏低，但它是盒内天青最明确的树果位；未进化或产能不足时，先换成 #95 花疗环环或 #57 勇士雄鹰。#86 波克基斯仅作为需要挥指娱乐性时的备用。'},
+  {name:'灰褐洞窟',kind:'普通岛',types:'火／地面／岩石',berries:'苹野果／勿花果／文柚果',focus:'火爆兽作为主树果手，隆隆岩和沙漠蜻蜓覆盖大豆、马铃薯及牛油果，炎帝提供火系联动。',note:'炎帝的收益随火系成员增加而提高。#15 风速狗或 #72 火稚鸡练成后，可按料理库存替换沙漠蜻蜓，组成更偏火系的队伍。'},
+  {name:'白花雪原',kind:'普通岛',types:'冰／一般／恶',berries:'柿仔果／莓莓果／异奇果',focus:'以卡比兽能量为目标时，四只成熟帝牙海狮全部命中莓莓果且都是树果手，应与一个全体回复手组成主队。',note:'已改为 #76／#77／#78／#79 四只帝牙海狮＋#92 回复手。只有料理缺锅容量时，才临时用 #87 冰伊布替换第四只帝牙海狮；那是料理功能队，不是最高树果能量队。'},
+  {name:'宝蓝湖畔',kind:'普通岛',types:'草／超能力／格斗',berries:'金枕果／芒芒果／樱子果',focus:'蜥蜴王负责主输出，沙奈朵治疗，妙蛙花补蜂蜜与番茄；太阳伊布和克雷色利亚组成技能产能。',note:'需要大量玉米时，用 #94 或 #60 童偶熊替换太阳伊布；两只童偶熊目前等级偏低，先把其中一只集中培养即可。'},
+  {name:'黄金发电厂',kind:'普通岛',types:'电／幽灵／钢',berries:'萄葡果／墨莓果／靛莓果',focus:'雷公带雷丘与电龙形成三电联动，骨纹巨声鳄负责苹果食材，仙子伊布稳定全队活力。',note:'需要扩大锅容量时，用 #85 自爆磁怪替换电龙；雷公在三只电系同场时更适合作为常驻支援。'},
+  {name:'琥珀溪谷',kind:'普通岛',types:'毒／虫／龙',berries:'零余果／木子果／番荔果',focus:'快龙供应香草，巴大蝶负责虫系树果；拉帝亚斯与拉帝欧斯利用永久编队例外同队，互相强化主技能，再配全体治疗。',note:'#80 拉帝亚斯＋#81 拉帝欧斯是特殊宝可梦的永久同队例外：拉帝亚斯的治愈波动会获得更多额外帮手，拉帝欧斯的流星群会增加自身获得的树果。活动期曾有的睡意之力 ×1.3 不属于常驻加成。'},
+  {name:'萌绿之岛 EX',kind:'EX',berryMode:'expert',defaultBerries:['金枕果','苹野果','莓莓果'],types:'主树果任意／副树果随机',berries:'1 主＋2 副',focus:'选择本周主树果与两个副树果后动态重算；主树果比副树果获得更多 EX 加成，完全不命中的个体还会受到帮助间隔惩罚。',note:'选择器已区分主树果和两个副树果；每周随机追加的技能等级、食材或料理效果仍需结合游戏内公告微调。'},
+  {name:'天青沙滩 EX',kind:'EX',berryMode:'cyan-expert',defaultBerries:['橙橙果','桃桃果','椰木果'],types:'主树果水／妖精／飞行之一',berries:'1 主＋2 随机副',focus:'主树果只会从橙橙果、桃桃果、椰木果中产生，两个副树果可从其余 17 种中随机产生；选择后动态重算当前盒子的组合。',note:'天青 EX 不是固定水／妖精／飞行三树果：只有主树果限定在三者中，两个副树果仍是全类型随机。'}
 ];
 const fixedSpecialTeamComparisons={
   '天青沙滩':{label:'水君固定队',candidate:'沙奈朵＋水君＋大力鳄×3',baseline:'沙奈朵＋大力鳄×4',candidateOutput:113954,baselineOutput:108519.7,gain:5434.3,coefficient:1.0501,percent:5.01,triggers:'水君 1.225 次／日',mechanics:'队内只有水君、大力鳄两种水系宝可梦，因此 Lv.6 帮手加速按每人 6 次、全队 30 次计算。'},
@@ -820,46 +830,39 @@ const unlockedSubskills=mon=>(mon.effectiveSubs||mon.subs).split('；').filter((
 const hasUnlockedSubskill=(mon,name)=>unlockedSubskills(mon).includes(name);
 const mainSkillLevel=mon=>window.POKEMON_SLEEP_BOX_MANAGER.effectiveMainSkillLevel(mon);
 const isFullTeamHealer=mon=>Boolean(mon&&(mon.main.includes('活力全体疗愈')||mon.main.includes('新月祈祷')));
-function islandContext(island,index){const berries=berrySelections[index]||island.berries.split('／');return {island,index,berries,expert:island.kind==='EX',exWeeklyEffect:exEffectSelections[index]||'none'}}
+function islandContext(island,index){const berries=berrySelections[index]||island.berries.split('／');return {island,index,berries,expert:island.kind==='EX',exWeeklyEffect:exEffectSelections[index]||'none',memberScores:new Map(),teamScores:new Map()}}
+let islandRendered=false;
 function islandPlannerOptions(context){
   const keyByName={'萌绿之岛':'green','天青沙滩':'cyan','灰褐洞窟':'taupe','白花雪原':'snowdrop','宝蓝湖畔':'lapis','黄金发电厂':'gold','琥珀溪谷':'amber','萌绿之岛 EX':'green-ex','天青沙滩 EX':'cyan-ex'},profileByName={'萌绿之岛 EX':'greengrass-expert','天青沙滩 EX':'cyan-expert'},controller=window.POKEMON_SLEEP_PERSONAL_SETTINGS_CONTROLLER||personalSettingsController,key=keyByName[context.island.name],bonus=controller&&typeof controller.islandBonus==='function'?controller.islandBonus(key):0;
   return {goodCamp:true,energyProfile:'timeline',durationHours:24,startEnergy:100,sleepScore:100,skillCollectionHours:4,islandBonusPct:bonus,islandProfile:profileByName[context.island.name]||({天青沙滩:'cyan','灰褐洞窟':'taupe','白花雪原':'snowdrop','宝蓝湖畔':'lapis','黄金发电厂':'gold','琥珀溪谷':'amber'}[context.island.name]||'none'),favoriteBerries:context.berries,exWeeklyEffect:context.exWeeklyEffect||'none'};
 }
-function estimatedProductionBase(mon){
-  const parts=String(mon.interval||'').split(':').map(Number),interval=parts.length===3?parts[0]*3600+parts[1]*60+parts[2]:parts.length===2?parts[0]*60+parts[1]:3600,level=Math.min(70,Math.max(1,Number(mon.lv)||1)),tierFactor=({S:1.25,A:1.1,B:.95,C:.8}[mon.speciesTier]||.8);
-  return 900*Math.pow(level/30,1.35)*(3600/Math.max(interval,900))*tierFactor;
-}
 function individualProductionScore(mon,context){
-  if(context.expert&&window.POKEMON_SLEEP_TEAM_PLANNER){const report=window.POKEMON_SLEEP_TEAM_PLANNER.calculateMember(mon,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId[mon.id],islandPlannerOptions(context));if(report.valid)return Number(report.energy.totalEnergy)||0}
-  const listedSp=Number(mon.sp),base=listedSp>0?listedSp:estimatedProductionBase(mon);
-  let score=base*(Number(mon.levelOutputMultiplier)||1),matchIndex=context.berries.indexOf(mon.berry);
-  if(context.expert){
-    if(matchIndex===0)score*=mon.specialty==='berry'?1.95:mon.specialty==='all'?1.68:1.46;
-    else if(matchIndex>0)score*=mon.specialty==='berry'?1.58:mon.specialty==='all'?1.43:1.28;
-    else score*=.78;
-  }else if(matchIndex>=0)score*=mon.specialty==='berry'?1.85:mon.specialty==='all'?1.48:1.30;
-  if(matchIndex>=0&&hasUnlockedSubskill(mon,'树果数量S'))score*=1.10;
+  const key=String(mon.id),cache=context.memberScores;if(cache?.has(key))return cache.get(key);
+  const report=window.POKEMON_SLEEP_TEAM_PLANNER.calculateMember(mon,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId[mon.id],islandPlannerOptions(context));
+  const score=report.valid?Number(report.energy.totalEnergy)||0:0;
+  cache?.set(key,score);
   return score;
 }
-function healerValue(mon,context){let score=individualProductionScore(mon,context)+mainSkillLevel(mon)*260;if(hasUnlockedSubskill(mon,'技能概率M'))score+=320;if(hasUnlockedSubskill(mon,'技能概率S'))score+=170;if(mon.nature.includes('技能↑'))score+=220;if(mon.nature.includes('技能↓'))score-=180;return score}
 const producerPool=(context,excludedIds=new Set())=>data.filter(mon=>isBattleEligible(mon)&&!excludedIds.has(mon.id)&&!isSpecialPokemon(mon.id)&&!isFullTeamHealer(mon)).sort((a,b)=>individualProductionScore(b,context)-individualProductionScore(a,context));
 function scoreTeam(ids,context){
-  const members=ids.map(monById).filter(Boolean),helpingBonusCount=members.filter(mon=>hasUnlockedSubskill(mon,'帮手奖励')).length,planner=window.POKEMON_SLEEP_TEAM_PLANNER;
-  if(context.expert&&planner){const exact=planner.calculateTeam(members,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,islandPlannerOptions(context));if(exact.valid)return Math.round(exact.energy.totalEnergy)}
-  let score=members.reduce((sum,mon)=>sum+individualProductionScore(mon,context)*(planner?.helpingBonusOutputMultiplier(mon,helpingBonusCount)||1),0);
-  const healer=members.find(isFullTeamHealer);if(healer)score*=1+Math.min(.16,mainSkillLevel(healer)*.025+(hasUnlockedSubskill(healer,'技能概率M') ? .015 : 0));
-  const names=members.map(mon=>mon.name);if(names.includes('拉帝亚斯')&&names.includes('拉帝欧斯'))score*=1.06;
-  [['炎帝','苹野果'],['雷公','萄葡果'],['水君','橙橙果']].forEach(([name,berry])=>{if(names.includes(name)){const allies=members.filter(mon=>mon.berry===berry).length;score*=1+Math.max(0,allies-1)*.02}});
-  if(names.includes('达克莱伊')){const nonDark=members.filter(mon=>mon.berry!=='异奇果').length;score*=Math.max(.82,1-nonDark*.035)}
-  return Math.round(score);
+  const key=ids.map(String).sort().join('|'),cache=context.teamScores;if(cache?.has(key))return cache.get(key);
+  const members=ids.map(monById).filter(Boolean),report=window.POKEMON_SLEEP_TEAM_PLANNER.calculateTeam(members,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,islandPlannerOptions(context));
+  const score=report.valid?Math.round(report.energy.totalEnergy):0;
+  cache?.set(key,score);return score;
+}
+function bestIslandHealer(context){
+  return data.filter(mon=>isBattleEligible(mon)&&!isSpecialPokemon(mon.id)&&isFullTeamHealer(mon)).map(mon=>{
+    const producers=producerPool(context,new Set([mon.id])).slice(0,4);
+    return {mon,score:scoreTeam([...producers.map(item=>item.id),mon.id],context)};
+  }).sort((a,b)=>b.score-a.score)[0]?.mon;
 }
 function buildRegularTeam(context){
-  const healer=data.filter(mon=>isBattleEligible(mon)&&!isSpecialPokemon(mon.id)&&isFullTeamHealer(mon)).sort((a,b)=>healerValue(b,context)-healerValue(a,context))[0];
+  const healer=bestIslandHealer(context);
   const producers=producerPool(context,new Set(healer?[healer.id]:[])).slice(0,healer?4:5),ids=[...producers.map(mon=>mon.id),...(healer?[healer.id]:[])];
   return {ids,score:scoreTeam(ids,context),kind:'regular',label:'无特殊宝可梦'};
 }
 function buildSpecialTeams(context){
-  const candidates=[],regularHealer=data.filter(mon=>isBattleEligible(mon)&&!isSpecialPokemon(mon.id)&&isFullTeamHealer(mon)).sort((a,b)=>healerValue(b,context)-healerValue(a,context))[0];
+  const candidates=[],regularHealer=bestIslandHealer(context);
   data.filter(mon=>isBattleEligible(mon)&&isSpecialPokemon(mon.id)).forEach(special=>{
     const specialIsHealer=isFullTeamHealer(special),fixed=[special.id,...(!specialIsHealer&&regularHealer?[regularHealer.id]:[])],slots=5-fixed.length;
     const producers=producerPool(context,new Set(fixed)).slice(0,slots),ids=[...producers.map(mon=>mon.id),special.id,...(!specialIsHealer&&regularHealer?[regularHealer.id]:[])];
@@ -873,7 +876,7 @@ function recommendTeams(context){const regular=buildRegularTeam(context),special
 function berryMatchLabel(mon,context){const index=context.berries.indexOf(mon.berry);if(index<0)return context.expert?'未命中树果／受 EX 惩罚':'高练度泛用产能';if(!context.expert)return `喜爱树果 ${mon.berry}`;return index===0?`主树果 ${mon.berry}`:`副树果 ${mon.berry}`}
 function memberRole(mon,context){if(isFullTeamHealer(mon))return `全体回复核心／${berryMatchLabel(mon,context)}`;if(isSpecialPokemon(mon.id))return `特殊宝可梦／${berryMatchLabel(mon,context)}`;return `${berryMatchLabel(mon,context)}／${mon.specialtyLabel}`}
 function renderTeamGrid(root,team,context){root.dataset.specialCount=team.ids.filter(isSpecialPokemon).length;root.dataset.specialException=team.label==='拉帝亚斯＋拉帝欧斯'?'latias-latios':'';root.replaceChildren(...team.ids.map((id,index)=>{const mon=monById(id),slot=document.createElement('div');slot.className=`team-slot${isSpecialPokemon(id)?' special':''}${isFullTeamHealer(mon)?' healer':''}`;const pos=document.createElement('b');pos.textContent=`位置 ${index+1}`;const why=document.createElement('span');why.className='team-role';why.textContent=memberRole(mon,context);slot.append(pos,monButton(id),specialtyBadge(mon,true),why);return slot}))}
-function dynamicRanking(context){return data.filter(isBattleEligible).sort((a,b)=>individualProductionScore(b,context)-individualProductionScore(a,context)).slice(0,8).map(mon=>[mon.id,berryMatchLabel(mon,context)+' · '+mon.specialtyLabel+' · 指数 '+Math.round(individualProductionScore(mon,context)).toLocaleString('zh-CN')])}
+function dynamicRanking(context){return data.filter(isBattleEligible).sort((a,b)=>individualProductionScore(b,context)-individualProductionScore(a,context)).slice(0,8).map(mon=>[mon.id,berryMatchLabel(mon,context)+' · '+mon.specialtyLabel+' · 24小时能量 '+Math.round(individualProductionScore(mon,context)).toLocaleString('zh-CN')])}
 function renderBerryPicker(island,index){
   const picker=document.querySelector('#islandBerryPicker'),controls=document.querySelector('#islandBerryControls');if(!island.berryMode){picker.hidden=true;controls.replaceChildren();return}
   picker.hidden=false;document.querySelector('#islandBerryPickerTitle').textContent=island.kind==='EX'?'本周主／副树果与追加效果':'本周三种喜爱树果';const selected=berrySelections[index],labels=island.kind==='EX'?['主树果','副树果 1','副树果 2']:['喜爱树果 1','喜爱树果 2','喜爱树果 3'];controls.replaceChildren(...selected.map((current,slotIndex)=>{const wrap=document.createElement('div');wrap.className='berry-control';const label=document.createElement('label');label.textContent=labels[slotIndex];const select=document.createElement('select');select.setAttribute('aria-label',`${island.name}${labels[slotIndex]}`);const allowed=island.berryMode==='cyan-expert'&&slotIndex===0?['橙橙果','桃桃果','椰木果']:allBerryNames;allowed.forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=`${name}｜${berryTypeMap[name]}`;option.selected=name===current;select.append(option)});select.addEventListener('change',()=>{const next=select.value,duplicateIndex=selected.findIndex((berry,otherIndex)=>otherIndex!==slotIndex&&berry===next);if(duplicateIndex>=0)berrySelections[index][duplicateIndex]=current;berrySelections[index][slotIndex]=next;renderIsland(index)});wrap.append(label,select);return wrap}));
@@ -895,27 +898,24 @@ function renderFixedSpecialComparison(island){
   document.querySelector('#fixedSpecialGain').textContent=`特殊队净增 ${item.gain.toLocaleString('zh-CN')}／日｜收益系数 ${item.coefficient.toFixed(4)}｜+${item.percent.toFixed(2)}%｜${item.triggers}`;
   document.querySelector('#fixedSpecialMechanics').textContent=item.mechanics;
 }
-function eligibleRanking(island,context){
-  if(island.berryMode)return dynamicRanking(context);
-  const fixed=island.rank.filter(entry=>isBattleEligible(monById(entry[0]))),used=new Set(fixed.map(entry=>String(entry[0])));
-  const fallback=dynamicRanking(context).filter(entry=>!used.has(String(entry[0])));
-  return [...fixed,...fallback].slice(0,8);
+function eligibleRanking(context){
+  return dynamicRanking(context);
 }
 function renderIsland(i){
-  activeIslandIndex=i;
+  activeIslandIndex=i;islandRendered=true;
   const island=islandData[i],context=islandContext(island,i),teams=recommendTeams(context),primary=teams.primary,alternate=teams.alternate;
   [...islandTabs.children].forEach((button,index)=>{button.classList.toggle('active',index===i);button.setAttribute('aria-selected',index===i?'true':'false')});
   document.querySelector('#islandName').textContent=island.name;document.querySelector('#islandFocus').textContent=island.focus;renderBerryPicker(island,i);renderFixedSpecialComparison(island);
   const badges=document.querySelector('#islandBadges'),berryText=island.kind==='EX'?`主：${context.berries[0]} · 副：${context.berries.slice(1).join('／')}`:context.berries.join('／'),typeText=context.berries.map(berry=>berryTypeMap[berry]).join('／');badges.replaceChildren();
   [[island.kind,island.kind==='EX'?'island-badge ex':'island-badge'],[typeText,'island-badge'],[berryText,'island-badge'],[specialRuleLabel(primary.ids.map(id=>[id])),'island-badge']].forEach(([textValue,className])=>{const badge=document.createElement('span');badge.className=className;badge.textContent=textValue;badges.append(badge)});
-  const rankEntries=eligibleRanking(island,context),ranking=document.querySelector('#islandRanking');ranking.replaceChildren(...rankEntries.map(([id,why],index)=>{const row=document.createElement('div');row.className='rank-row';const no=document.createElement('span');no.className='rank-no';no.textContent=index+1;const reason=document.createElement('span');reason.className='rank-why';reason.textContent=why;row.append(no,monButton(id),reason);return row}));
-  document.querySelector('#islandTeamTitle').textContent=primary.kind==='special'?`主推荐｜包含 ${primary.label}`:'主推荐｜无特殊宝可梦';document.querySelector('#islandTeamScore').textContent=context.expert?`24小时纯能量 ${primary.score.toLocaleString('zh-CN')}`:`预计产能指数 ${primary.score.toLocaleString('zh-CN')}`;renderTeamGrid(document.querySelector('#islandTeam'),primary,context);
+  const rankEntries=eligibleRanking(context),ranking=document.querySelector('#islandRanking');ranking.replaceChildren(...rankEntries.map(([id,why],index)=>{const row=document.createElement('div');row.className='rank-row';const no=document.createElement('span');no.className='rank-no';no.textContent=index+1;const reason=document.createElement('span');reason.className='rank-why';reason.textContent=why;row.append(no,monButton(id),reason);return row}));
+  document.querySelector('#islandTeamTitle').textContent=primary.kind==='special'?`主推荐｜包含 ${primary.label}`:'主推荐｜无特殊宝可梦';document.querySelector('#islandTeamScore').textContent=`24小时纯能量 ${primary.score.toLocaleString('zh-CN')}`;renderTeamGrid(document.querySelector('#islandTeam'),primary,context);
   const comparison=document.querySelector('#islandTeamComparison'),alternateRoot=document.querySelector('#islandAlternate');
   if(alternate){
     const relative=Math.abs(teams.special.score-teams.regular.score)/Math.max(teams.regular.score,1)*100,percent=relative<.05?'不足 0.1':relative.toFixed(1);alternateRoot.hidden=false;alternateRoot.open=false;
     if(primary.kind==='regular')comparison.textContent=`特殊队“${teams.special.label}”预计比无特殊队低 ${percent}%，因此不占主队特殊位。`;
     else comparison.textContent=`特殊队“${teams.special.label}”预计比无特殊队高 ${percent}%，因此进入主推荐。`;
-    document.querySelector('#islandAlternateTitle').textContent=`${alternate.kind==='special'?'特殊宝可梦':'无特殊宝可梦'}备选｜${alternate.label} · 指数 ${alternate.score.toLocaleString('zh-CN')}`;renderTeamGrid(document.querySelector('#islandAlternateTeam'),alternate,context);document.querySelector('#islandAlternateNote').textContent=alternate.kind==='special'?'适合想使用特殊宝可梦或触发特定技能联动时切换；若只追求本页预计产能，以主推荐为先。':'不占特殊位、波动更低的对照方案。';
+    document.querySelector('#islandAlternateTitle').textContent=`${alternate.kind==='special'?'特殊宝可梦':'无特殊宝可梦'}备选｜${alternate.label} · 24小时纯能量 ${alternate.score.toLocaleString('zh-CN')}`;renderTeamGrid(document.querySelector('#islandAlternateTeam'),alternate,context);document.querySelector('#islandAlternateNote').textContent=alternate.kind==='special'?'适合想使用特殊宝可梦或触发特定技能联动时切换；若只追求本页预计产能，以主推荐为先。':'不占特殊位、波动更低的对照方案。';
   }else{alternateRoot.hidden=true;comparison.textContent='当前盒子没有可组成的特殊宝可梦备选队。'}
   document.querySelector('#islandNote').textContent=island.note;
   decorateIngredients(document.querySelector('.island-guide'));
@@ -994,10 +994,6 @@ function subskillList(mon){
 }
 function pokemonSprite(mon,size='small'){return window.POKEMON_SLEEP_POKEMON_PICKER?.createIcon(mon,{catalog:window.POKEMON_SLEEP_CATALOG,document,size})||document.createTextNode('')}
 function pokemonNameCell(mon){const root=cell('','nowrap pokemon-name-cell'),identity=document.createElement('span'),name=document.createElement('span'),edit=document.createElement('button'),manage=document.createElement('button'),pokemonEdit=document.createElement('button');identity.className='box-mon-identity';identity.append(pokemonSprite(mon,'small'));name.textContent=mon.nickname||mon.name;if(mon.nickname)name.append(Object.assign(document.createElement('small'),{className:'pokemon-custom-identity',textContent:mon.name}));identity.append(name);edit.type='button';edit.className='level-row-edit';edit.dataset.levelEdit=mon.id;edit.textContent='更新等级';edit.setAttribute('aria-label','更新'+mon.name+'当前等级，现为Lv.'+mon.lv);manage.type='button';manage.className='box-management-edit';manage.dataset.boxManage=mon.id;manage.textContent='盒子／副技能';manage.setAttribute('aria-label','管理'+mon.name+'的盒子与实际副技能');pokemonEdit.type='button';pokemonEdit.className='pokemon-row-edit';pokemonEdit.dataset.pokemonEdit=mon.id;pokemonEdit.textContent='编辑／放生';pokemonEdit.setAttribute('aria-label','编辑或放生'+mon.name);root.append(identity,edit,manage,pokemonEdit);return root}
-function managementCell(mon){
-  const root=cell('','box-management-cell'),wrap=document.createElement('div'),box=document.createElement('span'),state=document.createElement('span'),definition=currentBoxList().find(item=>item.id===mon.boxId),usage=window.POKEMON_SLEEP_BOX_MANAGER.usageInfo(mon);
-  wrap.className='box-management-badge';box.className='box-management-box';box.style.setProperty('--box-color',definition?.color||'#687588');box.textContent=mon.boxName;state.className='box-management-state '+usage.status;state.textContent=usage.label;wrap.append(box,state);root.append(wrap);return root;
-}
 function mainSkillDisplay(mon){
   const raw=String(mon.main||''),match=raw.match(/Lv\.(\d+)/),original=Number(match?.[1]||1),actual=mainSkillLevel(mon);
   return {text:match&&actual!==original?raw.replace(/Lv\.\d+/,`Lv.${actual}`):raw,note:actual!==original?`实际副技能升级后；原 Lv.${original}`:''};
@@ -1043,18 +1039,16 @@ const boxSortOptions={
   'individual-desc':['scoreIndividual',-1],
   'individual-asc':['scoreIndividual',1]
 };
-accountStage.value=activeAccountStage;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;
 q.addEventListener('input',render);[bf,sf,rf,pf].forEach(root=>root.addEventListener('change',()=>{syncMultiFilterSummary(root);render()}));sortSelect.addEventListener('change',()=>{[sortKey,dir]=boxSortOptions[sortSelect.value]||boxSortOptions['pokedex-asc'];render()});mobileFilterToggle.addEventListener('click',()=>{const root=mobileFilterToggle.closest('.filters'),expanded=!root.classList.contains('mobile-expanded');root.classList.toggle('mobile-expanded',expanded);mobileFilterToggle.setAttribute('aria-expanded',expanded?'true':'false')});document.querySelector('#reset').addEventListener('click',()=>{q.value='';[bf,sf,rf,pf].forEach(resetMultiFilter);sortSelect.value='pokedex-asc';sortKey='pokedexId';dir=1;const root=mobileFilterToggle.closest('.filters');root.classList.remove('mobile-expanded');mobileFilterToggle.setAttribute('aria-expanded','false');render()});document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k)dir*=-1;else{sortKey=k;dir=['scoreIndividual','cultivationRank'].includes(k)?-1:1}sortSelect.value=k==='scoreIndividual'?(dir<0?'individual-desc':'individual-asc'):k==='speciesTierRank'?(dir>0?'species-tier-desc':'species-tier-asc'):k==='cultivationRank'&&dir<0?'cultivation-desc':(k==='pokedexId'&&dir===1?'pokedex-asc':'custom');render()}));
 function handlePokemonEdit(event){const levelButton=event.target.closest('[data-level-edit]'),boxButton=event.target.closest('[data-box-manage]'),investButton=event.target.closest('[data-invest]'),pokemonButton=event.target.closest('[data-pokemon-edit]');if(levelButton)levelManagerController?.openFor(levelButton.dataset.levelEdit);if(boxButton)boxManagerController?.openFor(boxButton.dataset.boxManage);if(investButton)document.dispatchEvent(new CustomEvent('pokemon-sleep:invest-pokemon',{detail:{id:investButton.dataset.invest}}));if(pokemonButton)pokemonManagerController?.openFor(pokemonButton.dataset.pokemonEdit)}
 tbody.addEventListener('click',handlePokemonEdit);mobileBoxList.addEventListener('click',handlePokemonEdit);
-function refreshAfterLevelChange(changes){const evolved=changes.some(change=>change.type==='evolution');changes.forEach(change=>{const mon=monById(change.id);if(!mon)return;if(change.type==='evolution'){['mainSkillId','skillRatePct','catalogHelpFrequencyBaseSec','pokedexId','ingredientRate','baseBerryCount','berryId','typeId','allRounderAssessment','specialtyDetail','specialtyText'].forEach(key=>delete mon[key]);addSpecialty(mon)}updateCurrentLevelEvaluation(mon)});refreshCultivationAdvice();if(evolved)refreshBoxFilterOptions();renderEventTeam();renderIsland(activeIslandIndex);if(activeIngredientRecommendation)renderIngredientRecommendations(activeIngredientRecommendation);render();teamPlannerController?.refresh();weeklyPlannerController?.render();boxManagerController?.render();pokemonComparisonController?.render();pokemonPickerController?.render();refreshBoxStats();window.POKEMON_SLEEP_DATA.emit(evolved?'evolution':'levels',{changes})}
+function refreshAfterLevelChange(changes){const evolved=changes.some(change=>change.type==='evolution');changes.forEach(change=>{const mon=monById(change.id);if(!mon)return;if(change.type==='evolution'){['mainSkillId','skillRatePct','catalogHelpFrequencyBaseSec','pokedexId','ingredientRate','baseBerryCount','berryId','typeId','allRounderAssessment','specialtyDetail','specialtyText'].forEach(key=>delete mon[key]);addSpecialty(mon)}updateCurrentLevelEvaluation(mon)});refreshCultivationAdvice();if(evolved)refreshBoxFilterOptions();renderEventTeam();if(document.querySelector('[data-page="islands"]')?.hidden===false)renderIsland(activeIslandIndex);else islandRendered=false;if(activeIngredientRecommendation)renderIngredientRecommendations(activeIngredientRecommendation);render();teamPlannerController?.refresh();if(document.querySelector('[data-page="weekly"]')?.hidden===false)weeklyPlannerController?.render();boxManagerController?.render();pokemonComparisonController?.render();pokemonPickerController?.render();refreshBoxStats();window.POKEMON_SLEEP_DATA.emit(evolved?'evolution':'levels',{changes})}
 function refreshAfterBoxManagement(changes){
   changes.filter(change=>change.type==='subskill').forEach(change=>{const mon=monById(change.id);if(mon)window.POKEMON_SLEEP_LEVELS.applyLevel(mon,Number(mon.lv))});
-  refreshCultivationAdvice();refreshBoxFilterOptions();refreshBoxStats();renderEventTeam();renderIsland(activeIslandIndex);if(activeIngredientRecommendation)renderIngredientRecommendations(activeIngredientRecommendation);render();teamPlannerController?.refresh();weeklyPlannerController?.render();levelManagerController?.render();pokemonComparisonController?.render();pokemonPickerController?.render();window.POKEMON_SLEEP_DATA.emit('box-management',{changes});
+  refreshCultivationAdvice();refreshBoxFilterOptions();refreshBoxStats();renderEventTeam();if(document.querySelector('[data-page="islands"]')?.hidden===false)renderIsland(activeIslandIndex);else islandRendered=false;if(activeIngredientRecommendation)renderIngredientRecommendations(activeIngredientRecommendation);render();teamPlannerController?.refresh();if(document.querySelector('[data-page="weekly"]')?.hidden===false)weeklyPlannerController?.render();levelManagerController?.render();pokemonComparisonController?.render();pokemonPickerController?.render();window.POKEMON_SLEEP_DATA.emit('box-management',{changes});
 }
 function handlePersonalSettingsChange(state,type){
-  if(type==='account-stage'){activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(state.accountStage).id;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;refreshCultivationAdvice();render();boxManagerController?.render();pokemonComparisonController?.render()}
-  renderRecipes();teamPlannerController?.refresh();weeklyPlannerController?.render();
+  renderRecipes();teamPlannerController?.refresh();if(document.querySelector('[data-page="islands"]')?.hidden===false)renderIsland(activeIslandIndex);else islandRendered=false;if(document.querySelector('[data-page="weekly"]')?.hidden===false){weeklyPlannerController?.render();if(state.weekMode!=='preparation')ensureSleepCurves().catch(()=>{})}
 }
 const shiny=data.filter(r=>r.shiny==='是').length;
 document.querySelector('#total').textContent=data.length;document.querySelector('#shinyCount').textContent=shiny;document.querySelector('#normalCount').textContent=data.length-shiny;document.querySelector('.app-nav [data-page-target="box"] small').textContent=`${data.length} 只个体整理`;
@@ -1063,14 +1057,18 @@ speciesTierGuideController=window.POKEMON_SLEEP_SPECIES_TIER_GUIDE.mount({catalo
 pwaController=window.POKEMON_SLEEP_PWA.mount();
 selectionOddsController=window.POKEMON_SLEEP_SELECTION_ODDS.mount();
 personalSettingsController=window.POKEMON_SLEEP_PERSONAL_SETTINGS.mount({ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),recipes:recipeData,islands:islandData,activityProfiles:window.POKEMON_SLEEP_WEEKLY_PLANNER.ACTIVITY_PROFILES,onChange:handlePersonalSettingsChange});window.POKEMON_SLEEP_PERSONAL_SETTINGS_CONTROLLER=personalSettingsController;
-if(personalSettingsController){activeAccountStage=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(personalSettingsController.getState().accountStage).id;advisorStageDescription.textContent=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.stageProfile(activeAccountStage).description;refreshCultivationAdvice()}
-renderEventTeam();renderIsland(0);renderRecipes();render();
+if(personalSettingsController)refreshCultivationAdvice();
+renderEventTeam();renderRecipes();render();
 levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialState:storedLevelState,onChange:refreshAfterLevelChange,catalog:window.POKEMON_SLEEP_CATALOG,dataApi:window.POKEMON_SLEEP_DATA});
 boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});
 pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});
-teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,recipes:recipeData,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING,investmentPlanner:window.POKEMON_SLEEP_INVESTMENT_PLANNER,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);weeklyPlannerController?.render()}});
+teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,recipes:recipeData,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING,investmentPlanner:window.POKEMON_SLEEP_INVESTMENT_PLANNER,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);if(document.querySelector('[data-page="weekly"]')?.hidden===false)weeklyPlannerController?.render()}});
 pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,calculator:window.POKEMON_SLEEP_PRODUCTION_CALCULATOR,profile:personalSettingsController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
-weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy});
+function ensureWeeklyPlanner(){
+  if(weeklyPlannerController)return weeklyPlannerController;
+  weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy});
+  return weeklyPlannerController;
+}
 investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});
 cloudSyncController=window.POKEMON_SLEEP_CLOUD_SYNC.mount({config:window.POKEMON_SLEEP_SUPABASE_CONFIG});window.POKEMON_SLEEP_CLOUD_SYNC_CONTROLLER=cloudSyncController;
 refreshBoxFilterOptions();refreshBoxStats();render();decorateIngredients(document);showPage(pageFromHash(),{replace:true,scroll:false});restoreBoxViewState();
