@@ -30,8 +30,11 @@ vm.runInNewContext(fs.readFileSync(path.resolve(__dirname, '..', 'recipes.js'), 
 const recipeIngredientNames = new Set(recipeContext.window.POKEMON_SLEEP_RECIPES.flatMap(recipe => recipe.ingredients.map(item => item.name)));
 assert.deepStrictEqual([...recipeIngredientNames].filter(name => !ingredients.canonicalize(name)), []);
 
-const boxRows = parseBoxRows(fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf8'));
-const boxIngredientNames = new Set(boxRows.flatMap(row => row.ingredients.split('／').map(slot => slot.replace(/×\d+$/, '')).filter(name => name && name !== '—')));
-assert.deepStrictEqual([...boxIngredientNames].filter(name => !ingredients.canonicalize(name)), []);
+const legacyFixture = path.resolve(__dirname, 'legacy-box-fixture.txt');
+if (fs.existsSync(legacyFixture) && process.env.POKEMON_SLEEP_TEST_SYNTHETIC !== '1') {
+  const boxRows = parseBoxRows(fs.readFileSync(legacyFixture, 'utf8'));
+  const boxIngredientNames = new Set(boxRows.flatMap(row => row.ingredients.split('／').map(slot => slot.replace(/×\d+$/, '')).filter(name => name && name !== '—')));
+  assert.deepStrictEqual([...boxIngredientNames].filter(name => !ingredients.canonicalize(name)), []);
+}
 
 console.log('ingredient icon tests passed');

@@ -80,7 +80,7 @@
 <div class="pwa-toast pwa-offline-toast" id="pwaOfflineToast" role="status" hidden><span>当前处于离线状态，正在使用设备中的本地资料。</span></div>
 <div class="pwa-toast" id="pwaUpdateToast" role="status" hidden><span>新版本已经准备好。</span><button id="pwaUpdateApply" type="button">刷新更新</button></div>
 <nav class="app-nav" aria-label="主要功能">
-  <a href="#box" data-page-target="box"><span class="app-nav-icon">盒</span><span class="app-nav-copy"><b>盒子</b><small>97 只个体整理</small></span></a>
+  <a href="#box" data-page-target="box"><span class="app-nav-icon">盒</span><span class="app-nav-copy"><b>盒子</b><small>0 只个体整理</small></span></a>
   <a href="#team" data-page-target="team"><span class="app-nav-icon">队</span><span class="app-nav-copy"><b>当前队伍</b><small>食材与收菜时间</small></span></a>
   <a href="#weekly" data-page-target="weekly"><span class="app-nav-icon">周</span><span class="app-nav-copy"><b>本周作战</b><small>目标、缺口与行动</small></span></a>
   <a href="#islands" data-page-target="islands"><span class="app-nav-icon">岛</span><span class="app-nav-copy"><b>岛屿推荐</b><small>排序与队伍组合</small></span></a>
@@ -260,10 +260,10 @@
   <div class="box-level-tools-actions"><button class="primary" id="levelManagerOpen" type="button">批量更新等级</button><button id="levelManagerUndo" type="button" disabled>撤销上次修改</button><span class="box-level-tools-status" id="levelManagerToolbarStatus" role="status">尚未使用本机等级记录</span></div>
 </section>
 <section class="stats" data-page="box"><div class="stat"><b id="total">0</b><span>总个体</span></div><div class="stat"><b id="shinyCount">0</b><span>闪光个体</span></div><div class="stat"><b id="normalCount">0</b><span>非闪光</span></div><div class="stat"><b id="battleCount">0</b><span>参与实战</span></div><div class="stat"><b id="shown">0</b><span>当前显示</span></div></section>
-<section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、图鉴号、个体编号、盒子、定位、食材、技能或培养判断"><button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-expanded="false">筛选与排序</button><details class="box-multi-filter" id="bf" data-placeholder="全部盒子"><summary>全部盒子</summary><div class="box-multi-options"></div></details><details class="box-multi-filter" id="sf" data-placeholder="全部闪光状态"><summary>全部闪光状态</summary><div class="box-multi-options"><label><input type="checkbox" value="是"><span>闪光</span><small data-count></small></label><label><input type="checkbox" value="否"><span>非闪光</span><small data-count></small></label></div></details><details class="box-multi-filter" id="rf" data-placeholder="全部定位"><summary>全部定位</summary><div class="box-multi-options"><label><input type="checkbox" value="berry"><span>树果手</span><small data-count></small></label><label><input type="checkbox" value="ingredient"><span>食材手</span><small data-count></small></label><label><input type="checkbox" value="skill"><span>技能手</span><small data-count></small></label><label><input type="checkbox" value="all"><span>全能手</span><small data-count></small></label></div></details><details class="box-multi-filter" id="pf" data-placeholder="全部培养判断"><summary>全部培养判断</summary><div class="box-multi-options"><label><input type="checkbox" value="core"><span>核心培养</span><small data-count></small></label><label><input type="checkbox" value="recommended"><span>推荐培养</span><small data-count></small></label><label><input type="checkbox" value="stage"><span>阶段培养</span><small data-count></small></label><label><input type="checkbox" value="transition"><span>过渡使用</span><small data-count></small></label><label><input type="checkbox" value="collection"><span>收藏保护</span><small data-count></small></label><label><input type="checkbox" value="release"><span>放生</span><small data-count></small></label><label><input type="checkbox" value="manual"><span>人工复核</span><small data-count></small></label></div></details><select id="sortSelect" aria-label="盒子排序"><option value="pokedex-asc">图鉴编号顺序</option><option value="cultivation-desc">培养优先级：高到低</option><option value="species-tier-desc">种族梯级：高到低</option><option value="species-tier-asc">种族梯级：低到高</option><option value="individual-desc">个体质量：高到低</option><option value="individual-asc">个体质量：低到高</option><option value="custom" hidden>表头排序</option></select><button id="reset">重置筛选</button><div class="box-filter-summary is-unfiltered" id="boxFilterSummary" role="status" aria-live="polite"><span class="box-filter-mode">尚未筛选</span><span>显示全部 97 只</span></div></section>
+<section class="panel filters" data-page="box"><input id="q" placeholder="搜索宝可梦、图鉴号、个体编号、盒子、定位、食材、技能或培养判断"><button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-expanded="false">筛选与排序</button><details class="box-multi-filter" id="bf" data-placeholder="全部盒子"><summary>全部盒子</summary><div class="box-multi-options"></div></details><details class="box-multi-filter" id="sf" data-placeholder="全部闪光状态"><summary>全部闪光状态</summary><div class="box-multi-options"><label><input type="checkbox" value="是"><span>闪光</span><small data-count></small></label><label><input type="checkbox" value="否"><span>非闪光</span><small data-count></small></label></div></details><details class="box-multi-filter" id="rf" data-placeholder="全部定位"><summary>全部定位</summary><div class="box-multi-options"><label><input type="checkbox" value="berry"><span>树果手</span><small data-count></small></label><label><input type="checkbox" value="ingredient"><span>食材手</span><small data-count></small></label><label><input type="checkbox" value="skill"><span>技能手</span><small data-count></small></label><label><input type="checkbox" value="all"><span>全能手</span><small data-count></small></label></div></details><details class="box-multi-filter" id="pf" data-placeholder="全部培养判断"><summary>全部培养判断</summary><div class="box-multi-options"><label><input type="checkbox" value="core"><span>核心培养</span><small data-count></small></label><label><input type="checkbox" value="recommended"><span>推荐培养</span><small data-count></small></label><label><input type="checkbox" value="stage"><span>阶段培养</span><small data-count></small></label><label><input type="checkbox" value="transition"><span>过渡使用</span><small data-count></small></label><label><input type="checkbox" value="collection"><span>收藏保护</span><small data-count></small></label><label><input type="checkbox" value="release"><span>放生</span><small data-count></small></label><label><input type="checkbox" value="manual"><span>人工复核</span><small data-count></small></label></div></details><select id="sortSelect" aria-label="盒子排序"><option value="pokedex-asc">图鉴编号顺序</option><option value="cultivation-desc">培养优先级：高到低</option><option value="species-tier-desc">种族梯级：高到低</option><option value="species-tier-asc">种族梯级：低到高</option><option value="individual-desc">个体质量：高到低</option><option value="individual-asc">个体质量：低到高</option><option value="custom" hidden>表头排序</option></select><button id="reset">重置筛选</button><div class="box-filter-summary is-unfiltered" id="boxFilterSummary" role="status" aria-live="polite"><span class="box-filter-mode">尚未筛选</span><span>显示全部 0 只</span></div></section>
 <div class="meta" data-page="box">物种强度采用用户维护的 S／A／B／C 梯级；未列入梯级表的最终形态默认 C 级。个体评价以同种白板为 1.00：食材手比较目标食材产量，树果手比较自然树果能量，技能手比较触发次数，树果骤增则比较自然树果与技能树果的总收益。潜力分计入五个已知栏位、合法副技能种子与纯白薄荷。</div>
 <details class="mobile-score-note panel" data-page="box"><summary>查看梯级与个体口径</summary><p>物种梯级和个体梯级分别显示，再按固定矩阵生成培养判断。基础判断为暂不培养时，闪光或限定进入收藏保护，其余显示放生建议；网站不会自动删除。</p></details>
-<div class="tablebox box-page-table" data-page="box"><table id="tbl"><thead><tr><th data-k="pokedexId">图鉴</th><th data-k="name">宝可梦</th><th data-k="specialty">定位</th><th data-k="speciesTierRank">种族梯级</th><th data-k="scoreIndividual">个体质量</th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>主技能</th><th>副技能</th><th>性格</th><th data-k="cultivationRank">培养判断</th></tr></thead><tbody></tbody></table></div>
+<div class="tablebox box-page-table" data-page="box"><div class="box-empty-state" id="boxEmptyState" hidden><h3>盒子还是空的</h3><p>可以先录入宝可梦；未登录时资料保存在本机，登录后会同步到云端。</p><button id="boxEmptyAdd" type="button">＋ 录入第一只宝可梦</button></div><table id="tbl"><thead><tr><th data-k="pokedexId">图鉴</th><th data-k="name">宝可梦</th><th data-k="specialty">定位</th><th data-k="speciesTierRank">种族梯级</th><th data-k="scoreIndividual">个体质量</th><th data-k="shiny">闪光</th><th>食材（Lv.1/30/60）</th><th>主技能</th><th>副技能</th><th>性格</th><th data-k="cultivationRank">培养判断</th></tr></thead><tbody></tbody></table></div>
 <div class="mobile-box-list" id="mobileBoxList" data-page="box" aria-live="polite"></div>
 <div class="advice-sources" data-page="box">种族基础与概率数据采用 <a href="https://pks.raenonx.cc/zh/pokedex" target="_blank" rel="noreferrer">RaenonX 图鉴</a>快照，Game8与攻略图用于培养定位、上位替代和异常结果的定性复核；副技能种子规则参考 <a href="https://app-psl.pokemon-support.com/hc/en-us/articles/25819530448665-I-can-t-use-my-Sub-Skill-Seed" target="_blank" rel="noreferrer">Pokémon Sleep 官方支持</a>。个体倍率以同种、同路线白板为 1.00，按定位比较食材产量、树果能量或技能触发收益；培养判断采用种族梯级 × 个体梯级矩阵，闪光与限定仅在暂不培养时转为收藏保护。</div>
 <footer data-page="box">说明：离线打开时继续使用本机缓存；在 GitHub Pages 登录后，盒子、等级、分类、队伍、培养阶段与回收站会自动保存到个人云端。评级与培养模型更新于 2026-09-21，当前等级上限按 Lv.70 计算。</footer>
@@ -362,7 +362,6 @@
 <script src="skills/pokemon-sleep-scoring/scripts/species-tiers.js?v=20260920-1"></script>
 <script src="pokemon-strategy.js?v=20260914-1"></script>
 <script src="selection-odds.js?v=20260912-1"></script>
-<script src="box-scores.generated.js?v=20260914-1"></script>
 <script src="pokemon-catalog.generated.js?v=20260914-1"></script>
 <script src="all-rounder-rules.js?v=20260914-2"></script>
 <script src="pokemon-scoring.js?v=20260914-2"></script>
@@ -375,7 +374,6 @@
 <script src="main-skill-team-effects.js?v=20260911-2"></script>
 <script src="ingredients.js?v=20260908-1"></script>
 <script src="recipes.js"></script>
-<script src="team-production.generated.js"></script>
 <script src="pokemon-data.js?v=20260913-1"></script>
 <script src="box-manager.js?v=20260921-1"></script>
 <script src="level-manager.js?v=20260921-1"></script>
@@ -396,112 +394,11 @@
 <script src="supabase-config.js?v=20260831-1"></script>
 <script src="cloud-sync.js?v=20260831-2"></script>
 <script>
-const raw=`
-1|妙蛙花|2961|52|否|蜂蜜×2／蜂蜜×5／番茄×7|38:58|33|食材获取S Lv.3|帮手奖励；食材概率M；帮忙速度S；树果数量S；持有上限M|坦率|重点培养|最开始提供的个体
-2|妙蛙花|1903|37|否|蜂蜜×2／蜂蜜×5／马铃薯×6|38:58|33|食材获取S Lv.3|技能概率M；食材概率M；帮忙速度S；食材概率S；技能概率S|怕寂寞：速度↑ 活力恢复↓|按需求保留|
-3|杰尼龟|650|16|否|牛奶×2／可可×3／牛奶×7|1:05:28|10|食材获取S Lv.1|树果数量S；帮手奖励；帮忙速度S；技能等级M；食材概率M|勇敢：速度↑ EXP↓|按需求保留|
-4|水箭龟|5581|63|否|牛奶×2／牛奶×5／牛奶×7|40:52|35|食材获取S Lv.6|帮手奖励；食材概率M；梦之碎片奖励；树果数量S；食材概率S|认真|重点培养|高等级纯牛奶产手
-5|巴大蝶|2669|47|否|蜂蜜×1／蜂蜜×2／蜂蜜×4|34:03|39|食材获取S Lv.7|技能等级M；梦之碎片奖励；技能概率S；帮忙速度S；持有上限S|勇敢：速度↑ EXP↓|继续使用|
-6|巴大蝶|893|16|是|蜂蜜×1／番茄×2／蜂蜜×4|43:26|49|食材获取S Lv.2|持有上限L；持有上限S；技能等级S；帮忙速度S；技能概率S|大胆：活力恢复↑ 速度↓|按需求保留|
-7|拉达|725|15|是|苹果×1／大豆×2／豆制肉×3|47:47|27|活力填充S Lv.2|持有上限S；帮忙速度S；食材概率S；技能概率S；梦之碎片奖励|乐天：活力恢复↑ 技能↓|闪光收藏|
-8|皮卡丘（巫师帽）|1103|31|否|苹果×1／苹果×2／苹果×4|39:10|19|能量填充S Lv.1|技能概率M；技能概率S；食材概率S；技能等级S；帮忙速度S|自大：技能↑ EXP↓|按需求保留|活动装扮
-9|皮卡丘（圣诞）|812|15|是|苹果×1／暖暖姜×2／苹果×4|40:30|20|梦之碎片获取S Lv.2|技能等级S；持有上限S；食材概率M；帮忙速度S；技能概率S|自大：技能↑ EXP↓|闪光收藏|活动装扮
-10|雷丘|1091|18|是|苹果×1／苹果×2／暖暖姜×3|35:25|31|能量填充S Lv.2|梦之碎片奖励；食材概率S；食材概率M；帮忙速度S；帮手奖励|浮躁|闪光且可用|
-11|胖丁|473|15|是|蜂蜜×1／蜂蜜×2／可可×2|58:45|14|活力全体疗愈S Lv.1|帮忙速度S；持有上限M；食材概率M；持有上限S；食材概率S|急躁：EXP↑ 活力恢复↓|闪光收藏|
-12|胖可丁|1961|31|否|蜂蜜×1／蜂蜜×2／储存油×3|43:51|33|活力全体疗愈S Lv.4|技能概率M；食材概率M；技能概率S；技能等级S；帮忙速度S|慎重：技能↑ 食材↓|继续使用|
-13|可达鸭|478|23|是|可可×1／可可×2／可可×4|1:32:29|8|能量填充S Lv.1|技能概率M；帮忙速度M；持有上限M；持有上限S；树果数量S|大胆：活力恢复↑ 速度↓|按需求保留|
-14|猴怪|480|14|是|豆制肉×1／蘑菇×1／蜂蜜×4|1:08:10|18|能量填充S Lv.1|持有上限S；持有上限M；食材概率S；帮忙速度S；技能概率S|悠闲：活力恢复↑ EXP↓|按需求保留|
-15|风速狗|1015|13|是|火辣香草×1／豆制肉×3／牛奶×5|43:43|21|帮手支援S Lv.3|技能等级S；持有上限L；持有上限M；帮忙速度S；帮忙速度M|大胆：活力恢复↑ 速度↓|按需求保留|
-16|大食花|945|21|否|番茄×2／马铃薯×4／马铃薯×6|40:19|27|活力填充S Lv.2|食材概率S；技能概率S；帮忙速度M；帮忙速度S；持有上限S|勇敢：速度↑ EXP↓|按需求保留|
-17|隆隆岩|3024|51|否|大豆×2／马铃薯×4／大豆×7|41:51|34|能量填充S Lv.3|食材概率S；食材概率M；帮手奖励；技能概率S；帮忙速度S|勇敢：速度↑ EXP↓|继续使用|
-18|小磁怪|434|11|否|储存油×1／火辣香草×2／储存油×4|1:34:44|8|料理强化S Lv.1|树果数量S；食材概率S；帮忙速度S；食材概率M；活力恢复奖励|急躁：EXP↑ 活力恢复↓|按需求保留|
-19|三合一磁怪|709|20|否|储存油×1／储存油×2／火辣香草×3|1:08:56|16|料理强化S Lv.2|技能等级S；帮手奖励；持有上限S；食材概率M；帮忙速度M|温和：技能↑ 速度↓|按需求保留|
-20|大葱鸭|851|23|是|大葱×2／豆制肉×8／暖暖姜×12|47:48|18|能量填充S Lv.1|食材概率S；技能概率S；食材概率M；持有上限L；帮忙速度S|害羞|闪光收藏|
-21|鬼斯|484|16|否|火辣香草×2／蘑菇×4／蘑菇×6|1:01:26|10|能量填充S Lv.1|帮手奖励；食材概率S；持有上限M；帮忙速度S；睡眠EXP奖励|慢吞吞：食材↑ 活力恢复↓|按需求保留|
-22|卡拉卡拉|493|15|是|暖暖姜×1／可可×2／可可×3|1:06:52|10|活力填充S Lv.1|帮忙速度M；持有上限S；食材概率S；技能概率S；帮忙速度S|认真|闪光收藏|
-23|魔墙人偶|1255|29|是|番茄×2／马铃薯×4／番茄×7|44:03|22|模仿（技能复制）Lv.4|技能等级M；食材概率S；持有上限L；睡眠EXP奖励；帮忙速度S|冷静：食材↑ EXP↓|闪光且可用|
-24|凯罗斯|979|23|是|蜂蜜×2／蜂蜜×5／苹果×8|38:14|24|能量填充M Lv.1|食材概率S；睡眠EXP奖励；持有上限S；帮忙速度S；帮忙速度M|乐天：活力恢复↑ 技能↓|闪光收藏|
-25|伊布|746|15|否|牛奶×1／可可×1／牛奶×4|59:56|12|食材获取S Lv.3|技能等级M；技能概率S；帮忙速度M；技能概率M；食材概率S|认真|按需求保留|
-26|伊布|707|13|否|牛奶×1／牛奶×2／牛奶×4|1:00:11|12|食材获取S Lv.1|树果数量S；梦之碎片奖励；食材概率S；睡眠EXP奖励；持有上限S|淘气：活力恢复↑ 食材↓|按需求保留|
-27|伊布|678|12|是|牛奶×1／可可×1／豆制肉×3|1:00:18|12|食材获取S Lv.3|技能等级M；持有上限S；技能概率S；树果数量S；梦之碎片奖励|慢吞吞：食材↑ 活力恢复↓|闪光收藏|
-28|伊布|802|14|是|牛奶×1／牛奶×2／牛奶×4|54:03|12|食材获取S Lv.3|技能等级M；持有上限S；技能概率S；帮忙速度S；食材概率S|固执：速度↑ 食材↓|闪光且可用|
-29|伊布（万圣节）|724|14|否|南瓜×1／可可×4／南瓜×4|51:56|30|食材获取S Lv.1|持有上限M；帮忙速度S；食材概率M；梦之碎片奖励；食材概率S|慎重：技能↑ 食材↓|按需求保留|活动装扮
-30|伊布（圣诞）|672|10|是|牛奶×1／可可×1／豆制肉×3|50:44|20|梦之碎片获取S Lv.1|食材概率M；持有上限M；技能概率S；食材概率S；帮忙速度M|自大：技能↑ EXP↓|闪光收藏|活动装扮
-31|伊布（圣诞）|725|15|是|牛奶×1／可可×1／可可×2|53:59|32|梦之碎片获取S Lv.1|持有上限M；帮忙速度S；食材概率S；帮忙速度M；技能概率S|胆小：EXP↑ 速度↓|闪光收藏|活动装扮
-32|水伊布|1201|28|否|牛奶×1／可可×1／可可×2|45:27|21|食材获取S Lv.2|睡眠EXP奖励；帮忙速度S；技能等级S；持有上限L；食材概率M|害羞|按需求保留|
-33|快龙|3169|43|否|火辣香草×2／火辣香草×5／火辣香草×7|34:08|31|活力填充S Lv.3|睡眠EXP奖励；帮忙速度M；食材概率S；持有上限L；技能等级S|马虎：食材↑ 技能↓|继续使用|
-34|蓝鳄|799|22|是|豆制肉×1／豆制肉×2／豆制肉×4|54:17|32|活力填充S Lv.1|持有上限M；梦之碎片奖励；帮忙速度S；技能概率S；持有上限S|害羞|闪光收藏|
-35|皮宝宝|441|15|是|苹果×1／蜂蜜×2／蜂蜜×3|1:21:38|16|挥指 Lv.1|持有上限S；技能等级S；食材概率M；技能概率M；帮忙速度M|勇敢：速度↑ EXP↓|闪光收藏|
-36|电龙|961|23|是|火辣香草×1／蛋×3／火辣香草×4|42:49|31|能量填充M Lv.2|持有上限S；技能等级S；技能概率S；梦之碎片奖励；树果数量S|大胆：活力恢复↑ 速度↓|闪光且可用|截图为绵绵形态
-37|树才怪|1001|25|是|番茄×1／大豆×2／大豆×4|59:01|22|能量填充M Lv.2|技能概率S；帮忙速度S；持有上限S；食材概率S；树果数量S|自大：技能↑ EXP↓|闪光收藏|
-38|乌波（城都）|464|14|是|蘑菇×2／马铃薯×6／马铃薯×10|1:35:46|10|活力填充S Lv.1|帮手奖励；持有上限S；技能概率S；帮忙速度S；食材概率M|坦率|闪光收藏|进化为沼王
-39|太阳伊布|1811|35|是|牛奶×1／牛奶×2／豆制肉×3|37:16|24|能量填充M Lv.3|帮手奖励；技能概率M；技能等级M；树果数量S；食材概率S|认真|闪光且可用|
-40|呆呆王|938|26|是|可可×1／可可×2／可可×4|53:50|46|活力疗愈S Lv.1|持有上限S；持有上限L；帮忙速度M；技能概率M；技能概率S|马虎：食材↑ 技能↓|闪光收藏|
-41|果然翁|737|18|是|苹果×1／番茄×2／番茄×4|56:21|39|活力疗愈S Lv.1|持有上限L；食材概率M；帮忙速度S；技能等级M；食材概率S|勤奋|闪光收藏|
-42|戴鲁比|599|14|是|火辣香草×1／暖暖姜×3／火辣香草×4|1:19:32|10|能量填充M Lv.1|梦之碎片奖励；帮忙速度S；睡眠EXP奖励；帮手奖励；持有上限L|浮躁|闪光收藏|
-43|炎帝|1525|26|是|储存油×1／番茄×2／储存油×4|38:00|19|帮手加速（火）Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|坦率|闪光且可用|
-44|幼基拉斯|450|14|是|暖暖姜×2／暖暖姜×5／豆制肉×8|1:17:55|9|活力填充S Lv.1|研究EXP奖励；食材概率S；帮忙速度M；树果数量S；持有上限L|爽朗：EXP↑ 食材↓|闪光收藏|
-45|沙基拉斯|660|18|是|暖暖姜×2／大豆×5／暖暖姜×7|57:57|30|活力填充S Lv.1|持有上限M；食材概率S；技能概率S；持有上限S；持有上限L|坦率|闪光收藏|
-46|森林蜥蜴|798|14|是|蛋×1／咖啡×2／蛋×4|53:34|16|树果骤增 Lv.2|活力恢复奖励；持有上限L；睡眠EXP奖励；技能概率S；帮忙速度S|慢吞吞：食材↑ 活力恢复↓|闪光收藏|
-47|沼跃鱼|946|25|是|玉米×1／牛奶×3／牛奶×5|43:52|21|料理成功S Lv.2|帮忙速度S；帮忙速度M；帮手奖励；技能等级S；持有上限M|急躁：EXP↑ 活力恢复↓|闪光且可用|
-48|奇鲁莉安|816|16|是|苹果×1／玉米×1／苹果×4|1:00:49|18|活力全体疗愈S Lv.2|技能概率M；技能等级M；持有上限M；帮忙速度M；持有上限M|温和：技能↑ 速度↓|闪光且可用|可进化沙奈朵
-49|吞食兽|791|22|是|大豆×1／蘑菇×1／大豆×4|55:53|30|梦之碎片获取S Lv.1|持有上限S；食材概率M；食材概率S；树果数量S；持有上限M|悠闲：活力恢复↑ EXP↓|闪光收藏|
-50|七夕青鸟|1296|26|是|蛋×1／大豆×3／蛋×4|55:25|19|活力填充S Lv.4|技能概率M；技能等级M；持有上限M；帮忙速度M；持有上限S|自大：技能↑ EXP↓|闪光且可用|
-51|海豹球|437|15|是|储存油×1／豆制肉×3／储存油×4|1:30:43|9|食材获取S Lv.3|技能等级M；活力恢复奖励；帮忙速度S；食材概率M；技能概率S|天真：EXP↑ 技能↓|闪光收藏|
-52|拉帝亚斯|1193|26|是|番茄×1／南瓜×1／番茄×4|44:20|25|治愈波动（活力疗愈S）Lv.1|技能概率S；持有上限S；食材概率M；帮忙速度S；技能概率M|勤奋|闪光收藏|
-53|草苗龟|581|14|是|蘑菇×1／蘑菇×2／暖暖姜×6|1:13:03|12|活力全体疗愈S Lv.1|睡眠EXP奖励；持有上限M；帮忙速度S；食材概率S；持有上限S|自大：技能↑ EXP↓|闪光收藏|
-54|飘飘球|420|14|是|玉米×1／储存油×3／玉米×4|1:23:45|9|蓄力（能量填充S）Lv.1|睡眠EXP奖励；食材概率S；研究EXP奖励；持有上限S；帮忙速度S|胆小：EXP↑ 速度↓|闪光收藏|
-55|雪笠怪|380|12|是|番茄×2／蛋×4／番茄×7|1:38:07|16|能量填充S Lv.1|持有上限S；技能等级S；帮忙速度S；帮忙速度M；持有上限M|大胆：活力恢复↑ 速度↓|闪光收藏|
-56|毛头小鹰|452|14|是|大豆×1／豆制肉×2／豆制肉×4|1:01:41|16|树果骤增 Lv.1|持有上限S；技能概率S；食材概率S；技能等级M；帮忙速度S|乐天：活力恢复↑ 技能↓|闪光收藏|
-57|勇士雄鹰|935|19|是|豆制肉×1／玉米×2／豆制肉×4|38:33|23|树果骤增 Lv.2|技能等级S；活力恢复奖励；食材概率S；帮忙速度S；技能概率S|认真|闪光且可用|
-58|摔角鹰人|953|24|是|火辣香草×1／火辣香草×2／火辣香草×4|38:09|21|食材精选S Lv.1|技能概率S；技能概率M；食材概率S；帮忙速度S；帮忙速度M|勤奋|闪光且可用|
-59|咚咚鼠|1124|25|是|苹果×1／番茄×2／可可×2|35:42|19|料理成功S Lv.2|技能等级S；技能概率M；食材概率S；帮忙速度S；睡眠EXP奖励|固执：速度↑ 食材↓|闪光且可用|
-60|童偶熊|527|14|是|玉米×2／豆制肉×6／玉米×7|1:11:32|13|能量填充S Lv.1|研究EXP奖励；持有上限S；技能等级S；帮手奖励；帮忙速度S|温和：技能↑ 速度↓|闪光收藏|
-61|可可多拉|439|15|是|豆制肉×2／豆制肉×5／豆制肉×7|1:16:49|12|活力填充S Lv.1|帮忙速度S；帮忙速度M；食材概率S；持有上限M；技能等级S|勤奋|闪光收藏|依当前资料校正名称与纯豆制肉食材表
-62|梦幻|1560|27|否|蛋×2／火辣香草×4／—|45:49|32|十项全能 Lv.3|技能等级M；持有上限S；—；—；—|浮躁|继续使用|
-63|火爆兽|5111|63|否|暖暖姜×1／火辣香草×2／储存油×3|27:07|41|能量填充S Lv.3|帮手奖励；研究EXP奖励；帮忙速度M；技能概率S；帮忙速度S|固执：速度↑ 食材↓|重点培养|高等级高速个体
-64|乌波（城都）|437|11|否|蘑菇×2／马铃薯×6／蘑菇×7|1:36:22|10|活力填充S Lv.1|食材概率M；技能等级S；帮手奖励；持有上限S；帮忙速度M|浮躁|按需求保留|进化为沼王
-65|乌波（帕底亚）|456|14|否|可可×2／咖啡×4／马铃薯×9|1:33:30|9|活力填充S Lv.1|食材概率M；食材概率S；树果数量S；帮忙速度S；技能概率S|固执：速度↑ 技能↓|按需求保留|这只是进化成土王，不是沼王
-66|雷公|1531|27|否|豆制肉×1／火辣香草×2／大葱×2|33:10|22|帮手加速（电）Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|坦率|继续使用|
-67|水君|1409|26|否|苹果×1／番茄×2／玉米×2|38:28|35|帮手加速（水）Lv.1|持有上限L；技能概率S；食材概率S；帮手奖励；帮忙速度M|固执：速度↑ 食材↓|继续使用|
-68|水君|1762|30|否|苹果×1／储存油×2／苹果×4|42:23|17|帮手加速（水）Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|坦率|继续使用|
-69|森林蜥蜴|695|14|否|蛋×1／咖啡×2／大葱×2|1:13:03|8|树果骤增 Lv.3|技能等级M；树果数量S；帮忙速度S；持有上限L；睡眠EXP奖励|慎重：技能↑ 食材↓|按需求保留|
-70|森林蜥蜴|540|16|否|蛋×1／咖啡×2／咖啡×3|1:12:45|8|树果骤增 Lv.1|睡眠EXP奖励；梦之碎片奖励；帮忙速度S；帮手奖励；持有上限S|温顺：技能↑ 活力恢复↓|按需求保留|
-71|蜥蜴王|5325|58|否|蛋×1／咖啡×2／咖啡×3|26:49|35|树果骤增 Lv.6|树果数量S；帮忙速度M；帮忙速度S；技能概率S；持有上限M|认真|重点培养|高等级高速个体
-72|火稚鸡|712|15|否|蘑菇×1／蘑菇×2／储存油×5|1:02:41|12|活力填充S Lv.1|树果数量S；持有上限S；帮忙速度M；技能概率S；技能等级S|勇敢：速度↑ EXP↓|按需求保留|
-73|沙奈朵|4328|45|否|苹果×1／苹果×2／大葱×2|28:13|31|活力全体疗愈S Lv.6|睡眠EXP奖励；帮忙速度M；技能概率S；梦之碎片奖励；帮忙速度S|固执：速度↑ 食材↓|重点培养|队伍核心奶妈
-74|沙漠蜻蜓|2174|35|否|青色果实×2／青色果实×5／青色果实×7|29:49|28|能量填充S Lv.3|帮忙速度S；帮忙速度M；技能概率S；持有上限S；食材概率M|勇敢：速度↑ EXP↓|继续使用|食材图标名称待确认
-75|海豹球（节日）|705|14|否|储存油×1／豆制肉×3／储存油×4|53:34|20|料理成功S Lv.2|技能等级S；研究EXP奖励；帮忙速度S；食材概率S；持有上限M|认真|按需求保留|活动装扮
-76|帝牙海狮|2799|43|否|储存油×1／豆制肉×3／暖暖姜×4|41:13|31|食材获取S Lv.3|树果数量S；梦之碎片奖励；睡眠EXP奖励；帮忙速度S；技能等级M|固执：速度↑ 食材↓|继续使用|
-77|帝牙海狮|3607|52|否|储存油×1／豆制肉×3／储存油×4|38:36|31|食材获取S Lv.3|梦之碎片奖励；树果数量S；帮忙速度M；技能等级M；帮忙速度S|勤奋|继续使用|
-78|帝牙海狮|3956|56|否|储存油×1／豆制肉×3／豆制肉×4|34:26|36|食材获取S Lv.6|树果数量S；食材概率M；帮忙速度M；睡眠EXP奖励；技能概率S|顽皮：速度↑ 技能↓|重点培养|
-79|帝牙海狮|3731|50|否|储存油×1／豆制肉×3／储存油×4|34:54|31|食材获取S Lv.3|树果数量S；帮手奖励；帮忙速度M；帮忙速度S；梦之碎片奖励|顽皮：速度↑ 技能↓|继续使用|
-80|拉帝亚斯|1649|30|否|番茄×1／南瓜×1／南瓜×2|36:47|19|治愈波动（活力疗愈S）Lv.2|技能等级S；帮忙速度S；技能概率S；食材概率M；持有上限S|勇敢：速度↑ EXP↓|继续使用|
-81|拉帝欧斯|1426|30|否|番茄×1／蛋×2／番茄×4|40:52|19|流星群（树果骤增）Lv.1|帮忙速度S；技能概率S；技能等级S；食材概率S；梦之碎片奖励|慎重：技能↑ 食材↓|继续使用|
-82|草苗龟|540|15|否|蘑菇×1／马铃薯×3／蘑菇×4|1:12:54|12|活力全体疗愈S Lv.1|帮手奖励；技能概率M；研究EXP奖励；树果数量S；持有上限S|认真|按需求保留|
-83|草苗龟|557|20|否|蘑菇×1／蘑菇×2／暖暖姜×6|1:12:09|12|活力全体疗愈S Lv.2|技能等级S；技能概率M；研究EXP奖励；食材概率M；帮忙速度S|温顺：技能↑ 活力恢复↓|按需求保留|
-84|玛狃拉|972|26|否|豆制肉×1／豆制肉×2／大豆×4|42:45|26|料理成功S Lv.2|食材概率S；技能等级S；技能概率M；帮忙速度S；持有上限L|爽朗：EXP↑ 食材↓|按需求保留|
-85|自爆磁怪|1588|30|否|储存油×1／储存油×2／火辣香草×3|38:26|24|料理强化S Lv.3|帮忙速度M；帮忙速度S；持有上限S；食材概率S；技能等级M|坦率|继续使用|
-86|波克基斯|1886|34|否|蛋×1／蛋×2／暖暖姜×4|40:28|27|挥指 Lv.3|帮手奖励；研究EXP奖励；食材概率S；帮忙速度M；食材概率M|勤奋|重点培养|
-87|冰伊布|837|13|否|牛奶×1／牛奶×2／可可×2|52:03|23|料理强化S Lv.2|持有上限S；帮忙速度M；睡眠EXP奖励；食材概率S；帮忙速度S|浮躁|按需求保留|
-88|克雷色利亚|1337|29|否|暖暖姜×1／可可×2／番茄×4|36:11|29|新月祈祷（活力全体疗愈S）Lv.1|技能概率M；持有上限S；食材概率S；帮忙速度S；持有上限L|勤奋|继续使用|
-89|克雷色利亚|1206|26|否|暖暖姜×1／可可×2／暖暖姜×4|33:52|28|新月祈祷（活力全体疗愈S）Lv.1|帮忙速度S；持有上限S；技能等级S；技能概率S；持有上限L|温顺：技能↑ 活力恢复↓|继续使用|
-90|克雷色利亚|1562|29|否|暖暖姜×1／暖暖姜×2／暖暖姜×4|36:11|22|新月祈祷（活力全体疗愈S）Lv.2|睡眠EXP奖励；技能等级S；持有上限L；帮忙速度S；技能概率S|勤奋|继续使用|
-91|达克莱伊|2696|39|否|豆制肉×2／豆制肉×4／—|44:39|28|噩梦（能量填充M）Lv.1|帮手奖励；树果数量S；食材概率M；食材概率S；—|害羞|继续使用|
-92|仙子伊布|5023|64|否|牛奶×1／可可×1／豆制肉×3|32:34|28|活力全体疗愈S Lv.6|帮手奖励；帮忙速度M；技能等级M；技能概率S；食材概率S|自大：技能↑ EXP↓|重点培养|高等级队伍核心
-93|咚咚鼠|936|25|否|苹果×1／可可×1／可可×2|36:53|19|料理成功S Lv.2|帮忙速度S；技能等级S；持有上限S；食材概率M；持有上限L|勤奋|按需求保留|
-94|童偶熊|613|15|否|玉米×2／豆制肉×6／玉米×7|1:06:25|13|能量填充S Lv.1|树果数量S；食材概率S；食材概率M；持有上限S；持有上限M|浮躁|按需求保留|
-95|花疗环环|1684|35|否|玉米×2／玉米×5／可可×7|38:50|27|活力疗愈S Lv.1|持有上限S；技能概率S；帮忙速度S；食材概率S；食材概率M|马虎：食材↑ 技能↓|继续使用|
-96|古月鸟|1613|30|否|储存油×2／储存油×5／储存油×7|45:34|19|料理成功S Lv.1|食材概率M；活力恢复奖励；技能概率S；持有上限S；食材概率S|温和：技能↑ 活力恢复↓|继续使用|纯储存油食材表
-97|骨纹巨声鳄|1695|32|否|苹果×2／苹果×5／豆制肉×6|39:15|29|活力填充S Lv.3|帮手奖励；帮忙速度S；持有上限M；技能等级S；技能概率M|急躁：EXP↑ 活力恢复↓|继续使用|
-`;
-const cols=['id','name','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note'];
 const officialIngredientNames={'蜂蜜':'甜甜蜜','储存油':'纯粹油','大葱':'粗枝大葱','大豆':'萌绿大豆','蛋':'特选蛋','番茄':'好眠番茄','咖啡':'醒脑咖啡豆','可可':'放松可可','马铃薯':'窝心洋芋','蘑菇':'品鲜蘑菇','南瓜':'沉甸甸南瓜','牛奶':'哞哞鲜奶','苹果':'特选苹果','青色果实':'嫩亮酪梨','玉米':'萌绿玉米'};
 const normalizePokemonIngredients=value=>value.split('／').map(slot=>{const match=slot.match(/^(.+?)×(\d+)$/);return match?`${officialIngredientNames[match[1]]||match[1]}×${match[2]}`:slot}).join('／');
-const seedData=raw.trim().split('\n').map(line=>Object.fromEntries(line.split('|').map((v,i)=>[cols[i],v||''])));
-seedData.forEach(mon=>{mon.ingredients=normalizePokemonIngredients(mon.ingredients)});
-const userPokemonState=window.POKEMON_SLEEP_DATA.load(seedData);
+const userPokemonState=window.POKEMON_SLEEP_DATA.load([]);
 let data=userPokemonState.pokemon;
+const currentProduction={byBoxId:{}};
 data.forEach(mon=>{mon.ingredients=normalizePokemonIngredients(mon.ingredients)});
 const storedBoxState=window.POKEMON_SLEEP_BOX_MANAGER.applyStored(data);
 const storedLevelState=window.POKEMON_SLEEP_LEVELS.applyStored(data);
@@ -555,10 +452,8 @@ function specialtyBadge(mon,compact=false){
 const subskillUnlockLevels=[10,25,50,70,80];
 const scoreClamp=(value,min,max)=>Math.min(max,Math.max(min,value));
 function draftScoreBreakdown(mon){
-  const generated=window.POKEMON_SLEEP_BOX_SCORES?.scores?.[mon.id];
-  if(generated&&!mon.speciesId&&mon.specialty!=='all')return generated;
-  return window.POKEMON_SLEEP_DYNAMIC_SCORING?.scorePokemon(mon)||generated||{
-    id:mon.id,name:mon.name,specialty:mon.specialty,finalScore:null,status:'missing-generated-score'
+  return window.POKEMON_SLEEP_DYNAMIC_SCORING?.scorePokemon(mon)||{
+    id:mon.id,name:mon.name,specialty:mon.specialty,finalScore:null,status:'missing-dynamic-score'
   };
 }
 function updateCurrentLevelEvaluation(mon){
@@ -838,7 +733,7 @@ function islandPlannerOptions(context){
 }
 function individualProductionScore(mon,context){
   const key=String(mon.id),cache=context.memberScores;if(cache?.has(key))return cache.get(key);
-  const report=window.POKEMON_SLEEP_TEAM_PLANNER.calculateMember(mon,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId[mon.id],islandPlannerOptions(context));
+  const report=window.POKEMON_SLEEP_TEAM_PLANNER.calculateMember(mon,currentProduction.byBoxId[mon.id],islandPlannerOptions(context));
   const score=report.valid?Number(report.energy.totalEnergy)||0:0;
   cache?.set(key,score);
   return score;
@@ -846,7 +741,7 @@ function individualProductionScore(mon,context){
 const producerPool=(context,excludedIds=new Set())=>data.filter(mon=>isBattleEligible(mon)&&!excludedIds.has(mon.id)&&!isSpecialPokemon(mon.id)&&!isFullTeamHealer(mon)).sort((a,b)=>individualProductionScore(b,context)-individualProductionScore(a,context));
 function scoreTeam(ids,context){
   const key=ids.map(String).sort().join('|'),cache=context.teamScores;if(cache?.has(key))return cache.get(key);
-  const members=ids.map(monById).filter(Boolean),report=window.POKEMON_SLEEP_TEAM_PLANNER.calculateTeam(members,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,islandPlannerOptions(context));
+  const members=ids.map(monById).filter(Boolean),report=window.POKEMON_SLEEP_TEAM_PLANNER.calculateTeam(members,currentProduction.byBoxId,islandPlannerOptions(context));
   const score=report.valid?Math.round(report.energy.totalEnergy):0;
   cache?.set(key,score);return score;
 }
@@ -883,9 +778,9 @@ function renderBerryPicker(island,index){
   if(island.kind==='EX'){const wrap=document.createElement('div'),label=document.createElement('label'),select=document.createElement('select');wrap.className='berry-control';label.textContent='本周追加效果';[['none','尚未选择'],['berry','树果能量强化'],['ingredient','食材帮忙＋1'],['skill','主技能触发率×1.25']].forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option)});select.value=exEffectSelections[index]||'none';select.addEventListener('change',()=>{exEffectSelections[index]=select.value;renderIsland(index)});wrap.append(label,select);controls.append(wrap)}
   document.querySelector('#islandBerryPickerNote').textContent=island.kind==='EX'?'已按当前 EX 岛分别计算主树果加速／技能或持有加成、副树果、未命中减速，以及本周追加效果。':'普通萌绿的三种喜爱树果地位相同；更换任一项后会立即重排当前盒子。';
 }
-const eventTeamData=[[71,'主输出／萌绿适应位','高速树果数量S；若未命中随机喜爱树果，可按当周配置替换'],[73,'全体治疗／超能力','活动技能率 ×1.5、主技能等级提升，维持整队全天产能'],[39,'技能输出／超能力','活动技能率与主技能等级双加成，同时享受超能力系食材＋1'],[1,'食材支援／萌绿适应位','帮手奖励并提供甜甜蜜与好眠番茄；按目标食谱保留仓库空间'],[62,'唯一特殊位／超能力','随队睡眠提供睡意之力 ×1.1，并获得最高档特大芒芒果数量']];
+const eventTeamProfiles=[['蜥蜴王','主输出／萌绿适应位','高速树果数量S；若未命中随机喜爱树果，可按当周配置替换'],['沙奈朵','全体治疗／超能力','活动技能率 ×1.5、主技能等级提升，维持整队全天产能'],['太阳伊布','技能输出／超能力','活动技能率与主技能等级双加成，同时享受超能力系食材＋1'],['妙蛙花','食材支援／萌绿适应位','帮手奖励并提供甜甜蜜与好眠番茄；按目标食谱保留仓库空间'],['梦幻','唯一特殊位／超能力','随队睡眠提供睡意之力 ×1.1，并获得最高档特大芒芒果数量']];
 function eventTeamBackups(){const context=islandContext(islandData[4],4);return data.filter(isBattleEligible).sort((a,b)=>individualProductionScore(b,context)-individualProductionScore(a,context)).map(mon=>[mon.id,'盒子实战替补','原推荐成员被设为仅收藏，按宝蓝湖畔当前产能自动补位'])}
-function renderEventTeam(){const root=document.querySelector('#eventTeam');if(!root)return;const safeTeam=buildRuleSafeTeam(eventTeamData,eventTeamBackups());root.dataset.specialCount=countSpecialPokemon(safeTeam);root.replaceChildren(...safeTeam.map(([id,role,reason],index)=>{const mon=monById(id),slot=document.createElement('div');slot.className='event-team-mon';const pos=document.createElement('span');pos.className='event-step-no';pos.textContent='位置 '+(index+1);const meta=document.createElement('small');meta.className='event-team-role';meta.textContent=mon?'Lv.'+mon.lv+' · '+role:role;const why=document.createElement('span');why.className='event-team-reason';why.textContent=reason;slot.append(pos,monButton(id));if(mon)slot.append(specialtyBadge(mon,true));slot.append(meta,why);return slot}))}
+function renderEventTeam(){const root=document.querySelector('#eventTeam');if(!root)return;const context=islandContext(islandData[4],4),priority=eventTeamProfiles.map(([name,role,reason])=>{const mon=data.filter(candidate=>isBattleEligible(candidate)&&candidate.name===name).sort((a,b)=>individualProductionScore(b,context)-individualProductionScore(a,context))[0];return mon?[mon.id,role,reason]:null}).filter(Boolean),safeTeam=buildRuleSafeTeam(priority,eventTeamBackups());root.dataset.specialCount=countSpecialPokemon(safeTeam);if(!safeTeam.length){root.textContent='盒子暂无可上场个体；录入后会显示活动队伍建议。';return}root.replaceChildren(...safeTeam.map(([id,role,reason],index)=>{const mon=monById(id),slot=document.createElement('div');slot.className='event-team-mon';const pos=document.createElement('span');pos.className='event-step-no';pos.textContent='位置 '+(index+1);const meta=document.createElement('small');meta.className='event-team-role';meta.textContent=mon?'Lv.'+mon.lv+' · '+role:role;const why=document.createElement('span');why.className='event-team-reason';why.textContent=reason;slot.append(pos,monButton(id));if(mon)slot.append(specialtyBadge(mon,true));slot.append(meta,why);return slot}))}
 ingredientRecommendationGrid.addEventListener('click',event=>{const mon=event.target.closest('[data-mon]');if(mon)focusMon(mon.dataset.mon)});
 const islandTabs=document.querySelector('#islandTabs');
 islandData.forEach((island,i)=>{const b=document.createElement('button');b.type='button';b.className='island-tab';b.role='tab';b.textContent=island.name;b.addEventListener('click',()=>renderIsland(i));islandTabs.append(b)});
@@ -1028,8 +923,8 @@ function mobilePokemonCard(mon){
   const actions=document.createElement('div'),levelButton=document.createElement('button'),manageButton=document.createElement('button'),investButton=document.createElement('button'),pokemonEditButton=document.createElement('button');actions.className='mobile-mon-actions';levelButton.type='button';levelButton.dataset.levelEdit=mon.id;levelButton.textContent='更新等级';manageButton.type='button';manageButton.className='manage';manageButton.dataset.boxManage=mon.id;manageButton.textContent='盒子／副技能';investButton.type='button';investButton.dataset.invest=mon.id;investButton.textContent='培养成本';pokemonEditButton.type='button';pokemonEditButton.dataset.pokemonEdit=mon.id;pokemonEditButton.textContent='编辑／放生';actions.append(levelButton,manageButton,investButton,pokemonEditButton);detailGrid.append(actions);details.append(summary,detailGrid);card.append(head,tags,food,details);return card;
 }
 function render(){
-  const rows=filtered();tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.dataset.pokemonRow=r.id;tr.append(pokedexCell(r),pokemonNameCell(r));const role=cell('','nowrap'),species=cell('','score-cell'),individual=cell('','score-cell');role.append(specialtyBadge(r));species.append(scoreBadge(r,'species'));individual.append(scoreBadge(r,'individual'));tr.append(role,species,individual);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));tr.append(sh,ingredientRouteCell(r),mainSkillCell(r),subs,natureCell(r.nature),cultivationCell(r));return tr}));
-  mobileBoxList.replaceChildren(...(rows.length?rows.map(mobilePokemonCard):[Object.assign(document.createElement('div'),{className:'mobile-mon-empty',textContent:'没有符合当前筛选条件的宝可梦。'})]));document.querySelector('#shown').textContent=rows.length;syncFilterFeedback(rows);decorateIngredients(tbody);decorateIngredients(mobileBoxList);
+  const rows=filtered(),empty=!data.length;document.querySelector('#boxEmptyState').hidden=!empty;document.querySelector('#tbl').hidden=empty;tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.dataset.pokemonRow=r.id;tr.append(pokedexCell(r),pokemonNameCell(r));const role=cell('','nowrap'),species=cell('','score-cell'),individual=cell('','score-cell');role.append(specialtyBadge(r));species.append(scoreBadge(r,'species'));individual.append(scoreBadge(r,'individual'));tr.append(role,species,individual);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));tr.append(sh,ingredientRouteCell(r),mainSkillCell(r),subs,natureCell(r.nature),cultivationCell(r));return tr}));
+  mobileBoxList.replaceChildren(...(rows.length?rows.map(mobilePokemonCard):[Object.assign(document.createElement('div'),{className:'mobile-mon-empty',textContent:empty?'盒子还没有宝可梦，可点击上方按钮录入第一只。':'没有符合当前筛选条件的宝可梦。'})]));document.querySelector('#shown').textContent=rows.length;syncFilterFeedback(rows);decorateIngredients(tbody);decorateIngredients(mobileBoxList);
 }
 const boxSortOptions={
   'pokedex-asc':['pokedexId',1],
@@ -1062,11 +957,12 @@ renderEventTeam();renderRecipes();render();
 levelManagerController=window.POKEMON_SLEEP_LEVELS.mount({pokemon:data,initialState:storedLevelState,onChange:refreshAfterLevelChange,catalog:window.POKEMON_SLEEP_CATALOG,dataApi:window.POKEMON_SLEEP_DATA});
 boxManagerController=window.POKEMON_SLEEP_BOX_MANAGER.mount({pokemon:data,initialState:storedBoxState,onChange:refreshAfterBoxManagement});
 pokemonManagerController=window.POKEMON_SLEEP_POKEMON_MANAGER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi:window.POKEMON_SLEEP_DATA});
-teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,recipes:recipeData,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING,investmentPlanner:window.POKEMON_SLEEP_INVESTMENT_PLANNER,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);if(document.querySelector('[data-page="weekly"]')?.hidden===false)weeklyPlannerController?.render()}});
-pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,calculator:window.POKEMON_SLEEP_PRODUCTION_CALCULATOR,profile:personalSettingsController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
+document.querySelector('#boxEmptyAdd').addEventListener('click',()=>pokemonManagerController?.openNew());
+teamPlannerController=window.POKEMON_SLEEP_TEAM_PLANNER.mount({pokemon:data,production:currentProduction,profile:personalSettingsController,picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG,recipes:recipeData,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING,investmentPlanner:window.POKEMON_SLEEP_INVESTMENT_PLANNER,onChange:change=>{window.POKEMON_SLEEP_DATA.emit('teams',change);if(document.querySelector('[data-page="weekly"]')?.hidden===false)weeklyPlannerController?.render()}});
+pokemonComparisonController=window.POKEMON_SLEEP_POKEMON_COMPARISON.mount({pokemon:data,strategy:window.POKEMON_SLEEP_STRATEGY,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:currentProduction,calculator:window.POKEMON_SLEEP_PRODUCTION_CALCULATOR,profile:personalSettingsController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],picker:pokemonPickerController,catalog:window.POKEMON_SLEEP_CATALOG});
 function ensureWeeklyPlanner(){
   if(weeklyPlannerController)return weeklyPlannerController;
-  weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:window.POKEMON_SLEEP_TEAM_PRODUCTION,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy});
+  weeklyPlannerController=window.POKEMON_SLEEP_WEEKLY_PLANNER.mount({pokemon:data,islands:islandData,recipes:recipeData,ingredients:Object.keys(window.POKEMON_SLEEP_INGREDIENTS.INGREDIENTS),allBerries:allBerryNames,teamPlanner:window.POKEMON_SLEEP_TEAM_PLANNER,production:currentProduction,recommendTeams,individualProductionScore,isFullTeamHealer,isSpecialPokemon,catalog:window.POKEMON_SLEEP_CATALOG,profile:personalSettingsController,picker:pokemonPickerController,currentTeam:()=>teamPlannerController?.getTeam?.()||[],recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy});
   return weeklyPlannerController;
 }
 investmentPlannerController=window.POKEMON_SLEEP_INVESTMENT_PLANNER.mount({pokemon:data,catalog:window.POKEMON_SLEEP_CATALOG,scoring:window.POKEMON_SLEEP_DYNAMIC_SCORING,natureApi:window.POKEMON_SLEEP_SCORING});

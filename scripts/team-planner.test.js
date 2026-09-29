@@ -41,6 +41,9 @@ const rates = {
 const catalogFallback=planner.ingredientProbability({...venusaur,ingredientRate:.31,baseBerryCount:2});
 assert.strictEqual(catalogFallback.base,.31,'new records should use catalog ingredient rate without a box snapshot');
 assert.strictEqual(catalogFallback.provisional,false,'catalog ingredient rate is not provisional');
+const freshBoxMember=planner.calculateMember({...venusaur,id:'1',ingredientRate:.31,baseBerryCount:2},undefined,{goodCamp:false,energyProfile:'average'});
+assert.strictEqual(freshBoxMember.member.probability.base,.31,'fresh box #1 must use its own species rate, not legacy box #1');
+assert.strictEqual(freshBoxMember.member.berryCount,2,'fresh box #1 must use its own species berry count');
 const result = planner.calculateTeam([venusaur, gardevoir], rates, { goodCamp: true, energyProfile: 'average' });
 assert.strictEqual(result.valid, true);
 assert.strictEqual(result.helpingBonusCount, 1);

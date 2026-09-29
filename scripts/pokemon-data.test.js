@@ -16,6 +16,12 @@ const seed = [
   {id:'2',name:'雷丘',lv:'30',shiny:'否',ingredients:'特选苹果×1／特选苹果×2／暖暖姜×3',interval:'40:00',inv:'25',main:'能量填充S Lv.2',subs:'树果数量S；帮手奖励；帮忙速度M；帮忙速度S；技能概率M',nature:'认真',priority:'重点培养'}
 ];
 
+const freshStorage = new MemoryStorage();
+const freshBox = dataApi.load([], freshStorage);
+assert.deepEqual(freshBox.pokemon, [], '新设备未登录时盒子应默认为空');
+assert.equal(freshBox.meta.nextDisplayId, 1);
+assert.deepEqual(dataApi.load(seed, freshStorage).pokemon, [], '已建立的空盒子不能被旧种子重新填满');
+
 const loaded = dataApi.load(seed, storage);
 assert.equal(loaded.pokemon.length, 2);
 assert.equal(loaded.meta.nextDisplayId, 3);

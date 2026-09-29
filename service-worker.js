@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_VERSION='pokemon-sleep-assistant-v3';
+const CACHE_VERSION='pokemon-sleep-assistant-v5';
 const APP_SHELL=[
   './',
   './index.html',
@@ -10,7 +10,7 @@ const APP_SHELL=[
   './assets/app-icon-192.png',
   './assets/app-icon-512.png',
   './all-rounder-rules.js',
-  './box-filter.css','./box-filter.js','./box-manager.css','./box-manager.js','./box-scores.generated.js',
+  './box-filter.css','./box-filter.js','./box-manager.css','./box-manager.js',
   './cloud-sync.css','./cloud-sync.js','./cooking-success.js','./cultivation-advisor.css','./cultivation-advisor.js',
   './events-data.js','./game-rules.js','./ingredients.css','./ingredients.js','./investment-planner.css','./investment-planner.js',
   './level-manager-evolution.css','./level-manager.css','./level-manager.js','./main-skill-team-effects.js','./mobile.css',
@@ -20,7 +20,7 @@ const APP_SHELL=[
   './retention-advisor.css','./retention-advisor.js','./selection-odds.css','./selection-odds.js',
   './skills/pokemon-sleep-scoring/scripts/nature-scores.js','./skills/pokemon-sleep-scoring/scripts/scoring-core.js','./skills/pokemon-sleep-scoring/scripts/species-tiers.js',
   './sleep-research-planner.js','./snorlax-energy.js','./species-tier-guide.css','./species-tier-guide.js',
-  './supabase-config.js','./team-planner.css','./team-planner.js','./team-production.generated.js','./weekly-planner.css','./weekly-planner.js',
+  './supabase-config.js','./team-planner.css','./team-planner.js','./weekly-planner.css','./weekly-planner.js',
   './pwa.css','./pwa.js',
   './assets/ingredients/apple.png','./assets/ingredients/avocado.webp','./assets/ingredients/bean-meat.png','./assets/ingredients/cacao.png',
   './assets/ingredients/coffee.png','./assets/ingredients/corn.png','./assets/ingredients/egg.png','./assets/ingredients/ginger.png',

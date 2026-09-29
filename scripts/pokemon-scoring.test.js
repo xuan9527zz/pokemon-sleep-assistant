@@ -7,18 +7,20 @@ const boxScoring=require('../skills/pokemon-sleep-scoring/scripts/box-scores.js'
 const scoring=require('../pokemon-scoring.js');
 const allRounder=require('../all-rounder-rules.js');
 
-const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8'),rows=boxScoring.parseBoxRows(html);
-require('../box-scores.generated.js');
-const snapshot=globalThis.POKEMON_SLEEP_BOX_SCORES.scores;
-
-assert.equal(rows.length,97);
-rows.forEach(row=>{
-  const actual=scoring.scorePokemon(row),expected=snapshot[row.id];
-  assert.equal(actual.speciesTier,expected.speciesTier,`species tier #${row.id}`);
-  assert.equal(actual.individualScore,expected.individualScore,`multiplier #${row.id}`);
-  assert.equal(actual.individualGrade,expected.individualGrade,`individual grade #${row.id}`);
-  assert.equal(actual.finalScore,actual.individualScore,`individual-only output #${row.id}`);
-});
+const legacyFixture=path.join(__dirname,'legacy-box-fixture.txt');
+if(fs.existsSync(legacyFixture)&&process.env.POKEMON_SLEEP_TEST_SYNTHETIC!=='1'){
+  const rows=boxScoring.parseBoxRows(fs.readFileSync(legacyFixture,'utf8'));
+  require('../box-scores.generated.js');
+  const snapshot=globalThis.POKEMON_SLEEP_BOX_SCORES.scores;
+  assert.equal(rows.length,97);
+  rows.forEach(row=>{
+    const actual=scoring.scorePokemon(row),expected=snapshot[row.id];
+    assert.equal(actual.speciesTier,expected.speciesTier,`species tier #${row.id}`);
+    assert.equal(actual.individualScore,expected.individualScore,`multiplier #${row.id}`);
+    assert.equal(actual.individualGrade,expected.individualGrade,`individual grade #${row.id}`);
+    assert.equal(actual.finalScore,actual.individualScore,`individual-only output #${row.id}`);
+  });
+}
 
 const gardevoir=scoring.scorePokemon({name:'沙奈朵',speciesId:'282',nature:'慎重',ingredients:'特选苹果×1／特选苹果×2／特选苹果×4',subs:'帮手奖励；技能概率M；技能概率S；帮忙速度M；帮忙速度S'});
 assert.equal(gardevoir.individualScore,2.33);

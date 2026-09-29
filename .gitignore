@@ -9,3 +9,6 @@ Desktop.ini
 .idea/
 .vscode/
 node_modules/
+
+# Private local regression data; never publish a personal box snapshot.
+scripts/legacy-box-fixture.txt

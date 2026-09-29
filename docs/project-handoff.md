@@ -25,7 +25,7 @@ foreach ($test in $tests) {
 }
 ```
 
-评分数据发生变化时再运行：
+评分数据发生变化时再运行；其中盒子快照与队伍生产快照命令需要本机保留的 `scripts/legacy-box-fixture.txt`，公开检出没有这个私人文件：
 
 ```powershell
 node .\skills\pokemon-sleep-scoring\scripts\box-scores.js --self-test
@@ -41,7 +41,8 @@ node .\scripts\build-team-production-data.js
 | 单页应用与页面装配 | `index.html` | 静态站，无打包器；脚本加载顺序就是依赖顺序 |
 | 游戏上限与版本快照 | `game-rules.js` | 当前为 Ver.3.8.0，核对于 2026-09-11，计划 2026-09-25 后提示复核 |
 | 图鉴种族数据 | `data/raenonx-species.json` → `pokemon-catalog.generated.js` | 当前 248 条稳定记录，已含超梦；RaenonX 概率是研究估算，不是官方公开值 |
-| 初始盒子与个人个体 | `pokemon-data.js`、`box-scores.generated.js` | 初始 97 只只是首次种子；用户之后可无限制增删，不能改回固定 97 只假设 |
+| 初始盒子与个人个体 | `pokemon-data.js` | 新设备首次打开是空盒子；已有本机缓存与云端记录均保留，不按登录状态清除 |
+| 历史盒子回归样本 | 本机 `scripts/legacy-box-fixture.txt`、`box-scores.generated.js`、`team-production.generated.js` | 原始 97 只文件被 Git 忽略、仅本机留存；缺失时公开测试用合成样本；页面、离线缓存与 Pages 发布包不加载按旧编号生成的快照 |
 | 评分唯一流程 | `pokemon-scoring.js`、`skills/pokemon-sleep-scoring/scripts/scoring-core.js` | 页面不得维护另一套副技能／性格分表 |
 | 物种与主技能模型 | `skills/pokemon-sleep-scoring/scripts/species-scores.js` 及队伍排名脚本 | 修改后必须同步生成目录、浏览器快照和参考文档 |
 | 评分技能副本 | 项目 `skills/pokemon-sleep-scoring/` 与本机 `C:\Users\Administrator\.codex\skills\pokemon-sleep-scoring\` | 2026-09-13 已逐文件核对，16 个文件完全一致；以后改规则必须同步两份 |

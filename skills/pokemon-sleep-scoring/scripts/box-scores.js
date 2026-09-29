@@ -112,14 +112,14 @@ function option(args, name) {
   return index >= 0 ? args[index + 1] : undefined;
 }
 
-function parseBoxRows(html) {
-  const match = html.match(/const raw=`([\s\S]*?)`;/);
-  if (!match) throw new Error('index.html中没有找到盒子原始数据');
+function parseBoxRows(source) {
+  const raw = String(source || '').trim();
+  if (!/^\d+\|/.test(raw)) throw new Error('盒子回归样本不是有效的逐行数据');
   const columns = [
     'id', 'name', 'sp', 'level', 'shiny', 'ingredients', 'interval', 'carry',
     'mainSkill', 'subskills', 'nature', 'priority', 'note'
   ];
-  return match[1].trim().split(/\r?\n/).map(line => {
+  return raw.split(/\r?\n/).map(line => {
     const values = line.split('|');
     return Object.fromEntries(columns.map((column, index) => [column, values[index] || '']));
   });
@@ -275,12 +275,12 @@ module.exports = Object.freeze({
 if (require.main === module) {
   const args = process.argv.slice(2);
   const projectRoot = path.resolve(__dirname, '../../..');
-  const htmlPath = path.resolve(option(args, '--html') || path.join(projectRoot, 'index.html'));
+  const fixturePath = path.resolve(option(args, '--fixture') || path.join(projectRoot, 'scripts/legacy-box-fixture.txt'));
   const dataPath = path.resolve(option(args, '--data') || path.join(projectRoot, 'data/raenonx-species.json'));
-  const html = fs.readFileSync(htmlPath, 'utf8');
+  const fixture = fs.readFileSync(fixturePath, 'utf8');
   const input = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
   const records = input.pokemon || input;
-  const boxRows = parseBoxRows(html);
+  const boxRows = parseBoxRows(fixture);
   if (args.includes('--self-test')) {
     process.stdout.write(`${JSON.stringify(selfTest(boxRows, records), null, 2)}\n`);
   } else {

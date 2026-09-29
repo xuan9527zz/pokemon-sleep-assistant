@@ -6,7 +6,7 @@ const { parseBoxRows } = require('../skills/pokemon-sleep-scoring/scripts/box-sc
 
 const projectRoot = path.resolve(__dirname, '..');
 const sourcePath = path.join(projectRoot, 'data', 'raenonx-species.json');
-const indexPath = path.join(projectRoot, 'index.html');
+const fixturePath = path.join(projectRoot, 'scripts', 'legacy-box-fixture.txt');
 const outputPath = path.join(projectRoot, 'team-production.generated.js');
 
 const traditionalToSimplified = Object.freeze({
@@ -51,7 +51,7 @@ function resolveSpecies(row, species) {
 
 function buildSnapshot() {
   const source = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
-  const rows = parseBoxRows(fs.readFileSync(indexPath, 'utf8'));
+  const rows = parseBoxRows(fs.readFileSync(fixturePath, 'utf8'));
   const byBoxId = {};
 
   for (const row of rows) {

@@ -89,17 +89,18 @@ const eevee={...bulbasaur,speciesId:'133',finalFormId:'700',name:'伊布',interv
 assert.strictEqual(levels.evolutionTarget(eevee,evolutionCatalog).target.name,'仙子伊布','分支进化必须遵循已选择的最终形态');
 assert.strictEqual(levels.evolutionRecord(eevee,evolutionCatalog).main,'活力全体疗愈S Lv.2');
 
-const html = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf8');
-const rawMatch = html.match(/const raw=`([\s\S]*?)`;\s*const cols=/);
-assert.ok(rawMatch, '应能读取盒子原始数据');
-const columns = ['id','name','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note'];
-const box = rawMatch[1].trim().split('\n').map(line => Object.fromEntries(line.split('|').map((value,index) => [columns[index],value||''])));
-assert.strictEqual(box.length, 97);
-box.forEach(mon => {
-  const current = levels.calculateLevelState(mon, Number(mon.lv));
-  assert.strictEqual(current.interval, mon.interval, `#${mon.id} 当前等级不应改变原始间隔`);
-  assert.strictEqual(current.inventory, Number(mon.inv), `#${mon.id} 当前等级不应改变原始持有`);
-  assert.ok(Number.isFinite(levels.calculateLevelState(mon, 70).intervalSec));
-});
+const legacyFixture = path.resolve(__dirname, 'legacy-box-fixture.txt');
+if (fs.existsSync(legacyFixture) && process.env.POKEMON_SLEEP_TEST_SYNTHETIC !== '1') {
+  const raw = fs.readFileSync(legacyFixture, 'utf8').trim();
+  const columns = ['id','name','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note'];
+  const box = raw.split(/\r?\n/).map(line => Object.fromEntries(line.split('|').map((value,index) => [columns[index],value||''])));
+  assert.strictEqual(box.length, 97);
+  box.forEach(mon => {
+    const current = levels.calculateLevelState(mon, Number(mon.lv));
+    assert.strictEqual(current.interval, mon.interval, `#${mon.id} 当前等级不应改变原始间隔`);
+    assert.strictEqual(current.inventory, Number(mon.inv), `#${mon.id} 当前等级不应改变原始持有`);
+    assert.ok(Number.isFinite(levels.calculateLevelState(mon, 70).intervalSec));
+  });
+}
 
 console.log('level-manager tests passed');

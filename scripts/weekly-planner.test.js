@@ -164,19 +164,28 @@ assert.ok(!html.includes('id="weeklyBedtimeStrength"'),'本周作战页面只应
 assert.ok(weeklySource.includes("section.dataset.noIngredientIcons=''"),'周目标中的食谱路线必须禁止把食材词误装饰成图标');
 assert.ok(!weeklySource.includes('name.append(icon(row.name),document.createTextNode(row.name))'),'食材图标组件已经包含名称，不得再追加一遍名称');
 assert.ok(!weeklySource.includes('copy.innerHTML=`<b>${row.name}</b><small>每餐 ${row.perMeal}</small>`'),'备料卡不得在食材图标组件旁重复输出食材名');
-const raw = html.match(/const raw=`([\s\S]*?)`;/)[1].trim();
+const legacyFixture=path.join(projectRoot,'scripts','legacy-box-fixture.txt');
+const syntheticBox=[
+  '1|妙蛙花|2200|50|否|甜甜蜜×2／甜甜蜜×5／好眠番茄×7|39:00|30|食材获取S Lv.3|帮手奖励；食材概率M；帮忙速度S；持有上限M；技能概率S|认真|继续使用|',
+  '2|水箭龟|2100|50|否|哞哞鲜奶×2／哞哞鲜奶×5／放松可可×7|40:00|30|食材获取S Lv.3|食材概率M；帮手奖励；帮忙速度S；持有上限M；技能概率S|认真|继续使用|',
+  '3|火爆兽|2000|50|否|暖暖姜×1／暖暖姜×2／火辣香草×3|33:00|25|能量填充S Lv.3|树果数量S；帮忙速度M；帮手奖励；技能概率S；持有上限M|认真|继续使用|',
+  '4|雷丘|1900|50|否|特选苹果×1／特选苹果×2／暖暖姜×3|32:00|25|能量填充S Lv.3|树果数量S；帮忙速度M；帮手奖励；技能概率S；持有上限M|认真|继续使用|',
+  '5|沙奈朵|1800|50|否|特选苹果×1／特选苹果×2／粗枝大葱×2|37:00|25|活力全体疗愈S Lv.6|帮手奖励；技能概率M；帮忙速度S；技能概率S；持有上限M|认真|继续使用|'
+].join('\n');
+const raw = fs.existsSync(legacyFixture)&&process.env.POKEMON_SLEEP_TEST_SYNTHETIC!=='1'?fs.readFileSync(legacyFixture,'utf8').trim():syntheticBox;
 const columns = ['id','name','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','note'];
-const box = raw.split('\n').map(line=>Object.fromEntries(line.split('|').map((value,index)=>[columns[index],value||''])));
+const box = raw.split(/\r?\n/).map(line=>Object.fromEntries(line.split('|').map((value,index)=>[columns[index],value||''])));
 const berryNames=['柿仔果','苹野果','橙橙果','萄葡果','金枕果','莓莓果','樱子果','零余果','勿花果','椰木果','芒芒果','木子果','文柚果','墨莓果','番荔果','异奇果','靛莓果','桃桃果'];
 box.forEach(mon=>{const species=scoring.recordForPokemon(mon);mon.specialty=species.specialty;mon.specialtyLabel={berry:'树果手',ingredient:'食材手',skill:'技能手',all:'全能手'}[mon.specialty];mon.berry=berryNames[species.berryId-1];mon.battleEligible=true});
-const context={};context.window=context;context.globalThis=context;vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(projectRoot,'team-production.generated.js'),'utf8'),context);vm.runInContext(fs.readFileSync(path.join(projectRoot,'recipes.js'),'utf8'),context);
+const context={};context.window=context;context.globalThis=context;vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(projectRoot,'recipes.js'),'utf8'),context);
 const realRecipes=context.POKEMON_SLEEP_RECIPES.map(recipe=>({...recipe,total:recipe.ingredients.reduce((sum,item)=>sum+item.amount,0)}));
 const islandContext={island:{name:'宝蓝湖畔',kind:'普通岛'},index:4,berries:['金枕果','芒芒果','樱子果'],expert:false};
 const outputScore=mon=>Number(mon.sp)||100;
 const healer=mon=>/活力全体疗愈|新月祈祷/.test(mon.main);
 const special=mon=>['梦幻','雷公','炎帝','水君','拉帝亚斯','拉帝欧斯','克雷色利亚','达克莱伊'].includes(mon.name);
 const recommend=()=>{const heal=box.filter(healer).sort((a,b)=>outputScore(b)-outputScore(a))[0],producers=box.filter(mon=>!healer(mon)&&!special(mon)).sort((a,b)=>outputScore(b)-outputScore(a)).slice(0,4);return {regular:{ids:[...producers.map(mon=>mon.id),heal.id],label:'无特殊宝可梦'}}};
-const common={pokemon:box,context:islandContext,recommendTeams:recommend,individualProductionScore:outputScore,isFullTeamHealer:healer,isSpecialPokemon:monId=>special(box.find(mon=>String(mon.id)===String(monId))||{}),planner:teamPlanner,production:context.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId,goodCamp:true,activityKey:'snapshot',recipes:realRecipes,recipeType:'沙拉',basePot:81,mealGoal:15,completedMeals:[],inventory:{},now:monday};
+const currentProduction=Object.fromEntries(box.map(mon=>{const species=scoring.recordForPokemon(mon);return [mon.id,{ingredientRate:species.ingredientRate,baseBerryCount:species.baseBerryCount}]}));
+const common={pokemon:box,context:islandContext,recommendTeams:recommend,individualProductionScore:outputScore,isFullTeamHealer:healer,isSpecialPokemon:monId=>special(box.find(mon=>String(mon.id)===String(monId))||{}),planner:teamPlanner,production:currentProduction,goodCamp:true,activityKey:'snapshot',recipes:realRecipes,recipeType:'沙拉',basePot:81,mealGoal:15,completedMeals:[],inventory:{},now:monday};
 const target=weekly.recipeRows(realRecipes,'沙拉',121)[0];
 const realPlan=weekly.calculatePlan({...common,targetRecipeId:target.id});
 assert.equal(realPlan.preparationTeam.members.length,5);

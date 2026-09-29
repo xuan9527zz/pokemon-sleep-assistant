@@ -37,8 +37,11 @@ assert.ok(html.includes('POKEMON_SLEEP_PWA.mount()'), '页面没有初始化PWA�
 assert.ok(!html.includes('renderIsland(0);'), '首页不应预先计算隐藏的岛屿推荐');
 assert.ok(html.includes("if(page==='weekly'){const ready=Boolean(weeklyPlannerController);ensureWeeklyPlanner()"), '本周作战应在首次打开时初始化');
 assert.ok(html.includes("weekMode!=='preparation')ensureSleepCurves()"), '备料周不应预先下载睡眠优化曲线');
-assert.ok(html.includes('calculateMember(mon,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId[mon.id]'), '岛屿单体排序应使用共用生产模型');
-assert.ok(html.includes('calculateTeam(members,window.POKEMON_SLEEP_TEAM_PRODUCTION.byBoxId'), '普通岛和 EX 岛应使用共用五人队模型');
+assert.ok(html.includes('calculateMember(mon,currentProduction.byBoxId[mon.id]'), '岛屿单体排序应使用共用生产模型');
+assert.ok(html.includes('calculateTeam(members,currentProduction.byBoxId'), '普通岛和 EX 岛应使用共用五人队模型');
+assert.ok(html.includes('POKEMON_SLEEP_DATA.load([])'), '新设备首次打开盒子必须为空');
+assert.ok(html.includes('id="boxEmptyState"')&&html.includes('id="boxEmptyAdd"'), '空盒子应提供直接录入入口');
+assert.ok(!html.includes('box-scores.generated.js')&&!html.includes('team-production.generated.js'), '运行时不得加载按旧盒子编号生成的私人快照');
 assert.ok(pwaSource.includes("serviceWorker.register('./service-worker.js',{scope:'./'})"), 'PWA运行时缺少相对路径Service Worker注册');
 assert.ok(html.includes('id="profileIslandBonuses"'), '个人设置缺少岛屿加成资料');
 assert.ok(html.includes('id="profileIngredientStock"'), '个人设置缺少共用食材库存');
