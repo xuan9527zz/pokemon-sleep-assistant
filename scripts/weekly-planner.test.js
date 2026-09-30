@@ -241,6 +241,15 @@ const cookingTail=weekly.simulateActivityWeek({...common,activity:cookingWeek,ta
 assert.equal(cookingTail.totalHours,8,'推演应在活动结束04:00截断，不延长加成到下周');
 assert.equal(cookingTail.plannedMeals,0,'已经过了周日最后一餐时不能凭空增加料理次数');
 assert.ok(cookingTail.warnings.some(text=>text.includes('截到活动结束')));
+const originalTz=process.env.TZ;
+try{
+  for(const zone of ['UTC','Asia/Tokyo','America/Los_Angeles']){
+    process.env.TZ=zone;
+    const tail=weekly.simulateActivityWeek({...common,activity:cookingWeek,targetRecipe:recipes[0],days:7,mealGoal:21,goodCamp:false,inventory:{'特选苹果':100},recipeEnergy:()=>1000,autoTasty:false,now:new Date('2026-10-11T20:00:00+09:00')});
+    assert.equal(tail.plannedMeals,0,`${zone} 的运行时区不应改变公告时区的料理次数`);
+    assert.equal(tail.totalHours,8,`${zone} 的运行时区不应改变活动结束时刻`);
+  }
+}finally{if(originalTz===undefined)delete process.env.TZ;else process.env.TZ=originalTz}
 const outputOnlyStage=cookingSimulation.stages.find(stage=>stage.kind==='output');
 assert.ok(outputOnlyStage&&outputOnlyStage.breakdown,'活动周最终阶段必须保留共享队伍引擎的逐项审计结果');
 const directOutput=teamPlanner.calculateTeam(outputOnlyStage.team,common.production,{goodCamp:true,energyProfile:'timeline',memberModifier:weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.cooking125,true),durationHours:outputOnlyStage.hours,islandBonusPct:50,islandProfile:'lapis',favoriteBerries:islandContext.berries,startEnergy:100,sleepScore:100,skillCollectionHours:4,collectBeforeSwap:true,exWeeklyEffect:'none'});
