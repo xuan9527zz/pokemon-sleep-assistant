@@ -8,7 +8,15 @@
 
   const OCR_CACHE='pokemon-sleep-ocr-v1';
   const BACKUP_KEY='pokemon-sleep-inventory-ocr-backup-v1';
-  const ASSETS=['tesseract.min.js','worker.min.js','tesseract-core-lstm.wasm.js','tesseract-core-lstm.wasm','chi_sim.traineddata.gz'];
+  const CORE_ASSETS=['tesseract.min.js','worker.min.js','tesseract-core-lstm.wasm.js','tesseract-core-lstm.wasm'];
+  const ASSETS=[...CORE_ASSETS,'chi_sim.traineddata.gz','chi_tra.traineddata.gz'];
+  const TRADITIONAL_NAMES=Object.freeze({
+    '品鲜蘑菇':'品鮮蘑菇','暖暖姜':'暖暖薑','好眠番茄':'好眠番茄','美味尾巴':'美味尾巴',
+    '火辣香草':'火辣香草','沉甸甸南瓜':'沉甸甸南瓜','嫩亮酪梨':'嫩亮酪梨','特选蛋':'特選蛋',
+    '特选苹果':'特選蘋果','纯粹油':'純粹油','粗枝大葱':'粗枝大蔥','窝心洋芋':'窩心洋芋',
+    '豆制肉':'豆製肉','醒脑咖啡豆':'醒腦咖啡豆','哞哞鲜奶':'哞哞鮮奶','放松可可':'放鬆可可',
+    '萌绿玉米':'萌綠玉米','萌绿大豆':'萌綠大豆'
+  });
   const WIDTH=588;
   const GRID_STEP=206;
   const COLUMN_CENTERS=[118,255,391,527];
@@ -27,7 +35,7 @@
   function matchName(raw,names){
     const label=clean(raw);
     if(label.length<2)return null;
-    const scored=names.map(name=>({name,distance:distance(label,name)})).sort((a,b)=>a.distance-b.distance||a.name.localeCompare(b.name,'zh-CN'));
+    const scored=names.map(name=>({name,distance:Math.min(distance(label,name),distance(label,TRADITIONAL_NAMES[name]||name))})).sort((a,b)=>a.distance-b.distance||a.name.localeCompare(b.name,'zh-CN'));
     const best=scored[0],second=scored[1];
     if(!best||best.distance>Math.min(2,Math.floor(best.name.length/2))||second&&second.distance===best.distance)return null;
     return best;
@@ -79,6 +87,12 @@
     });
     return [...merged.values(),...unknown];
   }
+  function recognitionQuality(result){
+    return (result?.observations||[]).reduce((score,item)=>score+(item.name?100:-120)+(item.quantity===''?-40:0)+(item.review?-2:0),0);
+  }
+  function selectBestRecognition(candidates){
+    return [...candidates].sort((a,b)=>recognitionQuality(b)-recognitionQuality(a))[0]||null;
+  }
   function buildStock(current,entries,{clearMissing=false,limit=800}={}){
     const next=clearMissing?Object.fromEntries(Object.keys(current).map(name=>[name,0])):{...current};
     const used=new Set();
@@ -102,23 +116,27 @@
       const script=document.createElement('script');script.src=url;script.onload=resolve;script.onerror=()=>reject(new Error('离线识别程序未下载成功。'));document.head.append(script);
     });
   }
-  async function prepareOfflinePack(progress=()=>{}){
+  function requiredAssets(language='auto'){
+    return language==='auto'?ASSETS:[...CORE_ASSETS,`${language}.traineddata.gz`];
+  }
+  async function prepareOfflinePack(progress=()=>{},language='auto'){
     if(!root.caches)throw new Error('此浏览器不支持离线缓存。请在 Safari 中打开网站。');
     const cache=await caches.open(OCR_CACHE);
-    for(let index=0;index<ASSETS.length;index++){
-      const url=new URL(`./assets/ocr/${ASSETS[index]}`,location.href);
-      progress(`准备离线识别包 ${index+1}/${ASSETS.length}…`);
+    const assets=requiredAssets(language);
+    for(let index=0;index<assets.length;index++){
+      const url=new URL(`./assets/ocr/${assets[index]}`,location.href);
+      progress(`准备离线识别包 ${index+1}/${assets.length}…`);
       if(await cache.match(url))continue;
       const response=await fetch(url,{cache:'reload'});
-      if(!response.ok)throw new Error(`识别包下载失败：${ASSETS[index]}`);
+      if(!response.ok)throw new Error(`识别包下载失败：${assets[index]}`);
       await cache.put(url,response);
     }
     return true;
   }
-  async function offlinePackReady(){
+  async function offlinePackReady(language='auto'){
     if(!root.caches)return false;
     const cache=await caches.open(OCR_CACHE);
-    for(const name of ASSETS)if(!await cache.match(new URL(`./assets/ocr/${name}`,location.href)))return false;
+    for(const name of requiredAssets(language))if(!await cache.match(new URL(`./assets/ocr/${name}`,location.href)))return false;
     return true;
   }
   async function imageCanvas(file){
@@ -192,10 +210,10 @@
     }
     return {observations,bagTotal};
   }
-  async function createWorker(){
+  async function createWorker(language='chi_tra'){
     await loadScript(new URL('./assets/ocr/tesseract.min.js',location.href));
     const base=new URL('./assets/ocr/',location.href);
-    return root.Tesseract.createWorker('chi_sim',1,{
+    return root.Tesseract.createWorker(language,1,{
       workerPath:new URL('worker.min.js',base).href,
       corePath:new URL('tesseract-core-lstm.wasm.js',base).href,
       langPath:base.href,
@@ -208,38 +226,59 @@
   function mount({profile,ingredients=[]}={}){
     const host=document.querySelector('#inventoryOcr');if(!host||!profile)return null;
     let entries=[],bagTotal=null;
-    const toolbar=element('div','inventory-ocr-toolbar'),prepare=element('button','','准备离线识别包'),choose=element('button','','从截图识别库存'),undo=element('button','','撤销上次导入'),input=element('input'),status=element('p','inventory-ocr-status','首次使用需联网准备约 9 MB 识别包；准备后可离线识别，图片不会上传。'),preview=element('div','inventory-ocr-preview');
+    const toolbar=element('div','inventory-ocr-toolbar'),languageLabel=element('label','inventory-ocr-language','截图语言'),language=element('select'),prepare=element('button','','准备离线识别包'),choose=element('button','','从截图识别库存'),undo=element('button','','撤销上次导入'),input=element('input'),status=element('p','inventory-ocr-status','首次使用需联网准备约 11 MB 简繁识别包；准备后可离线识别，图片不会上传。'),preview=element('div','inventory-ocr-preview');
+    for(const [code,label] of [['auto','自动（简繁核对）'],['chi_tra','繁體中文'],['chi_sim','简体中文']]){const option=element('option','',label);option.value=code;language.append(option)}
+    language.value='auto';languageLabel.append(language);
     prepare.type=choose.type=undo.type='button';input.type='file';input.accept='image/*';input.multiple=true;input.hidden=true;
-    toolbar.append(choose,prepare,undo,input);host.append(toolbar,status,preview);
+    toolbar.append(languageLabel,choose,prepare,undo,input);host.append(toolbar,status,preview);
     const setStatus=(message,error=false)=>{status.textContent=message;status.dataset.error=error?'true':'false'};
     const currentStock=()=>profile.getState().ingredientStock;
     const updateUndo=()=>{const backup=readBackup();undo.hidden=!backup||JSON.stringify(currentStock())!==JSON.stringify(backup.after)};
-    updateUndo();offlinePackReady().then(ready=>{if(ready)setStatus('离线识别包已就绪。图片只在本机处理，导入前可以核对。')}).catch(()=>{});
+    updateUndo();offlinePackReady().then(ready=>{if(ready)setStatus('简繁离线识别包已就绪。图片只在本机处理，导入前可以核对。')}).catch(()=>{});
     prepare.addEventListener('click',async()=>{
       prepare.disabled=true;
-      try{await prepareOfflinePack(setStatus);setStatus('离线识别包已就绪。此后可断网识别截图。')}
+      try{await prepareOfflinePack(setStatus,language.value);setStatus('离线识别包已就绪。此后可断网识别截图。')}
       catch(error){setStatus(error.message,true)}finally{prepare.disabled=false}
     });
     choose.addEventListener('click',()=>input.click());
     input.addEventListener('change',async()=>{
       const files=[...input.files||[]];input.value='';if(!files.length)return;
-      choose.disabled=true;preview.replaceChildren();entries=[];bagTotal=null;
-      let worker;
+      choose.disabled=true;language.disabled=true;preview.replaceChildren();entries=[];bagTotal=null;
       try{
-        if(!await offlinePackReady())await prepareOfflinePack(setStatus);
-        worker=await createWorker();
+        const selectedLanguage=language.value;
+        let languages=selectedLanguage==='auto'?['chi_tra','chi_sim']:[selectedLanguage];
+        if(!await offlinePackReady(selectedLanguage))try{await prepareOfflinePack(setStatus,selectedLanguage)}catch(error){
+          const ready=[];
+          for(const code of languages)if(await offlinePackReady(code))ready.push(code);
+          if(!ready.length||selectedLanguage!=='auto')throw error;
+          languages=ready;
+          setStatus('另一种语言包暂不可用，先使用已缓存的模型识别。');
+        }
+        const candidates=files.map(()=>[]),errors=[];
+        for(const code of languages){
+          let worker;
+          try{
+            worker=await createWorker(code);
+            for(let index=0;index<files.length;index++){
+              setStatus(`本机识别截图 ${index+1}/${files.length}：${files[index].name}（${code==='chi_tra'?'繁體':'简体'}）…`);
+              try{candidates[index].push(await recognizeScreenshot(worker,files[index],ingredients))}
+              catch(error){errors.push(error.message)}
+            }
+          }catch(error){errors.push(error.message)}
+          finally{if(worker)await worker.terminate()}
+        }
         const observations=[];
         for(let index=0;index<files.length;index++){
-          setStatus(`本机识别截图 ${index+1}/${files.length}：${files[index].name}…`);
-          const result=await recognizeScreenshot(worker,files[index],ingredients);
+          const result=selectBestRecognition(candidates[index]);
+          if(!result)throw new Error(`${files[index].name}：${errors.join('；')||'未找到食材名称'}`);
           observations.push(...result.observations);
           if(result.bagTotal!==null)bagTotal=result.bagTotal;
         }
         entries=mergeObservations(observations);
         renderPreview();
-        setStatus(`识别出 ${entries.length} 种食材。重叠截图已合并；请逐项核对后再更新库存。`);
+        setStatus(`识别出 ${entries.length} 种食材。${languages.length>1?'已比较简繁模型；':''}重叠截图已合并，请逐项核对后再更新库存。`);
       }catch(error){setStatus(`识别失败：${error.message}`,true)}
-      finally{if(worker)await worker.terminate();choose.disabled=false}
+      finally{choose.disabled=false;language.disabled=false}
     });
     undo.addEventListener('click',()=>{
       const backup=readBackup();if(!backup||JSON.stringify(currentStock())!==JSON.stringify(backup.after)){setStatus('库存已发生其他更改，无法安全撤销。',true);updateUndo();return}
@@ -287,5 +326,5 @@
     }
     return {prepareOfflinePack,offlinePackReady};
   }
-  return Object.freeze({OCR_CACHE,ASSETS,distance,matchName,extractNameRows,mergeObservations,buildStock,prepareOfflinePack,offlinePackReady,mount});
+  return Object.freeze({OCR_CACHE,ASSETS,distance,matchName,extractNameRows,mergeObservations,recognitionQuality,selectBestRecognition,buildStock,prepareOfflinePack,offlinePackReady,mount});
 });

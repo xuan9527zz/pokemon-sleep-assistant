@@ -9,6 +9,13 @@ const names=Object.keys(ingredients.INGREDIENTS);
 
 assert.equal(ocr.matchName('粗枝大划',names).name,'粗枝大葱');
 assert.equal(ocr.matchName('噬噬鲜奶',names).name,'哞哞鲜奶');
+for(const [traditional,canonical] of Object.entries({
+  '品鮮蘑菇':'品鲜蘑菇','暖暖薑':'暖暖姜','特選蛋':'特选蛋','特選蘋果':'特选苹果',
+  '純粹油':'纯粹油','粗枝大蔥':'粗枝大葱','窩心洋芋':'窝心洋芋','豆製肉':'豆制肉',
+  '醒腦咖啡豆':'醒脑咖啡豆','哞哞鮮奶':'哞哞鲜奶','放鬆可可':'放松可可',
+  '萌綠玉米':'萌绿玉米','萌綠大豆':'萌绿大豆'
+}))assert.deepEqual(ocr.matchName(traditional,names),{name:canonical,distance:0},`${traditional} 应精确映射到简体库存键`);
+assert.equal(ocr.matchName('特選蘋菓',names).name,'特选苹果','繁体 OCR 误字仍应匹配到正确食材');
 assert.equal(ocr.matchName('食材',names),null);
 
 const mockLine={bbox:{x0:0,y0:648,x1:588,y1:665},words:[
@@ -19,6 +26,16 @@ const mockLine={bbox:{x0:0,y0:648,x1:588,y1:665},words:[
 ]};
 const data={blocks:[{paragraphs:[{lines:[mockLine]}]}]};
 assert.deepEqual(ocr.extractNameRows(data,names)[0].cells.map(cell=>cell.match.name),['粗枝大葱','品鲜蘑菇','特选蛋','窝心洋芋']);
+const traditionalLine={bbox:mockLine.bbox,words:[
+  {text:'粗枝大蔥',bbox:{x0:54,x1:120,y0:648,y1:665}},
+  {text:'品鮮蘑菇',bbox:{x0:190,x1:256,y0:648,y1:665}},
+  {text:'特選蛋',bbox:{x0:334,x1:383,y0:648,y1:665}},
+  {text:'窩心洋芋',bbox:{x0:462,x1:528,y0:648,y1:665}}
+]};
+assert.deepEqual(ocr.extractNameRows({blocks:[{paragraphs:[{lines:[traditionalLine]}]}]},names)[0].cells.map(cell=>cell.match.name),['粗枝大葱','品鲜蘑菇','特选蛋','窝心洋芋']);
+const traditionalCandidate={observations:[{name:'特选苹果',quantity:41,review:false},{name:'',quantity:91,review:true}]};
+const simplifiedCandidate={observations:[{name:'特选苹果',quantity:41,review:true},{name:'哞哞鲜奶',quantity:91,review:true}]};
+assert.equal(ocr.selectBestRecognition([traditionalCandidate,simplifiedCandidate]),simplifiedCandidate,'自动识别应优先采用识别完整的模型');
 
 const rows=ocr.mergeObservations([
   {name:'特选苹果',quantity:41,source:'上半张',include:true,review:false},
