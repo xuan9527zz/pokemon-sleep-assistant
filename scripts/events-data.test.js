@@ -5,6 +5,12 @@ const events=require('../events-data.js');
 
 assert.equal(events.ACTIVITY_PROFILES.mewtwo1.favoriteBerry,'芒芒果');
 assert.equal(events.ACTIVITY_PROFILES.goodSleep39.universalSleepMultiplier,1.5);
+assert.equal(events.ACTIVITY_PROFILES.cookingWeek3.potCapacityMultiplier,2);
+assert.equal(events.ACTIVITY_PROFILES.cookingWeek3.sundayPotCapacityMultiplier,4);
+assert.equal(events.ACTIVITY_PROFILES.cookingWeek3.cookingEnergyMultiplier,1.25);
+assert.equal(events.ACTIVITY_PROFILES.cookingWeek3.ingredientSpecialistHelpBonus,1);
+assert.equal(events.ACTIVITY_PROFILES.cookingWeek3.skillIngredientMultiplier,1.5);
+assert.equal(events.ACTIVITY_PROFILES.cookingWeek3.dishEnergyRecoveryBonus,5);
 assert.equal(events.phaseAt('2026-09-28T12:00:00+09:00').id,'good-sleep');
 assert.equal(events.phaseAt('2026-09-30T12:00:00+09:00').id,'exchange');
 assert.equal(events.phaseAt('2026-10-02T12:00:00+09:00').id,'conversion');

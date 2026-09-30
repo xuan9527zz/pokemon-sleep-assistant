@@ -1,6 +1,7 @@
 'use strict';
 
-const CACHE_VERSION='pokemon-sleep-assistant-v7';
+const CACHE_VERSION='pokemon-sleep-assistant-v11';
+const OCR_CACHE='pokemon-sleep-ocr-v1';
 const APP_SHELL=[
   './',
   './index.html',
@@ -14,7 +15,7 @@ const APP_SHELL=[
   './cloud-sync.css','./cloud-sync.js','./cooking-success.js','./cultivation-advisor.css','./cultivation-advisor.js',
   './events-data.js','./game-rules.js','./ingredients.css','./ingredients.js','./investment-planner.css','./investment-planner.js',
   './level-manager-evolution.css','./level-manager.css','./level-manager.js','./main-skill-team-effects.js','./mobile.css',
-  './personal-settings.css','./personal-settings.js','./pokemon-catalog.generated.js','./pokemon-comparison.css','./pokemon-comparison.js',
+  './personal-settings.css','./personal-settings.js','./inventory-ocr.css','./inventory-ocr.js','./pokemon-catalog.generated.js','./pokemon-comparison.css','./pokemon-comparison.js',
   './pokemon-data.js','./pokemon-manager.css','./pokemon-manager.js','./pokemon-picker.css','./pokemon-picker.js',
   './pokemon-scoring.js','./pokemon-strategy.js','./production-calculator.js','./production-timeline.js','./recipes.js',
   './retention-advisor.css','./retention-advisor.js','./selection-odds.css','./selection-odds.js',
@@ -37,7 +38,7 @@ self.addEventListener('install',event=>{
 
 self.addEventListener('activate',event=>{
   event.waitUntil(Promise.all([
-    caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_VERSION).map(key=>caches.delete(key)))),
+    caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_VERSION&&key!==OCR_CACHE).map(key=>caches.delete(key)))),
     self.clients.claim()
   ]));
 });
@@ -51,6 +52,14 @@ self.addEventListener('fetch',event=>{
   if(request.method!=='GET')return;
   const url=new URL(request.url);
   if(url.origin!==self.location.origin)return;
+  if(url.pathname.includes('/assets/ocr/')){
+    event.respondWith((async()=>{
+      const cache=await caches.open(OCR_CACHE),key=cacheKey(request),cached=await cache.match(key);
+      if(cached)return cached;
+      try{const response=await fetch(request);if(response.ok)await cache.put(key,response.clone());return response}catch(_error){return Response.error()}
+    })());
+    return;
+  }
   if(request.mode==='navigate'){
     event.respondWith((async()=>{
       try{

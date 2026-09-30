@@ -2,11 +2,11 @@
 
 const fs=require('fs');
 
-const SIMPLE_FIELDS=new Set(['cookingEnergyMultiplier','potCapacityMultiplier','universalSleepMultiplier','carryBonus']);
+const SIMPLE_FIELDS=new Set(['cookingEnergyMultiplier','potCapacityMultiplier','universalSleepMultiplier','carryBonus','skillIngredientMultiplier','dishEnergyRecoveryBonus']);
 const OFFSET_DATE=/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/;
 
 function auditAnnouncement(brief){
-  const errors=[],unmodeled=[],suggestedProfile={};
+  const errors=[],unmodeled=[],modeledByCore=[],suggestedProfile={};
   if(!brief||typeof brief!=='object'||Array.isArray(brief))return {ok:false,errors:['公告简表必须是 JSON 对象。'],unmodeled,suggestedProfile};
   if(typeof brief.title!=='string'||!brief.title.trim())errors.push('缺少活动标题。');
   if(typeof brief.sourceUrl!=='string'||!/^https:\/\/(?:www\.)?pokemonsleep\.net\/(?:en\/)?news\/[^/]+\/?$/.test(brief.sourceUrl))errors.push('sourceUrl 必须是 Pokémon Sleep 官方公告链接。');
@@ -21,14 +21,21 @@ function auditAnnouncement(brief){
     if(typeof effect.target!=='string'||!effect.target.trim())errors.push(`effects[${index}] 缺少 target。`);
     if(typeof effect.value!=='number'||!Number.isFinite(effect.value)||effect.value<=0)errors.push(`effects[${index}] 的 value 必须是正数。`);
     if(typeof effect.type!=='string'||typeof effect.when!=='string'||typeof effect.target!=='string'||typeof effect.value!=='number'||!Number.isFinite(effect.value)||effect.value<=0)return;
-    if(SIMPLE_FIELDS.has(effect.type)&&effect.when==='all'&&effect.target==='all'){
-      if(Object.hasOwn(suggestedProfile,effect.type))errors.push(`${effect.type} 有重复的全时段全员效果，需要先处理叠加规则。`);
-      else suggestedProfile[effect.type]=effect.value;
-    }else unmodeled.push({index,type:effect.type,when:effect.when,target:effect.target,value:effect.value,reason:SIMPLE_FIELDS.has(effect.type)?'当前模型不能直接表示这个日期／对象条件。':'当前活动档案没有这个效果的计算字段。'});
+    let profileField=null;
+    if(SIMPLE_FIELDS.has(effect.type)&&effect.when==='all'&&effect.target==='all')profileField=effect.type;
+    else if(effect.type==='potCapacityMultiplier'&&effect.when==='weekday'&&effect.target==='all')profileField='potCapacityMultiplier';
+    else if(effect.type==='potCapacityMultiplier'&&effect.when==='sunday'&&effect.target==='all')profileField='sundayPotCapacityMultiplier';
+    else if(effect.type==='ingredientHelpBonus'&&effect.when==='all'&&effect.target==='ingredient-specialist')profileField='ingredientSpecialistHelpBonus';
+    else if(effect.type==='skillIngredientMultiplier'&&effect.when==='all'&&effect.target==='ingredient-output-only')profileField='skillIngredientMultiplier';
+    if(profileField){
+      if(Object.hasOwn(suggestedProfile,profileField))errors.push(`${profileField} 有重复效果，需要先处理叠加规则。`);
+      else suggestedProfile[profileField]=effect.value;
+    }else if(effect.type==='extraTastyMultiplier'&&effect.target==='all'&&((effect.when==='weekday'&&effect.value===2)||(effect.when==='sunday'&&effect.value===3)))modeledByCore.push({index,type:effect.type,when:effect.when,value:effect.value});
+    else unmodeled.push({index,type:effect.type,when:effect.when,target:effect.target,value:effect.value,reason:SIMPLE_FIELDS.has(effect.type)?'当前模型不能直接表示这个日期／对象条件。':'当前活动档案没有这个效果的计算字段。'});
   });
   if(typeof brief.title==='string'&&brief.title.trim())suggestedProfile.label=brief.title.trim();
   if(Array.isArray(brief.areas)&&brief.areas.length)suggestedProfile.eventAreas=[...brief.areas];
-  return {ok:errors.length===0,errors,sourceUrl:brief.sourceUrl,start:brief.start,end:brief.end,suggestedProfile,unmodeled,fullyModeled:errors.length===0&&unmodeled.length===0};
+  return {ok:errors.length===0,errors,sourceUrl:brief.sourceUrl,start:brief.start,end:brief.end,suggestedProfile,modeledByCore,unmodeled,fullyModeled:errors.length===0&&unmodeled.length===0};
 }
 
 if(require.main===module){

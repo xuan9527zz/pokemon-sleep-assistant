@@ -13,19 +13,20 @@
     mewtwo1:Object.freeze({label:'超梦登场活动·第1周（已结束）',eventAreas:Object.freeze(['萌绿之岛','萌绿之岛 EX']),bonusBerries:Object.freeze(['芒芒果']),carryBonus:8,mainSkillLevelBonus:2,ingredientHelpBonus:1,skillTriggerMultiplier:1.5,cookingEnergyMultiplier:1,sleepDrowsyPowerMultiplier:1.1,sleepBonusSpecies:Object.freeze(['梦幻','超梦']),favoriteBerry:'芒芒果',note:'历史档案：仅萌绿之岛／萌绿之岛 EX；全员持有＋8，超能力系主技能等级＋2、触发率 ×1.5、食材帮忙＋1。',defaultMealGoal:15,archived:true}),
     mewtwo2:Object.freeze({label:'超梦登场活动·第2周（已结束）',eventAreas:Object.freeze(['萌绿之岛','萌绿之岛 EX']),bonusBerries:Object.freeze(['芒芒果']),carryBonus:15,mainSkillLevelBonus:5,ingredientHelpBonus:1,skillTriggerMultiplier:1.5,cookingEnergyMultiplier:1,sleepDrowsyPowerMultiplier:1.3,sleepBonusSpecies:Object.freeze(['超梦']),favoriteBerry:'芒芒果',note:'历史档案：仅萌绿之岛／萌绿之岛 EX；全员持有＋15，超能力系主技能等级＋5、触发率 ×1.5、食材帮忙＋1。',defaultMealGoal:15,archived:true}),
     cooking125:Object.freeze({label:'料理能量＋25%',carryBonus:0,cookingEnergyMultiplier:1.25,note:'活动料理能量＋25%；完整推演会把倍率计入每餐能量。',defaultMealGoal:15}),
-    cooking150:Object.freeze({label:'料理能量＋50%',carryBonus:0,cookingEnergyMultiplier:1.5,note:'活动料理能量＋50%；完整推演会把倍率计入每餐能量。',defaultMealGoal:15})
+    cooking150:Object.freeze({label:'料理能量＋50%',carryBonus:0,cookingEnergyMultiplier:1.5,note:'活动料理能量＋50%；完整推演会把倍率计入每餐能量。',defaultMealGoal:15}),
+    cookingWeek3:Object.freeze({label:'大份料理周 vol.3',startsAt:'2026-10-05T04:00:00+09:00',endsAt:'2026-10-12T04:00:00+09:00',carryBonus:0,potCapacityMultiplier:2,sundayPotCapacityMultiplier:4,cookingEnergyMultiplier:1.25,ingredientSpecialistHelpBonus:1,skillIngredientMultiplier:1.5,dishEnergyRecoveryBonus:5,note:'全部岛屿；工作日锅 ×2、周日锅 ×4，料理最终能量 ×1.25，食材手普通食材＋1，技能食材数量 ×1.5，三餐回复各额外＋5。迷你糖果加速与睡眠研究出现率只展示。',defaultMealGoal:21})
   });
 
   const SOURCES=Object.freeze({
     goodSleep39:'https://www.pokemonsleep.net/news/343430323231373034343933343635363034/',
-    cookingWeek3:'https://www.pokemonsleep.net/news/343430323735323935393230393739393731/',
+    cookingWeek3:'https://www.pokemonsleep.net/en/news/343430323735323936303334323236313832/',
     mewtwoEvent:'https://www.pokemonsleep.net/en/news/343239383235333132393938353535363534/',
     mewtwo:'https://www.pokemonsleep.net/en/news/343333373536323134383333313834373731/',
     mewtwoResearch:'https://wikiwiki.jp/poke_sleep/%E3%83%9F%E3%83%A5%E3%82%A6%E3%83%84%E3%83%BC'
   });
 
   const EVENT_GUIDE=Object.freeze({
-    updatedAt:'2026-09-29',
+    updatedAt:'2026-09-30',
     title:'近期活动｜当前加成与下一场',
     intro:'按游戏内 04:00 切换活动日；这里是人工核对的公告快照，不会自动获取新公告。',
     current:Object.freeze({
@@ -45,8 +46,8 @@
       Object.freeze({id:'sleep',title:'好眠日睡眠安排',items:Object.freeze([['睡满优先：','活动期间可利用当日睡意之力和帮手睡眠 EXP 加成；要不要分睡交给本周作战台按目标比较。'],['闪光机会：','想收藏皮宝宝进化系时，不需为了追活动效果改去特定岛屿。']])}),
       Object.freeze({id:'exchange',title:'超梦兑换所',items:Object.freeze([['10 月 1 日 03:59 前：','用完超梦 DNA，优先确认超梦熏香、超梦饼干与限购种子。'],['10 月 3 日 19:00：','剩余超梦饼干自动转换为超级沙布蕾；超梦熏香可继续使用。']])}),
       Object.freeze({id:'conversion',title:'超梦饼干转换',items:Object.freeze([['10 月 3 日 19:00：','剩余超梦饼干自动转换为超级沙布蕾；超梦熏香可继续使用。']])}),
-      Object.freeze({id:'cooking-prep',title:'下期预告｜料理周',items:Object.freeze([['10 月 5 日 04:00 开始：','全部岛屿举办料理周；准备高容量料理与对应食材。'],['模型边界：','活动公告已收录；本周作战台尚未自动套用料理周的全部加成，请勿把普通周推演当成活动周总收益。']])}),
-      Object.freeze({id:'cooking',title:'料理周进行中',items:Object.freeze([['料理与食材：','工作日锅容量 ×2，周日 ×4；料理最终能量 ×1.25，食材手普通帮忙食材＋1。'],['模型边界：','本周作战台尚未自动套用料理周的全部加成，请以游戏内活动状态和官方公告为准。']])}),
+      Object.freeze({id:'cooking-prep',title:'下期预告｜料理周',items:Object.freeze([['10 月 5 日 04:00 开始：','全部岛屿举办料理周；先备好高容量料理与对应食材，活动周可在个人设置中选“大份料理周 vol.3”推演。'],['模型边界：','迷你糖果加速与睡眠研究出现率只作公告展示；随机技能食材尚不能分配给指定食谱。']])}),
+      Object.freeze({id:'cooking',title:'料理周进行中',items:Object.freeze([['料理与食材：','工作日锅容量 ×2，周日 ×4；料理最终能量 ×1.25，食材手普通帮忙食材＋1。'],['本周作战：','选择“大份料理周 vol.3”后会计入技能食材 ×1.5 和三餐活力额外＋5；随机技能食材仍不虚构成指定食材库存。'],['糖果与研究：','迷你糖果加速的经验 ×2、碎片消耗 ×4、每日最多 50 颗，以及研究出现率变化只在这里展示，不折算为卡比兽能量。']])}),
       Object.freeze({id:'permanent',title:'超梦后续培养',items:Object.freeze([['图鉴已并入：','新建或导入超梦个体后，会读取技能手面板与你指定的幻之／传说 B 梯级。'],['组队思路：','可在本周作战台的可选“树果领域”模型中安排超梦先上场、叠层后换成芒芒果产手。']])})
     ])
   });
@@ -57,7 +58,7 @@
     Object.freeze({id:'exchange',until:'2026-10-01T04:00:00+09:00',title:'超梦兑换所',date:'截至 10 月 1 日 03:59',countdown:'距超梦兑换所关闭',status:'<b>收尾：</b>好眠日已结束；超梦活动兑换所仍开放至 10 月 1 日 03:59。',link:SOURCES.mewtwoEvent,linkLabel:'超梦兑换说明'}),
     Object.freeze({id:'conversion',until:'2026-10-03T19:00:00+09:00',title:'超梦饼干转换',date:'10 月 3 日 19:00 自动转换',countdown:'距超梦饼干转换',status:'<b>提醒：</b>超梦兑换所已关闭；剩余超梦饼干将在 10 月 3 日 19:00 转为超级沙布蕾。',link:SOURCES.mewtwoEvent,linkLabel:'转换说明'}),
     Object.freeze({id:'cooking-before',until:'2026-10-05T04:00:00+09:00',title:'大份料理周 vol.3',date:'10 月 5 日 04:00—10 月 12 日 03:59 · 全部岛屿',countdown:'距离料理周开始',status:'<b>下期预告：</b>料理周将于 10 月 5 日 04:00 开始；当前尚无料理周加成。',link:SOURCES.cookingWeek3,linkLabel:'料理周公告'}),
-    Object.freeze({id:'cooking',until:'2026-10-12T04:00:00+09:00',title:'大份料理周 vol.3',date:'10 月 5 日 04:00—10 月 12 日 03:59 · 全部岛屿',countdown:'料理周进行中 · 距离结束',status:'<b>当前：</b>料理周进行中；活动页展示官方加成，但本周作战台尚未自动套用全部料理周效果。',link:SOURCES.cookingWeek3,linkLabel:'料理周公告'}),
+    Object.freeze({id:'cooking',until:'2026-10-12T04:00:00+09:00',title:'大份料理周 vol.3',date:'10 月 5 日 04:00—10 月 12 日 03:59 · 全部岛屿',countdown:'料理周进行中 · 距离结束',status:'<b>当前：</b>料理周进行中；在个人设置选择活动周及“大份料理周 vol.3”即可推演已建模加成。',link:SOURCES.cookingWeek3,linkLabel:'料理周公告'}),
     Object.freeze({id:'ended',until:null,title:'公告快照待更新',date:'当前快照覆盖至 10 月 12 日 03:59',countdown:'已收录的活动已结束',status:'<b>资料提示：</b>已收录活动均已结束；此页不会自动获取新公告，请核对官方最新资讯。',link:'https://www.pokemonsleep.net/news/',linkLabel:'查看官方最新资讯'})
   ]);
 
@@ -65,8 +66,8 @@
     Object.freeze({id:'sleep-first',start:'2026-09-26T04:00:00+09:00',until:'2026-09-27T04:00:00+09:00',title:'9 月 26 日｜满月前一夜',badges:Object.freeze(['全部岛屿','睡意之力 ×1.5','帮手睡眠 EXP ×2','睡眠点数＋500']),facts:Object.freeze(['睡眠研究中更易遇见未登录的睡姿；皮宝宝进化系有机会闪光出现。','游戏内活动日从 04:00 开始；加成只适用于活动期间开始的睡眠测量。'])}),
     Object.freeze({id:'sleep-full',start:'2026-09-27T04:00:00+09:00',until:'2026-09-28T04:00:00+09:00',title:'9 月 27 日｜满月夜',badges:Object.freeze(['全部岛屿','睡意之力 ×2','帮手睡眠 EXP ×3','睡眠点数＋1000']),facts:Object.freeze(['满月夜加成高于前后夜；皮宝宝进化系出现率上升。','游戏内活动日从 04:00 开始；加成只适用于活动期间开始的睡眠测量。'])}),
     Object.freeze({id:'sleep-last',start:'2026-09-28T04:00:00+09:00',until:'2026-09-29T04:00:00+09:00',title:'9 月 28 日｜满月后一夜',badges:Object.freeze(['全部岛屿','睡意之力 ×1.5','帮手睡眠 EXP ×2','睡眠点数＋500']),facts:Object.freeze(['睡眠研究中更易遇见未登录的睡姿；皮宝宝进化系有机会闪光出现。','9 月 27 日满月夜的 ×2、EXP ×3 与＋1000 点不再适用。'])}),
-    Object.freeze({id:'cooking-normal',start:'2026-10-05T04:00:00+09:00',until:'2026-10-11T04:00:00+09:00',title:'料理周｜普通活动日',badges:Object.freeze(['全部岛屿','锅容量 ×2','料理最终能量 ×1.25','食材手食材＋1']),facts:Object.freeze(['料理回复活力额外＋5；食材类主技能带来的食材数量 ×1.5。','周日活动日锅容量改为 ×4；本周作战台尚未自动套用全部料理周效果。'])}),
-    Object.freeze({id:'cooking-sunday',start:'2026-10-11T04:00:00+09:00',until:'2026-10-12T04:00:00+09:00',title:'10 月 11 日｜料理周周日',badges:Object.freeze(['全部岛屿','锅容量 ×4','料理最终能量 ×1.25','食材手食材＋1']),facts:Object.freeze(['料理回复活力额外＋5；食材类主技能带来的食材数量 ×1.5。','官方公告的大成功最终能量为 ×3.75；本周作战台尚未自动套用全部料理周效果。'])})
+    Object.freeze({id:'cooking-normal',start:'2026-10-05T04:00:00+09:00',until:'2026-10-11T04:00:00+09:00',title:'料理周｜普通活动日',badges:Object.freeze(['全部岛屿','锅容量 ×2','料理最终能量 ×1.25','食材手食材＋1']),facts:Object.freeze(['料理回复活力额外＋5；食材类主技能带来的食材数量 ×1.5。','周日活动日锅容量改为 ×4；本周作战台可选活动档案推演。'])}),
+    Object.freeze({id:'cooking-sunday',start:'2026-10-11T04:00:00+09:00',until:'2026-10-12T04:00:00+09:00',title:'10 月 11 日｜料理周周日',badges:Object.freeze(['全部岛屿','锅容量 ×4','料理最终能量 ×1.25','食材手食材＋1']),facts:Object.freeze(['料理回复活力额外＋5；食材类主技能带来的食材数量 ×1.5。','大成功最终能量为 ×3.75；本周作战台可选活动档案推演。'])})
   ]);
 
   function phaseAt(value=Date.now()){
@@ -84,7 +85,7 @@
     if(active)return {id:active.id,step:'02 · 当前加成',...active};
     const phase=phaseAt(value);
     if(phase.id==='before')return {id:'sleep-upcoming',step:'02 · 下期预告',title:'第 39 回好眠日即将开始',badges:['9 月 26 日 04:00 开始'],facts:['满月前后夜与满月夜加成不同；开始前不应套用活动倍率。']};
-    if(['exchange','conversion','cooking-before'].includes(phase.id))return {id:'cooking-upcoming',step:'02 · 下期预告',title:'10 月 5 日｜大份料理周 vol.3',badges:['全部岛屿','锅容量 ×2 · 周日 ×4','料理最终能量 ×1.25'],facts:['10 月 5 日 04:00 前没有料理周加成。','活动公告已收录；本周作战台尚未自动套用料理周的全部加成。']};
+    if(['exchange','conversion','cooking-before'].includes(phase.id))return {id:'cooking-upcoming',step:'02 · 下期预告',title:'10 月 5 日｜大份料理周 vol.3',badges:['全部岛屿','锅容量 ×2 · 周日 ×4','料理最终能量 ×1.25'],facts:['10 月 5 日 04:00 前没有料理周加成。','可在个人设置选活动周与“大份料理周 vol.3”预先推演；不会自动修改当前周模式。']};
     return {id:'snapshot-ended',step:'02 · 快照状态',title:'已收录活动均已结束',badges:['请核对官方最新公告'],facts:[`本页公告快照更新于 ${EVENT_GUIDE.updatedAt}；不会自动发现后来公布的活动。`]};
   }
 

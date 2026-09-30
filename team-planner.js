@@ -142,7 +142,7 @@
   function normalizeEnergySettings(options={}){
     const favoriteBerries=[...new Set((Array.isArray(options.favoriteBerries)?options.favoriteBerries:[]).map(String).filter(Boolean))];
     return {
-      durationHours:clamp(Number(options.durationHours)||DEFAULT_ENERGY_SETTINGS.durationHours,.5,168),
+      durationHours:clamp(Number(options.durationHours)||DEFAULT_ENERGY_SETTINGS.durationHours,.25,168),
       islandBonusPct:clamp(Number(options.islandBonusPct)||0,0,gameRules&&gameRules.LIMITS?gameRules.LIMITS.areaBonusPct:85),
       islandProfile:Object.hasOwn(ISLAND_PROFILES,options.islandProfile)?options.islandProfile:DEFAULT_ENERGY_SETTINGS.islandProfile,
       favoriteBerries,
@@ -185,7 +185,7 @@
     if(useTimeline){
       const swapHours=Array.isArray(options.swapHours)?options.swapHours:Array.from({length:settings.teamSwapCount},(_value,index)=>settings.durationHours*(index+1)/(settings.teamSwapCount+1));
       const simulationMembers=members.map((member,index)=>({...member,skillProbability:rows[index].skillProbability,skillEffect:rows[index].complexSkill}));
-      timeline=productionTimeline.simulate(simulationMembers,{durationHours:settings.durationHours,collectionHours:settings.skillCollectionHours||members[0]?.collectionHours||4,startEnergy:settings.startEnergy,sleepScore:settings.sleepScore,swapHours,swapAtEnd:options.swapAtEnd===true,collectBeforeSwap:settings.collectBeforeSwap});
+      timeline=productionTimeline.simulate(simulationMembers,{durationHours:settings.durationHours,collectionHours:settings.skillCollectionHours||members[0]?.collectionHours||4,startEnergy:settings.startEnergy,sleepScore:settings.sleepScore,mealRecoveryBonus:options.mealRecoveryBonus,swapHours,swapAtEnd:options.swapAtEnd===true,collectBeforeSwap:settings.collectBeforeSwap});
       rows.forEach((row,index)=>{const simulated=timeline.members[index];row.helps=simulated.helps;row.normalHelps=simulated.normalHelps;row.sneakyHelps=simulated.sneakyHelps;row.triggers=simulated.triggers;row.lostTriggers=simulated.lostTriggers;row.energyStages=simulated.stageMinutes;row.endingEnergy=simulated.endingEnergy;row.averageHelpFactor=simulated.averageHelpFactor});
       if(teamSkillEffects&&typeof teamSkillEffects.evaluateMember==='function')rows.forEach((row,index)=>{row.complexSkill=teamSkillEffects.evaluateMember(index,rows,{energyMechanics,islandBonusPct:settings.islandBonusPct,durationHours:settings.durationHours})});
     }
@@ -195,7 +195,7 @@
       row.berryBaseEnergy=(row.berryStrength||0)*row.berries*row.favoriteMultiplier;
       row.berryEnergy=energyMechanics?energyMechanics.applyPercentageBonus(row.berryBaseEnergy,settings.islandBonusPct):Math.round(row.berryBaseEnergy);
       row.directSkillEnergy=row.skill.supported?Math.round(row.triggers*row.skill.actualEnergy):0;
-      if(row.complexSkill&&row.complexSkill.supported){row.complexSkillEnergy=Math.round(row.triggers*row.complexSkill.energyPerUse);row.teamRecovery=row.triggers*row.complexSkill.teamRecoveryPerUse;row.productiveRecovery=row.triggers*row.complexSkill.productiveRecoveryPerUse;row.selfRecovery=row.triggers*row.complexSkill.selfRecoveryPerUse;row.skillIngredients=row.triggers*row.complexSkill.ingredientsPerUse;row.skillIngredientRange=Array.isArray(row.complexSkill.ingredientRangePerUse)?row.complexSkill.ingredientRangePerUse.map(value=>row.triggers*value):null;row.potSlots=row.triggers*row.complexSkill.potSlotsPerUse;row.tastyBonusPct=row.triggers*row.complexSkill.tastyBonusPctPerUse;row.dreamShards=row.triggers*row.complexSkill.dreamShardsPerUse;row.dreamShardRange=Array.isArray(row.complexSkill.dreamShardRangePerUse)?row.complexSkill.dreamShardRangePerUse.map(value=>row.triggers*value):null;row.candy=row.triggers*row.complexSkill.candyPerUse;row.berryJuice=row.triggers*row.complexSkill.berryJuicePerUse}
+      if(row.complexSkill&&row.complexSkill.supported){const ingredientMultiplier=clamp(Number(options.skillIngredientMultiplier)||1,1,10);row.complexSkillEnergy=Math.round(row.triggers*row.complexSkill.energyPerUse);row.teamRecovery=row.triggers*row.complexSkill.teamRecoveryPerUse;row.productiveRecovery=row.triggers*row.complexSkill.productiveRecoveryPerUse;row.selfRecovery=row.triggers*row.complexSkill.selfRecoveryPerUse;row.skillIngredients=row.triggers*row.complexSkill.ingredientsPerUse*ingredientMultiplier;row.skillIngredientRange=Array.isArray(row.complexSkill.ingredientRangePerUse)?row.complexSkill.ingredientRangePerUse.map(value=>row.triggers*value*ingredientMultiplier):null;row.potSlots=row.triggers*row.complexSkill.potSlotsPerUse;row.tastyBonusPct=row.triggers*row.complexSkill.tastyBonusPctPerUse;row.dreamShards=row.triggers*row.complexSkill.dreamShardsPerUse;row.dreamShardRange=Array.isArray(row.complexSkill.dreamShardRangePerUse)?row.complexSkill.dreamShardRangePerUse.map(value=>row.triggers*value):null;row.candy=row.triggers*row.complexSkill.candyPerUse;row.berryJuice=row.triggers*row.complexSkill.berryJuicePerUse}
       row.totalEnergy=row.berryEnergy+row.directSkillEnergy+row.complexSkillEnergy;
     });
     rows.forEach(row=>{delete row.mon});

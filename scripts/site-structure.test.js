@@ -55,7 +55,7 @@ assert.ok(!html.includes('data-recipe-cooked'), '食谱是否做过不应保留�
 assert.ok(html.includes('recipeEnergy:plannedRecipeEnergy,recommendationRecipeEnergy:currentRecipeEnergy'), '本周目标应继续使用已解锁食谱，下一餐推荐则必须允许按Lv.1评估未解锁料理');
 assert.ok(html.includes('src="events-data.js'), '活动页和本周作战缺少统一活动数据源');
 assert.ok(html.includes('id="eventGuide"')&&html.includes('POKEMON_SLEEP_EVENTS.renderEventGuide'), '活动页必须由统一数据源渲染');
-assert.ok(eventsSource.includes("updatedAt:'2026-09-29'")&&eventsSource.includes('cookingWeek3:'), '活动页资料快照或下期料理周公告未更新');
+assert.ok(eventsSource.includes("updatedAt:'2026-09-30'")&&eventsSource.includes('cookingWeek3:'), '活动页资料快照或下期料理周公告未更新');
 assert.ok(!eventsSource.includes('梦幻迷你拍照惊喜任务进行中'), '活动数据仍把已经结束的梦幻拍照活动显示为进行中');
 assert.ok(eventsSource.includes('第 39 回好眠日'), '活动数据缺少当前好眠日');
 assert.ok(eventsSource.includes('10 月 1 日 03:59'), '活动数据缺少超梦兑换所截止时间');

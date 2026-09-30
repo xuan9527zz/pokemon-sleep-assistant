@@ -48,7 +48,7 @@
   }
 
   function simulate(members,options={}){
-    const durationHours=clamp(options.durationHours||24,.5,168),durationMinutes=Math.round(durationHours*60),stepMinutes=STEP_MINUTES,steps=Math.ceil(durationMinutes/stepMinutes),collectionHours=clamp(options.collectionHours||4,.5,24),collectionMinutes=Math.max(stepMinutes,Math.round(collectionHours*60/stepMinutes)*stepMinutes),startEnergy=clamp(options.startEnergy===undefined?100:options.startEnergy,0,150),sleepScore=clamp(options.sleepScore===undefined?100:options.sleepScore,0,100),collectAtEnd=options.collectAtEnd!==false,collectBeforeSwap=options.collectBeforeSwap!==false,swapAtEnd=options.swapAtEnd===true,mealHours=normalizeHours(options.mealHours||[4,10,16],24),swapHours=normalizeHours(options.swapHours||[],durationHours),recoveryBonusCount=(members||[]).filter(member=>String(member.mon&&member.mon.effectiveSubs||member.mon&&member.mon.subs||'').split('；').includes('活力恢复奖励')).length;
+    const durationHours=clamp(options.durationHours||24,.25,168),durationMinutes=Math.round(durationHours*60),stepMinutes=STEP_MINUTES,steps=Math.ceil(durationMinutes/stepMinutes),collectionHours=clamp(options.collectionHours||4,.5,24),collectionMinutes=Math.max(stepMinutes,Math.round(collectionHours*60/stepMinutes)*stepMinutes),startEnergy=clamp(options.startEnergy===undefined?100:options.startEnergy,0,150),sleepScore=clamp(options.sleepScore===undefined?100:options.sleepScore,0,100),mealRecoveryBonus=clamp(Number(options.mealRecoveryBonus)||0,0,50),collectAtEnd=options.collectAtEnd!==false,collectBeforeSwap=options.collectBeforeSwap!==false,swapAtEnd=options.swapAtEnd===true,mealHours=normalizeHours(options.mealHours||[4,10,16],24),swapHours=normalizeHours(options.swapHours||[],durationHours),recoveryBonusCount=(members||[]).filter(member=>String(member.mon&&member.mon.effectiveSubs||member.mon&&member.mon.subs||'').split('；').includes('活力恢复奖励')).length;
     const rows=(members||[]).map((member,index)=>({
       index,energy:startEnergy,helps:0,normalHelps:0,sneakyHelps:0,triggers:0,lostTriggers:0,carriedItems:0,
       stageMinutes:Object.fromEntries(ENERGY_STAGES.map(stage=>[stage.key,0])),
@@ -80,7 +80,7 @@
         row.stageMinutes[stage.key]+=minutes;row.helps+=helps;row.normalHelps+=normal;row.sneakyHelps+=sneaky;row.carriedItems+=normal*itemsPerHelp;row.storage=addPoissonArrivals(row.storage,triggerLambda,row.capacity);
       });
       const dayMinute=end%1440;
-      if(mealHours.some(hour=>Math.round(hour*60)===dayMinute))rows.forEach(row=>{row.energy=clamp(row.energy+mealRecovery(row.energy),0,150)});
+      if(mealHours.some(hour=>Math.round(hour*60)===dayMinute))rows.forEach(row=>{row.energy=clamp(row.energy+mealRecovery(row.energy)+mealRecoveryBonus,0,150)});
       if(collectionMoments.includes(end)){events.push(collect(end,'click'));rows.forEach(row=>{row.carriedItems=0})}
       if(swapMoments.includes(end)){events.push(clearForSwap(end));rows.forEach(row=>{row.carriedItems=0})}
       rows.forEach(row=>{row.energy=Math.max(0,row.energy-minutes/10)});
@@ -89,7 +89,7 @@
     if(swapAtEnd){events.push(clearForSwap(durationMinutes));rows.forEach(row=>{row.carriedItems=0})}
     else if(collectAtEnd){events.push(collect(durationMinutes,'final'));rows.forEach(row=>{row.carriedItems=0})}
     rows.forEach(row=>{row.endingEnergy=row.energy;row.averageHelpFactor=row.stageMinutes?Object.entries(row.stageMinutes).reduce((total,[key,minutes])=>total+minutes*(ENERGY_STAGES.find(stage=>stage.key===key)?.helpFactor||1),0)/durationMinutes:1});
-    return {durationHours,collectionHours,startEnergy,sleepScore,collectBeforeSwap,swapAtEnd,swapHours,events,members:rows,totals:{helps:rows.reduce((sum,row)=>sum+row.helps,0),normalHelps:rows.reduce((sum,row)=>sum+row.normalHelps,0),sneakyHelps:rows.reduce((sum,row)=>sum+row.sneakyHelps,0),triggers:rows.reduce((sum,row)=>sum+row.triggers,0),lostTriggers:rows.reduce((sum,row)=>sum+row.lostTriggers,0)}};
+    return {durationHours,collectionHours,startEnergy,sleepScore,mealRecoveryBonus,collectBeforeSwap,swapAtEnd,swapHours,events,members:rows,totals:{helps:rows.reduce((sum,row)=>sum+row.helps,0),normalHelps:rows.reduce((sum,row)=>sum+row.normalHelps,0),sneakyHelps:rows.reduce((sum,row)=>sum+row.sneakyHelps,0),triggers:rows.reduce((sum,row)=>sum+row.triggers,0),lostTriggers:rows.reduce((sum,row)=>sum+row.lostTriggers,0)}};
   }
 
   return Object.freeze({STEP_MINUTES,ENERGY_STAGES,stageFor,mealRecovery,natureRecoveryMultiplier,skillStorageCapacity,addPoissonArrivals,recoveryVector,simulate});

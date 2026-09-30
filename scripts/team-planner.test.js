@@ -45,6 +45,15 @@ const freshBoxMember=planner.calculateMember({...venusaur,id:'1',ingredientRate:
 assert.strictEqual(freshBoxMember.member.probability.base,.31,'fresh box #1 must use its own species rate, not legacy box #1');
 assert.strictEqual(freshBoxMember.member.berryCount,2,'fresh box #1 must use its own species berry count');
 const result = planner.calculateTeam([venusaur, gardevoir], rates, { goodCamp: true, energyProfile: 'average' });
+const cookingHelper={...venusaur,id:'cooking-helper',mainSkillId:31,main:'料理辅助S Lv.3',skillRatePct:8,ingredientRate:.266,baseBerryCount:1};
+const cookingTeam=[cookingHelper,...Array.from({length:4},(_value,index)=>({...gardevoir,id:`cooking-teammate-${index}`}))];
+const ordinarySkill=planner.calculateTeam(cookingTeam,undefined,{energyProfile:'timeline',durationHours:24,skillCollectionHours:4});
+const boostedSkill=planner.calculateTeam(cookingTeam,undefined,{energyProfile:'timeline',durationHours:24,skillCollectionHours:4,skillIngredientMultiplier:1.5});
+assert.ok(ordinarySkill.energy.skillIngredients>0,'测试个体应实际触发可产出食材的技能');
+assert.ok(Math.abs(boostedSkill.energy.skillIngredients-ordinarySkill.energy.skillIngredients*1.5)<1e-8,'料理周技能食材应增加50%');
+assert.equal(boostedSkill.energy.tastyBonusPct,ordinarySkill.energy.tastyBonusPct,'复合技能的大成功率分量不得一同放大');
+assert.equal(boostedSkill.energy.totalEnergy,ordinarySkill.energy.totalEnergy,'技能食材加成不得改写树果或直接能量');
+assert.equal(boostedSkill.energy.members[0].triggers,ordinarySkill.energy.members[0].triggers,'技能食材加成不得改写触发次数');
 assert.strictEqual(result.valid, true);
 assert.strictEqual(result.helpingBonusCount, 1);
 assert.ok(result.collectionHours >= .5 && result.collectionHours <= 4);

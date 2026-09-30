@@ -38,5 +38,10 @@ assert.ok(day.members[0].stageMinutes['81-150']>0);
 assert.ok(day.members[0].stageMinutes['61-80']>0);
 assert.ok(day.members[0].stageMinutes['41-60']>0);
 assert.equal(Object.values(day.members[0].stageMinutes).reduce((sum,value)=>sum+value,0),1440);
+const plainMeal=timeline.simulate([helper('berry')],{durationHours:6,collectionHours:4,startEnergy:70,mealHours:[4]});
+const boostedMeal=timeline.simulate([helper('berry')],{durationHours:6,collectionHours:4,startEnergy:70,mealHours:[4],mealRecoveryBonus:5});
+assert.equal(boostedMeal.members[0].endingEnergy-plainMeal.members[0].endingEnergy,5,'料理周额外回复只在进餐时增加，不改写基础回复规则');
+assert.equal(boostedMeal.mealRecoveryBonus,5);
+assert.equal(timeline.simulate([helper('berry')],{durationHours:2,collectionHours:4,startEnergy:70,mealHours:[4],mealRecoveryBonus:5}).members[0].endingEnergy,timeline.simulate([helper('berry')],{durationHours:2,collectionHours:4,startEnergy:70,mealHours:[4]}).members[0].endingEnergy,'尚未进餐时不应提前享受回复');
 
 console.log('production timeline tests passed');

@@ -8,13 +8,21 @@ const cooking=auditAnnouncement({title:'大份料理周',sourceUrl:'https://www.
   {type:'potCapacityMultiplier',value:2,when:'weekday',target:'all'},
   {type:'potCapacityMultiplier',value:4,when:'sunday',target:'all'},
   {type:'ingredientHelpBonus',value:1,when:'all',target:'ingredient-specialist'},
-  {type:'skillIngredientMultiplier',value:1.5,when:'all',target:'all'}
+  {type:'skillIngredientMultiplier',value:1.5,when:'all',target:'all'},
+  {type:'dishEnergyRecoveryBonus',value:5,when:'all',target:'all'},
+  {type:'extraTastyMultiplier',value:2,when:'weekday',target:'all'},
+  {type:'extraTastyMultiplier',value:3,when:'sunday',target:'all'}
 ]});
 assert.equal(cooking.ok,true);
-assert.equal(cooking.fullyModeled,false);
+assert.equal(cooking.fullyModeled,true);
 assert.equal(cooking.suggestedProfile.cookingEnergyMultiplier,1.25);
-assert.equal(cooking.suggestedProfile.potCapacityMultiplier,undefined);
-assert.deepStrictEqual(cooking.unmodeled.map(item=>item.type),['potCapacityMultiplier','potCapacityMultiplier','ingredientHelpBonus','skillIngredientMultiplier']);
+assert.equal(cooking.suggestedProfile.potCapacityMultiplier,2);
+assert.equal(cooking.suggestedProfile.sundayPotCapacityMultiplier,4);
+assert.equal(cooking.suggestedProfile.ingredientSpecialistHelpBonus,1);
+assert.equal(cooking.suggestedProfile.skillIngredientMultiplier,1.5);
+assert.equal(cooking.suggestedProfile.dishEnergyRecoveryBonus,5);
+assert.equal(cooking.modeledByCore.length,2);
+assert.deepStrictEqual(cooking.unmodeled,[]);
 
 const growth=auditAnnouncement({title:'快快长大周',sourceUrl:'https://www.pokemonsleep.net/news/example/',start:'2026-11-02T04:00:00+09:00',end:'2026-11-09T04:00:00+09:00',areas:'all',effects:[
   {type:'helperSleepExpMultiplier',value:1.5,when:'all',target:'all'},
