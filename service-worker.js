@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_VERSION='pokemon-sleep-assistant-v14';
+const CACHE_VERSION='pokemon-sleep-assistant-v15';
 const OCR_CACHE='pokemon-sleep-ocr-v1';
 const APP_SHELL=[
   './',

@@ -43,7 +43,7 @@
     })
   });
   const FINAL_FORM_ALIASES=Object.freeze({'590':'591','200':'429','546':'547'});
-  const GUIDE_NAMES=Object.freeze({'591':'败露球菇（哎呀球菇进化线）','429':'梦妖魔（梦妖进化线）','547':'风妖精（木棉球进化线）'});
+  const GUIDE_NAMES=Object.freeze({'591':'败露球菇','429':'梦妖魔','547':'风妖精'});
   const MUSHROOM_TIER=Object.freeze({tier:'B',category:'ingredient',listed:true,source:SOURCE});
   const MISDREAVUS_TIER=Object.freeze({tier:'C',category:'skill',listed:true,source:SOURCE});
   const NAME_FALLBACKS=Object.freeze({超梦:Object.freeze({tier:'B',category:'special'}),哎呀球菇:MUSHROOM_TIER,败露球菇:MUSHROOM_TIER,敗露球菇:MUSHROOM_TIER,梦妖:MISDREAVUS_TIER,夢妖:MISDREAVUS_TIER,梦妖魔:MISDREAVUS_TIER,夢妖魔:MISDREAVUS_TIER});
