@@ -7,10 +7,11 @@ const vm = require('vm');
 const ingredients = require('../ingredients.js');
 const { parseBoxRows } = require('../skills/pokemon-sleep-scoring/scripts/box-scores.js');
 
-assert.strictEqual(Object.keys(ingredients.INGREDIENTS).length, 19);
+assert.strictEqual(Object.keys(ingredients.INGREDIENTS).length, 20);
 assert.strictEqual(ingredients.canonicalize('甜甜蜜'), '甜甜蜜');
 assert.strictEqual(ingredients.canonicalize('蜂蜜'), '甜甜蜜');
 assert.strictEqual(ingredients.canonicalize('青色果实'), '嫩亮酪梨');
+assert.strictEqual(ingredients.canonicalize('一口堅果'), '一口坚果');
 assert.strictEqual(ingredients.canonicalize('不存在的食材'), null);
 assert.strictEqual(ingredients.iconPath('牛奶'), './assets/ingredients/milk.png');
 assert.ok(ingredients.SKIP_DECORATION_SELECTOR.includes('h3'), '标题中的食谱名不得被自动插入食材图标');
@@ -29,6 +30,12 @@ const recipeContext = { window: {} };
 vm.runInNewContext(fs.readFileSync(path.resolve(__dirname, '..', 'recipes.js'), 'utf8'), recipeContext);
 const recipeIngredientNames = new Set(recipeContext.window.POKEMON_SLEEP_RECIPES.flatMap(recipe => recipe.ingredients.map(item => item.name)));
 assert.deepStrictEqual([...recipeIngredientNames].filter(name => !ingredients.canonicalize(name)), []);
+const newRecipes = recipeContext.window.POKEMON_SLEEP_RECIPES.filter(recipe => recipe.ingredients.some(item => item.name === '一口坚果'));
+assert.deepStrictEqual(Array.from(newRecipes, recipe => [recipe.id, recipe.name, recipe.energy, recipe.ingredients.reduce((sum, item) => sum + item.amount, 0)]), [
+  [1026, '种子炸弹烤饼咖哩', 7950, 39],
+  [2027, '打草结沙拉卷', 26350, 121],
+  [3028, '美味尾巴蛋糕卷', 19846, 91]
+]);
 
 const legacyFixture = path.resolve(__dirname, 'legacy-box-fixture.txt');
 if (fs.existsSync(legacyFixture) && process.env.POKEMON_SLEEP_TEST_SYNTHETIC !== '1') {

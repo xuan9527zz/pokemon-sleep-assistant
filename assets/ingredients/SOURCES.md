@@ -1,6 +1,8 @@
 # 食材图标来源
 
-本目录的 19 个食材图标于 2026-08-30 从 Game8 的《食材能量一览》页面下载并保存在项目内，避免网页运行时直接热链第三方图片。
+本目录的原有 19 个食材图标于 2026-08-30 从 Game8 的《食材能量一览》页面下载并保存在项目内，避免网页运行时直接热链第三方图片。
+
+`nuts.png` 于 2026-11-16 从 Serebii 的 [Snackable Nuts 页面](https://www.serebii.net/pokemonsleep/ingredients/snackablenuts.shtml)下载：`https://www.serebii.net/pokemonsleep/ingredients/snackablenuts.png`。
 
 - 来源页面：https://game8.jp/pokemonsleep/542471
 - `mushroom.png`：https://img.game8.jp/8441640/d090c62a999d8afa90d03bbfba2e99a2.png/original

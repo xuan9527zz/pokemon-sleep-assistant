@@ -7,7 +7,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(gameRules){
   'use strict';
 
-  const LIMITS=gameRules&&gameRules.LIMITS||{helperLevel:70,recipeLevel:70,areaBonusPct:85};
+  const LIMITS=gameRules&&gameRules.LIMITS||{helperLevel:70,recipeLevel:70,areaBonusPct:95};
   // Kept in sync with the executable mechanics in species-scores.js. The
   // cross-module test fails if either source changes without the other.
   const BERRY_BASE_STRENGTH=Object.freeze({

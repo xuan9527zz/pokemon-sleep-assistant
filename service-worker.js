@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_VERSION='pokemon-sleep-assistant-v12';
+const CACHE_VERSION='pokemon-sleep-assistant-v13';
 const OCR_CACHE='pokemon-sleep-ocr-v1';
 const APP_SHELL=[
   './',
@@ -27,7 +27,8 @@ const APP_SHELL=[
   './assets/ingredients/coffee.png','./assets/ingredients/corn.png','./assets/ingredients/egg.png','./assets/ingredients/ginger.png',
   './assets/ingredients/herb.png','./assets/ingredients/honey.png','./assets/ingredients/leek.png','./assets/ingredients/milk.png',
   './assets/ingredients/mushroom.png','./assets/ingredients/oil.png','./assets/ingredients/potato.png','./assets/ingredients/pumpkin.webp',
-  './assets/ingredients/soybean.png','./assets/ingredients/tail.png','./assets/ingredients/tomato.png'
+  './assets/ingredients/soybean.png','./assets/ingredients/tail.png','./assets/ingredients/tomato.png',
+  './assets/ingredients/nuts.png'
 ];
 
 function cacheKey(request){const url=new URL(request.url);url.search='';url.hash='';return url.toString()}

@@ -45,6 +45,12 @@ const freshBoxMember=planner.calculateMember({...venusaur,id:'1',ingredientRate:
 assert.strictEqual(freshBoxMember.member.probability.base,.31,'fresh box #1 must use its own species rate, not legacy box #1');
 assert.strictEqual(freshBoxMember.member.berryCount,2,'fresh box #1 must use its own species berry count');
 const result = planner.calculateTeam([venusaur, gardevoir], rates, { goodCamp: true, energyProfile: 'average' });
+const banquetModifier = mon => mon.specialty === 'ingredient' ? {ingredientHelpBonus:1,carryBonus:10,extraIngredientName:'一口坚果',extraIngredientAmount:1} : {};
+const banquetTeam = planner.calculateTeam([venusaur, gardevoir], rates, {goodCamp:true,energyProfile:'average',memberModifier:banquetModifier});
+assert.ok(banquetTeam.ingredients.some(item => item.name === '一口坚果' && item.perDay > 0),'食材手每次食材帮忙应额外产出坚果');
+assert.equal(banquetTeam.members[0].carry,result.members[0].carry+10,'食材手持有上限应额外增加10');
+assert.equal(banquetTeam.members[1].carry,result.members[1].carry,'非食材手不增加持有上限');
+assert.ok(banquetTeam.ingredients.find(item=>item.name==='甜甜蜜').perDay > result.ingredients.find(item=>item.name==='甜甜蜜').perDay,'原食材的每次帮忙数量也应增加');
 const cookingHelper={...venusaur,id:'cooking-helper',mainSkillId:31,main:'料理辅助S Lv.3',skillRatePct:8,ingredientRate:.266,baseBerryCount:1};
 const cookingTeam=[cookingHelper,...Array.from({length:4},(_value,index)=>({...gardevoir,id:`cooking-teammate-${index}`}))];
 const ordinarySkill=planner.calculateTeam(cookingTeam,undefined,{energyProfile:'timeline',durationHours:24,skillCollectionHours:4});

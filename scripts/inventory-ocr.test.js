@@ -13,7 +13,7 @@ for(const [traditional,canonical] of Object.entries({
   '品鮮蘑菇':'品鲜蘑菇','暖暖薑':'暖暖姜','特選蛋':'特选蛋','特選蘋果':'特选苹果',
   '純粹油':'纯粹油','粗枝大蔥':'粗枝大葱','窩心洋芋':'窝心洋芋','豆製肉':'豆制肉',
   '醒腦咖啡豆':'醒脑咖啡豆','哞哞鮮奶':'哞哞鲜奶','放鬆可可':'放松可可',
-  '萌綠玉米':'萌绿玉米','萌綠大豆':'萌绿大豆'
+  '萌綠玉米':'萌绿玉米','萌綠大豆':'萌绿大豆','一口堅果':'一口坚果'
 }))assert.deepEqual(ocr.matchName(traditional,names),{name:canonical,distance:0},`${traditional} 应精确映射到简体库存键`);
 assert.equal(ocr.matchName('特選蘋菓',names).name,'特选苹果','繁体 OCR 误字仍应匹配到正确食材');
 assert.equal(ocr.matchName('食材',names),null);

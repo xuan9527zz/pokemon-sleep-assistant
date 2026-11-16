@@ -14,13 +14,13 @@ const recipes=[{id:1,name:'测试料理'},{id:2,name:'第二料理'}];
 const context={ingredients,recipes,islands:[{name:'萌绿之岛'},{name:'天青沙滩'}],activityProfiles:{normal:{label:'普通周'}}};
 const normalized=settings.normalizeState({schemaVersion:2,currentIsland:'cyan',weekMode:'event',islandBonuses:{cyan:120},recipeLevels:{1:60},cookedRecipeIds:[1],ingredientStock:{萌绿玉米:700,哞哞鲜奶:200}},context);
 assert.strictEqual(normalized.currentIsland,'cyan');
-assert.strictEqual(settings.islandBonus(normalized),85);
+assert.strictEqual(settings.islandBonus(normalized),95);
 assert.strictEqual(settings.recipeLevel(normalized,1),60);
 assert.strictEqual(settings.recipeLevel(normalized,2),0);
 assert.strictEqual(normalized.schemaVersion,4);
 assert.strictEqual(normalized.permanentPot,81);
 assert.strictEqual(normalized.sleepStyleCount,0);
-assert.strictEqual(normalized.sleepStyleGoal,510);
+assert.strictEqual(normalized.sleepStyleGoal,570);
 assert.ok(settings.isCooked(normalized,1));
 assert.ok(!settings.isCooked(normalized,2));
 assert.strictEqual(settings.inventoryTotal(normalized.ingredientStock),800,'库存规范化必须遵守800硬上限');
@@ -33,9 +33,10 @@ assert.strictEqual(settings.recipeLevel(cookedMigration,1),1,'旧版仅勾选已
 assert.strictEqual(settings.recipeLevel(cookedMigration,2),20);
 assert.ok(!Object.hasOwn(cookedMigration,'cookedRecipeIds'));
 const progress=settings.normalizeState({permanentPot:999,sleepStyleCount:463,sleepStyleGoal:450},context);
-assert.strictEqual(progress.permanentPot,81,'永久锅容量不得超过当前81格上限');
+assert.strictEqual(progress.permanentPot,87,'永久锅容量不得超过当前87格上限');
 assert.strictEqual(progress.sleepStyleCount,463);
 assert.strictEqual(progress.sleepStyleGoal,450);
+assert.strictEqual(settings.normalizeState({sleepStyleGoal:570,islandBonuses:{cyan:95}},context).sleepStyleGoal,570);
 
 const changed=settings.setIngredientStock(normalized,'特选苹果',500);
 assert.strictEqual(settings.inventoryTotal(changed.ingredientStock),800,'单项修改不得让总库存超过800');

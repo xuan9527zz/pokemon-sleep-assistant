@@ -10,23 +10,23 @@
     helperLevel:70,
     recipeLevel:70,
     researchRank:70,
-    areaBonusPct:85,
-    permanentPot:81,
+    areaBonusPct:95,
+    permanentPot:87,
     cookingPowerStored:200,
     ingredientPocket:800,
     pokemonBox:1400,
-    sleepStyleGoal:510,
+    sleepStyleGoal:570,
     dailySleepScore:100,
     incenseSlots:3
   });
   const SNAPSHOT=Object.freeze({
-    gameVersion:'3.8.0',
-    verifiedAt:'2026-09-11',
-    reviewAfter:'2026-09-25',
+    gameVersion:'3.9.1',
+    verifiedAt:'2026-11-16',
+    reviewAfter:'2026-12-01',
     sources:Object.freeze({
-      official:'https://www.pokemonsleep.net/en/news/343431333739343830363430393436313737/',
-      history:'https://wiki.pokesleep.com/en/history',
-      pot:'https://wiki.pokesleep.com/en/pot'
+      official:'https://www.pokemonsleep.net/zh/news/343537323732393732323130363031393838/',
+      history:'https://wiki.pokesleep.com/ja/history',
+      pot:'https://www.serebii.net/pokemonsleep/dishes.shtml'
     })
   });
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number(value)||0));
@@ -35,8 +35,8 @@
     return {gameVersion:SNAPSHOT.gameVersion,verifiedAt:SNAPSHOT.verifiedAt,reviewAfter:SNAPSHOT.reviewAfter,ageDays,stale:Number.isFinite(current.getTime())&&current>review};
   }
   function finalPotCapacity(options={}){
-    const base=clamp(Math.round(options.baseCapacity||LIMITS.permanentPot),1,LIMITS.permanentPot),eventMultiplier=[1,1.5,2].includes(Number(options.eventMultiplier))?Number(options.eventMultiplier):1,weekend=options.weekend===true?2:1,skill=clamp(Math.round(options.skillBonus)||0,0,LIMITS.cookingPowerStored),camp=options.goodCamp===true?1.5:1;
-    return Math.round((Math.round(base*eventMultiplier)*weekend+skill)*camp);
+    const base=clamp(Math.round(options.baseCapacity||LIMITS.permanentPot),1,LIMITS.permanentPot),eventFlatBonus=clamp(Math.round(options.eventFlatBonus)||0,0,200),eventMultiplier=[1,1.5,2].includes(Number(options.eventMultiplier))?Number(options.eventMultiplier):1,weekend=options.weekend===true?2:1,skill=clamp(Math.round(options.skillBonus)||0,0,LIMITS.cookingPowerStored),camp=options.goodCamp===true?1.5:1;
+    return Math.round((Math.round((base+eventFlatBonus)*eventMultiplier)*weekend+skill)*camp);
   }
   function requiredCookingPower(targetCapacity,options={}){
     const target=Math.max(1,Math.round(Number(targetCapacity)||1));

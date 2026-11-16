@@ -103,6 +103,10 @@ assert.equal(weekly.ACTIVITY_PROFILES.cooking125.cookingEnergyMultiplier,1.25);
 assert.equal(weekly.ACTIVITY_PROFILES.cookingWeek3.cookingEnergyMultiplier,1.25);
 assert.equal(weekly.finalPotCapacity(81,false,weekly.ACTIVITY_PROFILES.cookingWeek3),162);
 assert.equal(weekly.finalPotCapacity(81,false,weekly.ACTIVITY_PROFILES.cookingWeek3,true),324);
+assert.equal(weekly.finalPotCapacity(81,false,weekly.ACTIVITY_PROFILES.banquet1),111);
+assert.equal(weekly.finalPotCapacity(81,false,weekly.ACTIVITY_PROFILES.banquet1,true),222);
+assert.equal(weekly.activityRecipeMultiplier(weekly.ACTIVITY_PROFILES.banquet1,{ingredients:[{name:'一口坚果',amount:15}]}),1.5);
+assert.equal(weekly.activityRecipeMultiplier(weekly.ACTIVITY_PROFILES.banquet1,{ingredients:[{name:'特选苹果',amount:10}]}),1,'坚果加成不得套给普通配方');
 assert.equal(weekly.WEEK_MODE_VIEWS.normal.showSimulation,false);
 assert.equal(weekly.WEEK_MODE_VIEWS.preparation.showRoutes,true);
 assert.equal(weekly.WEEK_MODE_VIEWS.event.showSimulation,true);
@@ -131,6 +135,11 @@ assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.mewtwo1,
 assert.equal(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.cookingWeek3,true)({specialty:'ingredient'}).ingredientHelpBonus,1);
 assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.cookingWeek3,true)({specialty:'berry'}),{},'普通采集＋1只能作用于食材专长');
 assert.deepEqual(weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.cookingWeek3,false)({specialty:'ingredient'}),{},'不在活动岛时不能套加成');
+const banquetModifier=weekly.activityMemberModifier(weekly.ACTIVITY_PROFILES.banquet1,true);
+assert.equal(banquetModifier({specialty:'ingredient'}).ingredientHelpBonus,1);
+assert.equal(banquetModifier({specialty:'ingredient'}).carryBonus,10);
+assert.equal(banquetModifier({specialty:'ingredient'}).extraIngredientName,'一口坚果');
+assert.deepEqual(banquetModifier({specialty:'berry'}),{},'大餐周食材追加只属于食材专长');
 const mergedRoutes=weekly.mergeTargetRecipes([
   {id:'salad',name:'沙拉A',type:'沙拉',ingredients:[{name:'特选苹果',amount:10},{name:'萌绿玉米',amount:5}]},
   {id:'curry',name:'咖喱A',type:'咖喱／浓汤',ingredients:[{name:'特选苹果',amount:6},{name:'豆制肉',amount:8}]}
@@ -229,6 +238,15 @@ assert.equal(cookingWeekMonday.sundayMealShare,0);
 const cookingWeekStage=cookingWeekMonday.stages.find(stage=>stage.kind==='output');
 const directCookingWeek=teamPlanner.calculateTeam(cookingWeekStage.team,common.production,{goodCamp:false,energyProfile:'timeline',memberModifier:weekly.activityMemberModifier(cookingWeek,true),skillIngredientMultiplier:1.5,mealRecoveryBonus:5,durationHours:cookingWeekStage.hours,...cookingWeekMonday.teamSettings});
 assert.deepEqual(cookingWeekStage.breakdown,weekly.teamBreakdown(directCookingWeek),'料理周阶段必须与相同加成的当前队伍引擎逐项一致');
+const banquetRecipe=realRecipes.find(recipe=>recipe.id===1026);
+const banquetWeek=weekly.simulateActivityWeek({...common,activity:weekly.ACTIVITY_PROFILES.banquet1,targetRecipe:banquetRecipe,days:1,mealGoal:1,goodCamp:false,inventory:{'一口坚果':30,'沉甸甸南瓜':30,'萌绿玉米':30},recipeEnergy:()=>1000,autoTasty:false,now:new Date('2026-11-16T04:00:00+09:00')});
+assert.equal(banquetWeek.preview,false);
+assert.equal(banquetWeek.basePotFinal,111);
+assert.equal(banquetWeek.sundayPotFinal,222);
+assert.equal(banquetWeek.cookingMultiplier,1.5,'新活动只对含坚果固定配方计入能量加成');
+assert.equal(banquetWeek.cookedMeals,1,'大餐周已有固定食材库存时应能完成目标料理');
+const plainBanquetWeek=weekly.simulateActivityWeek({...common,activity:weekly.ACTIVITY_PROFILES.banquet1,targetRecipe:recipes[0],days:1,mealGoal:1,goodCamp:false,inventory:{'特选苹果':30},recipeEnergy:()=>1000,autoTasty:false,now:new Date('2026-11-16T04:00:00+09:00')});
+assert.equal(plainBanquetWeek.cookingMultiplier,1,'大餐周普通食谱不享受坚果配方倍率');
 const sundayRecipe={id:999,name:'周日大锅',type:'沙拉',energy:1000,total:200,ingredients:[{name:'特选苹果',amount:200}]};
 const sundayCooking=weekly.simulateActivityWeek({...common,activity:cookingWeek,targetRecipe:sundayRecipe,days:7,mealGoal:21,goodCamp:false,inventory:{'特选苹果':1000},recipeEnergy:()=>1000,autoTasty:false,now:new Date('2026-10-05T04:00:00+09:00')});
 assert.equal(sundayCooking.sundayOnly,true);
@@ -236,7 +254,7 @@ assert.equal(sundayCooking.plannedMeals,3,'工作日放不进锅的料理只能�
 assert.equal(sundayCooking.cookedMeals,3);
 assert.equal(sundayCooking.sundayMealShare,1);
 assert.equal(sundayCooking.cookingEnergy,6000,'周日大成功概率与×3.75能量倍率应进入三餐期望');
-assert.ok(sundayCooking.warnings.some(text=>text.includes('只能在活动周日')));
+assert.ok(sundayCooking.warnings.some(text=>text.includes('只能在周日')));
 const cookingTail=weekly.simulateActivityWeek({...common,activity:cookingWeek,targetRecipe:recipes[0],days:7,mealGoal:21,goodCamp:false,inventory:{'特选苹果':100},recipeEnergy:()=>1000,autoTasty:false,now:new Date('2026-10-11T20:00:00+09:00')});
 assert.equal(cookingTail.totalHours,8,'推演应在活动结束04:00截断，不延长加成到下周');
 assert.equal(cookingTail.plannedMeals,0,'已经过了周日最后一餐时不能凭空增加料理次数');
@@ -280,9 +298,10 @@ assert.ok(tastySimulation.cookingEnergy>110000,'爆锅餐应高于只计自然�
 const oversizedRecipe={id:99,name:'扩锅测试料理',type:'沙拉',energy:5000,total:100,ingredients:[{name:'特选苹果',amount:100}]};
 const oversizedPlan=weekly.calculatePlan({...common,recipes:[...recipes,oversizedRecipe],targetRecipeId:99,basePot:81,goodCamp:false,simulationAutoTasty:false,weekMode:'event'});
 assert.equal(oversizedPlan.targetRecipe.id,99,'手动指定的大锅食谱不能在进入扩锅判断前被当前锅容量过滤掉');
-assert.equal(oversizedPlan.simulations[0].needsPot,true);
-assert.equal(oversizedPlan.simulations[0].cookedMeals,0);
-assert.ok(oversizedPlan.simulations[0].warnings.some(text=>text.includes('爆锅队')&&text.includes('不会增加容量')));
+assert.equal(oversizedPlan.simulations[0].sundayOnly,true,'普通周大锅食谱应识别周日容量，但周一不可提前制作');
+assert.equal(oversizedPlan.simulations[0].plannedMeals,3,'普通周只有周日三餐可用双倍锅容量');
+assert.ok(oversizedPlan.simulations[0].cookedMeals<=3);
+assert.ok(oversizedPlan.simulations[0].warnings.some(text=>text.includes('周日')));
 const sleepGatedPlan=weekly.calculatePlan({...common,targetRecipeId:target.id,currentSnorlaxStrength:5000000,sleepType:'balanced',sleepObjective:'combined'});
 assert.equal(sleepGatedPlan.currentSleepEnergy,5000000);
 assert.equal(sleepGatedPlan.sleepThresholdReached,true);

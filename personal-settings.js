@@ -8,9 +8,9 @@
   'use strict';
 
   const STORAGE_KEY='pokemon-sleep-personal-settings-v1';
-  const LIMITS=gameRules&&gameRules.LIMITS||{helperLevel:70,recipeLevel:70,areaBonusPct:85,permanentPot:81,ingredientPocket:800,sleepStyleGoal:510};
+  const LIMITS=gameRules&&gameRules.LIMITS||{helperLevel:70,recipeLevel:70,areaBonusPct:95,permanentPot:87,ingredientPocket:800,sleepStyleGoal:570};
   const INVENTORY_LIMIT=LIMITS.ingredientPocket;
-  const SLEEP_STYLE_GOALS=Object.freeze([35,70,110,150,190,240,290,340,390,450,510]);
+  const SLEEP_STYLE_GOALS=Object.freeze([35,70,110,150,190,240,290,340,390,450,510,570]);
   const ISLANDS=Object.freeze([
     {key:'green',label:'萌绿之岛',teamProfile:'none'},
     {key:'cyan',label:'天青沙滩',teamProfile:'cyan'},
@@ -52,7 +52,7 @@
       activityKey:'normal',
       islandBonuses:Object.fromEntries(ISLANDS.map(island=>[island.key,0])),
       recipeLevels:{},
-      permanentPot:LIMITS.permanentPot,
+      permanentPot:81,
       sleepStyleCount:0,
       sleepStyleGoal:LIMITS.sleepStyleGoal,
       ingredientStock:Object.fromEntries(ingredientNames(ingredients).map(name=>[name,0])),

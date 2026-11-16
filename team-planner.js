@@ -117,6 +117,9 @@
     const raw=typeof options.memberModifier==='function'?options.memberModifier(mon)||{}:options.memberModifier||{};
     return {
       ingredientHelpBonus:clamp(Number(raw.ingredientHelpBonus)||0,0,99),
+      carryBonus:clamp(Number(raw.carryBonus)||0,0,99),
+      extraIngredientName:String(raw.extraIngredientName||''),
+      extraIngredientAmount:clamp(Number(raw.extraIngredientAmount)||0,0,99),
       skillTriggerMultiplier:clamp(Number(raw.skillTriggerMultiplier)||1,.01,10),
       mainSkillLevelBonus:clamp(Number(raw.mainSkillLevelBonus)||0,0,20),
       label:String(raw.label||'')
@@ -143,7 +146,7 @@
     const favoriteBerries=[...new Set((Array.isArray(options.favoriteBerries)?options.favoriteBerries:[]).map(String).filter(Boolean))];
     return {
       durationHours:clamp(Number(options.durationHours)||DEFAULT_ENERGY_SETTINGS.durationHours,.25,168),
-      islandBonusPct:clamp(Number(options.islandBonusPct)||0,0,gameRules&&gameRules.LIMITS?gameRules.LIMITS.areaBonusPct:85),
+      islandBonusPct:clamp(Number(options.islandBonusPct)||0,0,gameRules&&gameRules.LIMITS?gameRules.LIMITS.areaBonusPct:95),
       islandProfile:Object.hasOwn(ISLAND_PROFILES,options.islandProfile)?options.islandProfile:DEFAULT_ENERGY_SETTINGS.islandProfile,
       favoriteBerries,
       startEnergy:clamp(options.startEnergy===undefined?DEFAULT_ENERGY_SETTINGS.startEnergy:Number(options.startEnergy),0,150),
@@ -309,10 +312,13 @@
     const neutralIntervalSec=baseIntervalSec*teamSpeedFactor*exRule.intervalMultiplier/campSpeed;
     const effectiveIntervalSec=neutralIntervalSec/energyFactor;
     const carryBase=Number(mon.inv)||0;
-    const carry=(options.goodCamp?Math.ceil(carryBase*1.2):carryBase)+exRule.carryBonus;
+    const sourceModifier=memberModifier(options,mon);
+    const carry=(options.goodCamp?Math.ceil(carryBase*1.2):carryBase)+exRule.carryBonus+sourceModifier.carryBonus;
     const ingredients=parseIngredientSlots(mon.ingredients,mon.lv);
-    const sourceModifier=memberModifier(options,mon),eventModifier={
+    const eventModifier={
       ingredientHelpBonus:sourceModifier.ingredientHelpBonus+exRule.ingredientHelpBonus,
+      extraIngredientName:sourceModifier.extraIngredientName,
+      extraIngredientAmount:sourceModifier.extraIngredientAmount,
       skillTriggerMultiplier:sourceModifier.skillTriggerMultiplier*exRule.skillTriggerMultiplier,
       mainSkillLevelBonus:sourceModifier.mainSkillLevelBonus+exRule.mainSkillLevelBonus,
       label:[sourceModifier.label,exRule.label].filter(Boolean).join('／')
@@ -324,13 +330,14 @@
     const catalogBerryCount=production&&production.baseBerryCount!==undefined?production.baseBerryCount:mon&&mon.baseBerryCount;
     const baseBerryCount=Number(catalogBerryCount)||1;
     const berryCount=baseBerryCount+berryFinding;
-    const expectedItemsPerHelp=(1-probability.current)*berryCount+probability.current*averageIngredientQuantity;
+    const expectedItemsPerHelp=(1-probability.current)*berryCount+probability.current*(averageIngredientQuantity+eventModifier.extraIngredientAmount);
     const helpsPerDay=86400/effectiveIntervalSec;
     const fullHours=carry>0&&expectedItemsPerHelp>0?carry/expectedItemsPerHelp*effectiveIntervalSec/3600:Infinity;
     const ingredientPerHelp=ingredients.unlocked.map(slot=>({
       ...slot,
       expected:probability.current*(slot.quantity+eventModifier.ingredientHelpBonus)/unlockedCount
     }));
+    if(eventModifier.extraIngredientName&&eventModifier.extraIngredientAmount)ingredientPerHelp.push({name:eventModifier.extraIngredientName,expected:probability.current*eventModifier.extraIngredientAmount});
     return {
       mon,production,ingredients,probability,baseIntervalSec,neutralIntervalSec,effectiveIntervalSec,carryBase,carry,
       berryCount,berryFinding,expectedItemsPerHelp,helpsPerDay,fullHours,ingredientPerHelp,eventModifier,
