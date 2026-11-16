@@ -64,6 +64,11 @@ assert.ok(berryZone.detail.includes('本周作战台'),'单队计算应引导到
 
 const resources=effects.effectPerUse(0,rows([{id:11,name:'料理强化S'}]),'cooking-power',7);
 assert.equal(resources.potSlotsPerUse,31);
+assert.equal(effects.kindFor('魔法火焰（料理跃进S）',41),'cooking-advance');
+const mysticalFire=effects.effectPerUse(0,rows([{id:41,name:'魔法火焰（料理跃进S）'}]),'cooking-advance',7);
+assert.equal(mysticalFire.potSlotsPerUse,31);
+assert.equal(mysticalFire.tastyBonusPctPerUse,5);
+assert.equal(mysticalFire.energyPerUse,0,'魔法火焰的扩锅和漂亮成功率不能伪装成即时能量');
 
 const selectedIngredients=effects.effectPerUse(0,rows([{id:28,name:'食材精选S'}]),'ingredient-draw',7);
 assert.equal(selectedIngredients.ingredientsPerUse,18);

@@ -7,9 +7,9 @@
   'use strict';
   return Object.freeze({
   "meta": {
-    "generatedAt": "2026-09-29T06:08:30.033Z",
-    "sourceUpdatedAt": "2026-09-28T12:24:00.319Z",
-    "count": 248,
+    "generatedAt": "2026-11-16T17:16:53.206Z",
+    "sourceUpdatedAt": "2026-11-16T17:16:37.620Z",
+    "count": 254,
     "sourceKind": "species-mechanics-and-evolution"
   },
   "pokemon": [
@@ -9003,6 +9003,106 @@
       }
     },
     {
+      "id": "200",
+      "pokedexId": 200,
+      "name": "梦妖",
+      "sourceNameZh": "夢妖",
+      "nameEn": "Misdreavus",
+      "specialty": "skill",
+      "typeId": 14,
+      "berryId": 14,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2800,
+      "carryLimitBase": 13,
+      "carryLimitRaisedFromFirstStage": 13,
+      "ingredientRate": 0.15,
+      "skillRatePct": 4.7,
+      "expType": 1,
+      "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "200",
+        "previous": null,
+        "next": [
+          {
+            "id": "429",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 102,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
+      "isFinalEvolution": false,
+      "finalOptions": [
+        "429"
+      ],
+      "defaultFinalId": "429",
+      "mainSkill": {
+        "id": 11,
+        "name": "料理强化S",
+        "nameEn": "Cooking Power-Up S"
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 1,
+            "name": "窝心洋芋",
+            "nameEn": "Soft Potato"
+          }
+        ],
+        "30": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 2,
+            "name": "窝心洋芋",
+            "nameEn": "Soft Potato"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 2,
+            "name": "醒脑咖啡豆",
+            "nameEn": "Rousing Coffee"
+          }
+        ],
+        "60": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 4,
+            "name": "窝心洋芋",
+            "nameEn": "Soft Potato"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 3,
+            "name": "醒脑咖啡豆",
+            "nameEn": "Rousing Coffee"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 4,
+            "name": "好眠番茄",
+            "nameEn": "Snoozy Tomato"
+          }
+        ]
+      }
+    },
+    {
       "id": "202",
       "pokedexId": 202,
       "name": "果然翁",
@@ -15577,6 +15677,94 @@
       }
     },
     {
+      "id": "429",
+      "pokedexId": 429,
+      "name": "梦妖魔",
+      "sourceNameZh": "夢妖魔",
+      "nameEn": "Mismagius",
+      "specialty": "skill",
+      "typeId": 14,
+      "berryId": 14,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2400,
+      "carryLimitBase": 17,
+      "carryLimitRaisedFromFirstStage": 22,
+      "ingredientRate": 0.142,
+      "skillRatePct": 3.6,
+      "expType": 1,
+      "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "200",
+        "previous": {
+          "id": "200",
+          "conditions": []
+        },
+        "next": []
+      },
+      "isFinalEvolution": true,
+      "finalOptions": [
+        "429"
+      ],
+      "defaultFinalId": "429",
+      "mainSkill": {
+        "id": 41,
+        "name": "魔法火焰（料理跃进S）",
+        "nameEn": "Mystical Fire (Cooking Advance S)"
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 1,
+            "name": "窝心洋芋",
+            "nameEn": "Soft Potato"
+          }
+        ],
+        "30": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 2,
+            "name": "窝心洋芋",
+            "nameEn": "Soft Potato"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 2,
+            "name": "醒脑咖啡豆",
+            "nameEn": "Rousing Coffee"
+          }
+        ],
+        "60": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 4,
+            "name": "窝心洋芋",
+            "nameEn": "Soft Potato"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 3,
+            "name": "醒脑咖啡豆",
+            "nameEn": "Rousing Coffee"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 4,
+            "name": "好眠番茄",
+            "nameEn": "Snoozy Tomato"
+          }
+        ]
+      }
+    },
+    {
       "id": "430",
       "pokedexId": 430,
       "name": "乌鸦头头",
@@ -17610,6 +17798,194 @@
       }
     },
     {
+      "id": "546",
+      "pokedexId": 546,
+      "name": "木棉球",
+      "sourceNameZh": "木棉球",
+      "nameEn": "Cottonee",
+      "specialty": "ingredient",
+      "typeId": 18,
+      "berryId": 18,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 4600,
+      "carryLimitBase": 10,
+      "carryLimitRaisedFromFirstStage": 10,
+      "ingredientRate": 0.2,
+      "skillRatePct": 3.5,
+      "expType": 1,
+      "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "546",
+        "previous": null,
+        "next": [
+          {
+            "id": "547",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 25,
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
+      "isFinalEvolution": false,
+      "finalOptions": [
+        "547"
+      ],
+      "defaultFinalId": "547",
+      "mainSkill": {
+        "id": 7,
+        "name": "活力填充S",
+        "nameEn": "Charge Energy S"
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 2,
+            "name": "一口坚果",
+            "nameEn": "Snackable Nuts"
+          }
+        ],
+        "30": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 5,
+            "name": "一口坚果",
+            "nameEn": "Snackable Nuts"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 3,
+            "name": "嫩亮酪梨",
+            "nameEn": "Glossy Avocado"
+          }
+        ],
+        "60": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 7,
+            "name": "一口坚果",
+            "nameEn": "Snackable Nuts"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 5,
+            "name": "嫩亮酪梨",
+            "nameEn": "Glossy Avocado"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 7,
+            "name": "好眠番茄",
+            "nameEn": "Snoozy Tomato"
+          }
+        ]
+      }
+    },
+    {
+      "id": "547",
+      "pokedexId": 547,
+      "name": "风妖精",
+      "sourceNameZh": "風妖精",
+      "nameEn": "Whimsicott",
+      "specialty": "ingredient",
+      "typeId": 18,
+      "berryId": 18,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2400,
+      "carryLimitBase": 17,
+      "carryLimitRaisedFromFirstStage": 22,
+      "ingredientRate": 0.199,
+      "skillRatePct": 3.8,
+      "expType": 1,
+      "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "546",
+        "previous": {
+          "id": "546",
+          "conditions": []
+        },
+        "next": []
+      },
+      "isFinalEvolution": true,
+      "finalOptions": [
+        "547"
+      ],
+      "defaultFinalId": "547",
+      "mainSkill": {
+        "id": 7,
+        "name": "活力填充S",
+        "nameEn": "Charge Energy S"
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 2,
+            "name": "一口坚果",
+            "nameEn": "Snackable Nuts"
+          }
+        ],
+        "30": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 5,
+            "name": "一口坚果",
+            "nameEn": "Snackable Nuts"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 3,
+            "name": "嫩亮酪梨",
+            "nameEn": "Glossy Avocado"
+          }
+        ],
+        "60": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 7,
+            "name": "一口坚果",
+            "nameEn": "Snackable Nuts"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 5,
+            "name": "嫩亮酪梨",
+            "nameEn": "Glossy Avocado"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 7,
+            "name": "好眠番茄",
+            "nameEn": "Snoozy Tomato"
+          }
+        ]
+      }
+    },
+    {
       "id": "557",
       "pokedexId": 557,
       "name": "石居蟹",
@@ -17792,6 +18168,193 @@
             "quantity": 5,
             "name": "纯粹油",
             "nameEn": "Pure Oil"
+          }
+        ]
+      }
+    },
+    {
+      "id": "590",
+      "pokedexId": 590,
+      "name": "哎呀球菇",
+      "sourceNameZh": "哎呀球菇",
+      "nameEn": "Foongus",
+      "specialty": "ingredient",
+      "typeId": 8,
+      "berryId": 8,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 5700,
+      "carryLimitBase": 12,
+      "carryLimitRaisedFromFirstStage": 12,
+      "ingredientRate": 0.174,
+      "skillRatePct": 3.5,
+      "expType": 1,
+      "stage": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "lineId": "590",
+        "previous": null,
+        "next": [
+          {
+            "id": "591",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 29
+              }
+            ]
+          }
+        ]
+      },
+      "isFinalEvolution": false,
+      "finalOptions": [
+        "591"
+      ],
+      "defaultFinalId": "591",
+      "mainSkill": {
+        "id": 1,
+        "name": "能量填充S",
+        "nameEn": "Charge Strength S"
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 2,
+            "name": "品鲜蘑菇",
+            "nameEn": "Tasty Mushroom"
+          }
+        ],
+        "30": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 5,
+            "name": "品鲜蘑菇",
+            "nameEn": "Tasty Mushroom"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 7,
+            "name": "特选蛋",
+            "nameEn": "Fancy Egg"
+          }
+        ],
+        "60": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 7,
+            "name": "品鲜蘑菇",
+            "nameEn": "Tasty Mushroom"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 10,
+            "name": "特选蛋",
+            "nameEn": "Fancy Egg"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 11,
+            "name": "好眠番茄",
+            "nameEn": "Snoozy Tomato"
+          }
+        ]
+      }
+    },
+    {
+      "id": "591",
+      "pokedexId": 591,
+      "name": "败露球菇",
+      "sourceNameZh": "敗露球菇",
+      "nameEn": "Amoonguss",
+      "specialty": "ingredient",
+      "typeId": 8,
+      "berryId": 8,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 3500,
+      "carryLimitBase": 14,
+      "carryLimitRaisedFromFirstStage": 19,
+      "ingredientRate": 0.204,
+      "skillRatePct": 4.7,
+      "expType": 1,
+      "stage": 2,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "lineId": "590",
+        "previous": {
+          "id": "590",
+          "conditions": []
+        },
+        "next": []
+      },
+      "isFinalEvolution": true,
+      "finalOptions": [
+        "591"
+      ],
+      "defaultFinalId": "591",
+      "mainSkill": {
+        "id": 1,
+        "name": "能量填充S",
+        "nameEn": "Charge Strength S"
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 2,
+            "name": "品鲜蘑菇",
+            "nameEn": "Tasty Mushroom"
+          }
+        ],
+        "30": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 5,
+            "name": "品鲜蘑菇",
+            "nameEn": "Tasty Mushroom"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 7,
+            "name": "特选蛋",
+            "nameEn": "Fancy Egg"
+          }
+        ],
+        "60": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 7,
+            "name": "品鲜蘑菇",
+            "nameEn": "Tasty Mushroom"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 10,
+            "name": "特选蛋",
+            "nameEn": "Fancy Egg"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 11,
+            "name": "好眠番茄",
+            "nameEn": "Snoozy Tomato"
           }
         ]
       }

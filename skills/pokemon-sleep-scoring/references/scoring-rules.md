@@ -6,6 +6,9 @@
 
 - `scripts/scoring-core.js` is the only individual formula source.
 - `scripts/species-tiers.js` is the user-maintained species S/A/B/C table; unlisted final forms default to C.
+- User update on 2026-11-17: Foongus (#590) and Amoonguss (#591) are ingredient specialists at species B, the same tier as Quagsire. Foongus inherits Amoonguss's final-form tier. Both now have RaenonX production data and local icons.
+- User update on 2026-11-17: Misdreavus (#200) and Mismagius (#429) are explicitly skill-specialist species C. Misdreavus inherits Mismagius's final-form tier. Both now have RaenonX production data and local icons; their main skills differ across evolution.
+- User update on 2026-11-17: Cottonee (#546) and Whimsicott (#547) are ingredient specialists at species A. Cottonee inherits Whimsicott's final-form tier. Their helper mechanics and icons were added from the PokéSleep Super Wiki; rates are site-published estimates without sample counts.
 - Root `pokemon-scoring.js` maps catalog records and Berry Burst roles into the core.
 - `scripts/box-scores.js` only builds the initial box snapshot.
 - Team, island and event production calculators keep their verified mechanics; the individual multiplier does not replace them.

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-28T12:24:00.319Z",
+  "generatedAt": "2026-11-16T17:16:37.620Z",
   "source": {
-    "provider": "RaenonX Pokémon Sleep Wiki",
+    "provider": "RaenonX Pokémon Sleep Wiki + PokéSleep Super Wiki supplements",
     "pokedexUrl": "https://pks.raenonx.cc/en/pokedex",
     "ratesUrl": "https://pks.raenonx.cc/en/stats/base-rates",
     "mainSkillVerificationUrl": "https://wikiwiki.jp/poke_sleep/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3%E3%81%AE%E4%B8%80%E8%A6%A7/%E3%83%A1%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%AD%E3%83%AB%E5%88%A5",
-    "note": "Ingredient and skill rates are RaenonX research estimates, not official in-game disclosures. Main skills are cross-checked against the current Japanese verification list; explicitly listed preview records may instead use an official announcement and retain null/unsettled production rates.",
+    "note": "Ingredient and skill rates are RaenonX research estimates, not official in-game disclosures. Main skills are cross-checked against the current Japanese verification list; explicitly listed preview records may instead use an official announcement and retain null/unsettled production rates. Pokémon #546 and #547 are supplemented from PokéSleep Super Wiki, with published rate estimates and no sample counts.",
     "corrections": [
       {
         "pokemonId": "122",
@@ -709,7 +709,37 @@
         "source": "https://wikiwiki.jp/poke_sleep/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3%E3%81%AE%E4%B8%80%E8%A6%A7/%E3%83%A1%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%AD%E3%83%AB%E5%88%A5"
       }
     ],
-    "officialPreviewOverrides": []
+    "officialPreviewOverrides": [],
+    "supplementalRecords": [
+      {
+        "ids": [
+          "546",
+          "547"
+        ],
+        "provider": "PokéSleep Super Wiki",
+        "urls": [
+          "https://wiki.pokesleep.com/zhs/pokemon/cottonee",
+          "https://wiki.pokesleep.com/zhs/pokemon/whimsicott"
+        ],
+        "note": "Helper mechanics, ingredient and skill estimates, evolution and debut information; sample counts were not published."
+      },
+      {
+        "ids": [
+          "200",
+          "429",
+          "590",
+          "591"
+        ],
+        "provider": "RaenonX Pokémon Sleep Wiki",
+        "urls": [
+          "https://pks.raenonx.cc/en/pokedex/200",
+          "https://pks.raenonx.cc/en/pokedex/429",
+          "https://pks.raenonx.cc/en/pokedex/590",
+          "https://pks.raenonx.cc/en/pokedex/591"
+        ],
+        "note": "Mechanics, measured rates and sample counts checked on 2026-11-17; main skills cross-checked with PokéSleep Super Wiki."
+      }
+    ]
   },
   "comparisonPolicy": {
     "targetLevel": 70,
@@ -718,12 +748,12 @@
     "scoringWeightsFinalized": false
   },
   "counts": {
-    "all": 248,
-    "calculationReady": 248,
+    "all": 254,
+    "calculationReady": 254,
     "previews": 0,
-    "finalEvolutions": 128,
+    "finalEvolutions": 131,
     "missingRates": 0,
-    "verifiedMainSkills": 248,
+    "verifiedMainSkills": 254,
     "mainSkillCorrections": 50,
     "officialMainSkillOverrides": 0
   },
@@ -10574,6 +10604,117 @@
       "isFinalEvolution": true
     },
     {
+      "id": "200",
+      "pokedexId": 200,
+      "basePokedexId": 200,
+      "nameEn": "Misdreavus",
+      "nameZh": "夢妖",
+      "patternId": 1,
+      "patternI18nId": "1",
+      "typeId": 14,
+      "sleepTypeId": 4,
+      "specialty": "skill",
+      "berryId": 14,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2800,
+      "carryLimitBase": 13,
+      "carryLimitRaisedFromFirstStage": 13,
+      "friendshipPoints": 16,
+      "expType": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "previous": null,
+        "next": [
+          {
+            "id": "429",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 102,
+                "count": 1
+              }
+            ]
+          }
+        ],
+        "lineId": 200
+      },
+      "mainSkill": {
+        "id": 11,
+        "nameEn": "Cooking Power-Up S",
+        "nameZh": "料理强化S",
+        "nameJa": "料理パワーアップS",
+        "source": "raenonxVerified",
+        "raenonxMainSkillId": 11
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 1,
+            "combinationProbability": 1,
+            "nameEn": "Soft Potato",
+            "nameZh": "窩心洋芋"
+          }
+        ],
+        "30": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 2,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Soft Potato",
+            "nameZh": "窩心洋芋"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 2,
+            "combinationProbability": 0.6666666666666666,
+            "nameEn": "Rousing Coffee",
+            "nameZh": "醒腦咖啡豆"
+          }
+        ],
+        "60": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 4,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Soft Potato",
+            "nameZh": "窩心洋芋"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 3,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Rousing Coffee",
+            "nameZh": "醒腦咖啡豆"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 4,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snoozy Tomato",
+            "nameZh": "好眠番茄"
+          }
+        ]
+      },
+      "ingredientRate": 0.15,
+      "skillRatePct": 4.7,
+      "rateSampleCount": 12,
+      "rateSettled": true,
+      "releasedAt": "2026-10-26T01:00:00.000",
+      "isFinalEvolution": false
+    },
+    {
       "id": "202",
       "pokedexId": 202,
       "basePokedexId": 202,
@@ -17808,6 +17949,102 @@
       "isFinalEvolution": true
     },
     {
+      "id": "429",
+      "pokedexId": 429,
+      "basePokedexId": 429,
+      "nameEn": "Mismagius",
+      "nameZh": "夢妖魔",
+      "patternId": 1,
+      "patternI18nId": "1",
+      "typeId": 14,
+      "sleepTypeId": 4,
+      "specialty": "skill",
+      "berryId": 14,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2400,
+      "carryLimitBase": 17,
+      "carryLimitRaisedFromFirstStage": 22,
+      "friendshipPoints": 20,
+      "expType": 1,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "previous": "200",
+        "next": [],
+        "lineId": 200
+      },
+      "mainSkill": {
+        "id": 41,
+        "nameEn": "Mystical Fire (Cooking Advance S)",
+        "nameZh": "魔法火焰（料理跃进S）",
+        "nameJa": "マジカルフレイム（料理アドバンスS）",
+        "source": "raenonxVerified",
+        "raenonxMainSkillId": 41
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 1,
+            "combinationProbability": 1,
+            "nameEn": "Soft Potato",
+            "nameZh": "窩心洋芋"
+          }
+        ],
+        "30": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 2,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Soft Potato",
+            "nameZh": "窩心洋芋"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 2,
+            "combinationProbability": 0.6666666666666666,
+            "nameEn": "Rousing Coffee",
+            "nameZh": "醒腦咖啡豆"
+          }
+        ],
+        "60": [
+          {
+            "id": 4,
+            "code": "A",
+            "quantity": 4,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Soft Potato",
+            "nameZh": "窩心洋芋"
+          },
+          {
+            "id": 17,
+            "code": "B",
+            "quantity": 3,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Rousing Coffee",
+            "nameZh": "醒腦咖啡豆"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 4,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snoozy Tomato",
+            "nameZh": "好眠番茄"
+          }
+        ]
+      },
+      "ingredientRate": 0.142,
+      "skillRatePct": 3.6,
+      "rateSampleCount": 11,
+      "rateSettled": true,
+      "releasedAt": "2026-10-26T01:00:00.000",
+      "isFinalEvolution": true
+    },
+    {
       "id": "430",
       "pokedexId": 430,
       "basePokedexId": 430,
@@ -20054,6 +20291,213 @@
       "isFinalEvolution": true
     },
     {
+      "id": "546",
+      "pokedexId": 546,
+      "basePokedexId": 546,
+      "nameEn": "Cottonee",
+      "nameZh": "木棉球",
+      "patternId": 1,
+      "patternI18nId": "1",
+      "typeId": 18,
+      "sleepTypeId": 1,
+      "specialty": "ingredient",
+      "berryId": 18,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 4600,
+      "carryLimitBase": 10,
+      "carryLimitRaisedFromFirstStage": 10,
+      "friendshipPoints": 5,
+      "expType": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "previous": null,
+        "next": [
+          {
+            "id": "547",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 80
+              },
+              {
+                "type": "item",
+                "item": 25,
+                "count": 1
+              }
+            ]
+          }
+        ],
+        "lineId": 546
+      },
+      "mainSkill": {
+        "id": 7,
+        "nameEn": "Charge Energy S",
+        "nameZh": "活力填充S",
+        "nameJa": "げんきチャージS",
+        "source": "pokesleepSuperWiki",
+        "raenonxMainSkillId": null
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 2,
+            "combinationProbability": 1,
+            "nameEn": "Snackable Nuts",
+            "nameZh": "一口堅果"
+          }
+        ],
+        "30": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 5,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snackable Nuts",
+            "nameZh": "一口堅果"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 3,
+            "combinationProbability": 0.6666666666666666,
+            "nameEn": "Glossy Avocado",
+            "nameZh": "嫩亮酪梨"
+          }
+        ],
+        "60": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 7,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snackable Nuts",
+            "nameZh": "一口堅果"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 5,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Glossy Avocado",
+            "nameZh": "嫩亮酪梨"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 7,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snoozy Tomato",
+            "nameZh": "好眠番茄"
+          }
+        ]
+      },
+      "ingredientRate": 0.2,
+      "skillRatePct": 3.5,
+      "rateSampleCount": null,
+      "rateSettled": true,
+      "releasedAt": "2026-11-16T06:00:00.000Z",
+      "isFinalEvolution": false
+    },
+    {
+      "id": "547",
+      "pokedexId": 547,
+      "basePokedexId": 547,
+      "nameEn": "Whimsicott",
+      "nameZh": "風妖精",
+      "patternId": 1,
+      "patternI18nId": "1",
+      "typeId": 18,
+      "sleepTypeId": 1,
+      "specialty": "ingredient",
+      "berryId": 18,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 2400,
+      "carryLimitBase": 17,
+      "carryLimitRaisedFromFirstStage": 22,
+      "friendshipPoints": 20,
+      "expType": 1,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "previous": "546",
+        "next": [],
+        "lineId": 546
+      },
+      "mainSkill": {
+        "id": 7,
+        "nameEn": "Charge Energy S",
+        "nameZh": "活力填充S",
+        "nameJa": "げんきチャージS",
+        "source": "pokesleepSuperWiki",
+        "raenonxMainSkillId": null
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 2,
+            "combinationProbability": 1,
+            "nameEn": "Snackable Nuts",
+            "nameZh": "一口堅果"
+          }
+        ],
+        "30": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 5,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snackable Nuts",
+            "nameZh": "一口堅果"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 3,
+            "combinationProbability": 0.6666666666666666,
+            "nameEn": "Glossy Avocado",
+            "nameZh": "嫩亮酪梨"
+          }
+        ],
+        "60": [
+          {
+            "id": 20,
+            "code": "A",
+            "quantity": 7,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snackable Nuts",
+            "nameZh": "一口堅果"
+          },
+          {
+            "id": 19,
+            "code": "B",
+            "quantity": 5,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Glossy Avocado",
+            "nameZh": "嫩亮酪梨"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 7,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snoozy Tomato",
+            "nameZh": "好眠番茄"
+          }
+        ]
+      },
+      "ingredientRate": 0.199,
+      "skillRatePct": 3.8,
+      "rateSampleCount": null,
+      "rateSettled": true,
+      "releasedAt": "2026-11-16T06:00:00.000Z",
+      "isFinalEvolution": true
+    },
+    {
       "id": "557",
       "pokedexId": 557,
       "basePokedexId": 557,
@@ -20257,6 +20701,212 @@
       "rateSampleCount": 15,
       "rateSettled": true,
       "releasedAt": "2025-11-06T07:00:00.000",
+      "isFinalEvolution": true
+    },
+    {
+      "id": "590",
+      "pokedexId": 590,
+      "basePokedexId": 590,
+      "nameEn": "Foongus",
+      "nameZh": "哎呀球菇",
+      "patternId": 1,
+      "patternI18nId": "1",
+      "typeId": 8,
+      "sleepTypeId": 4,
+      "specialty": "ingredient",
+      "berryId": 8,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 5700,
+      "carryLimitBase": 12,
+      "carryLimitRaisedFromFirstStage": 12,
+      "friendshipPoints": 5,
+      "expType": 1,
+      "evolution": {
+        "stage": 1,
+        "stageToFinal": 1,
+        "previous": null,
+        "next": [
+          {
+            "id": "591",
+            "conditions": [
+              {
+                "type": "candy",
+                "count": 40
+              },
+              {
+                "type": "level",
+                "level": 29
+              }
+            ]
+          }
+        ],
+        "lineId": 590
+      },
+      "mainSkill": {
+        "id": 1,
+        "nameEn": "Charge Strength S",
+        "nameZh": "能量填充S",
+        "nameJa": "エナジーチャージS",
+        "source": "raenonxVerified",
+        "raenonxMainSkillId": 1
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 2,
+            "combinationProbability": 1,
+            "nameEn": "Tasty Mushroom",
+            "nameZh": "品鮮蘑菇"
+          }
+        ],
+        "30": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 5,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Tasty Mushroom",
+            "nameZh": "品鮮蘑菇"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 7,
+            "combinationProbability": 0.6666666666666666,
+            "nameEn": "Fancy Egg",
+            "nameZh": "特選蛋"
+          }
+        ],
+        "60": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 7,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Tasty Mushroom",
+            "nameZh": "品鮮蘑菇"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 10,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Fancy Egg",
+            "nameZh": "特選蛋"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 11,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snoozy Tomato",
+            "nameZh": "好眠番茄"
+          }
+        ]
+      },
+      "ingredientRate": 0.174,
+      "skillRatePct": 3.5,
+      "rateSampleCount": 13,
+      "rateSettled": true,
+      "releasedAt": "2026-10-05T01:00:00.000",
+      "isFinalEvolution": false
+    },
+    {
+      "id": "591",
+      "pokedexId": 591,
+      "basePokedexId": 591,
+      "nameEn": "Amoonguss",
+      "nameZh": "敗露球菇",
+      "patternId": 1,
+      "patternI18nId": "1",
+      "typeId": 8,
+      "sleepTypeId": 4,
+      "specialty": "ingredient",
+      "berryId": 8,
+      "baseBerryCount": 1,
+      "helpFrequencyBaseSec": 3500,
+      "carryLimitBase": 14,
+      "carryLimitRaisedFromFirstStage": 19,
+      "friendshipPoints": 12,
+      "expType": 1,
+      "evolution": {
+        "stage": 2,
+        "stageToFinal": 0,
+        "previous": "590",
+        "next": [],
+        "lineId": 590
+      },
+      "mainSkill": {
+        "id": 1,
+        "nameEn": "Charge Strength S",
+        "nameZh": "能量填充S",
+        "nameJa": "エナジーチャージS",
+        "source": "raenonxVerified",
+        "raenonxMainSkillId": 1
+      },
+      "ingredients": {
+        "1": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 2,
+            "combinationProbability": 1,
+            "nameEn": "Tasty Mushroom",
+            "nameZh": "品鮮蘑菇"
+          }
+        ],
+        "30": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 5,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Tasty Mushroom",
+            "nameZh": "品鮮蘑菇"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 7,
+            "combinationProbability": 0.6666666666666666,
+            "nameEn": "Fancy Egg",
+            "nameZh": "特選蛋"
+          }
+        ],
+        "60": [
+          {
+            "id": 2,
+            "code": "A",
+            "quantity": 7,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Tasty Mushroom",
+            "nameZh": "品鮮蘑菇"
+          },
+          {
+            "id": 3,
+            "code": "B",
+            "quantity": 10,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Fancy Egg",
+            "nameZh": "特選蛋"
+          },
+          {
+            "id": 12,
+            "code": "C",
+            "quantity": 11,
+            "combinationProbability": 0.3333333333333333,
+            "nameEn": "Snoozy Tomato",
+            "nameZh": "好眠番茄"
+          }
+        ]
+      },
+      "ingredientRate": 0.204,
+      "skillRatePct": 4.7,
+      "rateSampleCount": 8,
+      "rateSettled": true,
+      "releasedAt": "2026-10-05T01:00:00.000",
       "isFinalEvolution": true
     },
     {

@@ -5,6 +5,7 @@ const cooking=require('../cooking-success.js');
 
 assert.equal(cooking.bonusPctPerTrigger({mainSkillId:14,main:'料理成功S Lv.6'},6),10);
 assert.equal(cooking.bonusPctPerTrigger({mainSkillId:11,main:'料理强化S Lv.7'},7),0,'扩锅技能不能被识别为爆锅技能');
+assert.equal(cooking.bonusPctPerTrigger({mainSkillId:41,main:'魔法火焰（料理跃进S） Lv.7'},7),5,'梦妖魔应按魔法火焰同时增加漂亮成功率');
 
 const weekday=cooking.mealOutcome({bonusPct:70});
 assert.ok(Math.abs(weekday.critProbability-.8)<1e-12);

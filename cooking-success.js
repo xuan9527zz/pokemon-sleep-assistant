@@ -16,18 +16,21 @@
     weekdayCritMultiplier:2,
     sundayCritMultiplier:3
   });
+  const COOKING_ADVANCE=Object.freeze({mainSkillId:41,maxLevel:7,bonusPctByLevel:Object.freeze({1:1,2:2,3:2,4:3,5:3,6:4,7:5})});
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number(value)||0));
   const sum=values=>values.reduce((total,value)=>total+value,0);
 
   function isTastyChanceHelper(mon){
-    return Number(mon&&mon.mainSkillId)===TASTY_CHANCE_S.mainSkillId||/料理成功S/.test(String(mon&&mon.main||''));
+    return Number(mon&&mon.mainSkillId)===TASTY_CHANCE_S.mainSkillId||Number(mon&&mon.mainSkillId)===COOKING_ADVANCE.mainSkillId||/料理成功S|魔法火焰|料理跃进S/.test(String(mon&&mon.main||''));
   }
 
   function bonusPctPerTrigger(mon,skillLevel=1){
     if(!isTastyChanceHelper(mon))return 0;
-    const level=clamp(Math.round(skillLevel),1,TASTY_CHANCE_S.maxLevel);
-    return TASTY_CHANCE_S.bonusPctByLevel[level]||0;
+    const advance=Number(mon&&mon.mainSkillId)===COOKING_ADVANCE.mainSkillId||/魔法火焰|料理跃进S/.test(String(mon&&mon.main||''));
+    const table=advance?COOKING_ADVANCE:TASTY_CHANCE_S;
+    const level=clamp(Math.round(skillLevel),1,table.maxLevel);
+    return table.bonusPctByLevel[level]||0;
   }
 
   function poissonCappedCounts(mean,maximumCount){
@@ -116,5 +119,5 @@
     return {isSunday,critProbability,expectedMultiplier,critMultiplier:isSunday?TASTY_CHANCE_S.sundayCritMultiplier:TASTY_CHANCE_S.weekdayCritMultiplier};
   }
 
-  return Object.freeze({TASTY_CHANCE_S,isTastyChanceHelper,bonusPctPerTrigger,poissonCappedCounts,initialBonusState,advanceTriggers,bonusDistribution,summarizeDistribution,timeForTargetProbability,deploymentEstimate,mealOutcome,expectedMealOutcome});
+  return Object.freeze({TASTY_CHANCE_S,COOKING_ADVANCE,isTastyChanceHelper,bonusPctPerTrigger,poissonCappedCounts,initialBonusState,advanceTriggers,bonusDistribution,summarizeDistribution,timeForTargetProbability,deploymentEstimate,mealOutcome,expectedMealOutcome});
 });

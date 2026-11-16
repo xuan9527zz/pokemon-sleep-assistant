@@ -4,6 +4,7 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const levels = require('../level-manager.js');
+const fullCatalog = require('../pokemon-catalog.generated.js');
 
 assert.strictEqual(levels.normalizeLevel(1), 1);
 assert.strictEqual(levels.normalizeLevel('70'), 70);
@@ -88,6 +89,35 @@ assert.strictEqual(levels.evolutionRecord(venusaurEvolution,evolutionCatalog),nu
 const eevee={...bulbasaur,speciesId:'133',finalFormId:'700',name:'伊布',interval:'1:01:40',inv:'12'};
 assert.strictEqual(levels.evolutionTarget(eevee,evolutionCatalog).target.name,'仙子伊布','分支进化必须遵循已选择的最终形态');
 assert.strictEqual(levels.evolutionRecord(eevee,evolutionCatalog).main,'活力全体疗愈S Lv.2');
+
+const cottoneeSpecies = fullCatalog.pokemon.find(row => row.id === '546');
+const whimsicottSpecies = fullCatalog.pokemon.find(row => row.id === '547');
+assert.strictEqual(cottoneeSpecies.defaultFinalId,'547');
+assert.strictEqual(cottoneeSpecies.ingredients['1'][0].name,'一口坚果');
+assert.strictEqual(whimsicottSpecies.ingredients['60'][2].name,'好眠番茄');
+assert.ok(cottoneeSpecies.evolution.next[0].conditions.some(condition => condition.type === 'item' && condition.item === 25),'木棉球进化应需要日之石');
+const cottonee={id:'cotton',speciesId:'546',finalFormId:'547',name:'木棉球',lv:'30',interval:'1:16:40',inv:'10',main:'活力填充S Lv.1',subs:'—；—；—；—；—'};
+const whimsicott=levels.evolutionRecord(cottonee,fullCatalog);
+assert.strictEqual(whimsicott.speciesId,'547');
+assert.strictEqual(whimsicott.main,'活力填充S Lv.2');
+assert.strictEqual(whimsicott.inv,'22');
+
+const misdreavusSpecies=fullCatalog.pokemon.find(row=>row.id==='200');
+const mismagiusSpecies=fullCatalog.pokemon.find(row=>row.id==='429');
+assert.strictEqual(misdreavusSpecies.mainSkill.name,'料理强化S');
+assert.strictEqual(mismagiusSpecies.mainSkill.id,41);
+assert.strictEqual(mismagiusSpecies.mainSkill.name,'魔法火焰（料理跃进S）');
+assert.ok(misdreavusSpecies.evolution.next[0].conditions.some(condition=>condition.type==='item'&&condition.item===102),'梦妖应使用暗之石进化');
+const misdreavus={id:'ghost',speciesId:'200',finalFormId:'429',name:'梦妖',lv:'30',interval:'46:40',inv:'13',main:'料理强化S Lv.1',subs:'—；—；—；—；—'};
+const mismagius=levels.evolutionRecord(misdreavus,fullCatalog);
+assert.strictEqual(mismagius.speciesId,'429');
+assert.strictEqual(mismagius.main,'魔法火焰（料理跃进S） Lv.2');
+assert.strictEqual(mismagius.inv,'22');
+const foongusSpecies=fullCatalog.pokemon.find(row=>row.id==='590');
+const amoongussSpecies=fullCatalog.pokemon.find(row=>row.id==='591');
+assert.strictEqual(foongusSpecies.defaultFinalId,'591');
+assert.strictEqual(amoongussSpecies.ingredients['30'][1].name,'特选蛋');
+assert.ok(foongusSpecies.evolution.next[0].conditions.some(condition=>condition.type==='level'&&condition.level===29));
 
 const legacyFixture = path.resolve(__dirname, 'legacy-box-fixture.txt');
 if (fs.existsSync(legacyFixture) && process.env.POKEMON_SLEEP_TEST_SYNTHETIC !== '1') {

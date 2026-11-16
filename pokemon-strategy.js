@@ -114,7 +114,7 @@
   const INGREDIENT_ABB_GRADUATION_IDS=new Set(['149','248','405']);
   const DIFFICULT_HUNT_GAUGE=Object.freeze({'702':16});
   const DIRECT_ENERGY_BERRY_SUBSTITUTE_IDS=new Set(['181','196','491','715']);
-  const TOOL_SKILL_PATTERN=/料理成功|料理强化|梦之碎片获取|梦碎获取|波导弹/;
+  const TOOL_SKILL_PATTERN=/料理成功|料理强化|料理跃进|魔法火焰|梦之碎片获取|梦碎获取|波导弹/;
   const INGREDIENT_NATURES=new Set(['马虎','冷静','慢吞吞']);
   const INGREDIENT_SPEED_NATURES=new Set(['内敛','顽皮','勇敢','怕寂寞']);
   const SKILL_NATURES=new Set(['慎重','自大','温顺']);

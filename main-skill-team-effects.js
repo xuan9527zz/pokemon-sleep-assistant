@@ -49,6 +49,7 @@
   const HYPER_CUTTER=Object.freeze({mainSkillId:25,maxLevel:7,countByLevel:INGREDIENT_DRAW.countByLevel,largeSuccessMultiplier:3});
   const BERRY_JUICE=Object.freeze({dropPerUse:.185});
   const COOKING_POWER=Object.freeze({mainSkillId:11,maxLevel:7,slotsByLevel:freezeTable({1:7,2:10,3:12,4:17,5:22,6:27,7:31})});
+  const COOKING_ADVANCE=Object.freeze({mainSkillId:41,maxLevel:7,slotsByLevel:COOKING_POWER.slotsByLevel,tastyBonusByLevel:freezeTable({1:1,2:2,3:2,4:3,5:3,6:4,7:5})});
   const TASTY_CHANCE=Object.freeze({mainSkillId:14,maxLevel:6,bonusByLevel:freezeTable({1:4,2:5,3:6,4:7,5:8,6:10})});
   const DREAM_SHARD=Object.freeze({mainSkillId:3,maxLevel:8,countByLevel:freezeTable({1:240,2:340,3:480,4:670,5:920,6:1260,7:1800,8:2500})});
   const ALL_MIGHTY_CANDY=Object.freeze({1:1,2:1,3:1,4:1,5:1,6:1.3,7:1.6,8:1.9});
@@ -57,15 +58,15 @@
   const KIND_BY_ID=Object.freeze({
     4:'energizing-cheer',7:'charge-energy',8:'e4e',9:'helping-support',15:'helper-boost',17:'disguise-berry-burst',
     3:'dream-shard',6:'dream-shard-random',10:'ingredient-magnet',11:'cooking-power',13:'metronome',14:'tasty-chance',18:'moonlight',19:'skill-copy',20:'skill-copy',21:'berry-burst',22:'crescent-prayer',23:'nightmare',24:'super-luck',25:'hyper-cutter',26:'plus',27:'minus',28:'ingredient-draw',29:'present',30:'nuzzle',31:'cooking-assist',32:'berry-juice',
-    34:'heal-pulse',35:'meteor-shower',36:'aura-sphere',40:'berry-zone'
+    34:'heal-pulse',35:'meteor-shower',36:'aura-sphere',40:'berry-zone',41:'cooking-advance'
   });
   const LABELS=Object.freeze({
     'energizing-cheer':'活力疗愈S','charge-energy':'活力填充S','e4e':'活力全体疗愈S','helping-support':'帮手支援S',
     'helper-boost':'帮手加速','disguise-berry-burst':'画皮（树果骤增）','moonlight':'月光','skill-copy':'技能复制',
     'berry-burst':'树果骤增','crescent-prayer':'新月祈祷','nuzzle':'蹭蹭脸颊','berry-juice':'树果汁','heal-pulse':'治愈波动',
-    'meteor-shower':'流星群（树果骤增）','metronome':'挥指','nightmare':'噩梦','ingredient-magnet':'食材获取S','ingredient-draw':'食材精选S','super-luck':'超幸运（食材精选S）','hyper-cutter':'怪力钳（食材精选S）','plus':'正电（食材获取S）','minus':'负电（料理强化S）','present':'礼物（食材获取S）','cooking-power':'料理强化S','tasty-chance':'料理成功S','dream-shard':'梦之碎片获取S','dream-shard-random':'梦之碎片获取S（浮动）','aura-sphere':'波导弹（梦之碎片获取S）','berry-zone':'精神击破（树果领域）','cooking-assist':'料理辅助S'
+    'meteor-shower':'流星群（树果骤增）','metronome':'挥指','nightmare':'噩梦','ingredient-magnet':'食材获取S','ingredient-draw':'食材精选S','super-luck':'超幸运（食材精选S）','hyper-cutter':'怪力钳（食材精选S）','plus':'正电（食材获取S）','minus':'负电（料理强化S）','present':'礼物（食材获取S）','cooking-power':'料理强化S','cooking-advance':'魔法火焰（料理跃进S）','tasty-chance':'料理成功S','dream-shard':'梦之碎片获取S','dream-shard-random':'梦之碎片获取S（浮动）','aura-sphere':'波导弹（梦之碎片获取S）','berry-zone':'精神击破（树果领域）','cooking-assist':'料理辅助S'
   });
-  const FAMILY_PATTERN=/活力全体疗愈|活力疗愈|活力填充|月光|蹭蹭脸颊|树果汁|治愈波动|帮手支援|帮手加速|树果骤增|流星群|树果领域|精神击破|新月祈祷|技能复制|变身|模仿|挥指|噩梦|食材获取|食材精选|超幸运|怪力钳|正电|负电|礼物|料理强化|料理成功|梦之碎片|波导弹|料理辅助/;
+  const FAMILY_PATTERN=/活力全体疗愈|活力疗愈|活力填充|月光|蹭蹭脸颊|树果汁|治愈波动|帮手支援|帮手加速|树果骤增|流星群|树果领域|精神击破|新月祈祷|技能复制|变身|模仿|挥指|噩梦|食材获取|食材精选|超幸运|怪力钳|正电|负电|礼物|料理强化|料理跃进|魔法火焰|料理成功|梦之碎片|波导弹|料理辅助/;
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number(value)||0));
   const sum=values=>values.reduce((total,value)=>total+(Number(value)||0),0);
   const levelAt=(table,level,maxLevel)=>Number(table[clamp(Math.round(level),1,maxLevel)])||0;
@@ -97,6 +98,7 @@
     if(/礼物/.test(label))return 'present';
     if(/食材精选/.test(label))return 'ingredient-draw';
     if(/食材获取/.test(label))return 'ingredient-magnet';
+    if(/魔法火焰|料理跃进/.test(label))return 'cooking-advance';
     if(/料理强化/.test(label))return 'cooking-power';
     if(/料理成功/.test(label))return 'tasty-chance';
     if(/波导弹/.test(label))return 'aura-sphere';
@@ -185,6 +187,7 @@
     }
     if(kind==='present'){effect.ingredientsPerUse=levelAt(PRESENT.countByLevel,safeLevel,PRESENT.maxLevel);effect.candyPerUse=PRESENT.candyPerUse;effect.detail=`指定食材 ${effect.ingredientsPerUse} 个，并以 1/3 概率额外获得 4 个队友糖果（期望 ${effect.candyPerUse.toFixed(2)}）`;return effect}
     if(kind==='cooking-power'){effect.potSlotsPerUse=levelAt(COOKING_POWER.slotsByLevel,safeLevel,COOKING_POWER.maxLevel);effect.detail=`下次料理锅容量 +${effect.potSlotsPerUse} 格／次（累计上限另行处理）`;return effect}
+    if(kind==='cooking-advance'){effect.potSlotsPerUse=levelAt(COOKING_ADVANCE.slotsByLevel,safeLevel,COOKING_ADVANCE.maxLevel);effect.tastyBonusPctPerUse=levelAt(COOKING_ADVANCE.tastyBonusByLevel,safeLevel,COOKING_ADVANCE.maxLevel);effect.detail=`下次料理锅容量 +${effect.potSlotsPerUse} 格，并使漂亮成功率 +${effect.tastyBonusPctPerUse}%（成功或换岛后重置）`;return effect}
     if(kind==='tasty-chance'){effect.tastyBonusPctPerUse=levelAt(TASTY_CHANCE.bonusByLevel,safeLevel,TASTY_CHANCE.maxLevel);effect.detail=`下次料理大成功率 +${effect.tastyBonusPctPerUse}%／次`;return effect}
     if(kind==='dream-shard'||kind==='aura-sphere'){effect.dreamShardsPerUse=levelAt(DREAM_SHARD.countByLevel,safeLevel,DREAM_SHARD.maxLevel);effect.detail=`梦之碎片 ${effect.dreamShardsPerUse}／次${kind==='aura-sphere'?'；波导弹的卡比兽能量另由直接能量表计入':''}`;return effect}
     if(kind==='dream-shard-random'){effect.dreamShardRangePerUse=rangeAt(DREAM_SHARD_RANDOM.rangeByLevel,safeLevel,DREAM_SHARD_RANDOM.maxLevel);effect.detail=`梦之碎片 ${effect.dreamShardRangePerUse[0]}~${effect.dreamShardRangePerUse[1]}／次`;return effect}
@@ -211,7 +214,7 @@
 
   return Object.freeze({
     E4E,ENERGIZING_CHEER,CHARGE_ENERGY,MOONLIGHT,NUZZLE,HEAL_PULSE,HELPING_SUPPORT,HELPER_BOOST,BERRY_BURST,
-    DISGUISE_BERRY_BURST,METEOR_SHOWER,CRESCENT_PRAYER,NIGHTMARE,INGREDIENT_MAGNET,INGREDIENT_DRAW,PLUS,MINUS,PRESENT,DREAM_SHARD_RANDOM,SUPER_LUCK,HYPER_CUTTER,BERRY_JUICE,COOKING_POWER,TASTY_CHANCE,DREAM_SHARD,ALL_MIGHTY_CANDY,SKILL_COPY,KIND_BY_ID,LABELS,FAMILY_PATTERN,
+    DISGUISE_BERRY_BURST,METEOR_SHOWER,CRESCENT_PRAYER,NIGHTMARE,INGREDIENT_MAGNET,INGREDIENT_DRAW,PLUS,MINUS,PRESENT,DREAM_SHARD_RANDOM,SUPER_LUCK,HYPER_CUTTER,BERRY_JUICE,COOKING_POWER,COOKING_ADVANCE,TASTY_CHANCE,DREAM_SHARD,ALL_MIGHTY_CANDY,SKILL_COPY,KIND_BY_ID,LABELS,FAMILY_PATTERN,
     kindFor,isComplexMainSkill,effectPerUse,evaluateMember
   });
 });

@@ -296,7 +296,7 @@
   function mainSkillLevelCap(main){
     const label=String(main||'');
     if(/梦之碎片获取S|波导弹|十项全能/.test(label))return 8;
-    if(/帮手支援S|能量填充[SM]|蓄力|噩梦|食材获取S|食材精选S|料理强化S|料理辅助S/.test(label))return 7;
+    if(/帮手支援S|能量填充[SM]|蓄力|噩梦|食材获取S|食材精选S|料理强化S|料理跃进S|魔法火焰|料理辅助S/.test(label))return 7;
     return 6;
   }
 

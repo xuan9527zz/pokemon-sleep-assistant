@@ -35,6 +35,8 @@ Latias and Latios are the only allowed two-Special pair and use separate final-f
 
 ## Skill-family requirements
 
+- Mystical Fire (Cooking Advance S), main-skill ID 41, adds the same pot slots as ordinary Cooking Power-Up S at each level and a separate Extra Tasty bonus of 1/2/2/3/3/4/5 percentage points. The chance bonus persists until an Extra Tasty meal or island change; it is not direct Snorlax Energy. Misdreavus has ordinary Cooking Power-Up S (ID 11) before evolution.
+
 - Recovery: weight only productive targets. In a standard healer + four producers team, healing the healer has no team value. Random recovery must include its miss probability.
 - Direct Energy and Dream Shards: preserve fixed anchors and actual trigger retention. Dream Shards are resource value, not current-week Snorlax Energy.
 - Helping Support, Helper Boost and Berry Burst: recompute from the actual five members and their output; extra helps cannot trigger another main skill.

@@ -107,7 +107,7 @@
   function eligibleEvolutionPath(path,targetLevel){
     const result=[];for(const step of path){const minimum=(step.conditions||[]).filter(item=>item.type==='level').reduce((max,item)=>Math.max(max,Number(item.level)||1),1);if(minimum>targetLevel)break;result.push(step)}return result;
   }
-  function mainSkillCap(name){if(/梦之碎片获取S|波导弹|十项全能/.test(name))return 8;if(/帮手支援S|能量填充[SM]|蓄力|噩梦|食材获取S|食材精选S|料理强化S|料理辅助S/.test(name))return 7;return 6}
+  function mainSkillCap(name){if(/梦之碎片获取S|波导弹|十项全能/.test(name))return 8;if(/帮手支援S|能量填充[SM]|蓄力|噩梦|食材获取S|食材精选S|料理强化S|料理跃进S|魔法火焰|料理辅助S/.test(name))return 7;return 6}
   function mainSkillEffect(mainSkillId,level){
     const safe=Math.max(1,Math.round(Number(level)||1)),table=MAIN_SKILL_TABLES[Number(mainSkillId)];if(table){const value=table.values[Math.min(safe,table.values.length)-1];return `${table.label} ${Number(value).toLocaleString('zh-CN')}${table.suffix||''}`}
     if(Number(mainSkillId)===5){const rows=[[200,800],[285,1138],[393,1570],[542,2166],[748,2992],[1033,4132],[1606,6424]],row=rows[Math.min(safe,rows.length)-1];return `随机能量 ${row[0].toLocaleString('zh-CN')}–${row[1].toLocaleString('zh-CN')}`}

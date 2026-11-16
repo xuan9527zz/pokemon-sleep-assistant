@@ -47,6 +47,7 @@ const MAIN_SKILL_DEFINITIONS = Object.freeze({
   35: { nameEn: 'Draco Meteor (Berry Burst)', nameZh: '流星群（树果骤增）' },
   36: { nameEn: 'Aura Sphere (Dream Shard Magnet S)', nameZh: '波导弹（梦之碎片获取S）' },
   40: { nameEn: 'Psystrike (Berry Zone)', nameZh: '精神击破（树果领域）' },
+  41: { nameEn: 'Mystical Fire (Cooking Advance S)', nameZh: '魔法火焰（料理跃进S）' },
 });
 
 // RaenonX may publish preview records before the Japanese verification table
@@ -73,6 +74,7 @@ const NORMALIZED_WIKI_SKILL_TO_ID = Object.freeze({
   'おてつだいサポートs': 9,
   '食材ゲットs': 10,
   '料理パワーアップs': 11,
+  'マジカルフレイム料理アドバンスs': 41,
   'タイプブーストs': 12,
   'ゆびをふる': 13,
   '料理チャンスs': 14,

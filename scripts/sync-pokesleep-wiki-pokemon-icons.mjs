@@ -12,6 +12,16 @@ const wikiFallbackIds = new Map([
   ['710-2', '710-1'], ['710-3', '710-1'], ['710-4', '710-1'],
   ['711-2', '711-1'], ['711-3', '711-1'], ['711-4', '711-1']
 ]);
+const idsArgument = process.argv.find(argument => argument.startsWith('--ids='));
+const requestedIds = idsArgument
+  ? new Set(idsArgument.slice('--ids='.length).split(',').map(id => id.trim()).filter(Boolean))
+  : null;
+const selectedPokemon = requestedIds
+  ? catalog.pokemon.filter(row => requestedIds.has(String(row.id)))
+  : catalog.pokemon;
+if (requestedIds && selectedPokemon.length !== requestedIds.size) {
+  throw new Error(`图鉴缺少指定 ID：${[...requestedIds].filter(id => !selectedPokemon.some(row => String(row.id) === id)).join('、')}`);
+}
 
 async function responseOrThrow(url) {
   const response = await fetch(url, { headers: { 'user-agent': 'pokemon-sleep-helper-icon-sync/1.0' } });
@@ -26,11 +36,11 @@ if (!dataPath) throw new Error('未找到 PokéSleep Super Wiki 图鉴数据文�
 const dataUrl = new URL(dataPath, indexPage).href;
 const wikiData = await (await responseOrThrow(dataUrl)).json();
 const wikiById = new Map((wikiData.pokemon || []).map(row => [String(row.id), row]));
-const missing = catalog.pokemon.filter(row => !wikiById.has(String(row.id)) && !wikiById.has(wikiFallbackIds.get(String(row.id))));
+const missing = selectedPokemon.filter(row => !wikiById.has(String(row.id)) && !wikiById.has(wikiFallbackIds.get(String(row.id))));
 if (missing.length) throw new Error(`Wiki 缺少本站图鉴 ID：${missing.map(row => row.id).join('、')}`);
 
 await fs.mkdir(outputDir, { recursive: true });
-const queue = [...catalog.pokemon];
+const queue = [...selectedPokemon];
 let downloaded = 0;
 
 async function worker() {

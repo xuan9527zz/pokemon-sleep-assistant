@@ -42,7 +42,7 @@
       const groups=TIER_ORDER.map(tier=>{
         const entries=(source[tier]||[]).map(id=>{
           const mon=catalogById.get(String(id));
-          return {id:String(id),name:mon&&mon.name||`#${id}`,pokedexId:mon&&mon.pokedexId||id,specialty:mon&&mon.specialty||category,tier,category};
+          return {id:String(id),name:tiers.GUIDE_NAMES&&tiers.GUIDE_NAMES[id]||mon&&mon.name||`#${id}`,pokedexId:mon&&mon.pokedexId||id,specialty:mon&&mon.specialty||category,tier,category};
         });
         if(category==='special')DYNAMIC_MEW_VARIANTS.forEach(variant=>{
           const resolved=tiers.entryFor({finalFormId:variant.id,selectedAllRounderSkillId:variant.selectedAllRounderSkillId});
@@ -75,7 +75,7 @@
 
     function iconFor(entry){
       const mon=catalogById.get(entry.id)||entry;
-      if(picker&&typeof picker.createIcon==='function')return picker.createIcon(mon,{size:'large'});
+      if(catalogById.has(entry.id)&&picker&&typeof picker.createIcon==='function')return picker.createIcon(mon,{size:'large'});
       return element(doc,'span','species-tier-guide-fallback',String(entry.name||'?').slice(0,1));
     }
     function render(){

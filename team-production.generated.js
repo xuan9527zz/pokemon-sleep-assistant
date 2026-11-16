@@ -3,7 +3,7 @@
   root.POKEMON_SLEEP_TEAM_PRODUCTION=Object.freeze({
   "meta": {
     "schemaVersion": 1,
-    "generatedAt": "2026-09-28T12:24:00.319Z",
+    "generatedAt": "2026-11-16T17:16:37.620Z",
     "count": 97,
     "source": "RaenonX Pokémon Sleep Wiki snapshot",
     "note": "Ingredient rates are research estimates, not official disclosed probabilities. Current interval, level, inventory, nature, subskills, and ingredient slots come from the local box."

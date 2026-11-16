@@ -41,7 +41,7 @@
   const EX_WEEKLY_EFFECTS=Object.freeze({none:'本周效果未选择',berry:'树果能量强化',ingredient:'食材帮忙＋1',skill:'主技能触发率×1.25'});
   const BERRY_NAMES=Object.freeze(['柿仔果','苹野果','橙橙果','萄葡果','金枕果','莓莓果','樱子果','零余果','勿花果','椰木果','芒芒果','木子果','文柚果','墨莓果','番荔果','异奇果','靛莓果','桃桃果']);
   const DEFAULT_ENERGY_SETTINGS=Object.freeze({durationHours:24,islandBonusPct:0,islandProfile:'none',startEnergy:100,sleepScore:100,skillCollectionHours:4,teamSwapCount:0,collectBeforeSwap:true,exWeeklyEffect:'none'});
-  const POT_SKILL_SLOTS=Object.freeze({11:Object.freeze([7,10,12,17,22,27,31]),27:Object.freeze([5,7,9,12,16,20,24])});
+  const POT_SKILL_SLOTS=Object.freeze({11:Object.freeze([7,10,12,17,22,27,31]),27:Object.freeze([5,7,9,12,16,20,24]),41:Object.freeze([7,10,12,17,22,27,31])});
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
   const sum=values=>values.reduce((total,value)=>total+value,0);
@@ -472,7 +472,7 @@
   }
 
   function potSlotsPerTrigger(mon,skillLevel){
-    const id=Number(mon&&mon.mainSkillId),name=String(mon&&mon.main||''),table=POT_SKILL_SLOTS[id]||(/料理强化S/.test(name)?POT_SKILL_SLOTS[11]:null);
+    const id=Number(mon&&mon.mainSkillId),name=String(mon&&mon.main||''),table=POT_SKILL_SLOTS[id]||(/料理强化S|魔法火焰|料理跃进S/.test(name)?POT_SKILL_SLOTS[11]:null);
     return table?table[Math.min(table.length,Math.max(1,Math.round(Number(skillLevel)||1)))-1]:0;
   }
 
@@ -880,10 +880,10 @@
       if(!tastyRoot)return;tastyRoot.replaceChildren();const currentBonusPct=clamp(Math.round(tastyCurrent&&tastyCurrent.value),0,70),targetValue=Number(tastyTarget&&tastyTarget.value),targetBonusPct=clamp(Math.round(Number.isFinite(targetValue)?targetValue:70),currentBonusPct,70);if(tastyCurrent)tastyCurrent.value=String(currentBonusPct);if(tastyTarget)tastyTarget.value=String(targetBonusPct);const report=calculateTastyDeployment(mons,productionByBoxId,{...teamOptions(),currentBonusPct,targetBonusPct,isSunday:tastySunday&&tastySunday.checked,confidence:.8});
       const card=element('article','team-pot-summary'),headline=element('div',''),mealLabel=report.isSunday?'周日下一餐':'工作日／周六下一餐';headline.append(element('span','',`${mealLabel} · 当前 +${currentBonusPct}% → 目标 +${targetBonusPct}%`));
       if(currentBonusPct>=targetBonusPct)headline.append(element('strong','','已经达到目标'),element('small','',`当前不需要再上爆锅队；大成功率约 ${number(report.outcome&&report.outcome.critProbability*100,0)}%。`));
-      else if(!report.reachable)headline.append(element('strong','','当前盒子无法计算'),element('small','','盒内没有可用的料理成功 S 个体，或在两周内达不到所选把握。'));
+      else if(!report.reachable)headline.append(element('strong','','当前盒子无法计算'),element('small','','盒内没有可用的料理成功 S／魔法火焰个体，或在两周内达不到所选把握。'));
       else headline.append(element('strong','',`80% 把握约需 ${formatHours(report.estimate.safeHours)}`),element('small','',`达到目标的中位时间 ${formatHours(report.estimate.medianHours)}；届时该餐大成功率约 ${number(report.outcome.critProbability*100,0)}%，成功时料理为 ${report.outcome.critMultiplier} 倍。`));card.append(headline);
       if(report.tastyTeam.team.length){const candidate={team:report.tastyTeam.team,result:report.tastyTeam.result};appendMiniTeam(card,`爆锅队 · 期望 +${number(report.rate,1)}%／小时`,candidate,'应用爆锅队');const detail=element('p','team-tool-note',report.tastyTeam.output.members.map(member=>`${member.mon.nickname||member.mon.name}：Lv.${member.skillLevel} 每次 +${member.bonusPctPerTrigger}%，约 ${number(member.triggersPerHour,2)} 次/小时`).join('；'));card.append(detail)}
-      card.append(element('p','team-tool-note','这里的“爆锅”只指料理成功 S 的大成功率蓄力；好露营券和料理强化 S 才会扩大锅容量。触发存在随机性，80% 时间不是必定完成。'));tastyRoot.append(card);
+      card.append(element('p','team-tool-note','这里估算大成功率蓄力；料理成功 S 只提高概率，魔法火焰还会扩锅。好露营券和料理强化 S 也能扩大锅容量。触发存在随机性，80% 时间不是必定完成。'));tastyRoot.append(card);
     }
 
     function saveCurrentTeam(){

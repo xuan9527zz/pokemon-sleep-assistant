@@ -213,6 +213,8 @@ const tastyMons=Array.from({length:5},(_item,index)=>(
 ));
 assert.strictEqual(planner.tastyBonusPerTrigger(tastyMons[0],2),5);
 assert.strictEqual(planner.tastyBonusPerTrigger(potMons[0],7),0,'料理强化 S 不能进入爆锅队');
+assert.strictEqual(planner.potSlotsPerTrigger({mainSkillId:41,main:'魔法火焰（料理跃进S） Lv.7'},7),31,'魔法火焰Lv.7应扩锅31格');
+assert.strictEqual(planner.tastyBonusPerTrigger({mainSkillId:41,main:'魔法火焰（料理跃进S） Lv.7'},7),5,'魔法火焰Lv.7应同时增加5%漂亮成功率');
 const tastyPlan=planner.calculateTastyDeployment(tastyMons,Object.fromEntries(tastyMons.map(mon=>[mon.id,{ingredientRate:.15,baseBerryCount:1}])),{currentBonusPct:0,targetBonusPct:70,energyProfile:'average'});
 assert.strictEqual(tastyPlan.tastyTeam.team.length,5);
 assert.ok(tastyPlan.rate>0);
