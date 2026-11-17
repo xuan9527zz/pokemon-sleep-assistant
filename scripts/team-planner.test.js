@@ -23,6 +23,10 @@ const suicune = { name: '水君' };
 assert.strictEqual(planner.validateSpecialTeam([latias, latios]).valid, true);
 assert.strictEqual(planner.validateSpecialTeam([latias, suicune]).valid, false);
 assert.strictEqual(planner.validateBattleTeam([{name:'闪光收藏',battleEligible:false}]).valid,false);
+const skillNature={lv:'30',interval:'40:00',specialty:'skill',skillRatePct:5,subs:'—；—；—；—；—',nature:'技能↑'};
+assert.ok(planner.skillProbability(skillNature).current>planner.skillProbability({...skillNature,plainMintUsed:true}).current,'已使用薄荷的技能率应中和性格加成');
+const ingredientNature={lv:'30',specialty:'ingredient',ingredientRate:.2,subs:'—；—；—；—；—',nature:'食材↓'};
+assert.ok(planner.ingredientProbability({...ingredientNature,plainMintUsed:true}).current>planner.ingredientProbability(ingredientNature).current,'已使用薄荷的食材率应中和性格减益');
 
 const venusaur = {
   id: '1', name: '妙蛙花', lv: '52', interval: '38:58', inv: '33', specialty: 'ingredient',

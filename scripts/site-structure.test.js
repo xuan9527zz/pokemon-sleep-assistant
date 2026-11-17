@@ -87,7 +87,7 @@ assert.ok(!html.includes('个人梯级表'), '种族梯级表头不应继续显�
 assert.ok(!html.includes('梯级／个体质量'), '种族梯级与个体质量不应继续合并显示');
 assert.ok(html.includes("button.append(number);\n    return bindScoreTooltip(button,mon,`${mon.name} 种族梯级"), '种族梯级卡片不应重复显示种族梯级文字');
 assert.ok(html.includes('ingredientRouteCell(r)'), '三行食材路线应使用不带斜杠的独立行');
-assert.ok(html.includes('natureCell(r.nature)'), '性格列必须使用名称与上下修正的分行展示');
+assert.ok(html.includes('natureCell(r)'), '性格列必须使用原性格名称，并按薄荷状态显示实际修正');
 assert.ok(html.includes("labels={speed:'帮忙',ingredient:'食材',skill:'技能',energy:'活力',exp:'EXP'}"), '性格修正必须使用统一短标签');
 assert.ok(html.includes('value="species-tier-desc">种族梯级：高到低'), '盒子排序缺少种族梯级高到低');
 assert.ok(html.includes('value="species-tier-asc">种族梯级：低到高'), '盒子排序缺少种族梯级低到高');

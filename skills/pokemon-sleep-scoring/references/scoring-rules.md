@@ -26,6 +26,8 @@ Show both:
 - current multiplier: current nature and subskills;
 - potential multiplier: highest legal Sub Skill Seed upgrades plus Plain Mint only when neutralizing the current nature improves output.
 
+Record actual Plain Mint use with `plainMintUsed`; keep the original Nature name and treat its ability modifiers as neutral in current scoring and production. The box recommendation marker is reserved for an unminted, S/A-tier species whose long-term individual grade reaches A or S after neutralizing and either crosses a grade boundary or gains at least 10% role output. A post-mint B/C individual is never recommended for the item. An already minted helper shows a used marker instead.
+
 The individual grade uses potential multiplier. Non-output resource subskills and Skill Level Up S/M are `1.00` in this role multiplier. Helping Bonus contributes its 5% self-speed effect; its additional team value is handled by team calculators.
 
 ## Role formulas

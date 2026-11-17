@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="./level-manager-evolution.css?v=20260921-1">
 <link rel="stylesheet" href="./box-manager.css?v=20260921-4">
 <link rel="stylesheet" href="./species-tier-guide.css?v=20260929-1">
-<link rel="stylesheet" href="./pokemon-manager.css?v=20260921-1">
+<link rel="stylesheet" href="./pokemon-manager.css?v=20261117-2">
 <link rel="stylesheet" href="./cloud-sync.css?v=20260831-1">
 <link rel="stylesheet" href="./weekly-planner.css?v=20260913-4">
 <link rel="stylesheet" href="./investment-planner.css?v=20260831-2">
@@ -70,7 +70,7 @@
 .event-mewtwo-wrap{margin-top:12px}.event-mewtwo-profile{display:flex;align-items:center;gap:16px}.event-mewtwo-profile>img{width:92px;height:92px;object-fit:contain;border-radius:18px;background:#f3efff;padding:8px}.event-mewtwo-profile>div{min-width:0}.event-mewtwo-profile h3{margin:0}@media(max-width:600px){.event-mewtwo-profile{align-items:flex-start}.event-mewtwo-profile>img{width:72px;height:72px}}
 </style>
 <style>.app-nav{grid-template-columns:repeat(5,minmax(0,1fr))}</style>
-<link rel="stylesheet" href="./mobile.css?v=20260930-1">
+<link rel="stylesheet" href="./mobile.css?v=20261117-1">
 </head>
 <body><main class="wrap">
 <section class="hero"><h1>Pokemon Sleep｜宝可梦助手</h1><p>盒子、队伍、本周计划、岛屿、料理与活动资料集中管理；登录后可在不同设备继续使用同一份数据。</p><button class="pwa-install-launch" id="pwaInstallOpen" type="button" hidden>安装 App</button><button class="settings-launch" id="personalSettingsOpen" type="button" aria-label="打开个人设置" title="个人设置">⚙</button></section>
@@ -309,11 +309,12 @@
         <div class="pokemon-editor-field"><label for="pokemonLevel">当前等级</label><input id="pokemonLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="1"></div>
         <div class="pokemon-editor-field"><label for="pokemonNature">性格</label><select id="pokemonNature"></select></div>
         <div class="pokemon-editor-field"><label for="pokemonMainLevel">当前主技能等级</label><select id="pokemonMainLevel"></select></div>
+        <div class="pokemon-editor-field" id="pokemonMintUsedWrap"><label>纯白薄荷</label><label class="pokemon-editor-check"><input id="pokemonMintUsed" type="checkbox">已使用</label></div>
         <div class="pokemon-editor-field wide" id="pokemonAllMightyWrap" hidden><label for="pokemonAllMighty">梦幻当前选用技能</label><select id="pokemonAllMighty"></select><small>用梦幻种子学会后可切换；这里记录当前实际选项，生产、队伍与活动推演会立即采用。</small></div>
         <div class="pokemon-editor-field wide" id="pokemonAllRounderFocusWrap" hidden><label for="pokemonAllRounderFocus">全能型评分定位</label><select id="pokemonAllRounderFocus"></select><small>自动模式按当前已开放面板选择最强定位；也可固定按树果、食材或技能路线评价。固定性格不参与可洗个体差异。</small></div>
         <div class="pokemon-editor-field"><label>闪光状态</label><label class="pokemon-editor-check"><input id="pokemonShiny" type="checkbox">★ 闪光</label></div>
         <div class="pokemon-editor-field"><label>收藏状态</label><label class="pokemon-editor-check"><input id="pokemonCollectionIntent" type="checkbox">作为收藏保留</label></div>
-      </div></fieldset>
+      </div><details class="pokemon-mint-advice" id="pokemonMintAdvice" hidden><summary>纯白薄荷评估 <strong id="pokemonMintVerdict"></strong></summary><div id="pokemonMintDetails"></div></details></fieldset>
       <fieldset class="pokemon-editor-section"><legend>食材路线</legend><div class="pokemon-editor-grid">
         <div class="pokemon-editor-field"><label for="pokemonIngredient1">Lv.1 食材</label><select id="pokemonIngredient1"></select></div>
         <div class="pokemon-editor-field"><label for="pokemonIngredient30">Lv.30 食材</label><select id="pokemonIngredient30"></select></div>
@@ -363,23 +364,23 @@
 </dialog>
 </main>
 <script src="skills/pokemon-sleep-scoring/scripts/nature-scores.js?v=20260914-1"></script>
-<script src="skills/pokemon-sleep-scoring/scripts/scoring-core.js?v=20260914-2"></script>
+<script src="skills/pokemon-sleep-scoring/scripts/scoring-core.js?v=20261117-1"></script>
 <script src="skills/pokemon-sleep-scoring/scripts/species-tiers.js?v=20260920-1"></script>
-<script src="pokemon-strategy.js?v=20260914-1"></script>
+<script src="pokemon-strategy.js?v=20261117-1"></script>
 <script src="selection-odds.js?v=20260912-1"></script>
 <script src="pokemon-catalog.generated.js?v=20260914-1"></script>
 <script src="all-rounder-rules.js?v=20260914-2"></script>
 <script src="pokemon-scoring.js?v=20260914-2"></script>
 <script src="cultivation-advisor.js?v=20260913-1"></script>
 <script src="production-calculator.js?v=20260913-4"></script>
-<script src="pokemon-comparison.js?v=20260913-5"></script>
+<script src="pokemon-comparison.js?v=20261117-1"></script>
 <script src="box-filter.js?v=20260921-1"></script>
 <script src="game-rules.js?v=20260911-1"></script>
 <script src="snorlax-energy.js?v=20260912-1"></script>
 <script src="main-skill-team-effects.js?v=20260911-2"></script>
 <script src="ingredients.js?v=20260908-1"></script>
 <script src="recipes.js"></script>
-<script src="pokemon-data.js?v=20260913-1"></script>
+<script src="pokemon-data.js?v=20261117-1"></script>
 <script src="box-manager.js?v=20260921-1"></script>
 <script src="level-manager.js?v=20260921-1"></script>
 <script src="personal-settings.js?v=20260911-1"></script>
@@ -388,14 +389,14 @@
 <script src="species-tier-guide.js?v=20260929-1"></script>
 <script src="pwa.js?v=20260929-1"></script>
 <script src="cooking-success.js?v=20260912-1"></script>
-<script src="production-timeline.js?v=20260930-1"></script>
-<script src="team-planner.js?v=20260930-1"></script>
+<script src="production-timeline.js?v=20261117-1"></script>
+<script src="team-planner.js?v=20261117-1"></script>
 <script src="sleep-research-planner.js?v=20260911-3"></script>
 <script src="events-data.js?v=20260930-1"></script>
 <script src="weekly-planner.js?v=20260930-1"></script>
-<script src="investment-planner.js?v=20260912-1"></script>
+<script src="investment-planner.js?v=20261117-1"></script>
 <script src="retention-advisor.js?v=20260901-2"></script>
-<script src="pokemon-manager.js?v=20260921-1"></script>
+<script src="pokemon-manager.js?v=20261117-2"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.js"></script>
 <script src="supabase-config.js?v=20260831-1"></script>
 <script src="cloud-sync.js?v=20260831-2"></script>
@@ -597,8 +598,7 @@ function ingredientCandidate(mon,ingredient){
   const rate=expected*3600/Math.max(intervalInSeconds(mon.interval),1);
   let traitScore=0;const traits=[],currentSkills=unlockedSubskills(mon);
   [['食材概率M',44],['食材概率S',25],['帮忙速度M',24],['帮忙速度S',14],['帮手奖励',20],['持有上限L',10],['持有上限M',6]].forEach(([tag,points])=>{if(currentSkills.includes(tag)){traitScore+=points;traits.push(tag)}});
-  if(mon.nature.includes('食材↑')){traitScore+=34;traits.unshift('性格食材↑')}if(mon.nature.includes('食材↓'))traitScore-=34;
-  if(mon.nature.includes('速度↑')){traitScore+=18;traits.push('性格速度↑')}if(mon.nature.includes('速度↓'))traitScore-=18;
+  if(!mon.plainMintUsed){if(mon.nature.includes('食材↑')){traitScore+=34;traits.unshift('性格食材↑')}if(mon.nature.includes('食材↓'))traitScore-=34;if(mon.nature.includes('速度↑')){traitScore+=18;traits.push('性格速度↑')}if(mon.nature.includes('速度↓'))traitScore-=18}
   const strategy=mon.scoreBreakdown?.strategy,strategicMatch=strategy?.ingredient===ingredient;
   const tierWeight=({S:100,A:75,B:50,C:25}[mon.speciesTier]||25)*50,individualWeight=(Number(mon.scoreIndividual)||50)*12,strategicWeight=strategicMatch?2500:0;
   const score=(current.length?100000:0)+rate*10000+lv*7+traitScore+tierWeight+individualWeight+strategicWeight-(current.length?0:(next?.unlock||60)*100);
@@ -876,7 +876,7 @@ function scoreBreakdownText(mon){
     const focusMode=i.focusSelection==='manual'?'手动指定':'按面板自动选择',unopened=i.unopenedSubskillLevels.length?`；Lv.${i.unopenedSubskillLevels.join('／')} 尚未开放，不计入当前分母`:'；五栏均已开放';
     return `#${mon.id} ${mon.name}｜个体 ${i.grade}级 · ×${s.individualScore.toFixed(2)}\n最终形态　　　${s.finalFormNameZh}\n${tierLine}\n评分定位　　　${i.focusRoleLabel}（${focusMode}）\n${channelLine}\n开放进度　　　${i.revealedSubskillCount}／5${unopened}\n固定性格　　　${mon.nature}（不参与可洗性格差异）\n倍率口径　　　白板 1.00；只按当前定位比较${actualUpgradeLine}`;
   }
-  const potentialNotes=[i.seedApplied?'已按合法副技能种子升级计算潜力':'无需副技能种子修正',i.mintApplied?'已按纯白薄荷中和不利性格':'保留当前性格'].join('；'),routeLine=i.ingredientPattern&&i.ingredientPattern!=='不适用'?`\n食材路线　　　${i.ingredientPattern}（${i.routeRule}）`:'';
+  const potentialNotes=[i.seedApplied?'已按合法副技能种子升级计算潜力':'无需副技能种子修正',mon.plainMintUsed?'已使用纯白薄荷，性格效果为中性':i.mintApplied?'潜力已按纯白薄荷中和不利性格':'保留当前性格'].join('；'),routeLine=i.ingredientPattern&&i.ingredientPattern!=='不适用'?`\n食材路线　　　${i.ingredientPattern}（${i.routeRule}）`:'';
   return `#${mon.id} ${mon.name}｜个体 ${i.grade}级 · ×${s.individualScore.toFixed(2)}\n最终形态　　　${s.finalFormNameZh}\n${tierLine}\n评价产出　　　${modelLabel}\n当前倍率　　　×${i.currentMultiplier.toFixed(2)}\n毕业潜力　　　×${i.potentialMultiplier.toFixed(2)}\n帮手奖励　　　${i.hasHelpingBonus?'有':'无'}\n树果数量S　　${i.hasBerryFinding?'有':'无'}${routeLine}\n潜力处理　　　${potentialNotes}\n共同口径　　　${i.reference}${actualUpgradeLine}`;
 }
 function showScoreTooltip(target){scoreTooltip.textContent=target.dataset.scoreTooltip;scoreTooltip.hidden=false;const rect=target.getBoundingClientRect(),gap=8,width=scoreTooltip.offsetWidth,height=scoreTooltip.offsetHeight;let left=scoreClamp(rect.left,10,window.innerWidth-width-10),top=rect.bottom+gap;if(top+height>window.innerHeight-10)top=Math.max(10,rect.top-height-gap);scoreTooltip.style.left=`${left}px`;scoreTooltip.style.top=`${top}px`}
@@ -895,6 +895,13 @@ function scoreBadge(mon,mode='combined'){
   }
   button.className=`score-badge tier-${tier.toLowerCase()} ${pending?'score-pending':`grade-${grade.toLowerCase()}`}`;number.textContent=`${tier}级`;unit.textContent=pending?'个体待定':`个体${grade} · ×${score.toFixed(2)}`;button.append(number,unit);
   return bindScoreTooltip(button,mon,pending?`${mon.name} ${tier}级，个体质量待定，悬停或点按查看原因`:`${mon.name} 物种${tier}级，个体${grade}级，白板倍率${score.toFixed(2)}，悬停或点按查看构成`);
+}
+function mintIndicator(mon){
+  const assessment=window.POKEMON_SLEEP_POKEMON_MANAGER.assessPlainMint(mon,mon.scoreBreakdown,window.POKEMON_SLEEP_DYNAMIC_SCORING);
+  if(!assessment||!assessment.used&&!assessment.recommended)return null;
+  const button=document.createElement('button'),icon=document.createElement('img'),mark=document.createElement('span');button.type='button';button.className=`mint-indicator ${assessment.used?'mint-used':'mint-recommended'}`;button.dataset.pokemonEdit=mon.id;icon.src='./assets/items/neutralizing-mint.webp';icon.alt='';mark.textContent=assessment.used?'✅':'➕';button.append(icon,mark);
+  const label=assessment.used?'已使用纯白薄荷':`推荐使用纯白薄荷：个体 ${assessment.beforeGrade}级 → ${assessment.afterGrade}级，长期目标产出提升 ${assessment.percent.toFixed(1)}%`;
+  button.title=label+'；点按查看详情';button.setAttribute('aria-label',`${mon.name}，${label}，点按编辑`);return button;
 }
 function cultivationBadge(mon){const advice=mon.cultivation||{label:'人工判断',tone:'manual'},button=document.createElement('button');button.type='button';button.className=`cultivation-badge tone-${advice.tone}`;button.textContent=advice.label;button.dataset.scoreTooltip=window.POKEMON_SLEEP_CULTIVATION_ADVISOR.explanation(advice);button.setAttribute('aria-describedby','scoreTooltip');button.setAttribute('aria-label',`${mon.name}：${advice.label}，悬停或点按查看培养依据`);button.addEventListener('mouseenter',()=>showScoreTooltip(button));button.addEventListener('mouseleave',hideScoreTooltip);button.addEventListener('focus',()=>showScoreTooltip(button));button.addEventListener('blur',hideScoreTooltip);button.addEventListener('click',event=>{event.stopPropagation();showScoreTooltip(button)});return button}
 document.addEventListener('click',event=>{if(!event.target.closest('.score-badge,.cultivation-badge'))hideScoreTooltip()});
@@ -920,11 +927,11 @@ function ingredientRouteCell(mon){
   (routes.length?routes:['—']).forEach(route=>list.append(Object.assign(document.createElement('span'),{className:'ingredient-route-line',textContent:route})));
   root.append(list);return root;
 }
-function natureCell(value){
-  const root=cell('','nature-cell'),lines=document.createElement('div'),api=window.POKEMON_SLEEP_SCORING,name=api?.natureName(value)||String(value||'').split(/[：:]/)[0].trim()||'—',nature=api?.natures?.find(item=>item.name===name),labels={speed:'帮忙',ingredient:'食材',skill:'技能',energy:'活力',exp:'EXP'};lines.className='nature-lines';
+function natureCell(mon){
+  const root=cell('','nature-cell'),lines=document.createElement('div'),api=window.POKEMON_SLEEP_SCORING,name=api?.natureName(mon.nature)||String(mon.nature||'').split(/[：:]/)[0].trim()||'—',nature=api?.natures?.find(item=>item.name===name),labels={speed:'帮忙',ingredient:'食材',skill:'技能',energy:'活力',exp:'EXP'};lines.className='nature-lines';
   lines.append(Object.assign(document.createElement('span'),{className:'nature-name',textContent:name}));
-  if(nature?.up)lines.append(Object.assign(document.createElement('span'),{className:'nature-up',textContent:`${labels[nature.up]||nature.up}↑`}));
-  if(nature?.down)lines.append(Object.assign(document.createElement('span'),{className:'nature-down',textContent:`${labels[nature.down]||nature.down}↓`}));
+  if(mon.plainMintUsed)lines.append(Object.assign(document.createElement('span'),{className:'nature-neutralized',textContent:'效果已中和'}));
+  else{if(nature?.up)lines.append(Object.assign(document.createElement('span'),{className:'nature-up',textContent:`${labels[nature.up]||nature.up}↑`}));if(nature?.down)lines.append(Object.assign(document.createElement('span'),{className:'nature-down',textContent:`${labels[nature.down]||nature.down}↓`}))}
   root.append(lines);
   return root;
 }
@@ -933,14 +940,14 @@ function mobileDetailRow(label,value){
 }
 function mobilePokemonCard(mon){
   const card=document.createElement('article'),head=document.createElement('div'),titleRoot=document.createElement('div'),idLine=document.createElement('div'),title=document.createElement('div'),name=document.createElement('h3'),level=document.createElement('span'),score=document.createElement('div');
-  const usage=window.POKEMON_SLEEP_BOX_MANAGER.usageInfo(mon);card.className='mobile-mon-card '+usage.status;head.className='mobile-mon-head';titleRoot.className='mobile-mon-title-root';idLine.className='mobile-mon-id';idLine.textContent=`图鉴 ${formatPokedex(mon)} · 个体 #${mon.id}`;if(mon.shiny==='是')idLine.append(Object.assign(document.createElement('span'),{className:'shiny',textContent:'★ 闪光'}));title.className='mobile-mon-title';name.textContent=mon.nickname||mon.name;if(mon.nickname)name.title=mon.name;level.className='mobile-mon-level';level.textContent='Lv.'+mon.lv;title.append(name,level);titleRoot.append(idLine,title);score.className='mobile-mon-score';score.append(scoreBadge(mon));head.append(pokemonSprite(mon,'medium'),titleRoot,score);
+  const usage=window.POKEMON_SLEEP_BOX_MANAGER.usageInfo(mon);card.className='mobile-mon-card '+usage.status;head.className='mobile-mon-head';titleRoot.className='mobile-mon-title-root';idLine.className='mobile-mon-id';idLine.textContent=`图鉴 ${formatPokedex(mon)} · 个体 #${mon.id}`;if(mon.shiny==='是')idLine.append(Object.assign(document.createElement('span'),{className:'shiny',textContent:'★ 闪光'}));title.className='mobile-mon-title';name.textContent=mon.nickname||mon.name;if(mon.nickname)name.title=mon.name;level.className='mobile-mon-level';level.textContent='Lv.'+mon.lv;title.append(name,level);titleRoot.append(idLine,title);score.className='mobile-mon-score';score.append(scoreBadge(mon));const mint=mintIndicator(mon);if(mint)score.append(mint);head.append(pokemonSprite(mon,'medium'),titleRoot,score);
   const tags=document.createElement('div');tags.className='mobile-mon-tags';tags.append(cultivationBadge(mon),specialtyBadge(mon));card.dataset.pokemonRow=mon.id;
   const food=document.createElement('div'),foodLabel=document.createElement('span'),foodValue=document.createElement('div');food.className='mobile-mon-food';foodLabel.textContent='食材路线 · Lv.1／30／60';foodValue.textContent=mon.ingredients;food.append(foodLabel,foodValue);
-  const details=document.createElement('details'),summary=document.createElement('summary'),detailGrid=document.createElement('div'),skillDisplay=mainSkillDisplay(mon),skillValue=document.createElement('div');details.className='mobile-mon-details';summary.textContent='技能、性格与培养';detailGrid.className='mobile-mon-detail-grid';skillValue.textContent=skillDisplay.text;if(skillDisplay.note)skillValue.append(Object.assign(document.createElement('small'),{className:'actual-subskill-note',textContent:skillDisplay.note}));detailGrid.append(mobileDetailRow('主技能',skillValue),mobileDetailRow('副技能',subskillList(mon)),mobileDetailRow('性格',mon.nature),mobileDetailRow('培养依据',mon.cultivation?.reason||'—'));
+  const details=document.createElement('details'),summary=document.createElement('summary'),detailGrid=document.createElement('div'),skillDisplay=mainSkillDisplay(mon),skillValue=document.createElement('div');details.className='mobile-mon-details';summary.textContent='技能、性格与培养';detailGrid.className='mobile-mon-detail-grid';skillValue.textContent=skillDisplay.text;if(skillDisplay.note)skillValue.append(Object.assign(document.createElement('small'),{className:'actual-subskill-note',textContent:skillDisplay.note}));detailGrid.append(mobileDetailRow('主技能',skillValue),mobileDetailRow('副技能',subskillList(mon)),mobileDetailRow('性格',mon.plainMintUsed?`${mon.nature}（效果已中和）`:mon.nature),mobileDetailRow('培养依据',mon.cultivation?.reason||'—'));
   const actions=document.createElement('div'),levelButton=document.createElement('button'),manageButton=document.createElement('button'),investButton=document.createElement('button'),pokemonEditButton=document.createElement('button');actions.className='mobile-mon-actions';levelButton.type='button';levelButton.dataset.levelEdit=mon.id;levelButton.textContent='更新等级';manageButton.type='button';manageButton.className='manage';manageButton.dataset.boxManage=mon.id;manageButton.textContent='盒子／副技能';investButton.type='button';investButton.dataset.invest=mon.id;investButton.textContent='培养成本';pokemonEditButton.type='button';pokemonEditButton.dataset.pokemonEdit=mon.id;pokemonEditButton.textContent='编辑／放生';actions.append(levelButton,manageButton,investButton,pokemonEditButton);detailGrid.append(actions);details.append(summary,detailGrid);card.append(head,tags,food,details);return card;
 }
 function render(){
-  const rows=filtered(),empty=!data.length;document.querySelector('#boxEmptyState').hidden=!empty;document.querySelector('#tbl').hidden=empty;tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.dataset.pokemonRow=r.id;tr.append(pokedexCell(r),pokemonNameCell(r));const role=cell('','nowrap'),species=cell('','score-cell'),individual=cell('','score-cell');role.append(specialtyBadge(r));species.append(scoreBadge(r,'species'));individual.append(scoreBadge(r,'individual'));tr.append(role,species,individual);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));tr.append(sh,ingredientRouteCell(r),mainSkillCell(r),subs,natureCell(r.nature),cultivationCell(r));return tr}));
+  const rows=filtered(),empty=!data.length;document.querySelector('#boxEmptyState').hidden=!empty;document.querySelector('#tbl').hidden=empty;tbody.replaceChildren(...rows.map(r=>{const tr=document.createElement('tr');tr.dataset.pokemonRow=r.id;tr.append(pokedexCell(r),pokemonNameCell(r));const role=cell('','nowrap'),species=cell('','score-cell'),individual=cell('','score-cell');role.append(specialtyBadge(r));species.append(scoreBadge(r,'species'));individual.append(scoreBadge(r,'individual'));const mint=mintIndicator(r);if(mint)individual.append(mint);tr.append(role,species,individual);const sh=cell('');sh.innerHTML=r.shiny==='是'?'<span class="shiny">★ 闪光</span>':'<span class="normal">普通</span>';const subs=cell('');subs.append(subskillList(r));tr.append(sh,ingredientRouteCell(r),mainSkillCell(r),subs,natureCell(r),cultivationCell(r));return tr}));
   mobileBoxList.replaceChildren(...(rows.length?rows.map(mobilePokemonCard):[Object.assign(document.createElement('div'),{className:'mobile-mon-empty',textContent:empty?'盒子还没有宝可梦，可点击上方按钮录入第一只。':'没有符合当前筛选条件的宝可梦。'})]));document.querySelector('#shown').textContent=rows.length;syncFilterFeedback(rows);decorateIngredients(tbody);decorateIngredients(mobileBoxList);
 }
 const boxSortOptions={

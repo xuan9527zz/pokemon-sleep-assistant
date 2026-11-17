@@ -131,7 +131,7 @@
     mon.effectiveSubs||mon.effectiveSubskills||mon.subs||mon.subskills
   )||'');
   const skillsAt=(mon,maxLevel=50)=>skillSource(mon).split('；').map(normalizeSkill).filter((skill,index)=>skill&&skill!=='—'&&LEVELS[index]<=maxLevel);
-  const natureName=mon=>String(mon&&mon.nature||'').split(/[：:]/)[0].trim();
+  const natureName=mon=>String(mon&&mon.plainMintUsed?'认真':mon&&mon.nature||'').split(/[：:]/)[0].trim();
   const mainSkillText=mon=>{
     const value=mon&&(
       mon.main||mon.mainSkill||mon.scoreBreakdown&&mon.scoreBreakdown.mainSkill

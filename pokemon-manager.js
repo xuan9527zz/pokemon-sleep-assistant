@@ -52,6 +52,27 @@
     return null;
   }
 
+  function assessPlainMint(record,score,scoring){
+    const individual=score&&score.individual,target=scoring&&scoring.targetForPokemon(record);
+    if(!individual||individual.fixedNature||individual.model!=='blank-output-multiplier'||!target)return null;
+    const role=individual.role,level=clamp(Math.round(number(record.lv)||1),1,MAX_HELPER_LEVEL),rawSkills=scoring.splitSubskills(record.subs||''),currentSkills=rawSkills.filter((skill,index)=>skill!=='—'&&SUBSKILL_LEVELS[index]<=level),futureSkills=individual.potentialSkills;
+    const compare=skills=>({before:scoring.multiplierFor(role,skills,record.nature,target),after:scoring.multiplierFor(role,skills,'认真',target)});
+    const current=compare(currentSkills),future=compare(futureSkills),effects=scoring.skillEffects(futureSkills),gradeOptions={...effects,ingredientPattern:individual.ingredientPattern},beforeGrade=scoring.gradeMultiplier(role,future.before,gradeOptions),afterGrade=scoring.gradeMultiplier(role,future.after,gradeOptions),percent=future.before>0?(future.after/future.before-1)*100:0,currentPercent=current.before>0?(current.after/current.before-1)*100:0;
+    const rank={C:0,B:1,A:2,S:3},upgraded=rank[afterGrade]>rank[beforeGrade],speciesTier=score.speciesTier||'C',used=record.plainMintUsed===true;
+    let verdict='不建议使用',reason='中和性格不会提高这个定位的长期产出。';
+    if(percent>0.01){
+      if(speciesTier==='C')reason='物种梯级为 C，先保留薄荷给更有培养价值的个体。';
+      else if(rank[afterGrade]<rank.A)reason=`中和后个体仍为 ${afterGrade} 级，未达到 A 级，不建议投入薄荷。`;
+      else if(['S','A'].includes(speciesTier)&&(upgraded||percent>=10)){
+        verdict='值得考虑';reason=upgraded?`长期个体评价从 ${beforeGrade} 级升到 ${afterGrade} 级。`:`长期目标产出预计提升 ${percent.toFixed(1)}%。`;
+      }else{
+        verdict='按需求考虑';reason=`长期目标产出预计提升 ${percent.toFixed(1)}%，但暂不改变主要培养结论。`;
+      }
+    }
+    if(used){verdict='已使用';reason='已记录使用纯白薄荷；原性格名称保留，实际能力按中性计算。'}
+    return {current,future,currentPercent,percent,beforeGrade,afterGrade,verdict,reason,role,speciesTier,used,recommended:!used&&verdict==='值得考虑'};
+  }
+
   function mount(options={}){
     if(typeof document==='undefined')return null;
     const pokemon=Array.isArray(options.pokemon)?options.pokemon:[],catalog=options.catalog||root.POKEMON_SLEEP_CATALOG,scoring=options.scoring||root.POKEMON_SLEEP_DYNAMIC_SCORING,dataApi=options.dataApi||root.POKEMON_SLEEP_DATA,natureApi=root.POKEMON_SLEEP_SCORING,ingredientApi=root.POKEMON_SLEEP_INGREDIENTS;
@@ -59,7 +80,8 @@
     const byId=new Map(pokemon.map(mon=>[String(mon.id),mon])),catalogById=new Map(catalog.pokemon.map(record=>[String(record.id),record]));
     const addButton=document.querySelector('#pokemonAddOpen'),recycleButton=document.querySelector('#pokemonRecycleOpen'),dialog=document.querySelector('#pokemonEditorDialog'),recycleDialog=document.querySelector('#pokemonRecycleDialog');
     if(!addButton||!dialog||!recycleDialog)return null;
-    const title=document.querySelector('#pokemonEditorTitle'),closeButton=document.querySelector('#pokemonEditorClose'),cancelButton=document.querySelector('#pokemonEditorCancel'),saveButton=document.querySelector('#pokemonEditorSave'),releaseButton=document.querySelector('#pokemonEditorRelease'),duplicateButton=document.querySelector('#pokemonEditorDuplicate'),message=document.querySelector('#pokemonEditorMessage'),speciesSearch=document.querySelector('#pokemonSpeciesSearch'),speciesSelect=document.querySelector('#pokemonSpecies'),finalWrap=document.querySelector('#pokemonFinalWrap'),finalSelect=document.querySelector('#pokemonFinal'),nicknameInput=document.querySelector('#pokemonNickname'),levelInput=document.querySelector('#pokemonLevel'),shinyInput=document.querySelector('#pokemonShiny'),natureSelect=document.querySelector('#pokemonNature'),mainLevelSelect=document.querySelector('#pokemonMainLevel'),allMightyWrap=document.querySelector('#pokemonAllMightyWrap'),allMightySelect=document.querySelector('#pokemonAllMighty'),allRounderFocusWrap=document.querySelector('#pokemonAllRounderFocusWrap'),allRounderFocusSelect=document.querySelector('#pokemonAllRounderFocus'),collectionInput=document.querySelector('#pokemonCollectionIntent'),ingredientSelects=[1,30,60].map(level=>document.querySelector(`#pokemonIngredient${level}`)),subskillSelects=SUBSKILL_LEVELS.map(level=>document.querySelector(`#pokemonSubskill${level}`)),identityPreview=document.querySelector('#pokemonIdentityPreview'),scorePreview=document.querySelector('#pokemonScorePreview'),retentionPreview=document.querySelector('#pokemonRetentionPreview'),recycleList=document.querySelector('#pokemonRecycleList'),recycleClose=document.querySelector('#pokemonRecycleClose'),recycleCount=document.querySelector('#pokemonRecycleCount'),allRounder=root.POKEMON_SLEEP_ALL_ROUNDER_RULES;
+    const title=document.querySelector('#pokemonEditorTitle'),closeButton=document.querySelector('#pokemonEditorClose'),cancelButton=document.querySelector('#pokemonEditorCancel'),saveButton=document.querySelector('#pokemonEditorSave'),releaseButton=document.querySelector('#pokemonEditorRelease'),duplicateButton=document.querySelector('#pokemonEditorDuplicate'),message=document.querySelector('#pokemonEditorMessage'),speciesSearch=document.querySelector('#pokemonSpeciesSearch'),speciesSelect=document.querySelector('#pokemonSpecies'),finalWrap=document.querySelector('#pokemonFinalWrap'),finalSelect=document.querySelector('#pokemonFinal'),nicknameInput=document.querySelector('#pokemonNickname'),levelInput=document.querySelector('#pokemonLevel'),shinyInput=document.querySelector('#pokemonShiny'),natureSelect=document.querySelector('#pokemonNature'),mainLevelSelect=document.querySelector('#pokemonMainLevel'),mintAdvice=document.querySelector('#pokemonMintAdvice'),mintVerdict=document.querySelector('#pokemonMintVerdict'),mintDetails=document.querySelector('#pokemonMintDetails'),allMightyWrap=document.querySelector('#pokemonAllMightyWrap'),allMightySelect=document.querySelector('#pokemonAllMighty'),allRounderFocusWrap=document.querySelector('#pokemonAllRounderFocusWrap'),allRounderFocusSelect=document.querySelector('#pokemonAllRounderFocus'),collectionInput=document.querySelector('#pokemonCollectionIntent'),ingredientSelects=[1,30,60].map(level=>document.querySelector(`#pokemonIngredient${level}`)),subskillSelects=SUBSKILL_LEVELS.map(level=>document.querySelector(`#pokemonSubskill${level}`)),identityPreview=document.querySelector('#pokemonIdentityPreview'),scorePreview=document.querySelector('#pokemonScorePreview'),retentionPreview=document.querySelector('#pokemonRetentionPreview'),recycleList=document.querySelector('#pokemonRecycleList'),recycleClose=document.querySelector('#pokemonRecycleClose'),recycleCount=document.querySelector('#pokemonRecycleCount'),allRounder=root.POKEMON_SLEEP_ALL_ROUNDER_RULES;
+    const mintUsedWrap=document.querySelector('#pokemonMintUsedWrap'),mintUsedInput=document.querySelector('#pokemonMintUsed');
     let editingId=null,releaseArmed=false,purgeArmed=null;
 
     natureApi.natures.forEach(item=>natureSelect.append(option(item.name,item.name)));
@@ -106,15 +128,15 @@
       if(allMightyWrap)allMightyWrap.hidden=String(species.id)!=='151';
       if(allRounderFocusWrap)allRounderFocusWrap.hidden=species.specialty!=='all';
       if(allRounderFocusSelect)allRounderFocusSelect.value=allRounder&&allRounder.focusRole({allRounderFocusRole:focusRole||allRounderFocusSelect.value})||'auto';
-      const fixedNature=allRounder&&allRounder.fixedNature(species);natureSelect.disabled=Boolean(fixedNature);natureSelect.title=fixedNature?'幻之宝可梦的性格固定，不参与可洗个体评分':'';natureSelect.value=fixedNature||nature||natureSelect.value;
+      const fixedNature=allRounder&&allRounder.fixedNature(species);natureSelect.disabled=Boolean(fixedNature);natureSelect.title=fixedNature?'幻之宝可梦的性格固定，不参与可洗个体评分':'';natureSelect.value=fixedNature||nature||natureSelect.value;if(mintUsedWrap)mintUsedWrap.hidden=Boolean(fixedNature);if(fixedNature&&mintUsedInput)mintUsedInput.checked=false;
       renderFinalOptions(species,finalFormId||finalSelect.value);renderIngredients(species,ingredients);renderMainLevels(species,mainLevel||mainLevelSelect.value);renderPreview();
     }
     function formSkills(){return subskillSelects.map(select=>select.value||'—')}
     function draftRecord(){
       const species=currentSpecies();if(!species)return null;
-      const skills=formSkills(),stats=computedStats(species,levelInput.value,natureSelect.value,skills,natureApi),foods=[1,30,60].map((level,index)=>canonicalIngredient(selectedIngredient(ingredientSelects[index],species,level),ingredientApi)),mainLevel=Number(mainLevelSelect.value)||1,existing=editingId&&byId.get(editingId),state=dataApi.readAll();
+      const skills=formSkills(),stats=computedStats(species,levelInput.value,mintUsedInput&&mintUsedInput.checked?'认真':natureSelect.value,skills,natureApi),foods=[1,30,60].map((level,index)=>canonicalIngredient(selectedIngredient(ingredientSelects[index],species,level),ingredientApi)),mainLevel=Number(mainLevelSelect.value)||1,existing=editingId&&byId.get(editingId),state=dataApi.readAll();
       const id=existing?String(existing.id):String(state.meta.nextDisplayId),recordId=existing&&existing.recordId||dataApi.newRecordId(),createdAt=existing&&existing.createdAt||new Date().toISOString();
-      const base={id,recordId,speciesId:species.id,finalFormId:finalSelect.value||species.defaultFinalId,name:species.name,nickname:nicknameInput&&nicknameInput.value.trim()||'',sp:existing&&existing.sp||'',lv:String(stats.level),shiny:shinyInput.checked?'是':'否',ingredients:foods.join('／'),interval:stats.interval,inv:String(stats.carry),main:`${species.mainSkill.name} Lv.${mainLevel}`,subs:skills.join('；'),nature:natureSelect.value,allRounderFocusRole:species.specialty==='all'&&allRounderFocusSelect?allRounderFocusSelect.value:'',priority:existing&&existing.priority||'按需求保留',createdAt,updatedAt:new Date().toISOString()};
+      const base={id,recordId,speciesId:species.id,finalFormId:finalSelect.value||species.defaultFinalId,name:species.name,nickname:nicknameInput&&nicknameInput.value.trim()||'',sp:existing&&existing.sp||'',lv:String(stats.level),shiny:shinyInput.checked?'是':'否',ingredients:foods.join('／'),interval:stats.interval,inv:String(stats.carry),main:`${species.mainSkill.name} Lv.${mainLevel}`,subs:skills.join('；'),nature:natureSelect.value,plainMintUsed:Boolean(mintUsedInput&&mintUsedInput.checked),allRounderFocusRole:species.specialty==='all'&&allRounderFocusSelect?allRounderFocusSelect.value:'',priority:existing&&existing.priority||'按需求保留',createdAt,updatedAt:new Date().toISOString()};
       return allRounder&&allRounder.isMew(base)?allRounder.apply(base,allMightySelect&&allMightySelect.value||'metronome'):base;
     }
     function validateDraft(record){
@@ -132,17 +154,31 @@
       const scoreDetail=score&&score.individual&&score.individual.model==='mythical-role-focus'?['评分定位',`${score.individual.focusRoleLabel}${score.individual.focusSelection==='automatic-best-fit'?'（自动）':''}`]:['食材路线',score&&score.individual&&score.individual.ingredientPattern!=='不适用'?`${score.individual.ingredientPattern} · ${score.individual.routeRule}`:'不适用'];
       const cards=Number.isFinite(score.individualScore)?[['物种梯级',`${score.speciesTier}级`],['个体评价',`${score.individualGrade||score.individual.grade}级 · ×${score.individualScore.toFixed(2)}`],scoreDetail,['严选口径',score.speciesTierListed?'用户梯级表':'未列入，默认C']]:dynamic?[['物种梯级','C级'],['个体评价','待定'],['动态定位',dynamic.role],['当前构筑',dynamic.build]]:[['物种梯级','C级'],['个体评价','待定'],['原因','缺少个体面板数据'],['定位',role]];
       cards.forEach(([label,value])=>{const card=element('span','pokemon-score-preview-item');card.append(element('small','',label),element('strong','',value));scorePreview.append(card)});
+      if(mintAdvice&&mintVerdict&&mintDetails){
+        const assessment=assessPlainMint(record,score,scoring);mintAdvice.hidden=!assessment;
+        if(assessment){
+          const nature=natureApi.natures.find(item=>item.name===record.nature)||{},effectNames={speed:'帮忙速度',ingredient:'食材概率',skill:'技能概率',energy:'活力恢复',exp:'EXP'};
+          mintVerdict.textContent=assessment.verdict;mintVerdict.dataset.tone=assessment.used?'used':assessment.verdict==='值得考虑'?'positive':assessment.verdict==='按需求考虑'?'mixed':'negative';
+          mintDetails.replaceChildren();
+          const cultivation=root.POKEMON_SLEEP_CULTIVATION_ADVISOR,cultivationLine=cultivation?(()=>{const label=grade=>cultivation.assess(record,pokemon,{score:{...score,individualGrade:grade,individual:{...score.individual,grade}}}).label;return `培养判断：${label(assessment.beforeGrade)} → ${label(assessment.afterGrade)}`})():'';
+          const lines=[`${record.nature}：${nature.up?`${effectNames[nature.up]}↑`:'无上升'} / ${nature.down?`${effectNames[nature.down]}↓`:'无下降'} → 无性格修正`,
+            `当前 Lv.${record.lv} 已解锁副技能：×${assessment.current.before.toFixed(2)} → ×${assessment.current.after.toFixed(2)}（${assessment.currentPercent>=0?'+':''}${assessment.currentPercent.toFixed(1)}%）`,
+            `长期五格及合法副技能种子：×${assessment.future.before.toFixed(2)} → ×${assessment.future.after.toFixed(2)}（${assessment.percent>=0?'+':''}${assessment.percent.toFixed(1)}%）；个体 ${assessment.beforeGrade}级 → ${assessment.afterGrade}级`,
+            cultivationLine,assessment.reason,'仅比较该定位的目标产出；活力与 EXP 的得失没有折算进倍率。当前潜力分若已计入薄荷，不代表道具已经使用。'];
+          lines.filter(Boolean).forEach(line=>mintDetails.append(element('p','',line)));
+        }
+      }
       if(retentionPreview&&root.POKEMON_SLEEP_RETENTION_ADVISOR)root.POKEMON_SLEEP_RETENTION_ADVISOR.render(retentionPreview,record,pokemon,scoring);
       const error=validateDraft(record);message.hidden=!error;message.textContent=error;message.className='pokemon-editor-message warning';saveButton.disabled=Boolean(error);
     }
     function resetForm(){
-      editingId=null;releaseArmed=false;title.textContent='快速录入新个体';releaseButton.hidden=true;duplicateButton.hidden=true;releaseButton.textContent='放生到回收站';speciesSearch.value='';renderSpeciesOptions();if(nicknameInput)nicknameInput.value='';levelInput.value='1';shinyInput.checked=false;natureSelect.value='认真';natureSelect.disabled=false;if(allMightySelect)allMightySelect.value='metronome';if(allRounderFocusSelect)allRounderFocusSelect.value='auto';collectionInput.checked=false;subskillSelects.forEach(select=>{select.value='—'});updateSpeciesFields();message.hidden=true;
+      editingId=null;releaseArmed=false;title.textContent='快速录入新个体';releaseButton.hidden=true;duplicateButton.hidden=true;releaseButton.textContent='放生到回收站';speciesSearch.value='';renderSpeciesOptions();if(nicknameInput)nicknameInput.value='';levelInput.value='1';shinyInput.checked=false;natureSelect.value='认真';natureSelect.disabled=false;if(mintUsedInput)mintUsedInput.checked=false;if(allMightySelect)allMightySelect.value='metronome';if(allRounderFocusSelect)allRounderFocusSelect.value='auto';collectionInput.checked=false;subskillSelects.forEach(select=>{select.value='—'});updateSpeciesFields();message.hidden=true;
     }
     function openNew(){resetForm();showDialog(dialog);setTimeout(()=>speciesSearch.focus(),0)}
     function openFor(id){
       const mon=byId.get(String(id));if(!mon)return false;editingId=String(mon.id);releaseArmed=false;title.textContent=`编辑 #${mon.id} ${mon.name}`;releaseButton.hidden=false;duplicateButton.hidden=false;releaseButton.textContent='放生到回收站';speciesSearch.value='';
       const species=inferSpecies(mon,catalog,scoring);renderSpeciesOptions(species&&species.id);if(species){speciesSelect.value=species.id;const currentFoods=String(mon.ingredients||'').split('／');updateSpeciesFields({finalFormId:mon.finalFormId||scoring.targetForPokemon(mon)?.id,ingredients:currentFoods,mainLevel:String(mon.main||'').match(/Lv\.(\d+)/)?.[1],nature:natureName(mon.nature,natureApi),focusRole:mon.allRounderFocusRole})}
-      if(nicknameInput)nicknameInput.value=mon.nickname||'';levelInput.value=String(mon.lv||1);shinyInput.checked=mon.shiny==='是';natureSelect.value=allRounder&&allRounder.fixedNature(species)||natureName(mon.nature,natureApi);if(allMightySelect&&allRounder)allMightySelect.value=allRounder.selectedId(mon);if(allRounderFocusSelect&&allRounder)allRounderFocusSelect.value=allRounder.focusRole(mon);collectionInput.checked=Boolean(mon.collectionIntent);
+      if(nicknameInput)nicknameInput.value=mon.nickname||'';levelInput.value=String(mon.lv||1);shinyInput.checked=mon.shiny==='是';natureSelect.value=allRounder&&allRounder.fixedNature(species)||natureName(mon.nature,natureApi);if(mintUsedInput)mintUsedInput.checked=!Boolean(allRounder&&allRounder.fixedNature(species))&&mon.plainMintUsed===true;if(allMightySelect&&allRounder)allMightySelect.value=allRounder.selectedId(mon);if(allRounderFocusSelect&&allRounder)allRounderFocusSelect.value=allRounder.focusRole(mon);collectionInput.checked=Boolean(mon.collectionIntent);
       const skills=String(mon.subs||'').split('；');subskillSelects.forEach((select,index)=>{select.value=SUBSKILLS.includes(skills[index])?skills[index]:'—'});renderPreview();showDialog(dialog);return true;
     }
     async function persistAndReload(){
@@ -179,10 +215,10 @@
     }
     function openRecycle(){renderRecycle();showDialog(recycleDialog)}
 
-    addButton.addEventListener('click',openNew);recycleButton.addEventListener('click',openRecycle);closeButton.addEventListener('click',()=>closeDialog(dialog));cancelButton.addEventListener('click',()=>closeDialog(dialog));saveButton.addEventListener('click',save);releaseButton.addEventListener('click',release);duplicateButton.addEventListener('click',duplicate);recycleClose.addEventListener('click',()=>closeDialog(recycleDialog));speciesSearch.addEventListener('input',()=>renderSpeciesOptions());speciesSelect.addEventListener('change',()=>updateSpeciesFields());finalSelect.addEventListener('change',renderPreview);shinyInput.addEventListener('change',()=>{if(shinyInput.checked)collectionInput.checked=true});[nicknameInput,levelInput,shinyInput,natureSelect,mainLevelSelect,allMightySelect,allRounderFocusSelect,collectionInput,...ingredientSelects,...subskillSelects].filter(Boolean).forEach(control=>{control.addEventListener(control===nicknameInput?'input':'change',renderPreview)});
+    addButton.addEventListener('click',openNew);recycleButton.addEventListener('click',openRecycle);closeButton.addEventListener('click',()=>closeDialog(dialog));cancelButton.addEventListener('click',()=>closeDialog(dialog));saveButton.addEventListener('click',save);releaseButton.addEventListener('click',release);duplicateButton.addEventListener('click',duplicate);recycleClose.addEventListener('click',()=>closeDialog(recycleDialog));speciesSearch.addEventListener('input',()=>renderSpeciesOptions());speciesSelect.addEventListener('change',()=>updateSpeciesFields());finalSelect.addEventListener('change',renderPreview);shinyInput.addEventListener('change',()=>{if(shinyInput.checked)collectionInput.checked=true});[nicknameInput,levelInput,shinyInput,natureSelect,mintUsedInput,mainLevelSelect,allMightySelect,allRounderFocusSelect,collectionInput,...ingredientSelects,...subskillSelects].filter(Boolean).forEach(control=>{control.addEventListener(control===nicknameInput?'input':'change',renderPreview)});
     dialog.addEventListener('cancel',event=>{event.preventDefault();closeDialog(dialog)});dialog.addEventListener('click',event=>{if(event.target===dialog)closeDialog(dialog)});recycleDialog.addEventListener('cancel',event=>{event.preventDefault();closeDialog(recycleDialog)});recycleDialog.addEventListener('click',event=>{if(event.target===recycleDialog)closeDialog(recycleDialog)});document.addEventListener('pokemon-sleep:edit-pokemon',event=>openFor(event.detail&&event.detail.id));
     return {openNew,openFor,openRecycle,renderPreview};
   }
 
-  return Object.freeze({SUBSKILLS,SUBSKILL_LEVELS,ROLE_LABELS,formatInterval,natureModifiers,mainSkillCap,activeSubskills,computedStats,mount});
+  return Object.freeze({SUBSKILLS,SUBSKILL_LEVELS,ROLE_LABELS,formatInterval,natureModifiers,mainSkillCap,activeSubskills,computedStats,assessPlainMint,mount});
 });

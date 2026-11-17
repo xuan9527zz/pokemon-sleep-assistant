@@ -53,7 +53,7 @@
       index,energy:startEnergy,helps:0,normalHelps:0,sneakyHelps:0,triggers:0,lostTriggers:0,carriedItems:0,
       stageMinutes:Object.fromEntries(ENERGY_STAGES.map(stage=>[stage.key,0])),
       capacity:skillStorageCapacity(member.mon&&member.mon.specialty),storage:[1,0,0].slice(0,skillStorageCapacity(member.mon&&member.mon.specialty)+1),
-      recoveryMultiplier:natureRecoveryMultiplier(member.mon&&member.mon.nature),endingEnergy:startEnergy
+      recoveryMultiplier:natureRecoveryMultiplier(member.mon&&member.mon.plainMintUsed?'认真':member.mon&&member.mon.nature),endingEnergy:startEnergy
     }));
     const collectionMoments=[],swapMoments=[];
     for(let minute=collectionMinutes;minute<durationMinutes;minute+=collectionMinutes)collectionMoments.push(minute);

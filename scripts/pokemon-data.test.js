@@ -25,6 +25,13 @@ assert.deepEqual(dataApi.load(seed, freshStorage).pokemon, [], '已建立的空�
 const loaded = dataApi.load(seed, storage);
 assert.equal(loaded.pokemon.length, 2);
 assert.equal(loaded.meta.nextDisplayId, 3);
+assert.equal(dataApi.normalizeRecord({id:'9',name:'沙奈朵',nature:'内敛',plainMintUsed:true}).plainMintUsed,true);
+assert.equal(dataApi.canonicalRecord({id:'9',name:'沙奈朵',nature:'内敛',plainMintUsed:true}).plainMintUsed,true);
+assert.equal(dataApi.normalizeRecord({id:'9',name:'沙奈朵'}).plainMintUsed,false);
+const mintStorage = new MemoryStorage();
+dataApi.load([], mintStorage);
+dataApi.upsertPokemon({...seed[0],plainMintUsed:true},{},mintStorage);
+assert.equal(dataApi.readAll(mintStorage).pokemon[0].plainMintUsed,true,'薄荷使用状态应随个体资料保存');
 
 dataApi.writeJson(dataApi.CURRENT_TEAM_KEY, ['1','2'], storage);
 dataApi.writeJson(dataApi.SAVED_TEAMS_KEY, [{id:'team-1',members:['1','2','3','4','5']}], storage);

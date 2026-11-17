@@ -97,7 +97,7 @@
     if(!(base>0&&base<1))return {base:0,current:0,effective:0,provisional:true,pityCeiling:null};
     const skills=unlockedSubskills(mon);
     const subskillBonus=(skills.includes('技能概率M')?.36:0)+(skills.includes('技能概率S')?.18:0);
-    const natureMultiplier=natureSkillMultiplier(mon.nature);
+    const natureMultiplier=natureSkillMultiplier(mon.plainMintUsed?'认真':mon.nature);
     const current=clamp(base*natureMultiplier*(1+subskillBonus),0,.95);
     const sourceInterval=Number(mon.catalogHelpFrequencyBaseSec)||parseInterval(mon.interval);
     const pityCeiling=['skill','all'].includes(mon.specialty)?Math.max(1,Math.floor(144000/sourceInterval)):78;
@@ -209,7 +209,7 @@
   function ingredientProbability(mon,production){
     const skills=unlockedSubskills(mon);
     const subskillBonus=(skills.includes('食材概率M')?.36:0)+(skills.includes('食材概率S')?.18:0);
-    const natureMultiplier=natureIngredientMultiplier(mon.nature);
+    const natureMultiplier=natureIngredientMultiplier(mon.plainMintUsed?'认真':mon.nature);
     const catalogRate=production&&production.ingredientRate!==undefined?production.ingredientRate:mon&&mon.ingredientRate;
     const base=Number(catalogRate);
     return {

@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_VERSION='pokemon-sleep-assistant-v15';
+const CACHE_VERSION='pokemon-sleep-assistant-v17';
 const OCR_CACHE='pokemon-sleep-ocr-v1';
 const APP_SHELL=[
   './',
@@ -10,6 +10,7 @@ const APP_SHELL=[
   './assets/app-icon-180.png',
   './assets/app-icon-192.png',
   './assets/app-icon-512.png',
+  './assets/items/neutralizing-mint.webp',
   './all-rounder-rules.js',
   './box-filter.css','./box-filter.js','./box-manager.css','./box-manager.js',
   './cloud-sync.css','./cloud-sync.js','./cooking-success.js','./cultivation-advisor.css','./cultivation-advisor.js',

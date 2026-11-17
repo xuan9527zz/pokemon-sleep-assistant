@@ -15,7 +15,7 @@
   const CURRENT_TEAM_KEY='pokemon-sleep-current-team-v1';
   const SAVED_TEAMS_KEY='pokemon-sleep-saved-teams-v1';
   const RECYCLE_DAYS=30;
-  const CANONICAL_FIELDS=Object.freeze(['id','recordId','speciesId','finalFormId','name','nickname','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','priority','createdAt','updatedAt']);
+  const CANONICAL_FIELDS=Object.freeze(['id','recordId','speciesId','finalFormId','name','nickname','sp','lv','shiny','ingredients','interval','inv','main','subs','nature','plainMintUsed','priority','createdAt','updatedAt']);
 
   function storage(){try{return root&&root.localStorage||null}catch(_error){return null}}
   function readJson(key,fallback,target=storage()){
@@ -49,6 +49,7 @@
       main:String(source.main||source.mainSkill||''),
       subs:String(source.subs||source.subskills||''),
       nature:String(source.nature||'认真'),
+      plainMintUsed:source.plainMintUsed===true,
       priority:String(source.priority||'按需求保留'),
       createdAt:createdAt||now(),
       updatedAt:String(source.updatedAt||createdAt||now())

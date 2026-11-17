@@ -65,6 +65,8 @@
   .mobile-mon-title h3{min-width:0;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:19px;line-height:1.25}
   .mobile-mon-level{flex:0 0 auto;border-radius:999px;background:#edf7f2;color:#176d48;padding:2px 7px;font-size:10px;font-weight:900}
   .mobile-mon-score .score-badge{min-width:68px;padding:6px 8px}
+  .mobile-mon-score{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+  .mobile-mon-score .mint-indicator{margin:0}
   .mobile-mon-score .score-number{font-size:20px}
   .mobile-mon-tags{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
   .mobile-mon-tags .role-tag{flex-direction:row;align-items:center;gap:2px;padding:4px 7px}

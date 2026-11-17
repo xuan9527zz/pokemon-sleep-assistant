@@ -111,7 +111,7 @@
       speciesTier:String(mon&&mon.scoreBreakdown&&mon.scoreBreakdown.speciesTier||mon&&mon.speciesTier||'C'),
       individualScore:scoreOf(mon,'individualScore','scoreIndividual'),
       mainSkill:String(mon.main||mon.mainSkill||'—'),
-      nature:String(mon.nature||'—'),
+      nature:`${String(mon.nature||'—')}${mon.plainMintUsed?'（效果已中和）':''}`,
       ingredients:String(mon.ingredients||'—'),
       ingredientRoute:ingredientRoute(mon,course),
       course:{

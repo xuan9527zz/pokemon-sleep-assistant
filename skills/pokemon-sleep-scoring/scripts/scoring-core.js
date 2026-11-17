@@ -220,7 +220,7 @@
     return grade;
   }
   function outputMultiplierScore(box,role,finalRecord){
-    const rawSkills=box&&box.subskills||box&&box.subs||'',currentRawSkills=box&&box.effectiveSubs||rawSkills,currentSkills=skillSet(currentRawSkills,false),potentialSkills=skillSet(rawSkills,true),actualNature=box&&box.nature||'认真';
+    const rawSkills=box&&box.subskills||box&&box.subs||'',currentRawSkills=box&&box.effectiveSubs||rawSkills,currentSkills=skillSet(currentRawSkills,false),potentialSkills=skillSet(rawSkills,true),actualNature=box&&box.plainMintUsed?'认真':box&&box.nature||'认真';
     const currentMultiplier=multiplierFor(role,currentSkills,actualNature,finalRecord),potentialWithNature=multiplierFor(role,potentialSkills,actualNature,finalRecord),neutralPotential=multiplierFor(role,potentialSkills,'认真',finalRecord),potentialMultiplier=Math.max(potentialWithNature,neutralPotential),potentialEffects=skillEffects(potentialSkills),pattern=role==='ingredient'?ingredientPattern(box&&box.ingredients):'不适用',grade=gradeMultiplier(role,potentialMultiplier,{...potentialEffects,ingredientPattern:pattern});
     return {
       model:'blank-output-multiplier',score:round(potentialMultiplier,2),multiplier:round(potentialMultiplier,4),currentMultiplier:round(currentMultiplier,4),potentialMultiplier:round(potentialMultiplier,4),grade,role,hasHelpingBonus:potentialEffects.hasHelpingBonus,hasBerryFinding:potentialEffects.hasBerryFinding,
